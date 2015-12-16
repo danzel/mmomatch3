@@ -1,0 +1,12 @@
+{
+  "name": "mmomatch3",
+  "dependencies": {
+    "json-loader": "^0.5.4",
+    "phaser": "^2.4.4",
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.7.3"
+  },
+  "devDependencies": {
+    "webpack": "^1.12.9"
+  }
+}
