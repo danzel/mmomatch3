@@ -6,10 +6,13 @@ module.exports = {
 		path: __dirname + path.sep + 'dist',
 		filename: 'bundle.js'
 	},
+    resolve: {
+        extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
+    },
 	module: {
 		loaders: [
 			{ test: /\.json$/, loader: 'json' },
-			{ test: /\.ts$/, loader: 'ts-loader' }
+			{ test: /\.tsx?$/, loader: 'ts-loader' }
 		]
 	}
 };

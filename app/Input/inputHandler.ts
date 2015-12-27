@@ -1,0 +1,5 @@
+class InputHandler {
+	
+}
+
+export = InputHandler;
