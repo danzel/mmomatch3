@@ -44,7 +44,11 @@ class SimulationRenderer {
 	}
 
 	update(dt: Number) {
-
+		for (let key in this.matchableNodes) {
+			var node = this.matchableNodes[key];
+			
+			node.updatePosition();
+		}
 	}
 
 }

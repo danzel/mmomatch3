@@ -13,8 +13,7 @@ class SpawnManager {
 			var column = this.grid.cells[x];
 			
 			while (column.length < this.grid.height){
-				//Hack 0 to make them spawn on grid, should be what is commented out
-				let y = 0;//this.grid.height;
+				let y = this.grid.height;
 				
 				if (column.length > 0) {
 					let last = column[column.length - 1];
