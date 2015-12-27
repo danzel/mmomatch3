@@ -2,6 +2,7 @@ var path = require('path');
 module.exports = {
 	context: __dirname + path.sep + 'app',
 	entry: './entry_web.ts',
+	devtool: 'inline-source-map',
 	output: {
 		path: __dirname + path.sep + 'dist',
 		filename: 'bundle.js'
