@@ -6,6 +6,11 @@ import MatchableNode = require('./matchableNode');
 const xOffset = MatchableNode.PositionScalar / 2;
 const yOffset = MatchableNode.PositionScalar / 2;
 
+interface IXY {
+	x: number;
+	y: number;
+}
+
 class SimulationRenderer {
 	private game: Phaser.Game;
 	private simulation: Simulation;
@@ -60,6 +65,14 @@ class SimulationRenderer {
 		
 		//Update scale
 		this.scale = newScale;
+	}
+	
+	getPosition(): IXY {
+		return this.group;
+	}
+	
+	getScale(): number {
+		return this.group.scale.x;
 	}
 		
 	private get scale(): number {

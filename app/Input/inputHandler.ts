@@ -1,19 +1,27 @@
 /// <reference path="../../node_modules/phaser/typescript/phaser.comments.d.ts" />
-import SimulationRenderer = require('../Renderer/simulationRenderer');
+import MatchableNode = require('../Renderer/matchableNode');
+import MatchDragHandler = require('./matchDragHandler');
 import PointerStateTracker = require('./pointerStateTracker');
+import Simulation = require('../Simulation/simulation');
+import SimulationRenderer = require('../Renderer/simulationRenderer');
 
 class InputHandler {
 	private game: Phaser.Game;
 	private renderer: SimulationRenderer;
+	private simulation: Simulation;
 	private pointerStateTracker: PointerStateTracker;
+	private matchDragHandler: MatchDragHandler;
 	
-	constructor(game: Phaser.Game, renderer: SimulationRenderer) {
+	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation) {
 		this.game = game;
 		this.renderer = renderer;
+		this.simulation = simulation;
 		this.pointerStateTracker = new PointerStateTracker(game);
-
+		this.matchDragHandler = new MatchDragHandler(renderer, simulation);
+		
 		this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
 		this.pointerStateTracker.moveCallback = this.mouseMove.bind(this);
+		//TODO: Touch Zoom and movement
 	}
 
 	update(dt: number) {
@@ -25,13 +33,14 @@ class InputHandler {
 	}
 
 	private mouseMove(pointer: Phaser.Pointer, x: number, y: number, down: Boolean) {
-		//console.log([pointer, x, y, down]);
-		//console.log(this.renderer.position.x, this.renderer.position.y);
 		
+		//Movement drag handling
 		if (pointer.middleButton.isDown && !down) {
-			//console.log(pointer.movementX, pointer.movementY);
 			this.renderer.translate(pointer.movementX, pointer.movementY);
 		}
+		
+		this.matchDragHandler.mouseMove(pointer, x, y, down);
+		
 	}
 }
 

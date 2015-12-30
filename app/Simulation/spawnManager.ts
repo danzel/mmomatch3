@@ -9,8 +9,8 @@ class SpawnManager {
 	}
 	
 	update(dt: number){
-		for (var x = 0; x < this.grid.width; x++){
-			var column = this.grid.cells[x];
+		for (let x = 0; x < this.grid.width; x++){
+			let column = this.grid.cells[x];
 			
 			while (column.length < this.grid.height){
 				let y = this.grid.height;
@@ -22,7 +22,7 @@ class SpawnManager {
 					}
 				}
 				
-				var matchable = new Matchable(x, y);
+				let matchable = new Matchable(x, y);
 			
 				column.push(matchable);
 				this.matchableSpawned.trigger(matchable);
