@@ -10,7 +10,7 @@ class MatchableNode {
 	
 	constructor(matchable: Matchable, parent : Phaser.Group) {
 		this.matchable = matchable;
-		this.sprite = parent.create(0, 0, 'ball_1');
+		this.sprite = parent.create(0, 0, 'ball_' + (matchable.color + 1));
 
 		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
 		
