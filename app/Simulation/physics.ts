@@ -13,7 +13,10 @@ class Physics {
 			for (let y = 0; y < col.length; y++) {
 				var matchable = col[y];
 				if (matchable.y > y) {
-					matchable.y = Math.max(y, matchable.y - dt * 20);
+					matchable.yMomentum += dt * 100;
+					matchable.y = Math.max(y, matchable.y - dt * matchable.yMomentum);
+				} else {
+					matchable.yMomentum = 0;
 				}
 			}
 		}

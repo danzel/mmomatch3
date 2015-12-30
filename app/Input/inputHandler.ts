@@ -1,4 +1,5 @@
 /// <reference path="../../node_modules/phaser/typescript/phaser.comments.d.ts" />
+import IInputApplier = require('../Simulation/iInputApplier');
 import MatchableNode = require('../Renderer/matchableNode');
 import MatchDragHandler = require('./matchDragHandler');
 import PointerStateTracker = require('./pointerStateTracker');
@@ -8,16 +9,14 @@ import SimulationRenderer = require('../Renderer/simulationRenderer');
 class InputHandler {
 	private game: Phaser.Game;
 	private renderer: SimulationRenderer;
-	private simulation: Simulation;
 	private pointerStateTracker: PointerStateTracker;
 	private matchDragHandler: MatchDragHandler;
 	
-	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation) {
+	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation, inputApplier: IInputApplier) {
 		this.game = game;
 		this.renderer = renderer;
-		this.simulation = simulation;
 		this.pointerStateTracker = new PointerStateTracker(game);
-		this.matchDragHandler = new MatchDragHandler(renderer, simulation);
+		this.matchDragHandler = new MatchDragHandler(renderer, simulation.grid, inputApplier);
 		
 		this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
 		this.pointerStateTracker.moveCallback = this.mouseMove.bind(this);

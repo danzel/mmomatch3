@@ -17,6 +17,11 @@ class Simulation {
 		this.physics.update(dt);
 		this.spawnManager.update(dt);
 	}
+	
+	swap(x: number, y: number, xTarget: number, yTarget: number) {
+		console.log('todo swap sim');
+		//TODO
+	}
 }
 
 export = Simulation;

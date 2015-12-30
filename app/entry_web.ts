@@ -3,6 +3,7 @@
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
+import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 
 class AppEntry {
 	game: Phaser.Game;
@@ -28,7 +29,7 @@ class AppEntry {
 		console.log('create');
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
-		this.input = new InputHandler(this.game, this.renderer, this.simulation);
+		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation));
 
 /*
 		let ball = this.game.add.image(60, 60, 'ball_1');

@@ -1,4 +1,5 @@
 /// <reference path="../../node_modules/phaser/typescript/phaser.comments.d.ts" />
+import IInputApplier = require('../Simulation/iInputApplier');
 import MatchableNode = require('../Renderer/matchableNode');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
@@ -13,9 +14,15 @@ class XY {
 	}
 };
 
+interface ISize {
+	width: number;
+	height: number;
+}
+
 class MatchDragHandler {
 	private renderer: SimulationRenderer;
-	private simulation: Simulation;
+	private gridSize: ISize;
+	private inputApplier: IInputApplier;
 	
 	private startDragPx: XY;
 	private startDragMatchable: XY;
@@ -24,9 +31,10 @@ class MatchDragHandler {
 	
 	//TODO: On touch we'll need to interact with multitouch to stop matching while multitouching
 
-	constructor(renderer: SimulationRenderer, simulation: Simulation) {
+	constructor(renderer: SimulationRenderer, gridSize: ISize, inputApplier: IInputApplier) {
 		this.renderer = renderer;
-		this.simulation = simulation;
+		this.gridSize = gridSize;
+		this.inputApplier = inputApplier;
 	}
 
 	mouseMove(pointer: Phaser.Pointer, x: number, y: number, down: Boolean) {
@@ -48,12 +56,10 @@ class MatchDragHandler {
 			//If there is a movement in just one direction
 			if (Math.abs(xDiff) > this.minDragPx !== Math.abs(yDiff) > this.minDragPx) {
 				if (Math.abs(xDiff) > this.minDragPx) {
-					//TODO: X
-					console.log('todo: x');
+					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x + (xDiff > 0 ? 1 : -1), this.startDragMatchable.y);
 				}
 				else {
-					//TODO: Y
-					console.log('todo: y');
+					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x, this.startDragMatchable.y + (yDiff > 0 ? 1 : -1));
 				}
 			}
 			
@@ -71,7 +77,7 @@ class MatchDragHandler {
 		y = Math.floor(-(y - pos.y) / MatchableNode.PositionScalar / scale);
 		
 		//Only return valid positions
-		if (x < 0 || y < 0 || x >= this.simulation.grid.width || y >= this.simulation.grid.height) {
+		if (x < 0 || y < 0 || x >= this.gridSize.width || y >= this.gridSize.height) {
 			return null;
 		}
 
