@@ -8,6 +8,8 @@ class Matchable {
 	
 	yMomentum: number;
 	
+	beingSwapped: boolean;
+	
 	constructor(x: number, y: number){
 		id++;
 		this.id = id;
@@ -16,6 +18,7 @@ class Matchable {
 		this.y = y;
 		
 		this.yMomentum = 0;
+		this.beingSwapped = false;
 	}
 	
 	get isMoving() : boolean {

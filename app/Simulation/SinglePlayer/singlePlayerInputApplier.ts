@@ -1,20 +1,19 @@
 import IInputApplier = require('../iInputApplier');
 import InputVerifier = require('../inputVerifier');
-import Simulation = require('../simulation');
+import SwapHandler = require('../swapHandler');
 
 class SinglePlayerInputApplier implements IInputApplier {
-	private simulation: Simulation;
+	private swapHandler: SwapHandler;
 	private inputVerifier: InputVerifier;
 	
-	constructor(simulation: Simulation) {
-		this.simulation = simulation;
-		
-		this.inputVerifier = new InputVerifier(simulation);
+	constructor(swapHandler: SwapHandler, inputVerifier: InputVerifier) {
+		this.swapHandler = swapHandler;
+		this.inputVerifier = inputVerifier;
 	}
 	
 	swapMatchable(x: number, y: number, xTarget: number, yTarget: number) {
 		if (this.inputVerifier.swapIsValid(x, y, xTarget, yTarget)) {
-			this.simulation.swap(x, y, xTarget, yTarget);
+			this.swapHandler.swap(x, y, xTarget, yTarget);
 		}
 	}
 }

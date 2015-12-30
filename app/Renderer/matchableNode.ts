@@ -1,5 +1,6 @@
 /// <reference path="../../node_modules/phaser/typescript/phaser.comments.d.ts" />
 import Matchable = require('../Simulation/matchable');
+import Swap = require('../Simulation/swap');
 
 class MatchableNode {
 	public static PositionScalar = 100;
@@ -16,9 +17,20 @@ class MatchableNode {
 		this.updatePosition();
 	}
 	
-	updatePosition() {
+	updatePosition(swap?: Swap) {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
+
+		if (swap) {
+			let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
+			
+			var diffX = otherMatchable.x - this.matchable.x;
+			var diffY = otherMatchable.y - this.matchable.y;
+			
+			//TODO: Easing
+			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
+			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
+		}
 	}
 }
 

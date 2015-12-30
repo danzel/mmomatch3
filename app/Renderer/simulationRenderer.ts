@@ -100,6 +100,14 @@ class SimulationRenderer {
 
 			node.updatePosition();
 		}
+		
+		var swaps = this.simulation.swapHandler.swaps;
+		for (let i = 0; i < swaps.length; i++) {
+			var swap = swaps[i];
+			
+			this.matchableNodes[swap.left.id].updatePosition(swap);
+			this.matchableNodes[swap.right.id].updatePosition(swap);
+		}
 	}
 
 }

@@ -1,8 +1,8 @@
 /// <reference path="../node_modules/phaser/typescript/phaser.comments.d.ts" />
-
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
+import InputVerifier = require('./Simulation/inputVerifier');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 
 class AppEntry {
@@ -29,7 +29,7 @@ class AppEntry {
 		console.log('create');
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
-		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation));
+		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.swapHandler)));
 
 /*
 		let ball = this.game.add.image(60, 60, 'ball_1');

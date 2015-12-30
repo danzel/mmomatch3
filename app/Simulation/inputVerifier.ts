@@ -1,10 +1,13 @@
-import Simulation = require('./simulation');
+import Grid = require('./grid');
+import SwapHandler = require('./swapHandler');
 
 class InputVerifier {
-	private simulation: Simulation;
+	private grid: Grid;
+	private swapHandler: SwapHandler;
 	
-	constructor(simulation: Simulation) {
-		this.simulation = simulation;
+	constructor(grid: Grid, swapHandler: SwapHandler) {
+		this.grid = grid;
+		this.swapHandler = swapHandler;
 	}
 	
 	swapIsValid(x: number, y: number, xTarget: number, yTarget: number) : boolean {
@@ -21,6 +24,9 @@ class InputVerifier {
 			if (xTarget == x + 1 || xTarget == x - 1)
 				return true;
 		}
+		
+		//TODO: Check if a swap actually causes a match?
+		
 		return false;
 	}
 	
@@ -29,15 +35,26 @@ class InputVerifier {
 			return false;
 		
 		//Check we are on the grid
-		if (x < 0 || y < 0 || x >= this.simulation.grid.width || y >= this.simulation.grid.height)
+		if (x < 0 || y < 0 || x >= this.grid.width || y >= this.grid.height)
 			return false;
 		
 		//And that this pos exists and isn't moving
-		var col = this.simulation.grid.cells[x];
+		let col = this.grid.cells[x];
 		if (col.length < y)
 			return false;
 		if (col[y].isMoving)
 			return false;
+			
+		//And that it and any of those below it aren't in a swap
+		let swaps = this.swapHandler.swaps;
+		for (let i = 0; i < swaps.length; i++) {
+			var swap = swaps[i];
+			if (swap.left.x == x && swap.left.y <= y)
+				return false;
+
+			if (swap.right.x == x && swap.right.y <= y)
+				return false;
+		}
 		
 		return true;
 	}

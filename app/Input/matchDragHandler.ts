@@ -59,7 +59,7 @@ class MatchDragHandler {
 					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x + (xDiff > 0 ? 1 : -1), this.startDragMatchable.y);
 				}
 				else {
-					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x, this.startDragMatchable.y + (yDiff > 0 ? 1 : -1));
+					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x, this.startDragMatchable.y + (yDiff > 0 ? -1 : 1));
 				}
 			}
 			
