@@ -1,5 +1,6 @@
 import Grid = require('./grid');
 import Matchable = require('./matchable');
+import Physics = require('./physics');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
 
@@ -8,10 +9,11 @@ class MatchChecker {
 	
 	grid: Grid;
 
-	constructor(grid: Grid, swapHandler: SwapHandler) {
+	constructor(grid: Grid, swapHandler: SwapHandler, physics: Physics) {
 		this.grid = grid;
 
 		swapHandler.swapOccurred.on(this.onSwapOccurred.bind(this));
+		physics.matchableLanded.on(this.testForMatch.bind(this));
 	}
 
 	onSwapOccurred(swap: Swap) {

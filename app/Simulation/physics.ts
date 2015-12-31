@@ -1,13 +1,19 @@
 import Grid = require('./grid');
+import LiteEvent = require('../liteEvent');
+import Matchable = require('./matchable');
 
 class Physics {
-	grid: Grid;
+	private grid: Grid;
+
+	matchableLanded = new LiteEvent<Matchable>();
 
 	constructor(grid: Grid) {
 		this.grid = grid;
 	}
 
 	update(dt: number) {
+		let landed = [];
+		
 		for (let x = 0; x < this.grid.width; x++) {
 			var col = this.grid.cells[x];
 			for (let y = 0; y < col.length; y++) {
@@ -18,10 +24,14 @@ class Physics {
 					
 					if (matchable.y == y) {
 						matchable.yMomentum = 0;
-						//TODO: Landed Event
+						landed.push(matchable);
 					}
 				}
 			}
+		}
+		
+		for (let i = 0; i < landed.length; i++) {
+			this.matchableLanded.trigger(landed[i]);
 		}
 	}
 }

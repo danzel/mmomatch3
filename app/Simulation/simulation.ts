@@ -19,7 +19,7 @@ class Simulation {
 		this.physics = new Physics(this.grid);
 		this.swapHandler = new SwapHandler(this.grid);
 		
-		this.matchChecker = new MatchChecker(this.grid, this.swapHandler);
+		this.matchChecker = new MatchChecker(this.grid, this.swapHandler, this.physics);
 		
 		this.disappearer = new Disappearer(this.grid);
 		
