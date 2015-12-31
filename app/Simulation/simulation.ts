@@ -22,9 +22,6 @@ class Simulation {
 		this.matchChecker = new MatchChecker(this.grid, this.swapHandler, this.physics);
 		
 		this.disappearer = new Disappearer(this.grid);
-		
-		//TODO: Listen to swapHandler.swapOccurred and check for matches?
-		//TODO: Listen to physics.matchableLanded and check for matches?
 	}
 
 	update(dt: number) {
