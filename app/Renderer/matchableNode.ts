@@ -21,6 +21,8 @@ class MatchableNode {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
 
+		this.sprite.alpha = 1 - this.matchable.disappearingPercent;
+		
 		if (swap) {
 			let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
 			
@@ -31,6 +33,10 @@ class MatchableNode {
 			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
 			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
 		}
+	}
+	
+	disappear() {
+		this.sprite.destroy();
 	}
 }
 

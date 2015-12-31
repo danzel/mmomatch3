@@ -15,8 +15,11 @@ class Physics {
 				if (matchable.y > y) {
 					matchable.yMomentum += dt * 100;
 					matchable.y = Math.max(y, matchable.y - dt * matchable.yMomentum);
-				} else {
-					matchable.yMomentum = 0;
+					
+					if (matchable.y == y) {
+						matchable.yMomentum = 0;
+						//TODO: Landed Event
+					}
 				}
 			}
 		}

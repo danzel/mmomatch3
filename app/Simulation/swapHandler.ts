@@ -51,10 +51,9 @@ class SwapHandler {
 				this.grid.cells[left.x][left.y] = left;
 				this.grid.cells[right.x][right.y] = right;
 
-				this.swapOccurred.trigger(swap);
-				console.log(left.x, left.y, right.x, right.y);
-				console.log('swap finished!');
 				this.swaps.splice(i, 1);
+
+				this.swapOccurred.trigger(swap);
 			}
 		}
 	}

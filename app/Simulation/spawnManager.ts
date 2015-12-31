@@ -1,7 +1,7 @@
 import Color = require('./color');
 import Grid = require('./grid')
-import Matchable = require('./matchable')
 import LiteEvent = require('../liteEvent')
+import Matchable = require('./matchable')
 
 class SpawnManager {
 	matchableSpawned = new LiteEvent<Matchable>();

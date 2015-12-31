@@ -35,6 +35,7 @@ class SimulationRenderer {
 		this.addDebugOverlay();
 
 		simulation.spawnManager.matchableSpawned.on(this.onMatchableSpawned.bind(this));
+		simulation.disappearer.matchableDisappeared.on(this.onMatchableDisappeared.bind(this));
 	}
 
 	translate(x: number, y: number) {
@@ -85,6 +86,11 @@ class SimulationRenderer {
 
 	private onMatchableSpawned(matchable: Matchable) {
 		this.matchableNodes[matchable.id] = new MatchableNode(matchable, this.matchablesGroup);
+	}
+	
+	private onMatchableDisappeared(matchable: Matchable) {
+		this.matchableNodes[matchable.id].disappear();
+		delete this.matchableNodes[matchable.id];
 	}
 
 	private addDebugOverlay() {
