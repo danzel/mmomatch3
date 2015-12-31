@@ -20,7 +20,13 @@ class Physics {
 				var matchable = col[y];
 				if (matchable.y > y) {
 					matchable.yMomentum += dt * 100;
+					
 					matchable.y = Math.max(y, matchable.y - dt * matchable.yMomentum);
+					
+					//Stop when we hit the one below us
+					if (y > 0) {
+						matchable.y = Math.max(matchable.y, col[y - 1].y + 1);
+					}
 					
 					if (matchable.y == y) {
 						matchable.yMomentum = 0;
