@@ -27,8 +27,6 @@ class MatchDragHandler {
 	private startDragPx: XY;
 	private startDragMatchable: XY;
 	
-	private minDragPx = MatchableNode.PositionScalar / 2;
-	
 	//TODO: On touch we'll need to interact with multitouch to stop matching while multitouching
 
 	constructor(renderer: SimulationRenderer, gridSize: ISize, inputApplier: IInputApplier) {
@@ -36,6 +34,11 @@ class MatchDragHandler {
 		this.gridSize = gridSize;
 		this.inputApplier = inputApplier;
 	}
+	
+	private get minDragPx() {
+		return this.renderer.getScale() * MatchableNode.PositionScalar / 2;	
+	}
+	
 
 	mouseMove(pointer: Phaser.Pointer, x: number, y: number, down: Boolean) {
 		if (pointer.leftButton.isDown && down) {
