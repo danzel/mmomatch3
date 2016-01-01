@@ -5,6 +5,7 @@
     "sourceMap": true
   },
   "files": [
-    "app/entry_web.ts"
+    "app/entry_web.ts",
+    "app/entry_server.ts"
   ]
 }

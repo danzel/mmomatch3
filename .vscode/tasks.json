@@ -1,0 +1,16 @@
+{
+	"version": "0.1.0",
+	"command": "tsc",
+	"isShellCommand": true,
+	"showOutput": "silent",
+	"args": [
+		"app/entry_server.ts",
+		"--outDir",
+		"built_server",
+		"--module",
+		"commonjs",
+		"--target",
+		"es5"
+	],
+	"problemMatcher": "$tsc"
+}
