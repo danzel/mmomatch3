@@ -13,8 +13,8 @@ class Simulation {
 	matchChecker: MatchChecker;
 	disappearer: Disappearer;
 
-	constructor() {
-		this.grid = new Grid(50, 20);
+	constructor(width: number, height: number) {
+		this.grid = new Grid(width, height);
 		this.spawnManager = new SpawnManager(this.grid);
 		this.physics = new Physics(this.grid);
 		this.swapHandler = new SwapHandler(this.grid);

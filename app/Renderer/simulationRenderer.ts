@@ -36,6 +36,14 @@ class SimulationRenderer {
 
 		simulation.spawnManager.matchableSpawned.on(this.onMatchableSpawned.bind(this));
 		simulation.disappearer.matchableDisappeared.on(this.onMatchableDisappeared.bind(this));
+		
+		//Populate initial matchables from what's on the grid currently
+		for (let x = 0; x < this.simulation.grid.width; x++) {
+			var col = this.simulation.grid.cells[x];
+			for (var y = 0; y < col.length; y++) {
+				this.onMatchableSpawned(col[y]);
+			}
+		}
 	}
 
 	translate(x: number, y: number) {

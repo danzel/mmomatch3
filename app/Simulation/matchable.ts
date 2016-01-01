@@ -1,8 +1,7 @@
 import Color = require('./color');
 
-var id = 0;
-
 class Matchable {
+	public static IdCounter = 0; //TODO: This shouldn't be a global 
 	public static TimeToDisappear = 0.4;
 	
 	id: number;
@@ -18,8 +17,8 @@ class Matchable {
 	beingSwapped: boolean;
 
 	constructor(x: number, y: number, color: Color) {
-		id++;
-		this.id = id;
+		Matchable.IdCounter++;
+		this.id = Matchable.IdCounter;
 
 		this.x = x;
 		this.y = y;

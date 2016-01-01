@@ -4,6 +4,7 @@ import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
+import Serializer = require('./Serializer/simple');
 
 class AppEntry {
 	game: Phaser.Game;
@@ -13,7 +14,7 @@ class AppEntry {
 
 	constructor() {
 		this.game = new Phaser.Game(800, 600, Phaser.AUTO, null, this, false, true, null);
-		this.simulation = new Simulation();
+		this.simulation = new Simulation(50, 20);
 	}
 
 	preload() {
@@ -30,20 +31,15 @@ class AppEntry {
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.swapHandler)));
-
-/*
-		let ball = this.game.add.image(60, 60, 'ball_1');
-		ball.anchor = new Phaser.Point(0.5, 0.5);
-		ball.rotation = Math.PI / 2;
-
-		this.game.add.tween(ball).to({ x: 160 }, 1000, Phaser.Easing.Cubic.InOut, true, 0, 0, false);
-*/		//ball.alpha = 0.5;
 	}
-
+	
 	update() {
 		
 		this.simulation.update(this.game.time.physicsElapsed);
 		this.renderer.update(this.game.time.physicsElapsed);
+		
+		//var data = Serializer.serialize(this.simulation);
+		//debugger;
 	}
 }
 
