@@ -3,16 +3,7 @@ import IInputApplier = require('../Simulation/iInputApplier');
 import MatchableNode = require('../Renderer/matchableNode');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
-
-class XY {
-	x: number;
-	y: number;
-	
-	constructor(x: number, y: number) {
-		this.x = x;
-		this.y = y;
-	}
-};
+import XY = require('./xy');
 
 interface ISize {
 	width: number;
@@ -24,8 +15,8 @@ class MatchDragHandler {
 	private gridSize: ISize;
 	private inputApplier: IInputApplier;
 	
-	private startDragPx: XY;
-	private startDragMatchable: XY;
+	private startDragPx: Array<XY>;
+	private startDragMatchable: Array<XY>;
 	
 	//TODO: On touch we'll need to interact with multitouch to stop matching while multitouching
 
@@ -33,6 +24,9 @@ class MatchDragHandler {
 		this.renderer = renderer;
 		this.gridSize = gridSize;
 		this.inputApplier = inputApplier;
+
+		this.startDragPx = [null, null];
+		this.startDragMatchable = [null, null];
 	}
 	
 	private get minDragPx() {
@@ -40,38 +34,44 @@ class MatchDragHandler {
 	}
 	
 
-	mouseMove(pointer: Phaser.Pointer, x: number, y: number, down: Boolean) {
-		if (pointer.leftButton.isDown && down) {
-			var selected = this.findMatchableIndex(pointer.clientX, pointer.clientY)
+	mouseMove(pointer: Phaser.Pointer, x: number, y: number, justDown: boolean, held: boolean) {
+		if (held && justDown) {
+			var selected = this.findMatchableIndex(x, y)
 			
 			if (selected) {
 				console.log(selected.x, selected.y);
 				
-				this.startDragPx = new XY(x, y);
-				this.startDragMatchable = selected;
+				this.startDragPx[pointer.id] = new XY(x, y);
+				this.startDragMatchable[pointer.id] = selected;
 			}
 		}
-		else if (!pointer.leftButton.isDown && this.startDragPx) {
+		else if (!held && this.startDragPx[pointer.id]) {
 			
-			let xDiff = x - this.startDragPx.x;
-			let yDiff = y - this.startDragPx.y;
+			let xDiff = x - this.startDragPx[pointer.id].x;
+			let yDiff = y - this.startDragPx[pointer.id].y;
 			
 			//If there is a movement in just one direction
 			if (Math.abs(xDiff) > this.minDragPx !== Math.abs(yDiff) > this.minDragPx) {
+				var start = this.startDragMatchable[pointer.id];
 				if (Math.abs(xDiff) > this.minDragPx) {
-					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x + (xDiff > 0 ? 1 : -1), this.startDragMatchable.y);
+					this.inputApplier.swapMatchable(start.x, start.y, start.x + (xDiff > 0 ? 1 : -1), start.y);
 				}
 				else {
-					this.inputApplier.swapMatchable(this.startDragMatchable.x, this.startDragMatchable.y, this.startDragMatchable.x, this.startDragMatchable.y + (yDiff > 0 ? -1 : 1));
+					this.inputApplier.swapMatchable(start.x, start.y, start.x, start.y + (yDiff > 0 ? -1 : 1));
 				}
 			}
 			
 			
-			this.startDragPx = null;
-			this.startDragMatchable = null;
+			this.startDragPx[pointer.id] = null;
+			this.startDragMatchable[pointer.id] = null;
 		}
 	}
 	
+	mouseCancel(pointer: Phaser.Pointer) {
+		this.startDragPx[pointer.id] = null;
+		this.startDragMatchable[pointer.id] = null;
+	}
+
 	private findMatchableIndex(x: number, y: number) : XY {
 		let pos = this.renderer.getPosition();
 		let scale = this.renderer.getScale();

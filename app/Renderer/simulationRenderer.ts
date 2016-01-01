@@ -44,9 +44,9 @@ class SimulationRenderer {
 	}
 	
 	//x and y are in screen pixels
-	zoomAt(x: number, y: number, scale: number) {
+	zoomAt(x: number, y: number, scaleMultiplier: number) {
 		let ourScale = this.scale;
-		let newScale = ourScale * (1 + 0.1 * scale);
+		let newScale = ourScale * scaleMultiplier;
 		
 		//translate y in to be relative to our position
 		x -= this.group.x;
