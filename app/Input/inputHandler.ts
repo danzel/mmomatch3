@@ -37,6 +37,12 @@ class InputHandler {
 
 	mouseCallback(pointer: Phaser.Pointer, x: number, y: number, down: boolean) {
 
+		//Hack code to cause matches anywhere you move the mouse
+		//let index = (<any>this.matchDragHandler).findMatchableIndex(x, y);
+		//if (index)
+		//	(<IInputApplier>(<any>this.matchDragHandler).inputApplier).swapMatchable(index.x, index.y, index.x + Math.round(Math.random() * 2 - 1), index.y + Math.round(Math.random() * 2 - 1)); 
+		//return;
+
 		//Movement drag handling
 		if (pointer.middleButton.isDown && !down) {
 			this.renderer.translate(pointer.movementX, pointer.movementY);

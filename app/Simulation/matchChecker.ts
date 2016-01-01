@@ -24,7 +24,6 @@ class MatchChecker {
 	}
 
 	private testForMatch(matchable: Matchable) {
-		console.log('checking', matchable.x, matchable.y);
 		
 		//Horizontal Test
 		let xSame = 1;

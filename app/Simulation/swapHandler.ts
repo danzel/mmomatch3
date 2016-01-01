@@ -18,6 +18,8 @@ class SwapHandler {
 
 	swap(x: number, y: number, xTarget: number, yTarget: number) {
 		let swap = new Swap(this.grid.cells[x][y], this.grid.cells[xTarget][yTarget]);
+		this.checkPreSwap(swap);
+		
 		swap.left.beingSwapped = true;
 		swap.right.beingSwapped = true;
 
@@ -35,7 +37,14 @@ class SwapHandler {
 			if (swap.percent >= 1) {
 				let left = swap.left;
 				let right = swap.right;
+				let leftCol = this.grid.cells[left.x];
+				let rightCol = this.grid.cells[right.x];
 
+				let leftY = leftCol.indexOf(left);
+				let rightY = rightCol.indexOf(right);
+
+				this.checkSwap(swap);
+					
 				let tempX = left.x;
 				let tempY = left.y;
 
@@ -46,16 +55,40 @@ class SwapHandler {
 				right.x = tempX;
 				right.y = tempY;
 				right.beingSwapped = false;
-			
+				
 				//Update them in the grid
-				this.grid.cells[left.x][left.y] = left;
-				this.grid.cells[right.x][right.y] = right;
+				rightCol[rightY] = left;
+				leftCol[leftY] = right;
 
 				this.swaps.splice(i, 1);
 
 				this.swapOccurred.trigger(swap);
 			}
 		}
+	}
+	
+	private checkPreSwap(swap: Swap) {
+		if (swap.left.beingSwapped)
+			throw "Left is already being swapped";
+		if (swap.right.beingSwapped)
+			throw "Right is already being swapped";
+
+		if (swap.left == swap.right)
+			throw "swapping left == right";
+
+		//Check we are at a good index
+		if (swap.left.y != (swap.left.y|0))
+			throw "Left isn't at an integer y";
+		if (swap.right.y != (swap.right.y|0))
+			throw "Right isn't at an integer y";
+	}
+	
+	private checkSwap(swap: Swap) {
+		//Check we are at a good index
+		if (swap.left.y != (swap.left.y|0))
+			throw "Left isn't at an integer y";
+		if (swap.right.y != (swap.right.y|0))
+			throw "Right isn't at an integer y";
 	}
 }
 
