@@ -1,4 +1,4 @@
-/// <reference path="../../node_modules/phaser/typescript/phaser.comments.d.ts" />
+/// <reference path="../../typings/phaser/phaser.comments.d.ts" />
 import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('./matchableNode');

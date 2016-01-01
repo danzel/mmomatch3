@@ -55,6 +55,32 @@ declare class Phaser {
 
 declare module Phaser {
 
+    class DeviceButton {
+
+        constructor(parent: Phaser.Pointer | Phaser.SinglePad, butonCode: number);
+
+        buttonCode: number;
+        game: Phaser.Game;
+        isDown: boolean;
+        isUp: boolean;
+        onDown: Phaser.Signal;
+        onFloat: Phaser.Signal;
+        onUp: Phaser.Signal;
+        pad: Phaser.Gamepad;
+        repeats: number;
+        timeDown: number;
+        timeUp: number;
+        value: number;
+
+        destroy(): void;
+        justPressed(duration?: number): boolean;
+        justReleased(duration?: number): boolean;
+        processButtonDown(value: number): void;
+        processButtonFloat(value: number): void;
+        processButtonUp(value: number): void;
+        reset(): void;
+
+    }
 
     /**
     * An Animation instance contains a single animation and the controls to play it.
@@ -2437,7 +2463,11 @@ declare module Phaser {
 
     }
 
-
+	enum PointerMode {
+		CURSOR,
+		CONTACT	
+	}
+	
     /**
     * Phaser has one single cache in which it stores all assets.
     * 
@@ -19850,7 +19880,7 @@ declare module Phaser {
         * @param game A reference to the currently running game.
         * @param id The ID of the Pointer object within the game. Each game can have up to 10 active pointers.
         */
-        constructor(game: Phaser.Game, id: number);
+        constructor(game: Phaser.Game, id: number, pointerMode?: number);
 
 
         /**
@@ -20011,7 +20041,7 @@ declare module Phaser {
         * The DeviceButton has its own properties such as `isDown`, `duration` and methods like `justReleased` for more fine-grained
         * button control.
         */
-        leftButton: boolean;
+        leftButton: Phaser.DeviceButton;
 
         /**
         * If this Pointer is a Mouse or Pen / Stylus then you can access its middle button directly through this property.
@@ -20021,7 +20051,7 @@ declare module Phaser {
         * 
         * Please see the DeviceButton docs for details on browser button limitations.
         */
-        middleButton: boolean;
+        middleButton: Phaser.DeviceButton;
 
         /**
         * The horizontal processed relative movement of the Pointer in pixels since last event.
@@ -20056,6 +20086,11 @@ declare module Phaser {
         */
         pointerId: number;
 
+		/**
+		* The operational mode of this pointer.
+		*/
+		pointerMode: Phaser.PointerMode;
+		
         /**
         * A Phaser.Point object containing the current x/y values of the pointer on the display.
         */
@@ -20097,7 +20132,7 @@ declare module Phaser {
         * 
         * Please see the DeviceButton docs for details on browser button limitations.
         */
-        rightButton: boolean;
+        rightButton: Phaser.DeviceButton;
 
         /**
         * The horizontal coordinate of the Pointer relative to the screen.

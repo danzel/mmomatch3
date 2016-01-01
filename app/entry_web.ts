@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/phaser/typescript/phaser.comments.d.ts" />
+/// <reference path="../typings/phaser/phaser.comments.d.ts" />
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
