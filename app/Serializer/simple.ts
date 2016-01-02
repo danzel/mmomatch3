@@ -1,14 +1,17 @@
+import BootData = require('../DataPackets/bootData');
 import Grid = require('../Simulation/grid');
 import ISerializer = require('./iSerializer');
 import Matchable = require('../Simulation/matchable');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
+import SwapData = require('../DataPackets/swapData');
 import SwapHandler = require('../Simulation/swapHandler');
+import TickData = require('../DataPackets/tickData');
 
 //TODO: matchable id counter
 
 class SimpleSerializer implements ISerializer {
-	serialize(simulation: Simulation) : any {
+	serializeBoot(simulation: Simulation) : any {
 		return JSON.stringify({
 			idCounter: Matchable.IdCounter,
 			width: simulation.grid.width,
@@ -59,7 +62,7 @@ class SimpleSerializer implements ISerializer {
 	}
 	
 	
-	deserialize(data: any): Simulation {
+	deserializeBoot(data: any): BootData {
 		let json = JSON.parse(data);
 		
 		let simulation = new Simulation(json.width, json.height);
@@ -69,7 +72,7 @@ class SimpleSerializer implements ISerializer {
 		
 		Matchable.IdCounter = json.idCounter;
 		
-		return simulation;
+		return new BootData(simulation);
 	}
 
 	private deserializeGrid(grid: Grid, data: Array<Array<any>>) : any {
@@ -105,6 +108,22 @@ class SimpleSerializer implements ISerializer {
 			swap.percent = s.percent;
 			swapHandler.swaps.push(swap);
 		}
+	}
+	
+	serializeTick(tickData: TickData) : any {
+		return tickData;
+	}
+
+	deserializeTick(data: any) : TickData {
+		return <TickData>data;
+	}
+	
+	serializeSwap(swapData: SwapData) : any {
+		return swapData;
+	}
+
+	deserializeSwap(data: any) : SwapData {
+		return <SwapData>data;
 	}
 }
 

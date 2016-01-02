@@ -31,7 +31,7 @@ class AppEntry {
 	}
 	
 	public static main(): number {
-		new AppEntry().run(1);
+		new AppEntry().run(60);
 		return 0;
 	}
 }

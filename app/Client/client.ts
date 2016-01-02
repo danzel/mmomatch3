@@ -2,11 +2,13 @@
 import ISerializer = require('../Serializer/iSerializer')
 import LiteEvent = require('../liteEvent');
 import Simulation = require('../Simulation/simulation');
+import TickData = require('../DataPackets/tickData');
 
 class Client {
 	private serializer: ISerializer;
 	
 	simulationReceived = new LiteEvent<Simulation>();
+	tickReceived = new LiteEvent<TickData>();
 	
 	private haveReceivedSimulation: boolean;
 	
@@ -18,7 +20,7 @@ class Client {
 			//Options?
 		});
 
-		primus.on('open', function(data) { console.log('open', data); });
+		primus.on('open', function() { console.log('open'); });
 		primus.on('data', this.dataReceived, this);
 
 		//setTimeout(function() {
@@ -28,10 +30,17 @@ class Client {
 	}
 	
 	dataReceived(data: any) {
+		console.log('data');
 		if (!this.haveReceivedSimulation) {
-			var simulation = this.serializer.deserialize(data);
-			this.simulationReceived.trigger(simulation);
+			let bootData = this.serializer.deserializeBoot(data);
+			this.simulationReceived.trigger(bootData.simulation);
+			
 			this.haveReceivedSimulation = true;
+		}
+		else {
+			var tickData = this.serializer.deserializeTick(data);
+			
+			this.tickReceived.trigger(tickData);
 		}
 	}
 }
