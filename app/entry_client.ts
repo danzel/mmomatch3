@@ -1,5 +1,6 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
 /// <reference path="../typings/primus/primusClient.d.ts" />
+import Client = require('./Client/client');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
@@ -8,6 +9,7 @@ import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlaye
 import Serializer = require('./Serializer/simple');
 
 class AppEntry {
+	client: Client;
 	game: Phaser.Game;
 	simulation: Simulation;
 	renderer: SimulationRenderer;
@@ -15,7 +17,6 @@ class AppEntry {
 
 	constructor() {
 		this.game = new Phaser.Game(800, 600, Phaser.AUTO, null, this, false, true, null);
-		this.simulation = new Simulation(50, 20);
 	}
 
 	preload() {
@@ -29,6 +30,15 @@ class AppEntry {
 
 	create() {
 		console.log('create');
+		
+		this.client = new Client('http://127.0.0.1:8091', new Serializer());
+		
+		this.client.simulationReceived.on(this.simulationReceived.bind(this));
+	}
+	
+	simulationReceived(simulation: Simulation) {
+		this.simulation = simulation;
+
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.swapHandler)));
@@ -36,24 +46,13 @@ class AppEntry {
 
 	update() {
 
+		if (!this.simulation) {
+			return;
+		}
+		//TODO: Don't update unless the server says we can
 		this.simulation.update(this.game.time.physicsElapsed);
 		this.renderer.update(this.game.time.physicsElapsed);
-		
-		//var data = Serializer.serialize(this.simulation);
-		//debugger;
 	}
 }
 
-//new AppEntry();
-
-let primus = Primus.connect('http://127.0.0.1:8091', {
-
-});
-
-primus.on('open', function(data) { console.log('open', data); });
-primus.on('data', function(data) { console.log('data', data); });
-
-setTimeout(function() {
-	console.log('sending');
-	primus.write('hello world');
-}, 2000);
+new AppEntry();

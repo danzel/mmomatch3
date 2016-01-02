@@ -14,7 +14,7 @@ class AppEntry {
 
 	constructor() {
 		this.simulation = new Simulation(50, 20);
-		this.server = new Server();
+		this.server = new Server(this.simulation, new Serializer());
 	}
 	
 	update() {

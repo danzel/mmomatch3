@@ -1,4 +1,5 @@
 import Grid = require('../Simulation/grid');
+import ISerializer = require('./iSerializer');
 import Matchable = require('../Simulation/matchable');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
@@ -6,8 +7,8 @@ import SwapHandler = require('../Simulation/swapHandler');
 
 //TODO: matchable id counter
 
-class SimpleSerializer {
-	static serialize(simulation: Simulation) : any {
+class SimpleSerializer implements ISerializer {
+	serialize(simulation: Simulation) : any {
 		return JSON.stringify({
 			idCounter: Matchable.IdCounter,
 			width: simulation.grid.width,
@@ -17,7 +18,7 @@ class SimpleSerializer {
 		});
 	}
 	
-	private static serializeGrid(grid: Grid) : any {
+	private serializeGrid(grid: Grid) : any {
 		let res = [];
 		
 		for (let x = 0; x < grid.width; x++) {
@@ -33,7 +34,7 @@ class SimpleSerializer {
 		return res;
 	}
 	
-	private static serializeMatchable(matchable: Matchable) : any {
+	private serializeMatchable(matchable: Matchable) : any {
 		return {
 			id: matchable.id,
 			x: matchable.x,
@@ -46,7 +47,7 @@ class SimpleSerializer {
 		}
 	}
 	
-	private static serializeSwapHandler(swapHandler: SwapHandler) : any {
+	private serializeSwapHandler(swapHandler: SwapHandler) : any {
 		let res = [];
 		
 		for (let i = 0; i < swapHandler.swaps.length; i++) {
@@ -58,7 +59,7 @@ class SimpleSerializer {
 	}
 	
 	
-	static deserialize(data: any): Simulation {
+	deserialize(data: any): Simulation {
 		let json = JSON.parse(data);
 		
 		let simulation = new Simulation(json.width, json.height);
@@ -71,7 +72,7 @@ class SimpleSerializer {
 		return simulation;
 	}
 
-	private static deserializeGrid(grid: Grid, data: Array<Array<any>>) : any {
+	private deserializeGrid(grid: Grid, data: Array<Array<any>>) : any {
 		let matchableById = {};
 		
 		for (let x = 0; x < data.length; x++) {
@@ -96,7 +97,7 @@ class SimpleSerializer {
 		return matchableById;
 	}
 	
-	private static deserializeSwapHandler(swapHandler: SwapHandler, data: Array<any>, matchableById: any) : any {
+	private deserializeSwapHandler(swapHandler: SwapHandler, data: Array<any>, matchableById: any) : any {
 		for (let i = 0; i < data.length; i++) {
 			let s = data[i];
 			let swap = new Swap(matchableById[s.left], matchableById[s.right]);

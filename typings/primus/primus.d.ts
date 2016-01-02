@@ -47,6 +47,14 @@ declare module "primus" {
 		 * Return the client-side library as a string
 		 */
 		library(): string;
+
+		/**
+		 * Broadcast the message to all connections.
+		 *
+		 * @param data The data you want to send.
+		 * @returns this
+		 */
+		write(data: any) : Primus;
 	}
 	
 	module Primus {
@@ -54,6 +62,12 @@ declare module "primus" {
 		 * Not a real class, just providing typing for the Spark type. Maybe this should be an interface?
 		 */
 		class Spark extends stream.Stream {
+			/**
+			 * Send a new message
+			 *
+			 * @param data The data that needs to be written.
+			 * @returns Always returns true as we don't support back pressure.
+			 */
 			write(data: any) : boolean;
 		}
 	}
