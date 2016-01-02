@@ -10,7 +10,8 @@
 		"--module",
 		"commonjs",
 		"--target",
-		"es5"
+		"es5",
+		"--sourceMap"
 	],
 	"problemMatcher": "$tsc"
 }

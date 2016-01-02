@@ -1,7 +1,7 @@
 var path = require('path');
 module.exports = {
 	context: __dirname + path.sep + 'app',
-	entry: './entry_web.ts',
+	entry: './entry_client.ts',
 	devtool: 'inline-source-map',
 	output: {
 		path: __dirname + path.sep + 'dist',
