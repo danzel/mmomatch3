@@ -29,28 +29,11 @@ declare module "primus" {
 		factor?: number;
 	}
 
-	interface PrimusClientOptions {
-		reconnect?: ReconnectOptions;
-		timeout?: number;
-		ping?: number;
-		pong?: number;
-		strategy?: string; //TODO: Enum string
-		manual?: boolean;
-		websockets?: boolean;
-		network?: boolean;
-		transport?: any;
-		queueSize?: number;
-	}
-
 	class Primus extends stream.Stream {
 		/**
 		 * Server constructor
 		 */
 		constructor(server: http.Server, options?: PrimusOptions);
-		/**
-		 * Client constructor
-		 */
-		constructor(url: string, options?: PrimusClientOptions);
 		
 		static createServer(options: any) : Primus;
 		static createServer(onConnection: Function, options: any) : Primus;
@@ -68,7 +51,7 @@ declare module "primus" {
 	
 	module Primus {
 		/**
-		 * Not a real class, just providing typing for the Spark type
+		 * Not a real class, just providing typing for the Spark type. Maybe this should be an interface?
 		 */
 		class Spark extends stream.Stream {
 			write(data: any) : boolean;
