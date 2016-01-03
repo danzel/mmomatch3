@@ -18,8 +18,6 @@ class MatchDragHandler {
 	private startDragPx: Array<XY>;
 	private startDragMatchable: Array<XY>;
 	
-	//TODO: On touch we'll need to interact with multitouch to stop matching while multitouching
-
 	constructor(renderer: SimulationRenderer, gridSize: ISize, inputApplier: IInputApplier) {
 		this.renderer = renderer;
 		this.gridSize = gridSize;
