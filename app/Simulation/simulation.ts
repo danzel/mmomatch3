@@ -29,9 +29,9 @@ class Simulation {
 	update(dt: number) {
 		console.log('run', dt);
 		this.physics.update(dt);
-		this.spawnManager.update(dt);
 		this.swapHandler.update(dt);
 		this.disappearer.update(dt);
+		this.spawnManager.update(dt);
 		
 		this.framesElapsed++;
 	}

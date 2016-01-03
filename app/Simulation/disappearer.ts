@@ -15,7 +15,7 @@ class Disappearer {
 		let count = 0;
 		for (let x = 0; x < this.grid.width; x++) {
 			let col = this.grid.cells[x];
-			for (let y = this.grid.height - 1; y >= 0; y--) {
+			for (let y = col.length - 1; y >= 0; y--) {
 				let matchable = col[y];
 				
 				if (matchable.isDisappearing) {
