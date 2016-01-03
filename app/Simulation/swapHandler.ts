@@ -6,6 +6,7 @@ import Swap = require('./swap');
 class SwapHandler {
 	public static TimeToSwap = 0.2;
 
+	swapStarted = new LiteEvent<Swap>();
 	swapOccurred = new LiteEvent<Swap>();
 
 	private grid: Grid;
@@ -24,8 +25,7 @@ class SwapHandler {
 		swap.right.beingSwapped = true;
 
 		this.swaps.push(swap);
-		
-		//TODO: Event?
+		this.swapStarted.trigger(swap);
 	}
 
 	update(dt: number) {

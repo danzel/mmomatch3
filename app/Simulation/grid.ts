@@ -1,5 +1,10 @@
 import Matchable = require('./matchable');
 
+interface XY {
+	x: number;
+	y: number;
+}
+
 class Grid {
 	
 	width: number
@@ -15,6 +20,20 @@ class Grid {
 			this.cells[i] = new Array<Matchable>(0);
 		}
 	}
+
+	findMatchableId(id: number) : XY {
+		for (let x = 0; x < this.width; x++) {
+			let col = this.cells[x];
+			for (let y = 0; y < col.length; y++) {
+				if (col[y].id == id) {
+					return { x, y };
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 }
 
 export = Grid;

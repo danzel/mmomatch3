@@ -1,10 +1,10 @@
 class SwapData {
-	left: number;
-	right: number;
+	leftId: number;
+	rightId: number;
 	
-	constructor(left: number, right: number) {
-		this.left = left;
-		this.right = right;
+	constructor(leftId: number, rightId: number) {
+		this.leftId = leftId;
+		this.rightId = rightId;
 	}
 }
 

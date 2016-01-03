@@ -2,10 +2,13 @@
 import ISerializer = require('../Serializer/iSerializer')
 import LiteEvent = require('../liteEvent');
 import Simulation = require('../Simulation/simulation');
+import SwapData = require('../DataPackets/swapData');
 import TickData = require('../DataPackets/tickData');
 
 class Client {
 	private serializer: ISerializer;
+	
+	private primus: Primus;
 	
 	simulationReceived = new LiteEvent<Simulation>();
 	tickReceived = new LiteEvent<TickData>();
@@ -16,12 +19,12 @@ class Client {
 		this.serializer = serializer;
 		
 		console.log('connecting');
-		let primus = Primus.connect(url, {
+		this.primus = Primus.connect(url, {
 			//Options?
 		});
 
-		primus.on('open', function() { console.log('open'); });
-		primus.on('data', this.dataReceived, this);
+		this.primus.on('open', function() { console.log('open'); });
+		this.primus.on('data', this.dataReceived, this);
 
 		//setTimeout(function() {
 		//	console.log('sending');
@@ -29,7 +32,11 @@ class Client {
 		//}, 2000);
 	}
 	
-	dataReceived(data: any) {
+	sendSwap(leftId: number, rightId: number) {
+		this.primus.write(this.serializer.serializeSwap(new SwapData(leftId, rightId)));
+	}
+	
+	private dataReceived(data: any) {
 		console.log('data');
 		if (!this.haveReceivedSimulation) {
 			let bootData = this.serializer.deserializeBoot(data);

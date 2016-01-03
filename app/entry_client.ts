@@ -1,11 +1,11 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
 /// <reference path="../typings/primus/primusClient.d.ts" />
 import Client = require('./Client/client');
+import ClientInputApplier = require('./Client/clientInputApplier');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
-import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 import Serializer = require('./Serializer/simple');
 import TickData = require('./DataPackets/tickData');
 
@@ -15,12 +15,11 @@ class AppEntry {
 	simulation: Simulation;
 	renderer: SimulationRenderer;
 	input: InputHandler;
-	
-	framesToProcess: number;
 
+	needsRendererUpdate: boolean;
+	
 	constructor() {
 		this.game = new Phaser.Game(800, 600, Phaser.AUTO, null, this, false, true, null);
-		this.framesToProcess = 0;
 	}
 
 	preload() {
@@ -48,25 +47,36 @@ class AppEntry {
 
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
-		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.swapHandler)));
+		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, this.simulation.swapHandler), this.simulation.grid));
+		
+		this.needsRendererUpdate = true;
 	}
 	
 	tickReceived(tickData: TickData) {
-		//TODO: Swaps
-		this.framesToProcess += tickData.framesElapsed;
+		//Swaps
+		for (let i = 0; i < tickData.swaps.length; i++) {
+			var swap = tickData.swaps[i];
+			var leftPos = this.simulation.grid.findMatchableId(swap.leftId) 
+			var rightPos = this.simulation.grid.findMatchableId(swap.rightId)
+			 
+			this.simulation.swapHandler.swap(leftPos.x, leftPos.y, rightPos.x, rightPos.y);
+		}
+		
+		//Run the sim
+		let framesToProcess = tickData.framesElapsed;
+		while (framesToProcess > 0) {
+			this.simulation.update(1.0 / 60);
+			framesToProcess--;
+		}
+		
+		this.needsRendererUpdate = true;
 	}
 
 	update() {
-		if (!this.simulation || this.framesToProcess == 0) {
-			return;
+		if (this.needsRendererUpdate) {
+			this.renderer.update(this.game.time.physicsElapsed);
+			this.needsRendererUpdate = true;
 		}
-		
-		while (this.framesToProcess > 0) {
-			this.simulation.update(this.game.time.physicsElapsed);
-			this.framesToProcess--;
-		}
-		
-		this.renderer.update(this.game.time.physicsElapsed);
 	}
 }
 
