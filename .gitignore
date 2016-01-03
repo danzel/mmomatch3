@@ -1,2 +1,5 @@
 node_modules
 built_server/
+dist/img
+dist/bundle
+dist/primus.js

@@ -15,5 +15,6 @@ module.exports = {
 			{ test: /\.json$/, loader: 'json' },
 			{ test: /\.tsx?$/, loader: 'ts-loader' }
 		]
-	}
+	},
+	plugins: []
 };

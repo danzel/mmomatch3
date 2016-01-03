@@ -1,6 +1,7 @@
 {
   "name": "mmomatch3",
   "dependencies": {
+    "express": "^4.13.3",
     "json-loader": "^0.5.4",
     "phaser": "^2.4.4",
     "primus": "^4.0.4",
@@ -9,6 +10,8 @@
     "ws": "^1.0.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-uglify": "^1.5.1",
     "webpack": "^1.12.9"
   }
 }

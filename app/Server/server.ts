@@ -1,4 +1,6 @@
+/// <reference path="../../typings/express/express.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
+import express = require('express');
 import http = require('http');
 
 import FrameData = require('../DataPackets/frameData');
@@ -17,6 +19,7 @@ class Server {
 	private serializer: ISerializer;
 	private inputVerifier: InputVerifier;
 
+	private app: express.Express;
 	private httpServer: http.Server;
 	private primus: Primus;
 
@@ -33,8 +36,11 @@ class Server {
 		this.inputVerifier = inputVerifier;
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 
-		this.httpServer = http.createServer(this.requestListener.bind(this));
+		this.app = express();
+		this.app.use(express.static('dist'));
+		this.httpServer = http.createServer(this.app);
 		this.httpServer.listen(8091);
+		
 		this.primus = new Primus(this.httpServer, {
 			pathname: '/sock'
 		});
@@ -71,10 +77,6 @@ class Server {
 			this.frameData[frame] = new FrameData();
 		}
 		return this.frameData[frame];
-	}
-
-	private requestListener(request: http.IncomingMessage, response: http.ServerResponse) {
-
 	}
 
 	private dataReceived(data: any) {

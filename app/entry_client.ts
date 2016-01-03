@@ -38,7 +38,8 @@ class AppEntry {
 	create() {
 		console.log('create');
 		
-		this.client = new Client('http://' + window.location.hostname + ':8091', new Serializer());
+		this.client = new Client(window.location.origin, new Serializer());
+		//this.client = new Client('http://' + window.location.hostname + ':8091', new Serializer());
 		this.client.simulationReceived.on(this.simulationReceived.bind(this));
 		this.client.tickReceived.on(this.tickReceived.bind(this));
 	}
