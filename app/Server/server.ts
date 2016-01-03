@@ -16,19 +16,23 @@ class Server {
 	private simulation: Simulation;
 	private serializer: ISerializer;
 	private inputVerifier: InputVerifier;
-	
+
 	private httpServer: http.Server;
 	private primus: Primus;
-	
+
 	private lastSentFramesElapsed: number;
-	private frameData: { [frame: number]: FrameData} = {};
-	
+	private frameData: { [frame: number]: FrameData } = {};
+
+	private serializedBoot;
+	private sparksRequiringBoot: Array<Primus.Spark> = [];
+	private bootedSparks: { [id: string]: boolean } = {};
+
 	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
 		this.serializer = serializer;
 		this.inputVerifier = inputVerifier;
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
-		
+
 		this.httpServer = http.createServer(this.requestListener.bind(this));
 		this.httpServer.listen(8091);
 		this.primus = new Primus(this.httpServer);
@@ -37,22 +41,28 @@ class Server {
 		this.simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
 		this.simulation.spawnManager.matchableSpawned.on(this.onMatchableSpawned.bind(this))
 	}
-	
+
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark);
-		spark.write(this.serializer.serializeBoot(this.simulation));
-		
 		spark.on('data', this.dataReceived.bind(this));
+
+		if (this.serializedBoot) {
+			spark.write(this.serializedBoot);
+			this.bootedSparks[spark.id] = true
+		}
+		else {
+			this.sparksRequiringBoot.push(spark);
+		}
 	}
-	
+
 	onSwapStarted(swap: Swap) {
 		this.ensureFrameData().swapData.push(new SwapData(swap.left.id, swap.right.id));
 	}
-	
+
 	onMatchableSpawned(matchable: Matchable) {
 		this.ensureFrameData().spawnData.push(new SpawnData(matchable.id, matchable.x, matchable.y, matchable.color));
 	}
-	
+
 	private ensureFrameData(): FrameData {
 		var frame = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 		if (!this.frameData[frame]) {
@@ -60,14 +70,14 @@ class Server {
 		}
 		return this.frameData[frame];
 	}
-	
+
 	private requestListener(request: http.IncomingMessage, response: http.ServerResponse) {
-		
+
 	}
-	
+
 	private dataReceived(data: any) {
 		console.log("data", data);
-		
+
 		let swapData = this.serializer.deserializeSwap(data);
 		
 		//Find the two
@@ -79,19 +89,34 @@ class Server {
 			}
 		}
 	}
-	
+
 	update(dt: number) {
 		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
-		
-		if (elapsed == 0)
+
+		if (elapsed < 2)
 			return;
-		
+
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
-		
-		//console.log('sending tick ' + elapsed);
-		this.primus.write(this.serializer.serializeTick(new TickData(elapsed, this.frameData)));
-		
+
+		//We should only be sending updates to clients we've already sent a boot to
+		var data = this.serializer.serializeTick(new TickData(elapsed, this.frameData));
+		var bootedSparks = this.bootedSparks;
+		this.primus.forEach(function(spark: Primus.Spark, id) {
+			if (bootedSparks[id]) {
+				spark.write(data);
+			}
+		});
 		this.frameData = {};
+		this.serializedBoot = null;
+
+		if (this.sparksRequiringBoot.length > 0) {
+			this.serializedBoot = this.serializer.serializeBoot(this.simulation);
+			this.sparksRequiringBoot.forEach((spark) => {
+				spark.write(this.serializedBoot);
+				this.bootedSparks[spark.id] = true
+			});
+			this.sparksRequiringBoot.length = 0;
+		}
 	}
 }
 
