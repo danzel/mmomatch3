@@ -2,12 +2,12 @@ import Disappearer = require('./disappearer');
 import Grid = require('./grid');
 import MatchChecker = require('./matchChecker');
 import Physics = require('./physics');
-import SpawnManager = require('./spawnManager');
+import ISpawnManager = require('./iSpawnManager');
 import SwapHandler = require('./swapHandler');
 
 class Simulation {
 	grid: Grid;
-	spawnManager: SpawnManager;
+	spawnManager: ISpawnManager;
 	physics: Physics;
 	swapHandler: SwapHandler;
 	matchChecker: MatchChecker;
@@ -15,9 +15,9 @@ class Simulation {
 	
 	framesElapsed: number;
 
-	constructor(width: number, height: number) {
-		this.grid = new Grid(width, height);
-		this.spawnManager = new SpawnManager(this.grid);
+	constructor(grid: Grid, spawnManager: ISpawnManager) {
+		this.grid = grid;
+		this.spawnManager = spawnManager;
 		this.physics = new Physics(this.grid);
 		this.swapHandler = new SwapHandler(this.grid);
 		this.matchChecker = new MatchChecker(this.grid, this.swapHandler, this.physics);

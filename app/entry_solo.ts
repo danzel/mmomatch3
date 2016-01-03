@@ -1,6 +1,8 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
+import Grid = require('./Simulation/grid');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
+import SpawnManager = require('./Simulation/spawnManager');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
@@ -14,7 +16,10 @@ class AppEntry {
 
 	constructor() {
 		this.game = new Phaser.Game(800, 600, Phaser.AUTO, null, this, false, true, null);
-		this.simulation = new Simulation(50, 20);
+		
+		let grid = new Grid(50, 20);
+		let spawnManager = new SpawnManager(grid);
+		this.simulation = new Simulation(grid, spawnManager);
 	}
 
 	preload() {

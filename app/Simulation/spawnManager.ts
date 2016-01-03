@@ -1,9 +1,10 @@
 import Color = require('./color');
-import Grid = require('./grid')
-import LiteEvent = require('../liteEvent')
-import Matchable = require('./matchable')
+import Grid = require('./grid');
+import ISpawnManager = require('./iSpawnManager');
+import LiteEvent = require('../liteEvent');
+import Matchable = require('./matchable');
 
-class SpawnManager {
+class SpawnManager implements ISpawnManager {
 	matchableSpawned = new LiteEvent<Matchable>();
 
 	private isInitialSpawn = true;

@@ -2,6 +2,7 @@
 /// <reference path="../typings/primus/primusClient.d.ts" />
 import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
+import ClientSpawnManager = require('./Client/clientSpawnManager');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
@@ -61,6 +62,9 @@ class AppEntry {
 			 
 			this.simulation.swapHandler.swap(leftPos.x, leftPos.y, rightPos.x, rightPos.y);
 		}
+		
+		//Spawns
+		(<ClientSpawnManager>this.simulation.spawnManager).notifySpawns(tickData.spawns);
 		
 		//Run the sim
 		let framesToProcess = tickData.framesElapsed;

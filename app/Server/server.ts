@@ -4,6 +4,7 @@ import http = require('http');
 import ISerializer = require('../Serializer/iSerializer');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
+import Matchable = require('../Simulation/matchable');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
 import SwapData = require('../DataPackets/swapData');
@@ -19,6 +20,7 @@ class Server {
 	
 	private lastFramesElapsed: number;
 	private swapsStarted = new Array<SwapData>();
+	private matchablesSpawned = new Array<Matchable>();
 	
 	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
@@ -32,9 +34,10 @@ class Server {
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
+		this.simulation.spawnManager.matchableSpawned.on(this.onMatchableSpawned.bind(this))
 	}
 	
-	connectionReceived(spark: Primus.Spark) {
+	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark);
 		spark.write(this.serializer.serializeBoot(this.simulation));
 		
@@ -43,6 +46,10 @@ class Server {
 	
 	onSwapStarted(swap: Swap) {
 		this.swapsStarted.push(new SwapData(swap.left.id, swap.right.id));
+	}
+	
+	onMatchableSpawned(matchable: Matchable) {
+		this.matchablesSpawned.push(matchable); //May need a data object here instead?
 	}
 	
 	private requestListener(request: http.IncomingMessage, response: http.ServerResponse) {
@@ -73,9 +80,10 @@ class Server {
 		this.lastFramesElapsed = this.simulation.framesElapsed;
 		
 		console.log('sending tick ' + elapsed);
-		this.primus.write(this.serializer.deserializeTick(new TickData(elapsed, this.swapsStarted)));
+		this.primus.write(this.serializer.serializeTick(new TickData(elapsed, this.swapsStarted, this.matchablesSpawned)));
 		
 		this.swapsStarted.length = 0;
+		this.matchablesSpawned.length = 0;
 	}
 }
 

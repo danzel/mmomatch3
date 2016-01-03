@@ -1,4 +1,5 @@
 import BootData = require('../DataPackets/bootData');
+import ClientSpawnManager = require('../Client/clientSpawnManager');
 import Grid = require('../Simulation/grid');
 import ISerializer = require('./iSerializer');
 import Matchable = require('../Simulation/matchable');
@@ -8,17 +9,23 @@ import SwapData = require('../DataPackets/swapData');
 import SwapHandler = require('../Simulation/swapHandler');
 import TickData = require('../DataPackets/tickData');
 
-//TODO: matchable id counter
+interface SerializedBoot {
+	idCounter: number;
+	width: number;
+	height: number;
+	grid: any;
+	swapHandler: Array<any>;
+}
 
 class SimpleSerializer implements ISerializer {
 	serializeBoot(simulation: Simulation) : any {
-		return JSON.stringify({
+		return {
 			idCounter: Matchable.IdCounter,
 			width: simulation.grid.width,
 			height: simulation.grid.height,
 			grid: this.serializeGrid(simulation.grid),
 			swapHandler: this.serializeSwapHandler(simulation.swapHandler)
-		});
+		};
 	}
 	
 	private serializeGrid(grid: Grid) : any {
@@ -63,9 +70,11 @@ class SimpleSerializer implements ISerializer {
 	
 	
 	deserializeBoot(data: any): BootData {
-		let json = JSON.parse(data);
+		let json = <SerializedBoot>data;
 		
-		let simulation = new Simulation(json.width, json.height);
+		let grid = new Grid(json.width, json.height);
+		let spawnManager = new ClientSpawnManager(grid);
+		let simulation = new Simulation(grid, spawnManager);
 		
 		let matchableById = this.deserializeGrid(simulation.grid, json.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, json.swapHandler, matchableById);
