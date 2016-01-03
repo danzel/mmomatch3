@@ -1,5 +1,8 @@
 {
   "name": "mmomatch3",
+  "scripts": {
+	"start": "node built_server/entry_server.js"
+  },
   "dependencies": {
     "express": "^4.13.3",
     "json-loader": "^0.5.4",

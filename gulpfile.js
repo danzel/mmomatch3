@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gutil = require("gulp-util");
+var zip = require("gulp-zip");
 var uglify = require('gulp-uglify');
 var webpack = require("webpack");
 
@@ -35,3 +36,13 @@ gulp.task('uglify-primus', function () {
 gulp.task('copy-img', function () {
 	gulp.src(['img/**/*']).pipe(gulp.dest('dist/img'));
 })
+
+gulp.task('package', ['default'], function () {
+	return gulp.src([
+		'./built_server/**/*',
+		'./dist/**/*',
+		'./package.json'
+	], { base: '.' })
+		.pipe(zip('archive.zip'))
+		.pipe(gulp.dest(''));
+});
