@@ -2809,7 +2809,7 @@ Primus.prototype.client = function client() {
   });
 };
 Primus.prototype.authorization = false;
-Primus.prototype.pathname = "/primus";
+Primus.prototype.pathname = "/sock";
 Primus.prototype.encoder = function encoder(data, fn) {
   var err;
 

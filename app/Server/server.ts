@@ -35,7 +35,9 @@ class Server {
 
 		this.httpServer = http.createServer(this.requestListener.bind(this));
 		this.httpServer.listen(8091);
-		this.primus = new Primus(this.httpServer);
+		this.primus = new Primus(this.httpServer, {
+			pathname: '/sock'
+		});
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
