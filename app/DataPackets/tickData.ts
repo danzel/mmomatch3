@@ -1,15 +1,13 @@
-import SpawnData = require('./spawnData');
-import SwapData = require('./swapData');
+import FrameData = require('../DataPackets/frameData');
 
 class TickData {
 	framesElapsed: number;
-	swaps: Array<SwapData>;
-	spawns: Array<SpawnData>;
+	frameData: { [frame: number]: FrameData}
+
 		
-	constructor(framesElapsed: number, swaps: Array<SwapData>, spawns: Array<SpawnData>) {
+	constructor(framesElapsed: number, frames: { [frame: number]: FrameData}) {
 		this.framesElapsed = framesElapsed;
-		this.swaps = swaps;
-		this.spawns = spawns;
+		this.frameData = frames;
 	}
 }
 

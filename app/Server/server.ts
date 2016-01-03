@@ -1,11 +1,13 @@
 /// <reference path="../../typings/primus/primus.d.ts" />
 import http = require('http');
 
+import FrameData = require('../DataPackets/frameData');
 import ISerializer = require('../Serializer/iSerializer');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
 import Matchable = require('../Simulation/matchable');
 import Simulation = require('../Simulation/simulation');
+import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
 import SwapData = require('../DataPackets/swapData');
 import TickData = require('../DataPackets/tickData');
@@ -18,15 +20,14 @@ class Server {
 	private httpServer: http.Server;
 	private primus: Primus;
 	
-	private lastFramesElapsed: number;
-	private swapsStarted = new Array<SwapData>();
-	private matchablesSpawned = new Array<Matchable>();
+	private lastSentFramesElapsed: number;
+	private frameData: { [frame: number]: FrameData} = {};
 	
 	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
 		this.serializer = serializer;
 		this.inputVerifier = inputVerifier;
-		this.lastFramesElapsed = this.simulation.framesElapsed;
+		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		
 		this.httpServer = http.createServer(this.requestListener.bind(this));
 		this.httpServer.listen(8091);
@@ -45,11 +46,19 @@ class Server {
 	}
 	
 	onSwapStarted(swap: Swap) {
-		this.swapsStarted.push(new SwapData(swap.left.id, swap.right.id));
+		this.ensureFrameData().swapData.push(new SwapData(swap.left.id, swap.right.id));
 	}
 	
 	onMatchableSpawned(matchable: Matchable) {
-		this.matchablesSpawned.push(matchable); //May need a data object here instead?
+		this.ensureFrameData().spawnData.push(new SpawnData(matchable.id, matchable.x, matchable.y, matchable.color));
+	}
+	
+	private ensureFrameData(): FrameData {
+		var frame = this.simulation.framesElapsed - this.lastSentFramesElapsed;
+		if (!this.frameData[frame]) {
+			this.frameData[frame] = new FrameData();
+		}
+		return this.frameData[frame];
 	}
 	
 	private requestListener(request: http.IncomingMessage, response: http.ServerResponse) {
@@ -72,18 +81,17 @@ class Server {
 	}
 	
 	update(dt: number) {
-		let elapsed = this.simulation.framesElapsed - this.lastFramesElapsed;
+		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 		
 		if (elapsed == 0)
 			return;
 		
-		this.lastFramesElapsed = this.simulation.framesElapsed;
+		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		
-		console.log('sending tick ' + elapsed);
-		this.primus.write(this.serializer.serializeTick(new TickData(elapsed, this.swapsStarted, this.matchablesSpawned)));
+		//console.log('sending tick ' + elapsed);
+		this.primus.write(this.serializer.serializeTick(new TickData(elapsed, this.frameData)));
 		
-		this.swapsStarted.length = 0;
-		this.matchablesSpawned.length = 0;
+		this.frameData = {};
 	}
 }
 

@@ -1,4 +1,4 @@
-class SpawnData {
+class SpawnData { //TODO: client can probably generate id and y
 	id: number;
 	x: number;
 	y: number;
