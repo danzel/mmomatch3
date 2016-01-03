@@ -3,6 +3,7 @@ import ClientSpawnManager = require('../Client/clientSpawnManager');
 import Grid = require('../Simulation/grid');
 import ISerializer = require('./iSerializer');
 import Matchable = require('../Simulation/matchable');
+import MatchableFactory = require('../Simulation/matchableFactory');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
 import SwapData = require('../DataPackets/swapData');
@@ -20,7 +21,7 @@ interface SerializedBoot {
 class SimpleSerializer implements ISerializer {
 	serializeBoot(simulation: Simulation) : any {
 		return {
-			idCounter: Matchable.IdCounter,
+			idCounter: simulation.matchableFactory.idForSerializing,
 			width: simulation.grid.width,
 			height: simulation.grid.height,
 			grid: this.serializeGrid(simulation.grid),
@@ -72,14 +73,13 @@ class SimpleSerializer implements ISerializer {
 	deserializeBoot(data: any): BootData {
 		let json = <SerializedBoot>data;
 		
+		let matchableFactory = new MatchableFactory(json.idCounter);
 		let grid = new Grid(json.width, json.height);
-		let spawnManager = new ClientSpawnManager(grid);
-		let simulation = new Simulation(grid, spawnManager);
+		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory);
 		
 		let matchableById = this.deserializeGrid(simulation.grid, json.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, json.swapHandler, matchableById);
-		
-		Matchable.IdCounter = json.idCounter;
 		
 		return new BootData(simulation);
 	}
@@ -94,8 +94,8 @@ class SimpleSerializer implements ISerializer {
 			for (let y = 0; y < dataCol.length; y++) {
 				let matchableData = dataCol[y];
 				
-				let matchable = new Matchable(matchableData.x, matchableData.y, matchableData.color);
-				matchable.id = matchableData.id;
+				//We aren't using the factory here, if we did the id would get out of sync
+				let matchable = new Matchable(matchableData.id, matchableData.x, matchableData.y, matchableData.color);
 				matchable.isDisappearing = matchableData.isDisappearing;
 				matchable.disappearingTime = matchableData.disappearingTime;
 				matchable.yMomentum = matchableData.yMomentum;

@@ -60,7 +60,7 @@ class Server {
 	}
 
 	onMatchableSpawned(matchable: Matchable) {
-		this.ensureFrameData().spawnData.push(new SpawnData(matchable.id, matchable.x, matchable.y, matchable.color));
+		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color));
 	}
 
 	private ensureFrameData(): FrameData {

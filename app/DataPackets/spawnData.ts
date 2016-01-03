@@ -1,13 +1,9 @@
-class SpawnData { //TODO: client can probably generate id and y
-	id: number;
+class SpawnData {
 	x: number;
-	y: number;
 	color: number;
 	
-	constructor(id: number, x: number, y: number, color: number) {
-		this.id = id;
+	constructor(x: number, color: number) {
 		this.x = x;
-		this.y = y;
 		this.color = color;
 	}
 }

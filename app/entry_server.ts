@@ -1,10 +1,11 @@
 /// <reference path="../typings/node/node.d.ts" />
-import InputVerifier = require('./Simulation/inputVerifier');
-import Server = require('./Server/server');
 import Grid = require('./Simulation/grid');
-import Simulation = require('./Simulation/simulation');
-import SpawnManager = require('./Simulation/spawnManager');
+import InputVerifier = require('./Simulation/inputVerifier');
+import MatchableFactory = require('./Simulation/matchableFactory');
 import Serializer = require('./Serializer/simple');
+import Server = require('./Server/server');
+import Simulation = require('./Simulation/simulation');
+import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
 
 class AppEntry {
 	simulation: Simulation;
@@ -15,8 +16,9 @@ class AppEntry {
 
 	constructor() {
 		let grid = new Grid(50, 20);
-		let spawnManager = new SpawnManager(grid);
-		this.simulation = new Simulation(grid, spawnManager);
+		let matchableFactory = new MatchableFactory();
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory);
+		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.swapHandler));
 	}
 	
