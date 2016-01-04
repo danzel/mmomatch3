@@ -16,7 +16,7 @@ class AppEntry {
 	input: InputHandler;
 
 	constructor() {
-		this.game = new Phaser.Game(800, 600, Phaser.AUTO, null, this, false, true, null);
+		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 		
 		let grid = new Grid(50, 20);
 		let matchableFactory = new MatchableFactory();
@@ -26,6 +26,9 @@ class AppEntry {
 
 	preload() {
 		console.log("preload");
+		this.game.stage.disableVisibilityChange = true;
+		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
 		this.game.load.image('ball_1', 'img/skin/debug/balls/1.png');
 		this.game.load.image('ball_2', 'img/skin/debug/balls/2.png');
 		this.game.load.image('ball_3', 'img/skin/debug/balls/3.png');
