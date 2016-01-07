@@ -4,6 +4,7 @@ import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
 import FrameData = require('./DataPackets/frameData');
+import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
@@ -29,11 +30,7 @@ class AppEntry {
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
-		this.game.load.image('ball_1', 'img/skin/debug/balls/1.png');
-		this.game.load.image('ball_2', 'img/skin/debug/balls/2.png');
-		this.game.load.image('ball_3', 'img/skin/debug/balls/3.png');
-		this.game.load.image('ball_4', 'img/skin/debug/balls/4.png');
-		this.game.load.image('ball_5', 'img/skin/debug/balls/5.png');
+		GraphicsLoader.loadBalls(this.game, 'basic', 11);
 	}
 
 	create() {

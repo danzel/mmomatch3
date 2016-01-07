@@ -1,7 +1,7 @@
 {
   "name": "mmomatch3",
   "scripts": {
-	"start": "node built_server/entry_server.js"
+    "start": "node built_server/entry_server.js"
   },
   "dependencies": {
     "express": "^4.13.3",

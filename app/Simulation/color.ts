@@ -1,5 +1,5 @@
 enum Color {
-	Max = 4
+	Max = 11
 }
 
 export = Color;
