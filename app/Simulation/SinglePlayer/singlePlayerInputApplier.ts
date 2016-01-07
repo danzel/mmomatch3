@@ -1,19 +1,23 @@
+import Grid = require('../grid');
 import IInputApplier = require('../iInputApplier');
 import InputVerifier = require('../inputVerifier');
+import Matchable = require('../matchable');
 import SwapHandler = require('../swapHandler');
 
 class SinglePlayerInputApplier implements IInputApplier {
 	private swapHandler: SwapHandler;
 	private inputVerifier: InputVerifier;
-	
-	constructor(swapHandler: SwapHandler, inputVerifier: InputVerifier) {
+	private grid: Grid;
+
+	constructor(swapHandler: SwapHandler, inputVerifier: InputVerifier, grid: Grid) {
 		this.swapHandler = swapHandler;
 		this.inputVerifier = inputVerifier;
+		this.grid = grid;
 	}
 	
-	swapMatchable(x: number, y: number, xTarget: number, yTarget: number) {
-		if (this.inputVerifier.swapIsValid(x, y, xTarget, yTarget)) {
-			this.swapHandler.swap(x, y, xTarget, yTarget);
+	swapMatchable(left: Matchable, right: Matchable) {
+		if (this.inputVerifier.swapIsValid(left, right)) {
+			this.swapHandler.swap(left, right);
 		}
 	}
 }

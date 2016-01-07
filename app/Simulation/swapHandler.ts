@@ -17,8 +17,8 @@ class SwapHandler {
 		this.swaps = [];
 	}
 
-	swap(x: number, y: number, xTarget: number, yTarget: number) {
-		let swap = new Swap(this.grid.cells[x][y], this.grid.cells[xTarget][yTarget]);
+	swap(left: Matchable, right: Matchable) {
+		let swap = new Swap(left, right);
 		this.checkPreSwap(swap);
 		
 		swap.left.beingSwapped = true;

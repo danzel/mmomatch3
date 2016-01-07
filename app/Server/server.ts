@@ -85,11 +85,11 @@ class Server {
 		let swapData = this.serializer.deserializeSwap(data);
 		
 		//Find the two
-		let left = this.simulation.grid.findMatchableId(swapData.leftId);
-		let right = this.simulation.grid.findMatchableId(swapData.rightId);
+		let left = this.simulation.grid.findMatchableById(swapData.leftId);
+		let right = this.simulation.grid.findMatchableById(swapData.rightId);
 		if (left && right) {
-			if (this.inputVerifier.swapIsValid(left.x, left.y, right.x, right.y)) {
-				this.simulation.swapHandler.swap(left.x, left.y, right.x, right.y);
+			if (this.inputVerifier.swapIsValid(left, right)) {
+				this.simulation.swapHandler.swap(left, right);
 			}
 		}
 	}

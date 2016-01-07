@@ -78,10 +78,10 @@ class AppEntry {
 			//Swaps
 			for (let i = 0; i < frame.swapData.length; i++) {
 				var swap = frame.swapData[i];
-				var leftPos = this.simulation.grid.findMatchableId(swap.leftId) 
-				var rightPos = this.simulation.grid.findMatchableId(swap.rightId)
+				var left = this.simulation.grid.findMatchableById(swap.leftId) 
+				var right = this.simulation.grid.findMatchableById(swap.rightId)
 				
-				this.simulation.swapHandler.swap(leftPos.x, leftPos.y, rightPos.x, rightPos.y);
+				this.simulation.swapHandler.swap(left, right);
 			}
 			
 			//Spawns

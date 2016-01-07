@@ -1,5 +1,7 @@
+import Matchable = require('./matchable');
+
 interface IInputApplier {
-	swapMatchable(x: number, y: number, xTarget: number, yTarget: number);
+	swapMatchable(left: Matchable, right: Matchable): void;
 }
 
 export = IInputApplier;

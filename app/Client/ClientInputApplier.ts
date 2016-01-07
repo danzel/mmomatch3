@@ -2,9 +2,10 @@ import Client = require('./client');
 import Grid = require('../Simulation/grid');
 import IInputApplier = require('../Simulation/iInputApplier');
 import InputVerifier = require('../Simulation/inputVerifier');
+import Matchable = require('../Simulation/matchable');
 
 class ClientInputApplier implements IInputApplier {
-	private client: Client
+	private client: Client;
 	private inputVerifier: InputVerifier;
 	private grid: Grid;
 
@@ -14,9 +15,9 @@ class ClientInputApplier implements IInputApplier {
 		this.grid = grid;
 	}
 
-	swapMatchable(x: number, y: number, xTarget: number, yTarget: number) {
-		if (this.inputVerifier.swapIsValid(x, y, xTarget, yTarget)) {
-			this.client.sendSwap(this.grid.cells[x][y].id, this.grid.cells[xTarget][yTarget].id);
+	swapMatchable(left: Matchable, right: Matchable) {
+		if (this.inputVerifier.swapIsValid(left, right)) {
+			this.client.sendSwap(left.id, right.id);
 		}
 	}
 }

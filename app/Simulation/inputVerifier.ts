@@ -1,4 +1,5 @@
 import Grid = require('./grid');
+import Matchable = require('./matchable');
 import SwapHandler = require('./swapHandler');
 
 class InputVerifier {
@@ -10,18 +11,18 @@ class InputVerifier {
 		this.swapHandler = swapHandler;
 	}
 	
-	swapIsValid(x: number, y: number, xTarget: number, yTarget: number) : boolean {
-		if (!this.posIsValid(x, y))
+	swapIsValid(left: Matchable, right: Matchable) : boolean {
+		if (!this.inValidState(left))
 			return false;
-		if (!this.posIsValid(xTarget, yTarget))
+		if (!this.inValidState(right))
 			return false;
 		
-		if (x == xTarget) { //y swap
-			if (yTarget == y + 1 || yTarget == y - 1)
+		if (left.x == right.x) { //y swap
+			if (left.y == right.y + 1 || left.y == right.y - 1)
 				return true;
 		}
-		else if (y == yTarget) { //x swap
-			if (xTarget == x + 1 || xTarget == x - 1)
+		else if (left.y == right.y) { //x swap
+			if (left.x == right.x + 1 || left.x == right.x - 1)
 				return true;
 		}
 		
@@ -30,36 +31,10 @@ class InputVerifier {
 		return false;
 	}
 	
-	//TODO: This looks up swapees by index, but this won't work if there is a hole below them (I think?)
-	private posIsValid(x: number, y: number) : boolean {
-		if (!this.isInt(x) || !this.isInt(y))
+	private inValidState(matchable: Matchable) : boolean {
+		if (!matchable || matchable.isMoving || matchable.isDisappearing || matchable.beingSwapped) {
 			return false;
-		
-		//Check we are on the grid
-		if (x < 0 || y < 0 || x >= this.grid.width || y >= this.grid.height)
-			return false;
-		
-		//And that this pos exists
-		let col = this.grid.cells[x];
-		if (col.length <= y)
-			return false;
-
-		//and isn't doing something that excludes being swapped
-		let matchable = col[y];
-		if (matchable.isMoving || matchable.isDisappearing || matchable.beingSwapped)
-			return false;
-
-		//And that it and any of those below it aren't in a swap
-		let swaps = this.swapHandler.swaps;
-		for (let i = 0; i < swaps.length; i++) {
-			var swap = swaps[i];
-			if (swap.left.x == x && swap.left.y <= y)
-				return false;
-
-			if (swap.right.x == x && swap.right.y <= y)
-				return false;
 		}
-		
 		return true;
 	}
 	

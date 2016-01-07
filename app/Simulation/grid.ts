@@ -21,17 +21,26 @@ class Grid {
 		}
 	}
 
-	findMatchableId(id: number) : XY {
+	findMatchableById(id: number) : Matchable {
 		for (let x = 0; x < this.width; x++) {
 			let col = this.cells[x];
 			for (let y = 0; y < col.length; y++) {
 				if (col[y].id == id) {
-					return { x, y };
+					return col[y];
 				}
 			}
 		}
 		
 		return null;
+	}
+	
+	findMatchableAtPosition(positionX: number, positionY: number) {
+		let col = this.cells[positionX];
+		for (let i = Math.min(positionY, col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
+			if (col[i].y == positionY) {
+				return col[i];
+			}
+		}
 	}
 	
 }

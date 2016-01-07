@@ -1,26 +1,23 @@
 /// <reference path="../../typings/phaser/phaser.comments.d.ts" />
+import Grid = require('../Simulation/grid');
 import IInputApplier = require('../Simulation/iInputApplier');
+import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('../Renderer/matchableNode');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
 import XY = require('./xy');
 
-interface ISize {
-	width: number;
-	height: number;
-}
-
 class MatchDragHandler {
 	private renderer: SimulationRenderer;
-	private gridSize: ISize;
+	private grid: Grid;
 	private inputApplier: IInputApplier;
 	
 	private startDragPx: Array<XY>;
 	private startDragMatchable: Array<XY>;
 	
-	constructor(renderer: SimulationRenderer, gridSize: ISize, inputApplier: IInputApplier) {
+	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: IInputApplier) {
 		this.renderer = renderer;
-		this.gridSize = gridSize;
+		this.grid = grid;
 		this.inputApplier = inputApplier;
 
 		this.startDragPx = [null, null];
@@ -34,7 +31,7 @@ class MatchDragHandler {
 
 	mouseMove(pointer: Phaser.Pointer, x: number, y: number, justDown: boolean, held: boolean) {
 		if (held && justDown) {
-			var selected = this.findMatchableIndex(x, y)
+			let selected = this.findMatchableIndex(x, y)
 			
 			if (selected) {
 				console.log(selected.x, selected.y);
@@ -50,13 +47,17 @@ class MatchDragHandler {
 			
 			//If there is a movement in just one direction
 			if (Math.abs(xDiff) > this.minDragPx !== Math.abs(yDiff) > this.minDragPx) {
-				var start = this.startDragMatchable[pointer.id];
+				let start = this.startDragMatchable[pointer.id];
+
+				let left = this.grid.findMatchableAtPosition(start.x, start.y);
+				let right: Matchable;
 				if (Math.abs(xDiff) > this.minDragPx) {
-					this.inputApplier.swapMatchable(start.x, start.y, start.x + (xDiff > 0 ? 1 : -1), start.y);
+					right = this.grid.findMatchableAtPosition(start.x + (xDiff > 0 ? 1 : -1), start.y);
 				}
 				else {
-					this.inputApplier.swapMatchable(start.x, start.y, start.x, start.y + (yDiff > 0 ? -1 : 1));
+					right = this.grid.findMatchableAtPosition(start.x, start.y + (yDiff > 0 ? -1 : 1));
 				}
+				this.inputApplier.swapMatchable(left, right);
 			}
 			
 			
@@ -78,7 +79,7 @@ class MatchDragHandler {
 		y = Math.floor(-(y - pos.y) / MatchableNode.PositionScalar / scale);
 		
 		//Only return valid positions
-		if (x < 0 || y < 0 || x >= this.gridSize.width || y >= this.gridSize.height) {
+		if (x < 0 || y < 0 || x >= this.grid.width || y >= this.grid.height) {
 			return null;
 		}
 
