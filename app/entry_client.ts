@@ -47,7 +47,7 @@ class AppEntry {
 
 		let rendererGroup = this.game.add.group();
 		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
-		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, this.simulation.swapHandler), this.simulation.grid));
+		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid), this.simulation.grid));
 	}
 
 	tickReceived(tickData: TickData) {

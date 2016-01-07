@@ -19,7 +19,7 @@ class AppEntry {
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator());
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
-		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.swapHandler));
+		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid));
 	}
 
 	update() {

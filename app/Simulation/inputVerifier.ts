@@ -4,11 +4,9 @@ import SwapHandler = require('./swapHandler');
 
 class InputVerifier {
 	private grid: Grid;
-	private swapHandler: SwapHandler;
 	
-	constructor(grid: Grid, swapHandler: SwapHandler) {
+	constructor(grid: Grid) {
 		this.grid = grid;
-		this.swapHandler = swapHandler;
 	}
 	
 	swapIsValid(left: Matchable, right: Matchable) : boolean {
