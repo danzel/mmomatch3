@@ -1,8 +1,8 @@
 import Disappearer = require('./disappearer');
 import Grid = require('./grid');
 import MatchChecker = require('./matchChecker');
-import Physics = require('./physics');
 import MatchableFactory = require('../Simulation/matchableFactory');
+import Physics = require('./physics');
 import SpawnManager = require('./spawnManager');
 import SwapHandler = require('./swapHandler');
 

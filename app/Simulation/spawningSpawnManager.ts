@@ -1,11 +1,17 @@
 import Color = require('./color');
 import Grid = require('./grid');
+import RandomGenerator = require('./randomGenerator');
 import SpawnManager = require('./spawnManager');
 import Matchable = require('./matchable');
+import MatchableFactory = require('../Simulation/matchableFactory');
 
 class SpawningSpawnManager extends SpawnManager {
 	private isInitialSpawn = true;
 
+	constructor(grid: Grid, matchableFactory: MatchableFactory, private randomGenerator: RandomGenerator) {
+		super(grid, matchableFactory);	
+	}
+	
 	update(dt: number) {
 		for (let x = 0; x < this.grid.width; x++) {
 			let column = this.grid.cells[x];
@@ -36,7 +42,7 @@ class SpawningSpawnManager extends SpawnManager {
 
 			bannedColors.sort();
 
-			let color = Math.floor(Math.random() * (Color.Max - bannedColors.length));
+			let color = this.randomGenerator.intExclusive(0, (Color.Max - bannedColors.length));
 
 			for (var i = 0; i < bannedColors.length; i++) {
 				if (bannedColors[i] <= color)
@@ -46,7 +52,7 @@ class SpawningSpawnManager extends SpawnManager {
 			return color;
 		}
 
-		return Math.floor(Math.random() * Color.Max);
+		return this.randomGenerator.intExclusive(0, Color.Max);
 	}
 }
 

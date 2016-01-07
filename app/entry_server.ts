@@ -2,6 +2,7 @@
 import Grid = require('./Simulation/grid');
 import InputVerifier = require('./Simulation/inputVerifier');
 import MatchableFactory = require('./Simulation/matchableFactory');
+import RandomGenerator = require('./Simulation/randomGenerator');
 import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
 import Simulation = require('./Simulation/simulation');
@@ -17,7 +18,7 @@ class AppEntry {
 	constructor() {
 		let grid = new Grid(50, 20);
 		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory);
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator());
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.swapHandler));
 	}
