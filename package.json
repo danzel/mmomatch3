@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "express": "^4.13.3",
+    "jasmine": "^2.4.1",
     "json-loader": "^0.5.4",
     "mersenne-twister": "^1.0.1",
     "phaser": "^2.4.4",
