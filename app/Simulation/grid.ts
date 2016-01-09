@@ -43,6 +43,25 @@ class Grid {
 		}
 	}
 	
+	swap(left: Matchable, right: Matchable): void {
+		let leftCol = this.cells[left.x];
+		let rightCol = this.cells[right.x];
+
+		let leftY = leftCol.indexOf(left);
+		let rightY = rightCol.indexOf(right);
+
+		let tempX = left.x;
+		let tempY = left.y;
+
+		left.x = right.x;
+		left.y = right.y;
+
+		right.x = tempX;
+		right.y = tempY;
+		
+		rightCol[rightY] = left;
+		leftCol[leftY] = right;
+	}
 }
 
 export = Grid;

@@ -37,28 +37,12 @@ class SwapHandler {
 			if (swap.percent >= 1) {
 				let left = swap.left;
 				let right = swap.right;
-				let leftCol = this.grid.cells[left.x];
-				let rightCol = this.grid.cells[right.x];
-
-				let leftY = leftCol.indexOf(left);
-				let rightY = rightCol.indexOf(right);
 
 				this.checkSwap(swap);
-					
-				let tempX = left.x;
-				let tempY = left.y;
+				this.grid.swap(left, right);
 
-				left.x = right.x;
-				left.y = right.y;
 				left.beingSwapped = false;
-
-				right.x = tempX;
-				right.y = tempY;
 				right.beingSwapped = false;
-				
-				//Update them in the grid
-				rightCol[rightY] = left;
-				leftCol[leftY] = right;
 
 				this.swaps.splice(i, 1);
 
