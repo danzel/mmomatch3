@@ -18,7 +18,7 @@ class Physics {
 			var col = this.grid.cells[x];
 			for (let y = 0; y < col.length; y++) {
 				let matchable = col[y];
-				if (matchable.y > y && !matchable.beingSwapped) {
+				if (matchable.y > y && !matchable.beingSwapped && !matchable.isDisappearing) {
 					matchable.yMomentum += dt * 100;
 
 					matchable.y = Math.max(y, matchable.y - dt * matchable.yMomentum);
