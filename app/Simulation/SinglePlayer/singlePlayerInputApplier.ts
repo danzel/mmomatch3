@@ -17,7 +17,7 @@ class SinglePlayerInputApplier implements IInputApplier {
 	
 	swapMatchable(left: Matchable, right: Matchable) {
 		if (this.inputVerifier.swapIsValid(left, right)) {
-			this.swapHandler.swap(left, right);
+			this.swapHandler.swap(0, left, right);
 		}
 	}
 }

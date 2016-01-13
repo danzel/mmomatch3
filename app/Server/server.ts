@@ -89,7 +89,8 @@ class Server {
 		let right = this.simulation.grid.findMatchableById(swapData.rightId);
 		if (left && right) {
 			if (this.inputVerifier.swapIsValid(left, right)) {
-				this.simulation.swapHandler.swap(left, right);
+				throw "Dont know the playerId"; //TODO: Use the ID of the player (lookup based on the spark)
+				this.simulation.swapHandler.swap(0, left, right);
 			}
 		}
 	}

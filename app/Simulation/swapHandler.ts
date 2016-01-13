@@ -17,8 +17,8 @@ class SwapHandler {
 		this.swaps = [];
 	}
 
-	swap(left: Matchable, right: Matchable) {
-		let swap = new Swap(left, right);
+	swap(playerId: number, left: Matchable, right: Matchable) {
+		let swap = new Swap(playerId, left, right);
 		this.checkPreSwap(swap);
 		
 		swap.left.beingSwapped = true;

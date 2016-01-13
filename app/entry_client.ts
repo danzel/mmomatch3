@@ -81,7 +81,8 @@ class AppEntry {
 				var left = this.simulation.grid.findMatchableById(swap.leftId) 
 				var right = this.simulation.grid.findMatchableById(swap.rightId)
 				
-				this.simulation.swapHandler.swap(left, right);
+				throw "The server should send playerId with a swap"; //TODO
+				this.simulation.swapHandler.swap(0, left, right);
 			}
 			
 			//Spawns

@@ -1,13 +1,18 @@
 import Matchable = require('./matchable');
 
 class Swap {
+	
+	playerId: number;
+	
 	left: Matchable;
 	right: Matchable
 	
 	time: number;
 	percent: number;
 	
-	constructor(left: Matchable, right: Matchable) {
+	constructor(playerId: number, left: Matchable, right: Matchable) {
+		this.playerId = playerId;
+		
 		this.left = left;
 		this.right = right;
 
