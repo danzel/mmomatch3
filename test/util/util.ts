@@ -1,5 +1,8 @@
 import Grid = require('../../app/Simulation/grid');
 import Matchable = require('../../app/Simulation/matchable');
+import MatchableFactory = require('../../app/Simulation/matchableFactory');
+import NeverSpawnManager = require('./neverSpawnManager');
+import Simulation = require('../../app/Simulation/simulation');
 
 class TestUtil {
 	static populateGrid(grid: Grid, contents: Array<string>) {
@@ -13,6 +16,16 @@ class TestUtil {
 			}
 		}
 	}
+	
+	static prepareForTest(gridConfig: Array<string>): Simulation {
+		var grid = new Grid(gridConfig[0].length, gridConfig.length);
+		TestUtil.populateGrid(grid, gridConfig);
+		var matchableFactory = new MatchableFactory();
+		var simulation = new Simulation(grid, new NeverSpawnManager(grid, matchableFactory), matchableFactory);
+
+		return simulation;
+	}
+
 }
 
 export = TestUtil;
