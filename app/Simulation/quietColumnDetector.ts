@@ -1,26 +1,21 @@
+import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
 import Matchable = require('./matchable');
 import Physics = require('./physics');
 
-interface IGridHeight {
-	height: number;
-}
-
 class QuietColumnDetector {
-	gridHeight: number;
-
 	quietColumns: Array<Matchable> = [];
 	
 	columnBecameQuiet = new LiteEvent<number>();
 	
-	constructor(gridHeight: IGridHeight, physics: Physics) {
-		this.gridHeight = gridHeight.height;
-		
+	constructor(private grid: Grid, physics: Physics) {
 		physics.matchableLanded.on(this.matchableLanded.bind(this));
 	}
 	
 	matchableLanded(matchable: Matchable) {
-		if (matchable.y == this.gridHeight - 1) {
+		//If we land and we are in our correct place and there is nothing above us
+		let col = this.grid.cells[matchable.x];
+		if (matchable.y == col.indexOf(matchable) && matchable.y == col.length - 1) {
 			this.quietColumns.push(matchable);
 		}
 	}

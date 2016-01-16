@@ -7,6 +7,8 @@ import Physics = require('./physics');
 import SpawnManager = require('./spawnManager');
 import SwapHandler = require('./swapHandler');
 
+import QuietColumnDetector = require('./quietColumnDetector');
+
 class Simulation {
 	grid: Grid;
 	spawnManager: SpawnManager;
@@ -16,6 +18,8 @@ class Simulation {
 	matchChecker: MatchChecker;
 	matchPerformer: MatchPerformer;
 	disappearer: Disappearer;
+	
+	quietColumnDetector: QuietColumnDetector;
 	
 	framesElapsed: number;
 
@@ -29,6 +33,8 @@ class Simulation {
 		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
 		this.disappearer = new Disappearer(this.grid);
 		
+		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics);
+		
 		this.framesElapsed = 0;
 	}
 
@@ -38,6 +44,8 @@ class Simulation {
 		this.swapHandler.update(dt);
 		this.disappearer.update(dt);
 		this.spawnManager.update(dt);
+		
+		this.quietColumnDetector.lateUpdate(dt);
 		
 		this.framesElapsed++;
 	}

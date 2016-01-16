@@ -19,7 +19,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 		let simulation = TestUtil.prepareForTest([
 			"1211"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
 		let ownershipChecker = new OwnershipMatchChecker(ownership);
 
@@ -39,7 +39,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"1",
 			"1"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
 		let ownershipChecker = new OwnershipMatchChecker(ownership);
 
@@ -57,7 +57,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"3223",
 			"1211"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
 		let ownershipChecker = new OwnershipMatchChecker(ownership);
 
@@ -81,7 +81,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"13344",
 			"21212"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
 		let ownershipChecker = new OwnershipMatchChecker(ownership);
 

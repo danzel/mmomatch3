@@ -12,7 +12,11 @@ class OwnershipMatchChecker {
 	
 	verifyMatch(matchableCount: number, players: Array<number>){
 		expect(this.matches.length).toBeGreaterThan(0);
+
 		var match = this.matches[0];
+
+		match.players.sort();
+		players.sort();
 
 		expect(match.matchables.length).toEqual(matchableCount);
 		expect(match.players).toEqual(players);
