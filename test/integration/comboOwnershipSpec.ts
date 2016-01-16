@@ -4,6 +4,7 @@ import Grid = require('../../app/Simulation/grid');
 import QuietColumnDetector = require('../../app/Simulation/quietColumnDetector');
 import MatchableFactory = require('../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('../util/neverSpawnManager');
+import OwnershipMatchChecker = require('../util/ownershipMatchChecker');
 import OwnedMatch = require('../../app/Simulation/Scoring/ownedMatch');
 import Simulation = require('../../app/Simulation/simulation');
 import TestUtil = require('../util/util');
@@ -17,29 +18,67 @@ function prepareForTest(gridConfig: Array<string>) : Simulation {
 	return simulation;
 }
 
+//TODO: We'll need to handle swaps made over a hole, meaning one drops down (and then gets matched)
+
+let playerId1 = 99;
 
 describe('ComboOwnership', () => {
-    it('gives ownership of a single swap', () => {
+    it('gives ownership of a single horizontal swap', () => {
 		
-		let playerId = 99;
-		let simulation = prepareForTest(["111"]);
+		let simulation = prepareForTest(["1211"]);
 		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
 
-		let matches: Array<OwnedMatch> = [];
-		ownership.ownedMatchPerformed.on(function(data) {
-			matches.push(data)
-		})
+		let ownershipChecker = new OwnershipMatchChecker(ownership);
 		
 		simulation.update(1);
-		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
+		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 		simulation.update(1);
 		
-		expect(matches.length).toBe(1);
+		ownershipChecker.verifyMatch(3, [playerId1]);
+		ownershipChecker.verifyNoRemainingMatches() 
+	});
+});
+
+describe('ComboOwnership', () => {
+    it('gives ownership of a single vertical swap', () => {
 		
-		var match = matches[0];
+		let simulation = prepareForTest([
+			"1",
+			"2",
+			"1",
+			"1"
+			]);
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+
+		let ownershipChecker = new OwnershipMatchChecker(ownership);
 		
-		expect(match.matchables.length).toBe(3);
-		expect(match.players.length).toBe(1);
-		expect(match.players[0]).toBe(playerId);
+		simulation.update(1);
+		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
+		simulation.update(1);
+		
+		ownershipChecker.verifyMatch(3, [playerId1]);
+		ownershipChecker.verifyNoRemainingMatches();
+	});
+});
+
+describe('ComboOwnership', () => {
+    it('gives ownership of a double combo', () => {
+		
+		let simulation = prepareForTest([
+			"3223",
+			"1211"
+			]);
+		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, new QuietColumnDetector(simulation.grid, simulation.physics));
+
+		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		
+		simulation.update(1);
+		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]]);
+		for (let i = 0; i < 4; i++)
+			simulation.update(1);
+		
+		ownershipChecker.verifyMatch(3, [playerId1]);
+		ownershipChecker.verifyMatch(3, [playerId1]);
+		ownershipChecker.verifyNoRemainingMatches();
 	});
 });
