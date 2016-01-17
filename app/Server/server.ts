@@ -3,21 +3,28 @@
 import express = require('express');
 import http = require('http');
 
+import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import FrameData = require('../DataPackets/frameData');
 import ISerializer = require('../Serializer/iSerializer');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
 import Matchable = require('../Simulation/matchable');
+import Player = require('../Simulation/Scoring/player');
+import PlayerProvider = require('../Simulation/Scoring/playerProvider');
+import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Simulation = require('../Simulation/simulation');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
-import SwapData = require('../DataPackets/swapData');
+import SwapClientData = require('../DataPackets/swapClientData');
+import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
 
 class Server {
 	private simulation: Simulation;
 	private serializer: ISerializer;
 	private inputVerifier: InputVerifier;
+	
+	private playerProvider: PlayerProvider = new PlayerProvider();
 
 	private app: express.Express;
 	private httpServer: http.Server;
@@ -28,13 +35,15 @@ class Server {
 
 	private serializedBoot;
 	private sparksRequiringBoot: Array<Primus.Spark> = [];
-	private bootedSparks: { [id: string]: boolean } = {};
+	private bootedSparks: { [id: string]: Player } = {};
 
 	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
 		this.serializer = serializer;
 		this.inputVerifier = inputVerifier;
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
+		
+		new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
 
 		this.app = express();
 		this.app.use(express.static('dist'));
@@ -52,11 +61,15 @@ class Server {
 
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark);
-		spark.on('data', this.dataReceived.bind(this));
+		
+		var callback = this.dataReceived.bind(this)
+		spark.on('data', function(data: any) {
+			callback(spark, data);
+		} );
 
 		if (this.serializedBoot) {
 			spark.write(this.serializedBoot);
-			this.bootedSparks[spark.id] = true
+			this.bootedSparks[spark.id] = this.playerProvider.createPlayer()
 		}
 		else {
 			this.sparksRequiringBoot.push(spark);
@@ -64,7 +77,7 @@ class Server {
 	}
 
 	onSwapStarted(swap: Swap) {
-		this.ensureFrameData().swapData.push(new SwapData(swap.left.id, swap.right.id));
+		this.ensureFrameData().swapData.push(new SwapServerData(swap.playerId, swap.left.id, swap.right.id));
 	}
 
 	onMatchableSpawned(matchable: Matchable) {
@@ -79,18 +92,23 @@ class Server {
 		return this.frameData[frame];
 	}
 
-	private dataReceived(data: any) {
+	private dataReceived(spark: Primus.Spark, data: any) {
 		console.log("data", data);
+		
+		var player = this.bootedSparks[spark.id];
+		if (!player) {
+			console.log("ignoring received data from spark before booted");
+			return;
+		}
 
-		let swapData = this.serializer.deserializeSwap(data);
+		let swapData = this.serializer.deserializeClientSwap(data);
 		
 		//Find the two
 		let left = this.simulation.grid.findMatchableById(swapData.leftId);
 		let right = this.simulation.grid.findMatchableById(swapData.rightId);
 		if (left && right) {
 			if (this.inputVerifier.swapIsValid(left, right)) {
-				throw "Dont know the playerId"; //TODO: Use the ID of the player (lookup based on the spark)
-				this.simulation.swapHandler.swap(0, left, right);
+				this.simulation.swapHandler.swap(player.id, left, right);
 			}
 		}
 	}
@@ -118,7 +136,7 @@ class Server {
 			this.serializedBoot = this.serializer.serializeBoot(this.simulation);
 			this.sparksRequiringBoot.forEach((spark) => {
 				spark.write(this.serializedBoot);
-				this.bootedSparks[spark.id] = true
+				this.bootedSparks[spark.id] = this.playerProvider.createPlayer()
 			});
 			this.sparksRequiringBoot.length = 0;
 		}

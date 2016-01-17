@@ -1,4 +1,4 @@
-class SwapData {
+class SwapClientData {
 	leftId: number;
 	rightId: number;
 	
@@ -8,4 +8,4 @@ class SwapData {
 	}
 }
 
-export = SwapData;
+export = SwapClientData;

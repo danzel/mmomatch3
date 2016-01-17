@@ -1,9 +1,9 @@
 import SpawnData = require('./spawnData');
-import SwapData = require('./swapData');
+import SwapServerData = require('./swapServerData');
 
 class FrameData {
 	spawnData: Array<SpawnData>;
-	swapData: Array<SwapData>;
+	swapData: Array<SwapServerData>;
 	
 	constructor() {
 		this.spawnData = [];

@@ -2,7 +2,7 @@
 import ISerializer = require('../Serializer/iSerializer')
 import LiteEvent = require('../liteEvent');
 import Simulation = require('../Simulation/simulation');
-import SwapData = require('../DataPackets/swapData');
+import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
 class Client {
@@ -33,7 +33,7 @@ class Client {
 	}
 	
 	sendSwap(leftId: number, rightId: number) {
-		this.primus.write(this.serializer.serializeSwap(new SwapData(leftId, rightId)));
+		this.primus.write(this.serializer.serializeClientSwap(new SwapClientData(leftId, rightId)));
 	}
 	
 	private dataReceived(data: any) {

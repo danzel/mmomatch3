@@ -6,7 +6,7 @@ import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
-import SwapData = require('../DataPackets/swapData');
+import SwapClientData = require('../DataPackets/swapClientData');
 import SwapHandler = require('../Simulation/swapHandler');
 import TickData = require('../DataPackets/tickData');
 
@@ -64,7 +64,7 @@ class SimpleSerializer implements ISerializer {
 		for (let i = 0; i < swapHandler.swaps.length; i++) {
 			let swap = swapHandler.swaps[i];
 			
-			res.push({ left: swap.left.id, right: swap.right.id, time: swap.time, percent: swap.percent }); //TODO: percent can be calculated
+			res.push({ playerId: swap.playerId, left: swap.left.id, right: swap.right.id, time: swap.time, percent: swap.percent }); //TODO: percent can be calculated
 		}
 		return res;
 	}
@@ -112,7 +112,7 @@ class SimpleSerializer implements ISerializer {
 	private deserializeSwapHandler(swapHandler: SwapHandler, data: Array<any>, matchableById: any) : any {
 		for (let i = 0; i < data.length; i++) {
 			let s = data[i];
-			let swap = new Swap(matchableById[s.left], matchableById[s.right]);
+			let swap = new Swap(s.playerId, matchableById[s.left], matchableById[s.right]);
 			swap.time = s.time;
 			swap.percent = s.percent;
 			swapHandler.swaps.push(swap);
@@ -127,12 +127,12 @@ class SimpleSerializer implements ISerializer {
 		return <TickData>data;
 	}
 	
-	serializeSwap(swapData: SwapData) : any {
+	serializeClientSwap(swapData: SwapClientData) : any {
 		return swapData;
 	}
 
-	deserializeSwap(data: any) : SwapData {
-		return <SwapData>data;
+	deserializeClientSwap(data: any) : SwapClientData {
+		return <SwapClientData>data;
 	}
 }
 

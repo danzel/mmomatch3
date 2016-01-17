@@ -20,7 +20,7 @@ class AppEntry {
 	input: InputHandler;
 
 	private frameQueue: Array<FrameData> = [];
-	
+
 	constructor() {
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
@@ -41,7 +41,7 @@ class AppEntry {
 		this.client.simulationReceived.on(this.simulationReceived.bind(this));
 		this.client.tickReceived.on(this.tickReceived.bind(this));
 	}
-	
+
 	simulationReceived(simulation: Simulation) {
 		this.simulation = simulation;
 
@@ -55,7 +55,7 @@ class AppEntry {
 		while (this.frameQueue.length > 0) {
 			this.runNextFrame();
 		}
-		
+
 		for (let i = 0; i < tickData.framesElapsed; i++) {
 			this.frameQueue.push(tickData.frameData[i]);
 		}
@@ -65,30 +65,28 @@ class AppEntry {
 		if (this.frameQueue.length == 0) {
 			return;
 		}
-		
+
 		this.runNextFrame();
-		
+
 		this.renderer.update(this.game.time.physicsElapsed);
 	}
-	
+
 	private runNextFrame() {
 		let frame = this.frameQueue.shift();
-		
+
 		if (frame) {
 			//Swaps
 			for (let i = 0; i < frame.swapData.length; i++) {
 				var swap = frame.swapData[i];
-				var left = this.simulation.grid.findMatchableById(swap.leftId) 
-				var right = this.simulation.grid.findMatchableById(swap.rightId)
-				
-				throw "The server should send playerId with a swap"; //TODO
-				this.simulation.swapHandler.swap(0, left, right);
+				var left = this.simulation.grid.findMatchableById(swap.leftId);
+				var right = this.simulation.grid.findMatchableById(swap.rightId);
+				this.simulation.swapHandler.swap(swap.playerId, left, right);
 			}
 			
 			//Spawns
 			(<ClientSpawnManager>this.simulation.spawnManager).notifySpawns(frame.spawnData);
 		}
-		
+
 		this.simulation.update(1.0 / 60);
 	}
 }

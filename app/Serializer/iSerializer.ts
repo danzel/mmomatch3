@@ -1,6 +1,6 @@
 import BootData = require('../DataPackets/bootData');
 import Simulation = require('../Simulation/simulation');
-import SwapData = require('../DataPackets/swapData');
+import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
 interface ISerializer {
@@ -10,8 +10,8 @@ interface ISerializer {
 	serializeTick(tickData: TickData) : any;
 	deserializeTick(data: any) : TickData;
 	
-	serializeSwap(swapData: SwapData) : any;
-	deserializeSwap(data: any) : SwapData;
+	serializeClientSwap(swapData: SwapClientData) : any;
+	deserializeClientSwap(data: any) : SwapClientData;
 }
 
 export = ISerializer;
