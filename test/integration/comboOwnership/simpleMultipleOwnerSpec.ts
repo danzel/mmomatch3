@@ -24,15 +24,14 @@ describe('ComboOwnership.simpleMultipleOwner', () => {
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		simulation.update(1);
+		simulation.update(0.1); //So the swaps both resolve at the same time
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[5][0], simulation.grid.cells[6][0]);
 		simulation.update(1);
 
-		ownershipChecker.verifyMatch(3, [playerId1]);
-		
-		//It is fluke that these two happen in this order
+		//It is fluke that these happen in this order
 		ownershipChecker.verifyMatch(3, [playerId2]); 
 		ownershipChecker.verifyMatch(3, [playerId1, playerId2]);
+		ownershipChecker.verifyMatch(3, [playerId1]);
 
 		ownershipChecker.verifyNoRemainingMatches()
 	});

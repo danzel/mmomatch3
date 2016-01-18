@@ -33,7 +33,7 @@ class Simulation {
 		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
 		this.disappearer = new Disappearer(this.grid);
 		
-		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics);
+		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
 		
 		this.framesElapsed = 0;
 	}
