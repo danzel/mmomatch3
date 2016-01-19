@@ -18,6 +18,7 @@ import Swap = require('../Simulation/swap');
 import SwapClientData = require('../DataPackets/swapClientData');
 import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
+import TickDataFactory = require('./tickDataFactory');
 
 class Server {
 	private simulation: Simulation;
@@ -25,25 +26,27 @@ class Server {
 	private inputVerifier: InputVerifier;
 	
 	private playerProvider: PlayerProvider = new PlayerProvider();
-
+	private scoreTracker: ScoreTracker;
+	private tickDataFactory: TickDataFactory;
+	
 	private app: express.Express;
 	private httpServer: http.Server;
 	private primus: Primus;
 
-	private lastSentFramesElapsed: number;
-	private frameData: { [frame: number]: FrameData } = {};
 
 	private serializedBoot;
 	private sparksRequiringBoot: Array<Primus.Spark> = [];
 	private bootedSparks: { [id: string]: Player } = {};
 
+	private dataReceivedBound = this.dataReceived.bind(this);
+	
 	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
 		this.serializer = serializer;
 		this.inputVerifier = inputVerifier;
-		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		
-		new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
+		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
+		this.tickDataFactory = new TickDataFactory(simulation);
 
 		this.app = express();
 		this.app.use(express.static('dist'));
@@ -55,14 +58,12 @@ class Server {
 		});
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
-		this.simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
-		this.simulation.spawnManager.matchableSpawned.on(this.onMatchableSpawned.bind(this))
 	}
 
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark);
 		
-		var callback = this.dataReceived.bind(this)
+		let callback = this.dataReceivedBound;
 		spark.on('data', function(data: any) {
 			callback(spark, data);
 		} );
@@ -74,22 +75,6 @@ class Server {
 		else {
 			this.sparksRequiringBoot.push(spark);
 		}
-	}
-
-	onSwapStarted(swap: Swap) {
-		this.ensureFrameData().swapData.push(new SwapServerData(swap.playerId, swap.left.id, swap.right.id));
-	}
-
-	onMatchableSpawned(matchable: Matchable) {
-		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color));
-	}
-
-	private ensureFrameData(): FrameData {
-		var frame = this.simulation.framesElapsed - this.lastSentFramesElapsed;
-		if (!this.frameData[frame]) {
-			this.frameData[frame] = new FrameData();
-		}
-		return this.frameData[frame];
 	}
 
 	private dataReceived(spark: Primus.Spark, data: any) {
@@ -114,22 +99,21 @@ class Server {
 	}
 
 	update(dt: number) {
-		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
+		
+		var tickData = this.tickDataFactory.getTickIfReady();
 
-		if (elapsed < 2)
+		if (!tickData) {
 			return;
-
-		this.lastSentFramesElapsed = this.simulation.framesElapsed;
+		}
 
 		//We should only be sending updates to clients we've already sent a boot to
-		var data = this.serializer.serializeTick(new TickData(elapsed, this.frameData));
+		var data = this.serializer.serializeTick(tickData);
 		var bootedSparks = this.bootedSparks;
 		this.primus.forEach(function(spark: Primus.Spark, id) {
 			if (bootedSparks[id]) {
 				spark.write(data);
 			}
 		});
-		this.frameData = {};
 		this.serializedBoot = null;
 
 		if (this.sparksRequiringBoot.length > 0) {
