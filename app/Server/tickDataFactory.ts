@@ -10,7 +10,8 @@ import TickPoints = require('../DataPackets/tickPoints');
 
 class TickDataFactory {
 	
-	private lastSentFramesElapsed: number;
+	private lastSentFramesElapsed: number = 0;
+	private lastSentPointsFramesElapsed: number = 0;
 	private frameData: { [frame: number]: FrameData } = {};
 
 	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker) {
@@ -44,14 +45,20 @@ class TickDataFactory {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		let res = new TickData(elapsed, this.frameData);
 		this.frameData = {};
-		
-		//TODO: Every now and then
-		res.points = [];
-		for (let l in this.scoreTracker.points) {
-			res.points.push(new TickPoints("player " + l, this.scoreTracker.points[l]));
+
+		//Send points every 2 seconds		
+		if (this.simulation.framesElapsed - this.lastSentPointsFramesElapsed > 2 * 60) {
+			this.lastSentPointsFramesElapsed = this.simulation.framesElapsed;
+			
+			res.points = [];
+			for (let l in this.scoreTracker.points) {
+				res.points.push(new TickPoints("player " + l, this.scoreTracker.points[l]));
+			}
+			res.points.sort((a, b) => b.points - a.points);
+			if (res.points.length > 3) {
+				res.points.length = 3;
+			}
 		}
-		res.points.sort((a, b) => b.points - a.points);
-		//TODO: Limit
 		
 		return res;
 	}
