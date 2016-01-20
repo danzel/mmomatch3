@@ -33,7 +33,6 @@ class Server {
 	private httpServer: http.Server;
 	private primus: Primus;
 
-
 	private serializedBoot;
 	private sparksRequiringBoot: Array<Primus.Spark> = [];
 	private bootedSparks: { [id: string]: Player } = {};
@@ -46,7 +45,7 @@ class Server {
 		this.inputVerifier = inputVerifier;
 		
 		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
-		this.tickDataFactory = new TickDataFactory(simulation);
+		this.tickDataFactory = new TickDataFactory(simulation, this.scoreTracker);
 
 		this.app = express();
 		this.app.use(express.static('dist'));

@@ -1,17 +1,19 @@
 import FrameData = require('../DataPackets/frameData');
 import Matchable = require('../Simulation/matchable');
+import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Simulation = require('../Simulation/simulation');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
 import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
+import TickPoints = require('../DataPackets/tickPoints');
 
 class TickDataFactory {
 	
 	private lastSentFramesElapsed: number;
 	private frameData: { [frame: number]: FrameData } = {};
 
-	constructor(private simulation: Simulation) {
+	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker) {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 
 		simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
@@ -42,6 +44,14 @@ class TickDataFactory {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		let res = new TickData(elapsed, this.frameData);
 		this.frameData = {};
+		
+		//TODO: Every now and then
+		res.points = [];
+		for (let l in this.scoreTracker.points) {
+			res.points.push(new TickPoints("player " + l, this.scoreTracker.points[l]));
+		}
+		res.points.sort((a, b) => b.points - a.points);
+		//TODO: Limit
 		
 		return res;
 	}

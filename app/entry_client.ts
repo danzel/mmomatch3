@@ -1,10 +1,10 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
-/// <reference path="../typings/primus/primusClient.d.ts" />
 import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
 import FrameData = require('./DataPackets/frameData');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
+import ScoreRenderer = require('./Renderer/scoreRenderer');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
@@ -17,6 +17,7 @@ class AppEntry {
 	game: Phaser.Game;
 	simulation: Simulation;
 	renderer: SimulationRenderer;
+	scoreRenderer: ScoreRenderer;
 	input: InputHandler;
 
 	private frameQueue: Array<FrameData> = [];
@@ -45,8 +46,8 @@ class AppEntry {
 	simulationReceived(simulation: Simulation) {
 		this.simulation = simulation;
 
-		let rendererGroup = this.game.add.group();
-		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
+		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
+		this.scoreRenderer = new ScoreRenderer(this.game.add.group());
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid));
 	}
 
@@ -58,6 +59,11 @@ class AppEntry {
 
 		for (let i = 0; i < tickData.framesElapsed; i++) {
 			this.frameQueue.push(tickData.frameData[i]);
+		}
+		
+		//This should really be applied at the end of playing the frameQueue
+		if (tickData.points) {
+			this.scoreRenderer.updateData(tickData.points);
 		}
 	}
 

@@ -36,8 +36,7 @@ class AppEntry {
 
 	create() {
 		console.log('create');
-		let rendererGroup = this.game.add.group();
-		this.renderer = new SimulationRenderer(this.game, this.simulation, rendererGroup);
+		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true), this.simulation.grid));
 	}
 	

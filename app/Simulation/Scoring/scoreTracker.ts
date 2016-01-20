@@ -2,7 +2,7 @@ import ComboOwnership = require('./comboOwnership');
 import OwnedMatch = require('./ownedMatch');
 
 class ScoreTracker {
-	private points: { [playerId: number]: number } = {};
+	points: { [playerId: number]: number } = {};
 
 	constructor(comboOwnership: ComboOwnership) {
 		comboOwnership.ownedMatchPerformed.on(this.ownedMatchPerformed.bind(this));

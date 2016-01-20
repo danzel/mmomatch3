@@ -29,7 +29,7 @@ describe('ComboOwnership.simpleMultipleOwner', () => {
 		simulation.update(1);
 
 		//It is fluke that these happen in this order
-		ownershipChecker.verifyMatch(3, [playerId2]); 
+		ownershipChecker.verifyMatch(3, [playerId2]);
 		ownershipChecker.verifyMatch(3, [playerId1, playerId2]);
 		ownershipChecker.verifyMatch(3, [playerId1]);
 
