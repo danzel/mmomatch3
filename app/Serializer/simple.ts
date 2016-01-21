@@ -19,7 +19,7 @@ interface SerializedBoot {
 }
 
 class SimpleSerializer implements ISerializer {
-	serializeBoot(simulation: Simulation) : any {
+	serializeBoot(simulation: Simulation): any {
 		return {
 			idCounter: simulation.matchableFactory.idForSerializing,
 			width: simulation.grid.width,
@@ -28,24 +28,24 @@ class SimpleSerializer implements ISerializer {
 			swapHandler: this.serializeSwapHandler(simulation.swapHandler)
 		};
 	}
-	
-	private serializeGrid(grid: Grid) : any {
+
+	private serializeGrid(grid: Grid): any {
 		let res = [];
-		
+
 		for (let x = 0; x < grid.width; x++) {
 			let col = grid.cells[x];
 			let newCol = [];
-		
+
 			for (let y = 0; y < col.length; y++) {
 				newCol.push(this.serializeMatchable(col[y]));
 			}
 			res.push(newCol);
 		}
-		
+
 		return res;
 	}
-	
-	private serializeMatchable(matchable: Matchable) : any {
+
+	private serializeMatchable(matchable: Matchable): any {
 		return {
 			id: matchable.id,
 			x: matchable.x,
@@ -57,40 +57,40 @@ class SimpleSerializer implements ISerializer {
 			beingSwapped: matchable.beingSwapped
 		}
 	}
-	
-	private serializeSwapHandler(swapHandler: SwapHandler) : any {
+
+	private serializeSwapHandler(swapHandler: SwapHandler): any {
 		let res = [];
-		
+
 		for (let i = 0; i < swapHandler.swaps.length; i++) {
 			let swap = swapHandler.swaps[i];
-			
+
 			res.push({ playerId: swap.playerId, left: swap.left.id, right: swap.right.id, time: swap.time, percent: swap.percent }); //TODO: percent can be calculated
 		}
 		return res;
 	}
-	
-	
+
+
 	deserializeBoot(data: any): BootData {
 		let json = <SerializedBoot>data;
-		
+
 		let matchableFactory = new MatchableFactory(json.idCounter);
 		let grid = new Grid(json.width, json.height);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory);
-		
+
 		let matchableById = this.deserializeGrid(simulation.grid, json.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, json.swapHandler, matchableById);
-		
+
 		return new BootData(simulation);
 	}
 
-	private deserializeGrid(grid: Grid, data: Array<Array<any>>) : any {
+	private deserializeGrid(grid: Grid, data: Array<Array<any>>): any {
 		let matchableById = {};
-		
+
 		for (let x = 0; x < data.length; x++) {
 			let dataCol = data[x];
 			let col = grid.cells[x];
-			
+
 			for (let y = 0; y < dataCol.length; y++) {
 				let matchableData = dataCol[y];
 				
@@ -100,16 +100,16 @@ class SimpleSerializer implements ISerializer {
 				matchable.disappearingTime = matchableData.disappearingTime;
 				matchable.yMomentum = matchableData.yMomentum;
 				matchable.beingSwapped = matchableData.beingSwapped;
-				
+
 				col.push(matchable);
 				matchableById[matchable.id] = matchable;
 			}
 		}
-		
+
 		return matchableById;
 	}
-	
-	private deserializeSwapHandler(swapHandler: SwapHandler, data: Array<any>, matchableById: any) : any {
+
+	private deserializeSwapHandler(swapHandler: SwapHandler, data: Array<any>, matchableById: any): any {
 		for (let i = 0; i < data.length; i++) {
 			let s = data[i];
 			let swap = new Swap(s.playerId, matchableById[s.left], matchableById[s.right]);
@@ -118,21 +118,29 @@ class SimpleSerializer implements ISerializer {
 			swapHandler.swaps.push(swap);
 		}
 	}
-	
-	serializeTick(tickData: TickData) : any {
+
+	serializeTick(tickData: TickData): any {
 		return tickData;
 	}
 
-	deserializeTick(data: any) : TickData {
+	deserializeTick(data: any): TickData {
 		return <TickData>data;
 	}
-	
-	serializeClientSwap(swapData: SwapClientData) : any {
+
+	serializeClientSwap(swapData: SwapClientData): any {
 		return swapData;
 	}
 
-	deserializeClientSwap(data: any) : SwapClientData {
+	deserializeClientSwap(data: any): SwapClientData {
 		return <SwapClientData>data;
+	}
+
+	serializePlayerId(playerId: number): any {
+		return playerId;
+	}
+	
+	deserializePlayerId(data: any): number {
+		return <number>data;
 	}
 }
 

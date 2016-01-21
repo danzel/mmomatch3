@@ -11,9 +11,11 @@ class Client {
 	private primus: Primus;
 	
 	simulationReceived = new LiteEvent<Simulation>();
+	playerIdReceived = new LiteEvent<number>();
 	tickReceived = new LiteEvent<TickData>();
 	
 	private haveReceivedSimulation: boolean;
+	private haveReceivedPlayerId: boolean;
 	
 	constructor(url: string, serializer: ISerializer) {
 		this.serializer = serializer;
@@ -43,6 +45,11 @@ class Client {
 			this.simulationReceived.trigger(bootData.simulation);
 			
 			this.haveReceivedSimulation = true;
+		} else if (!this.haveReceivedPlayerId) {
+			var playerId = this.serializer.deserializePlayerId(data);
+			this.playerIdReceived.trigger(playerId);
+			
+			this.haveReceivedPlayerId = true;
 		}
 		else {
 			var tickData = this.serializer.deserializeTick(data);

@@ -52,7 +52,7 @@ class TickDataFactory {
 			
 			res.points = [];
 			for (let l in this.scoreTracker.points) {
-				res.points.push(new TickPoints("player " + l, this.scoreTracker.points[l]));
+				res.points.push(new TickPoints(l, "player " + l, this.scoreTracker.points[l]));
 			}
 			res.points.sort((a, b) => b.points - a.points);
 			if (res.points.length > 3) {

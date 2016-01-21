@@ -41,6 +41,7 @@ class AppEntry {
 		//this.client = new Client('http://' + window.location.hostname + ':8091', new Serializer());
 		this.client.simulationReceived.on(this.simulationReceived.bind(this));
 		this.client.tickReceived.on(this.tickReceived.bind(this));
+		this.client.playerIdReceived.on(this.playerIdReceived.bind(this));
 	}
 
 	simulationReceived(simulation: Simulation) {
@@ -49,6 +50,10 @@ class AppEntry {
 		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
 		this.scoreRenderer = new ScoreRenderer(this.game.add.group());
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid));
+	}
+	
+	playerIdReceived(playerId: number) {
+		this.scoreRenderer.notifyPlayerId(playerId);
 	}
 
 	tickReceived(tickData: TickData) {

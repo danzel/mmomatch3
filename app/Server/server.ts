@@ -57,6 +57,7 @@ class Server {
 		});
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
+		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
 	}
 
 	private connectionReceived(spark: Primus.Spark) {
@@ -68,11 +69,18 @@ class Server {
 		} );
 
 		if (this.serializedBoot) {
-			spark.write(this.serializedBoot);
-			this.bootedSparks[spark.id] = this.playerProvider.createPlayer()
+			this.initSparkAsPlayer(spark);
 		}
 		else {
 			this.sparksRequiringBoot.push(spark);
+		}
+	}
+	
+	private connectionDisconnected(spark: Primus.Spark) {
+		if (this.bootedSparks[spark.id]) {
+			delete this.bootedSparks[spark.id];
+		} else {
+			this.sparksRequiringBoot.splice(this.sparksRequiringBoot.indexOf(spark), 1);
 		}
 	}
 
@@ -118,11 +126,19 @@ class Server {
 		if (this.sparksRequiringBoot.length > 0) {
 			this.serializedBoot = this.serializer.serializeBoot(this.simulation);
 			this.sparksRequiringBoot.forEach((spark) => {
-				spark.write(this.serializedBoot);
-				this.bootedSparks[spark.id] = this.playerProvider.createPlayer()
+				this.initSparkAsPlayer(spark);
 			});
 			this.sparksRequiringBoot.length = 0;
 		}
+	}
+	
+	private initSparkAsPlayer(spark: Primus.Spark) {
+		spark.write(this.serializedBoot);
+		var player = this.playerProvider.createPlayer();
+		spark.write(this.serializer.serializePlayerId(player.id));
+
+		this.bootedSparks[spark.id] = player;
+
 	}
 }
 
