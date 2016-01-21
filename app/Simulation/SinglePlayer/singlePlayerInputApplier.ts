@@ -1,10 +1,10 @@
 import Grid = require('../grid');
-import IInputApplier = require('../iInputApplier');
+import InputApplier = require('../inputApplier');
 import InputVerifier = require('../inputVerifier');
 import Matchable = require('../matchable');
 import SwapHandler = require('../swapHandler');
 
-class SinglePlayerInputApplier implements IInputApplier {
+class SinglePlayerInputApplier implements InputApplier {
 	private swapHandler: SwapHandler;
 	private inputVerifier: InputVerifier;
 	private grid: Grid;

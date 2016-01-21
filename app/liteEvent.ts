@@ -1,9 +1,4 @@
-interface ILiteEvent<T> {
-    on(handler: { (data?: T): void });
-    off(handler: { (data?: T): void });
-}
-
-class LiteEvent<T> implements ILiteEvent<T> {
+class LiteEvent<T> {
     private handlers: { (data?: T): void; }[] = [];
 
     public on(handler: { (data?: T): void }) {

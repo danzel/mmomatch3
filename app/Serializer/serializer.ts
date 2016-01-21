@@ -3,7 +3,7 @@ import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
-interface ISerializer {
+interface Serializer {
 	serializeBoot(simulation: Simulation): any;
 	deserializeBoot(data: any): BootData;
 
@@ -17,4 +17,4 @@ interface ISerializer {
 	deserializePlayerId(data: any): number;
 }
 
-export = ISerializer;
+export = Serializer;

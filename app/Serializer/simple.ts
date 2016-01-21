@@ -1,7 +1,7 @@
 import BootData = require('../DataPackets/bootData');
 import ClientSpawnManager = require('../Client/clientSpawnManager');
 import Grid = require('../Simulation/grid');
-import ISerializer = require('./iSerializer');
+import Serializer = require('./serializer');
 import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import Simulation = require('../Simulation/simulation');
@@ -18,7 +18,7 @@ interface SerializedBoot {
 	swapHandler: Array<any>;
 }
 
-class SimpleSerializer implements ISerializer {
+class SimpleSerializer implements Serializer {
 	serializeBoot(simulation: Simulation): any {
 		return {
 			idCounter: simulation.matchableFactory.idForSerializing,

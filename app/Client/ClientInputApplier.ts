@@ -1,10 +1,10 @@
 import Client = require('./client');
 import Grid = require('../Simulation/grid');
-import IInputApplier = require('../Simulation/iInputApplier');
+import InputApplier = require('../Simulation/inputApplier');
 import InputVerifier = require('../Simulation/inputVerifier');
 import Matchable = require('../Simulation/matchable');
 
-class ClientInputApplier implements IInputApplier {
+class ClientInputApplier implements InputApplier {
 	private client: Client;
 	private inputVerifier: InputVerifier;
 	private grid: Grid;

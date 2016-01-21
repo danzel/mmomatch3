@@ -1,12 +1,12 @@
 /// <reference path="../../typings/primus/primusClient.d.ts" />
-import ISerializer = require('../Serializer/iSerializer')
+import Serializer = require('../Serializer/serializer')
 import LiteEvent = require('../liteEvent');
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
 class Client {
-	private serializer: ISerializer;
+	private serializer: Serializer;
 	
 	private primus: Primus;
 	
@@ -17,7 +17,7 @@ class Client {
 	private haveReceivedSimulation: boolean;
 	private haveReceivedPlayerId: boolean;
 	
-	constructor(url: string, serializer: ISerializer) {
+	constructor(url: string, serializer: Serializer) {
 		this.serializer = serializer;
 		
 		console.log('connecting');

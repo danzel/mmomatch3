@@ -5,13 +5,13 @@ import http = require('http');
 
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import FrameData = require('../DataPackets/frameData');
-import ISerializer = require('../Serializer/iSerializer');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
 import Matchable = require('../Simulation/matchable');
 import Player = require('../Simulation/Scoring/player');
 import PlayerProvider = require('../Simulation/Scoring/playerProvider');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
+import Serializer = require('../Serializer/serializer');
 import Simulation = require('../Simulation/simulation');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
@@ -22,7 +22,7 @@ import TickDataFactory = require('./tickDataFactory');
 
 class Server {
 	private simulation: Simulation;
-	private serializer: ISerializer;
+	private serializer: Serializer;
 	private inputVerifier: InputVerifier;
 	
 	private playerProvider: PlayerProvider = new PlayerProvider();
@@ -39,7 +39,7 @@ class Server {
 
 	private dataReceivedBound = this.dataReceived.bind(this);
 	
-	constructor(simulation: Simulation, serializer: ISerializer, inputVerifier: InputVerifier) {
+	constructor(simulation: Simulation, serializer: Serializer, inputVerifier: InputVerifier) {
 		this.simulation = simulation;
 		this.serializer = serializer;
 		this.inputVerifier = inputVerifier;

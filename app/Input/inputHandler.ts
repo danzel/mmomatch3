@@ -1,5 +1,5 @@
 /// <reference path="../../typings/phaser/phaser.comments.d.ts" />
-import IInputApplier = require('../Simulation/iInputApplier');
+import InputApplier = require('../Simulation/inputApplier');
 import MatchableNode = require('../Renderer/matchableNode');
 import MatchDragHandler = require('./matchDragHandler');
 import PointerStateTracker = require('./pointerStateTracker');
@@ -18,7 +18,7 @@ class InputHandler {
 	private pointerStateTracker: PointerStateTracker;
 	private matchDragHandler: MatchDragHandler;
 	
-	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation, inputApplier: IInputApplier) {
+	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
 		this.game = game;
 		this.renderer = renderer;
 		this.pointerStateTracker = new PointerStateTracker(game, this);
@@ -40,7 +40,7 @@ class InputHandler {
 		//Hack code to cause matches anywhere you move the mouse
 		//let index = (<any>this.matchDragHandler).findMatchableIndex(x, y);
 		//if (index)
-		//	(<IInputApplier>(<any>this.matchDragHandler).inputApplier).swapMatchable(index.x, index.y, index.x + Math.round(Math.random() * 2 - 1), index.y + Math.round(Math.random() * 2 - 1)); 
+		//	(<InputApplier>(<any>this.matchDragHandler).inputApplier).swapMatchable(index.x, index.y, index.x + Math.round(Math.random() * 2 - 1), index.y + Math.round(Math.random() * 2 - 1)); 
 		//return;
 
 		//Movement drag handling

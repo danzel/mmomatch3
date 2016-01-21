@@ -1,6 +1,6 @@
 /// <reference path="../../typings/phaser/phaser.comments.d.ts" />
 import Grid = require('../Simulation/grid');
-import IInputApplier = require('../Simulation/iInputApplier');
+import InputApplier = require('../Simulation/inputApplier');
 import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('../Renderer/matchableNode');
 import Simulation = require('../Simulation/simulation');
@@ -10,12 +10,12 @@ import XY = require('./xy');
 class MatchDragHandler {
 	private renderer: SimulationRenderer;
 	private grid: Grid;
-	private inputApplier: IInputApplier;
+	private inputApplier: InputApplier;
 	
 	private startDragPx: Array<XY>;
 	private startDragMatchable: Array<XY>;
 	
-	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: IInputApplier) {
+	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: InputApplier) {
 		this.renderer = renderer;
 		this.grid = grid;
 		this.inputApplier = inputApplier;
