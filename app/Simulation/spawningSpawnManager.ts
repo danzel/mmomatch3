@@ -8,7 +8,7 @@ import MatchableFactory = require('../Simulation/matchableFactory');
 class SpawningSpawnManager extends SpawnManager {
 	private isInitialSpawn = true;
 
-	constructor(grid: Grid, matchableFactory: MatchableFactory, private randomGenerator: RandomGenerator) {
+	constructor(grid: Grid, matchableFactory: MatchableFactory, private randomGenerator: RandomGenerator, private maxColor: number) {
 		super(grid, matchableFactory);	
 	}
 	
@@ -42,7 +42,7 @@ class SpawningSpawnManager extends SpawnManager {
 
 			bannedColors.sort();
 
-			let color = this.randomGenerator.intExclusive(0, (Color.Max - bannedColors.length));
+			let color = this.randomGenerator.intExclusive(0, (this.maxColor - bannedColors.length));
 
 			for (var i = 0; i < bannedColors.length; i++) {
 				if (bannedColors[i] <= color)
@@ -52,7 +52,7 @@ class SpawningSpawnManager extends SpawnManager {
 			return color;
 		}
 
-		return this.randomGenerator.intExclusive(0, Color.Max);
+		return this.randomGenerator.intExclusive(0, this.maxColor);
 	}
 }
 

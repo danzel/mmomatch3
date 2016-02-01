@@ -1,3 +1,4 @@
+import Color = require('./simulation/color');
 import Grid = require('./Simulation/grid');
 import InputVerifier = require('./Simulation/inputVerifier');
 import MatchableFactory = require('./Simulation/matchableFactory');
@@ -17,7 +18,7 @@ class AppEntry {
 	constructor() {
 		let grid = new Grid(50, 20);
 		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator());
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), Color.Max);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true));
 	}

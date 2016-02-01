@@ -1,4 +1,5 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
+import Color = require('./simulation/color');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import InputHandler = require('./Input/inputHandler');
@@ -22,7 +23,7 @@ class AppEntry {
 		
 		let grid = new Grid(50, 20);
 		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator());
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), Color.Max);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 	}
 
