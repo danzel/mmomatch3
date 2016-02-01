@@ -29,16 +29,7 @@ class SimpleSerializer implements Serializer {
 		return swapData;
 	}
 
-	serializePlayerId(playerId: number): any {
-		//hack :(
-		return { packetType: PacketType.playerId, data: playerId };
-	}
-
 	deserialize(data: any): { packetType: PacketType, data: any } {
-		//This packet is a hack
-		if (data.packetType == PacketType.playerId)
-			return data;
-			
 		//Because we pack PacketType in to a new field we can do this horrible hack
 		return { packetType: data.packetType, data: data };
 	}

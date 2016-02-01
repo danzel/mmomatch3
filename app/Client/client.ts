@@ -19,7 +19,6 @@ class Client {
 	tickReceived = new LiteEvent<TickData>();
 	
 	private haveReceivedSimulation: boolean;
-	private haveReceivedPlayerId: boolean;
 	
 	constructor(url: string, serializer: Serializer) {
 		this.serializer = serializer;
@@ -31,11 +30,6 @@ class Client {
 
 		this.primus.on('open', function() { console.log('open'); });
 		this.primus.on('data', this.dataReceived, this);
-
-		//setTimeout(function() {
-		//	console.log('sending');
-		//	primus.write('hello world');
-		//}, 2000);
 	}
 	
 	sendSwap(leftId: number, rightId: number) {
@@ -48,13 +42,9 @@ class Client {
 		
 		if (!this.haveReceivedSimulation && packet.packetType == PacketType.boot) {
 			this.simulationReceived.trigger(this.packetGenerator.recreateSimulation(<BootData>packet.data));
+			this.playerIdReceived.trigger((<BootData>packet.data).playerId);
 			
 			this.haveReceivedSimulation = true;
-		} else if (!this.haveReceivedPlayerId && packet.packetType == PacketType.playerId) {
-			var playerId = <number>packet.data;
-			this.playerIdReceived.trigger(playerId);
-			
-			this.haveReceivedPlayerId = true;
 		}
 		else if (packet.packetType == PacketType.tick) {
 			this.tickReceived.trigger(<TickData>packet.data);

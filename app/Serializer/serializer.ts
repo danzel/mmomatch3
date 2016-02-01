@@ -11,8 +11,6 @@ interface Serializer {
 
 	serializeClientSwap(swapData: SwapClientData): any;
 
-	serializePlayerId(playerId: number): any;
-
 	deserialize(data: any): { packetType: PacketType, data: any };
 }
 

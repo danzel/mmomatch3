@@ -3,6 +3,7 @@
 import express = require('express');
 import http = require('http');
 
+import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import FrameData = require('../DataPackets/frameData');
 import Primus = require('primus');
@@ -36,7 +37,7 @@ class Server {
 	private httpServer: http.Server;
 	private primus: Primus;
 
-	private serializedBoot;
+	private bootData: BootData;
 	private sparksRequiringBoot: Array<Primus.Spark> = [];
 	private bootedSparks: { [id: string]: Player } = {};
 
@@ -71,7 +72,7 @@ class Server {
 			callback(spark, data);
 		} );
 
-		if (this.serializedBoot) {
+		if (this.bootData) {
 			this.initSparkAsPlayer(spark);
 		}
 		else {
@@ -127,10 +128,10 @@ class Server {
 				spark.write(data);
 			}
 		});
-		this.serializedBoot = null;
+		this.bootData = null;
 
 		if (this.sparksRequiringBoot.length > 0) {
-			this.serializedBoot = this.serializer.serializeBoot(this.packetGenerator.generateBootData(this.simulation));
+			this.bootData = this.packetGenerator.generateBootData(this.simulation);
 			this.sparksRequiringBoot.forEach((spark) => {
 				this.initSparkAsPlayer(spark);
 			});
@@ -139,9 +140,9 @@ class Server {
 	}
 	
 	private initSparkAsPlayer(spark: Primus.Spark) {
-		spark.write(this.serializedBoot);
 		var player = this.playerProvider.createPlayer();
-		spark.write(this.serializer.serializePlayerId(player.id));
+		this.bootData.playerId = player.id;
+		spark.write(this.serializer.serializeBoot(this.bootData));
 
 		this.bootedSparks[spark.id] = player;
 
