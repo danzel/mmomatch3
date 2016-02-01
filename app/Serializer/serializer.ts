@@ -1,20 +1,19 @@
 import BootData = require('../DataPackets/bootData');
+import PacketType = require('../DataPackets/PacketType');
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
 interface Serializer {
-	serializeBoot(simulation: Simulation): any;
-	deserializeBoot(data: any): BootData;
+	serializeBoot(bootData: BootData): any;
 
 	serializeTick(tickData: TickData): any;
-	deserializeTick(data: any): TickData;
 
 	serializeClientSwap(swapData: SwapClientData): any;
-	deserializeClientSwap(data: any): SwapClientData;
 
 	serializePlayerId(playerId: number): any;
-	deserializePlayerId(data: any): number;
+
+	deserialize(data: any): { packetType: PacketType, data: any };
 }
 
 export = Serializer;

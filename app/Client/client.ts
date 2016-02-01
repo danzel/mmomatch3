@@ -1,6 +1,9 @@
 /// <reference path="../../typings/primus/primusClient.d.ts" />
-import Serializer = require('../Serializer/serializer')
+import BootData = require('../DataPackets/bootData');
 import LiteEvent = require('../liteEvent');
+import PacketGenerator = require('../DataPackets/packetGenerator');
+import PacketType = require('../DataPackets/packetType');
+import Serializer = require('../Serializer/serializer')
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
@@ -8,6 +11,7 @@ import TickData = require('../DataPackets/tickData');
 class Client {
 	private serializer: Serializer;
 	
+	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private primus: Primus;
 	
 	simulationReceived = new LiteEvent<Simulation>();
@@ -40,21 +44,22 @@ class Client {
 	
 	private dataReceived(data: any) {
 		console.log('data');
-		if (!this.haveReceivedSimulation) {
-			let bootData = this.serializer.deserializeBoot(data);
-			this.simulationReceived.trigger(bootData.simulation);
+		let packet = this.serializer.deserialize(data);
+		
+		if (!this.haveReceivedSimulation && packet.packetType == PacketType.boot) {
+			this.simulationReceived.trigger(this.packetGenerator.recreateSimulation(<BootData>packet.data));
 			
 			this.haveReceivedSimulation = true;
-		} else if (!this.haveReceivedPlayerId) {
-			var playerId = this.serializer.deserializePlayerId(data);
+		} else if (!this.haveReceivedPlayerId && packet.packetType == PacketType.playerId) {
+			var playerId = <number>packet.data;
 			this.playerIdReceived.trigger(playerId);
 			
 			this.haveReceivedPlayerId = true;
 		}
-		else {
-			var tickData = this.serializer.deserializeTick(data);
-			
-			this.tickReceived.trigger(tickData);
+		else if (packet.packetType == PacketType.tick) {
+			this.tickReceived.trigger(<TickData>packet.data);
+		} else {
+			console.warn('Received unexpected packet ', packet);
 		}
 	}
 }

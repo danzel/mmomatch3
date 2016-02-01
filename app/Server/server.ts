@@ -8,6 +8,8 @@ import FrameData = require('../DataPackets/frameData');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
 import Matchable = require('../Simulation/matchable');
+import PacketGenerator = require('../DataPackets/packetGenerator');
+import PacketType = require('../DataPackets/packetType');
 import Player = require('../Simulation/Scoring/player');
 import PlayerProvider = require('../Simulation/Scoring/playerProvider');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
@@ -25,6 +27,7 @@ class Server {
 	private serializer: Serializer;
 	private inputVerifier: InputVerifier;
 	
+	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
 	private scoreTracker: ScoreTracker;
 	private tickDataFactory: TickDataFactory;
@@ -93,7 +96,10 @@ class Server {
 			return;
 		}
 
-		let swapData = this.serializer.deserializeClientSwap(data);
+		let packet = this.serializer.deserialize(data);
+		if (packet.packetType != PacketType.swapClient)
+			return;
+		let swapData = <SwapClientData>packet.data
 		
 		//Find the two
 		let left = this.simulation.grid.findMatchableById(swapData.leftId);
@@ -124,7 +130,7 @@ class Server {
 		this.serializedBoot = null;
 
 		if (this.sparksRequiringBoot.length > 0) {
-			this.serializedBoot = this.serializer.serializeBoot(this.simulation);
+			this.serializedBoot = this.serializer.serializeBoot(this.packetGenerator.generateBootData(this.simulation));
 			this.sparksRequiringBoot.forEach((spark) => {
 				this.initSparkAsPlayer(spark);
 			});
