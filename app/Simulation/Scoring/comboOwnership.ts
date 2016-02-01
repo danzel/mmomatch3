@@ -65,7 +65,7 @@ class ComboOwnership {
 	//When a match happens, the player gets ownership in that column from that height until the column is quiet again
 	private matchPerformed(matches: Array<Matchable>) {
 		//Calculate owners
-		var owners = {};
+		var owners: { [playerId: number]: boolean } = {};
 		for (let i = 0; i < matches.length; i++) {
 			let match = matches[i];
 			let ownersInCol = this.ownersByColumn[match.x];
@@ -95,10 +95,10 @@ class ComboOwnership {
 		for (let key in owners) {
 			ownersArray.push(parseInt(key, 10));
 		}
-		
+
 		this.ownedMatchPerformed.trigger(new OwnedMatch(ownersArray, matches));
 	}
-	
+
 	private columnBecameQuiet(x: number) {
 		this.ownersByColumn[x].length = 0;
 	}

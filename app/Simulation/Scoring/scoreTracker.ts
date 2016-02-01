@@ -23,13 +23,13 @@ class ScoreTracker {
 	}
 
 	debugPrint() {
-		let list = [];
+		let list: any = [];
 
 		for (let i in this.points) {
 			list.push({ playerId: i, points: this.points[i] });
 		}
 		
-		list.sort((a, b) => b.points - a.points);
+		list.sort((a: any, b: any) => b.points - a.points);
 		
 		for (let i = 0; i < list.length; i++) {
 			var p = list[i];

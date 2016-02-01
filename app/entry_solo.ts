@@ -1,5 +1,5 @@
 /// <reference path="../typings/phaser/phaser.comments.d.ts" />
-import Color = require('./simulation/color');
+import Color = require('./Simulation/color');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import InputHandler = require('./Input/inputHandler');

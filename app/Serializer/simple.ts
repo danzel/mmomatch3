@@ -1,6 +1,6 @@
 import BootData = require('../DataPackets/bootData');
 import Serializer = require('./serializer');
-import PacketType = require('../DataPackets/PacketType');
+import PacketType = require('../DataPackets/packetType');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 

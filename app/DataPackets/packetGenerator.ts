@@ -5,12 +5,12 @@ import SwapData = require('./BootParts/swapData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
 
 import ClientSpawnManager = require('../Client/clientSpawnManager');
-import Grid = require('../simulation/grid');
-import Matchable = require('../simulation/matchable');
+import Grid = require('../Simulation/grid');
+import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
-import Simulation = require('../simulation/simulation');
+import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
-import SwapHandler = require('../simulation/swapHandler');
+import SwapHandler = require('../Simulation/swapHandler');
 
 class PacketGenerator {
 	generateBootData(simulation: Simulation): BootData {
@@ -78,7 +78,7 @@ class PacketGenerator {
 	}
 
 	private deserializeGrid(grid: Grid, gridData: GridData): any {
-		let matchableById = {};
+		let matchableById:{[id: number]: Matchable} = {};
 		let data = gridData.matchables;
 		
 		for (let x = 0; x < data.length; x++) {

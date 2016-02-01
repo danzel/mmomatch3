@@ -1,4 +1,4 @@
-import Color = require('./simulation/color');
+import Color = require('./Simulation/color');
 import Grid = require('./Simulation/grid');
 import InputVerifier = require('./Simulation/inputVerifier');
 import MatchableFactory = require('./Simulation/matchableFactory');

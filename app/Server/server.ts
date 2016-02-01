@@ -123,7 +123,7 @@ class Server {
 		//We should only be sending updates to clients we've already sent a boot to
 		var data = this.serializer.serializeTick(tickData);
 		var bootedSparks = this.bootedSparks;
-		this.primus.forEach(function(spark: Primus.Spark, id) {
+		this.primus.forEach(function(spark: Primus.Spark, id: string) {
 			if (bootedSparks[id]) {
 				spark.write(data);
 			}

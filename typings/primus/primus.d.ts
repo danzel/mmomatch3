@@ -42,7 +42,7 @@ declare module "primus" {
 		 * Interate over the connections.
 		 * @param fn The function that is called every iteration.
  		 */
-		forEach(fn: (spark: Primus.Spark, id: string, connections: Array<Primus.Spark>) => void);
+		forEach(fn: (spark: Primus.Spark, id: string, connections: Array<Primus.Spark>) => void): void;
 		
 		/**
 		 * Broadcast the message to all connections.
@@ -55,7 +55,7 @@ declare module "primus" {
 		/**
 		 * Save the client-side library to the given path
 		 */
-		save(path: string, completion?: (error: any) => void);
+		save(path: string, completion?: (error: any) => void): void;
 
 		/**
 		 * Return the client-side library as a string

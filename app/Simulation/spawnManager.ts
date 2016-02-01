@@ -14,7 +14,7 @@ abstract class SpawnManager {
 		this.matchableFactory = matchableFactory;
 	}
 
-	abstract update(dt: number);
+	abstract update(dt: number): void;
 
 	protected findYForColumn(column: Array<Matchable>): number {
 		let y = this.grid.height;

@@ -29,7 +29,7 @@ class SpawningSpawnManager extends SpawnManager {
 		this.isInitialSpawn = false;
 	}
 
-	private getRandomColor(x, y): Color {
+	private getRandomColor(x: number, y: number): Color {
 		if (this.isInitialSpawn) {
 			let bannedColors = new Array<Color>();
 

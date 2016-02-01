@@ -1,5 +1,5 @@
 import BootData = require('../DataPackets/bootData');
-import PacketType = require('../DataPackets/PacketType');
+import PacketType = require('../DataPackets/packetType');
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');

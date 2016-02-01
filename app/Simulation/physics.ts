@@ -12,7 +12,7 @@ class Physics {
 	}
 
 	update(dt: number) {
-		let landed = [];
+		let landed: Array<Matchable> = [];
 
 		for (let x = 0; x < this.grid.width; x++) {
 			var col = this.grid.cells[x];
