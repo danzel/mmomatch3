@@ -4,6 +4,7 @@
     "start": "node built_server/entry_server.js"
   },
   "dependencies": {
+    "bit-array": "^0.2.2",
     "express": "^4.13.3",
     "jasmine": "^2.4.1",
     "json-loader": "^0.5.4",

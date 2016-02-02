@@ -4,9 +4,14 @@ import Matchable = require('../../../app/Simulation/matchable');
 import Physics = require('../../../app/Simulation/physics');
 
 describe('Physics', () => {
-	let grid = new Grid(1, 1);
-	let physics = new Physics(grid);
-
+	let grid: Grid;
+	let physics: Physics;
+	
+	beforeEach(() => {
+		grid = new Grid(1, 1);
+		physics = new Physics(grid);
+	});
+	
 	it('makes Matchables fall', () => {
 		let m = new Matchable(1, 0, 1, 1);
 

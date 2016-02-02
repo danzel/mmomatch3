@@ -22,6 +22,9 @@ class AppEntry {
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 		
 		let grid = new Grid(50, 20);
+		grid.setHole(2, 4);
+		grid.setHole(2, 8);
+		grid.setHole(3, 5);
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), Color.Max);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);

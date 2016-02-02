@@ -1,3 +1,6 @@
+/// <reference path="../../typings/bit-array/bit-array.d.ts" />
+import BitArray = require('bit-array');
+
 import Matchable = require('./matchable');
 
 interface XY {
@@ -6,22 +9,27 @@ interface XY {
 }
 
 class Grid {
-	
+	private maxInColumn: Array<number>;
+
 	width: number
 	height: number
 	cells: Array<Array<Matchable>>
-	 
+	private holes: BitArray;
+
 	constructor(width: number, height: number) {
 		this.width = width;
 		this.height = height;
 		this.cells = new Array<Array<Matchable>>(width);
+		this.holes = new BitArray(width * height);
+		this.maxInColumn = new Array<number>(width);
 
-		for (var i = 0; i < width; i++){
-			this.cells[i] = new Array<Matchable>(0);
+		for (var x = 0; x < width; x++) {
+			this.cells[x] = new Array<Matchable>(0);
+			this.maxInColumn[x] = height;
 		}
 	}
 
-	findMatchableById(id: number) : Matchable {
+	findMatchableById(id: number): Matchable {
 		for (let x = 0; x < this.width; x++) {
 			let col = this.cells[x];
 			for (let y = 0; y < col.length; y++) {
@@ -30,10 +38,10 @@ class Grid {
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	findMatchableAtPosition(positionX: number, positionY: number) {
 		let col = this.cells[positionX];
 		for (let i = Math.min(positionY, col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
@@ -42,7 +50,7 @@ class Grid {
 			}
 		}
 	}
-	
+
 	swap(left: Matchable, right: Matchable): void {
 		let leftCol = this.cells[left.x];
 		let rightCol = this.cells[right.x];
@@ -58,9 +66,26 @@ class Grid {
 
 		right.x = tempX;
 		right.y = tempY;
-		
+
 		rightCol[rightY] = left;
 		leftCol[leftY] = right;
+	}
+
+	private indexFromXY(x: number, y: number): number {
+		return x * this.height + y;
+	}
+
+	setHole(x: number, y: number): void {
+		this.maxInColumn[x]--;
+		this.holes.set(this.indexFromXY(x, y), true);
+	}
+
+	isHole(x: number, y: number): boolean {
+		return this.holes.get(this.indexFromXY(x, y));
+	}
+
+	maxMatchablesInColumn(x: number): number {
+		return this.maxInColumn[x];
 	}
 }
 

@@ -16,12 +16,19 @@ class Physics {
 
 		for (let x = 0; x < this.grid.width; x++) {
 			var col = this.grid.cells[x];
+			let holesBelow = 0;
 			for (let y = 0; y < col.length; y++) {
+				if (this.grid.isHole(x, y)) {
+					holesBelow++;
+				}
+				
+				let maxY = y + holesBelow;
+				
 				let matchable = col[y];
-				if (matchable.y > y && !matchable.beingSwapped && !matchable.isDisappearing) {
+				if (matchable.y > maxY && !matchable.beingSwapped && !matchable.isDisappearing) {
 					matchable.yMomentum += dt * 100;
 
-					matchable.y = Math.max(y, matchable.y - dt * matchable.yMomentum);
+					matchable.y = Math.max(maxY, matchable.y - dt * matchable.yMomentum);
 					
 					//Stop when we hit the one below us and follow its speed
 					if (y > 0) {
@@ -32,7 +39,7 @@ class Physics {
 						}
 					}
 
-					if (matchable.y == y) {
+					if (matchable.y == maxY) {
 						matchable.yMomentum = 0;
 						landed.push(matchable);
 					}
