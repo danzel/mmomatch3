@@ -10,9 +10,12 @@ class TestUtil {
 		for (var x = 0; x < grid.width; x++) {
 			for (var y = 0; y < grid.height; y++) {
 				var c = contents[grid.height - 1 - y][x];
-
-				grid.cells[x].push(new Matchable(idCounter, x, y, parseInt(c, 10)));
-				idCounter++;
+				if (c == 'X') {
+					grid.setHole(x, y);
+				} else {
+					grid.cells[x].push(new Matchable(idCounter, x, y, parseInt(c, 10)));
+					idCounter++;
+				}
 			}
 		}
 	}

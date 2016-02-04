@@ -58,30 +58,34 @@ class MatchChecker {
 	
 	scanLeft(matchable: Matchable, action: (matchable: Matchable) => void) {
 		for (let x = matchable.x - 1; x >= 0; x--) {
-			if (!this.matches(matchable, this.grid.cells[x][matchable.y]))
+			let other = this.grid.findMatchableAtPosition(x, matchable.y);
+			if (!other || !this.matches(matchable, other))
 				break;
-			action(this.grid.cells[x][matchable.y]);
+			action(other);
 		}
 	}
 	scanRight(matchable: Matchable, action: (matchable: Matchable) => void) {
 		for (let x = matchable.x + 1; x < this.grid.width; x++) {
-			if (!this.matches(matchable, this.grid.cells[x][matchable.y]))
+			let other = this.grid.findMatchableAtPosition(x, matchable.y);
+			if (!other || !this.matches(matchable, other))
 				break;
-			action(this.grid.cells[x][matchable.y]);
+			action(other);
 		}
 	}
 	scanDown(matchable: Matchable, action: (matchable: Matchable) => void) {
 		for (let y = matchable.y - 1; y >= 0; y--) {
-			if (!this.matches(matchable, this.grid.cells[matchable.x][y]))
+			let other = this.grid.findMatchableAtPosition(matchable.x, y);
+			if (!other || !this.matches(matchable, other))
 				break;
-			action(this.grid.cells[matchable.x][y]);
+			action(other);
 		}
 	}
 	scanUp(matchable: Matchable, action: (matchable: Matchable) => void) {
 		for (let y = matchable.y + 1; y < this.grid.height; y++) {
-			if (!this.matches(matchable, this.grid.cells[matchable.x][y]))
+			let other = this.grid.findMatchableAtPosition(matchable.x, y);
+			if (!other || !this.matches(matchable, other))
 				break;
-			action(this.grid.cells[matchable.x][y]);
+			action(other);
 		}
 	}
 }
