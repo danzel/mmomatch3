@@ -25,6 +25,10 @@ class InputHandler {
 		this.matchDragHandler = new MatchDragHandler(renderer, simulation.grid, inputApplier);
 		
 		this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
+		
+		inputApplier.failedToSwap.on((data) => {
+			this.renderer.failedToSwap(data.matchable, data.direction);
+		})
 	}
 
 	update(dt: number) {

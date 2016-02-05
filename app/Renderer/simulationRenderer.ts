@@ -1,4 +1,5 @@
 /// <reference path="../../typings/phaser/phaser.comments.d.ts" />
+import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('./matchableNode');
@@ -12,17 +13,11 @@ interface IXY {
 }
 
 class SimulationRenderer {
-	private game: Phaser.Game;
-	private simulation: Simulation;
-	private group: Phaser.Group;
 	private matchablesGroup: Phaser.Group;
 
 	private matchableNodes: { [id: number]: MatchableNode }
 
-	constructor(game: Phaser.Game, simulation: Simulation, group: Phaser.Group) {
-		this.game = game;
-		this.simulation = simulation;
-		this.group = group;
+	constructor(private game: Phaser.Game, private simulation: Simulation, private group: Phaser.Group) {
 		this.matchablesGroup = game.add.group(this.group);
 		this.matchableNodes = {};
 
@@ -43,6 +38,13 @@ class SimulationRenderer {
 			for (var y = 0; y < col.length; y++) {
 				this.onMatchableSpawned(col[y]);
 			}
+		}
+		
+	}
+
+	failedToSwap(matchable: Matchable, direction: IXY)  {
+		if (matchable) {
+			this.matchableNodes[matchable.id].failedToSwap(direction);
 		}
 	}
 

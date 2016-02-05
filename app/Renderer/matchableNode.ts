@@ -4,28 +4,28 @@ import Swap = require('../Simulation/swap');
 
 class MatchableNode {
 	public static PositionScalar = 100;
-	
+
 	matchable: Matchable
 	sprite: Phaser.Sprite;
-	
-	constructor(matchable: Matchable, parent : Phaser.Group) {
+
+	constructor(matchable: Matchable, parent: Phaser.Group) {
 		this.matchable = matchable;
 		this.sprite = parent.create(0, 0, 'ball_' + (matchable.color + 1));
 
 		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
-		
+
 		this.updatePosition();
 	}
-	
+
 	updatePosition(swap?: Swap) {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
 
 		this.sprite.alpha = 1 - this.matchable.disappearingPercent;
-		
+
 		if (swap) {
 			let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
-			
+
 			var diffX = otherMatchable.x - this.matchable.x;
 			var diffY = otherMatchable.y - this.matchable.y;
 			
@@ -35,6 +35,23 @@ class MatchableNode {
 		}
 	}
 	
+	private static easingFunction(p: number): number {
+		return Math.sin(p * Math.PI * 2) * (1 - p * p);
+	}
+
+	failedToSwap(direction: { x: number, y: number }) {
+		//Wobble back and forwards a bit
+		let startX = this.sprite.x;
+		let startY = this.sprite.y;
+
+		this.sprite.bringToTop();
+
+		this.sprite.game.add.tween(this.sprite).to({
+			x: startX + direction.x * 0.5 * MatchableNode.PositionScalar,
+			y: startY - direction.y * 0.5 * MatchableNode.PositionScalar
+		}, 300, MatchableNode.easingFunction, true);
+	}
+
 	disappear() {
 		this.sprite.destroy();
 	}

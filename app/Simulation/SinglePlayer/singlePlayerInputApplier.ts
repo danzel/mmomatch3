@@ -4,21 +4,17 @@ import InputVerifier = require('../inputVerifier');
 import Matchable = require('../matchable');
 import SwapHandler = require('../swapHandler');
 
-class SinglePlayerInputApplier implements InputApplier {
+class SinglePlayerInputApplier extends InputApplier {
 	private swapHandler: SwapHandler;
-	private inputVerifier: InputVerifier;
-	private grid: Grid;
 
 	constructor(swapHandler: SwapHandler, inputVerifier: InputVerifier, grid: Grid) {
+		super(inputVerifier, grid);
+
 		this.swapHandler = swapHandler;
-		this.inputVerifier = inputVerifier;
-		this.grid = grid;
 	}
-	
-	swapMatchable(left: Matchable, right: Matchable) {
-		if (this.inputVerifier.swapIsValid(left, right)) {
-			this.swapHandler.swap(0, left, right);
-		}
+
+	protected performSwap(left: Matchable, right: Matchable): void {
+		this.swapHandler.swap(0, left, right);
 	}
 }
 
