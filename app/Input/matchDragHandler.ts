@@ -14,6 +14,7 @@ class MatchDragHandler {
 	
 	private startDragPx: Array<XY>;
 	private startDragMatchable: Array<XY>;
+	private consumed: Array<boolean>;
 	
 	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: InputApplier) {
 		this.renderer = renderer;
@@ -22,6 +23,7 @@ class MatchDragHandler {
 
 		this.startDragPx = [null, null];
 		this.startDragMatchable = [null, null];
+		this.consumed = [ false, false ];
 	}
 	
 	private get minDragPx() {
@@ -38,9 +40,10 @@ class MatchDragHandler {
 				
 				this.startDragPx[pointer.id] = new XY(x, y);
 				this.startDragMatchable[pointer.id] = selected;
+				this.consumed[pointer.id] = false;
 			}
 		}
-		else if (!held && this.startDragPx[pointer.id]) {
+		else if (this.startDragPx[pointer.id] && !this.consumed[pointer.id]) {
 			
 			let xDiff = x - this.startDragPx[pointer.id].x;
 			let yDiff = y - this.startDragPx[pointer.id].y;
@@ -57,16 +60,19 @@ class MatchDragHandler {
 				else {
 					right = this.grid.findMatchableAtPosition(start.x, start.y + (yDiff > 0 ? -1 : 1));
 				}
+				//TODO: Need an event when swapping fails and should show something
 				this.inputApplier.swapMatchable(left, right);
+
+				this.mouseCancel(pointer);
 			}
-			
-			
-			this.startDragPx[pointer.id] = null;
-			this.startDragMatchable[pointer.id] = null;
+		}
+		else if (!held) {
+			this.mouseCancel(pointer);
 		}
 	}
 	
 	mouseCancel(pointer: Phaser.Pointer) {
+		this.consumed[pointer.id] = true;
 		this.startDragPx[pointer.id] = null;
 		this.startDragMatchable[pointer.id] = null;
 	}
