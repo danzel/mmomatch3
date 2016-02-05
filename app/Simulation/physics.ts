@@ -18,7 +18,7 @@ class Physics {
 			var col = this.grid.cells[x];
 			let holesBelow = 0;
 			for (let y = 0; y < col.length; y++) {
-				if (this.grid.isHole(x, y)) {
+				while (this.grid.isHole(x, y + holesBelow)) {
 					holesBelow++;
 				}
 				
