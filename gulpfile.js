@@ -1,13 +1,15 @@
 var gulp = require('gulp');
 var gutil = require("gulp-util");
-var zip = require("gulp-zip");
+var sourcemaps = require('gulp-sourcemaps');
+var ts = require('gulp-typescript');
 var uglify = require('gulp-uglify');
 var webpack = require("webpack");
+var zip = require("gulp-zip");
 
 var webpackConfig = require("./webpack.config.js");
 
 
-gulp.task("default", ["webpack", 'uglify-primus', 'copy-img']);
+gulp.task("default", ["webpack", 'uglify-primus', 'copy-img', 'server']);
 
 
 gulp.task('webpack', function (callback) {
@@ -39,6 +41,18 @@ gulp.task('uglify-primus', function () {
 gulp.task('copy-img', function () {
 	gulp.src(['img/**/*']).pipe(gulp.dest('dist/img'));
 })
+
+gulp.task('server', function() {
+	return gulp.src('app/**/*.ts')
+		.pipe(sourcemaps.init())
+		.pipe(ts({
+			module: 'commonjs',
+			target: 'es5',
+			noImplicitAny: true
+		}))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('built_server'));
+});
 
 gulp.task('package', ['default'], function () {
 	return gulp.src([
