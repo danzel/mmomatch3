@@ -4,6 +4,7 @@ import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
 import FrameData = require('./DataPackets/frameData');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
+import PlayerCountRenderer = require('./Renderer/playerCountRenderer');
 import ScoreRenderer = require('./Renderer/scoreRenderer');
 import Simulation = require('./Simulation/simulation');
 import SimulationRenderer = require('./Renderer/simulationRenderer');
@@ -18,6 +19,7 @@ class AppEntry {
 	simulation: Simulation;
 	renderer: SimulationRenderer;
 	scoreRenderer: ScoreRenderer;
+	playerCountRenderer: PlayerCountRenderer;
 	input: InputHandler;
 
 	private frameQueue: Array<FrameData> = [];
@@ -49,6 +51,7 @@ class AppEntry {
 
 		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
 		this.scoreRenderer = new ScoreRenderer(this.game.add.group());
+		this.playerCountRenderer = new PlayerCountRenderer(this.game.add.group());
 		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid));
 	}
 	
@@ -69,6 +72,9 @@ class AppEntry {
 		//This should really be applied at the end of playing the frameQueue
 		if (tickData.points) {
 			this.scoreRenderer.updateData(tickData.points);
+		}
+		if (tickData.playerCount) {
+			this.playerCountRenderer.updateData(tickData.playerCount);
 		}
 	}
 

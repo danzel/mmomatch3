@@ -65,7 +65,7 @@ class Server {
 	}
 
 	private connectionReceived(spark: Primus.Spark) {
-		console.log("connection", spark);
+		console.log("connection", spark.id);
 		
 		let callback = this.dataReceivedBound;
 		spark.on('data', function(data: any) {
@@ -81,6 +81,7 @@ class Server {
 	}
 	
 	private connectionDisconnected(spark: Primus.Spark) {
+		console.log('disconnection', spark.id);
 		if (this.bootedSparks[spark.id]) {
 			delete this.bootedSparks[spark.id];
 		} else {
@@ -114,7 +115,7 @@ class Server {
 
 	update(dt: number) {
 		
-		var tickData = this.tickDataFactory.getTickIfReady();
+		var tickData = this.tickDataFactory.getTickIfReady(Object.keys(this.bootedSparks).length + this.sparksRequiringBoot.length);
 
 		if (!tickData) {
 			return;

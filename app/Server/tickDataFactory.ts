@@ -36,7 +36,7 @@ class TickDataFactory {
 		return this.frameData[frame];
 	}
 	
-	getTickIfReady(): TickData {
+	getTickIfReady(playerCount: number): TickData {
 		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 
 		if (elapsed < 2)
@@ -58,6 +58,8 @@ class TickDataFactory {
 			if (res.points.length > 3) {
 				res.points.length = 3;
 			}
+			
+			res.playerCount = playerCount;
 		}
 		
 		return res;
