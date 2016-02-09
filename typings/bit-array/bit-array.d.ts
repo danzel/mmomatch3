@@ -4,7 +4,7 @@ declare module "bit-array" {
 		/** Creates a new empty bit array with the given size in bits. */
 		constructor(size: number);
 		/** Creates a new bit array with the given size and using the hex string as value */
-		constructor(size: number, hex: string)
+		constructor(size: number, hex: string);
 		
 		/** Sets the bit at index to a value */
 		set(index: number, value: boolean): BitArray;
