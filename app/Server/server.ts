@@ -106,10 +106,8 @@ class Server {
 		//Find the two
 		let left = this.simulation.grid.findMatchableById(swapData.leftId);
 		let right = this.simulation.grid.findMatchableById(swapData.rightId);
-		if (left && right) {
-			if (this.inputVerifier.swapIsValid(left, right)) {
-				this.simulation.swapHandler.swap(player.id, left, right);
-			}
+		if (this.inputVerifier.swapIsValid(left, right)) {
+			this.simulation.swapHandler.swap(player.id, left, right);
 		}
 	}
 
