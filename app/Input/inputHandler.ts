@@ -13,14 +13,10 @@ interface IXY {
 }
 
 class InputHandler {
-	private game: Phaser.Game;
-	private renderer: SimulationRenderer;
 	private pointerStateTracker: PointerStateTracker;
 	private matchDragHandler: MatchDragHandler;
 	
-	constructor(game: Phaser.Game, renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
-		this.game = game;
-		this.renderer = renderer;
+	constructor(private game: Phaser.Game, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
 		this.pointerStateTracker = new PointerStateTracker(game, this);
 		this.matchDragHandler = new MatchDragHandler(renderer, simulation.grid, inputApplier);
 		
