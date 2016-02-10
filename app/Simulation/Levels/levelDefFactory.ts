@@ -6,7 +6,7 @@ class LevelDefFactory {
 	
 	
 	getLevel(levelNumber: number): LevelDef {
-		return new LevelDef(10, 10, [], LimitType.swaps, VictoryType.matches, 10, 31);
+		return new LevelDef(10, 10, [], 8, LimitType.swaps, VictoryType.matches, 10, 31);
 	}
 }
 

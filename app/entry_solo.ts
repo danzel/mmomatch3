@@ -4,6 +4,7 @@ import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
+import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import Serializer = require('./Serializer/simple');
@@ -21,12 +22,16 @@ class AppEntry {
 	constructor() {
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 		
-		let grid = new Grid(50, 20);
-		grid.setHole(2, 4);
-		grid.setHole(2, 8);
-		grid.setHole(3, 5);
+		let level = new LevelDefFactory().getLevel(0);
+		
+		let grid = new Grid(level.width, level.height);
+		for (let i = 0; i < level.holes.length; i++) {
+			let hole = level.holes[i];
+			grid.setHole(hole.x, hole.y);
+		}
+		
 		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), Color.Max);
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 	}
 

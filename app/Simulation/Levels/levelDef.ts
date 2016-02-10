@@ -9,8 +9,9 @@ interface XY {
 class LevelDef {
 	width: number;
 	height: number;
-
 	holes: Array<XY> = [];
+	
+	colorCount: number;
 	
 	limitType: LimitType;
 	victoryType: VictoryType;
@@ -24,10 +25,12 @@ class LevelDef {
 	// http://candycrush.wikia.com/wiki/Level_Types
 	// http://candycrushsoda.wikia.com/wiki/Level_Types
 	
-	constructor(width: number, height: number, holes: Array<XY>, limitType: LimitType, victoryType: VictoryType, limitValue: any, victoryValue: any) {
+	constructor(width: number, height: number, holes: Array<XY>, colorCount: number, limitType: LimitType, victoryType: VictoryType, limitValue: any, victoryValue: any) {
 		this.width = width;
 		this.height = height;
 		this.holes = holes;
+		
+		this.colorCount = colorCount;
 
 		this.limitType = limitType;
 		this.victoryType = victoryType;
