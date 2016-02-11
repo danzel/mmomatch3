@@ -2,9 +2,9 @@
 import InputApplier = require('../Simulation/inputApplier');
 import MatchableNode = require('../Renderer/matchableNode');
 import MatchDragHandler = require('./matchDragHandler');
-import PointerStateTracker = require('./pointerStateTracker');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
+import TouchCatchAll = require('../Renderer/Components/touchCatchAll');
 import XY = require('./xy');
 
 interface IXY {
@@ -13,15 +13,24 @@ interface IXY {
 }
 
 class InputHandler {
-	private pointerStateTracker: PointerStateTracker;
+	private touchCatchAll: TouchCatchAll;
 	private matchDragHandler: MatchDragHandler;
-	
+
+	private activeTouches: number = 0;
+	private touchBecameMulti: boolean = false;
+
 	constructor(private game: Phaser.Game, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
-		this.pointerStateTracker = new PointerStateTracker(game, this);
+		this.touchCatchAll = new TouchCatchAll(game);
+		this.game.world.add(this.touchCatchAll.sprite);
+
+		this.touchCatchAll.pointerDown.on((data) => this.pointerDown(data));
+		this.touchCatchAll.pointerMove.on((data) => this.pointerMove(data));
+		this.touchCatchAll.pointerUp.on((data) => this.pointerUp(data));
+
 		this.matchDragHandler = new MatchDragHandler(renderer, simulation.grid, inputApplier);
-		
+
 		this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
-		
+
 		inputApplier.failedToSwap.on((data) => {
 			this.renderer.failedToSwap(data.matchable, data.direction);
 		})
@@ -35,74 +44,86 @@ class InputHandler {
 		this.renderer.zoomAt(event.clientX, event.clientY, (1 + 0.1 * this.game.input.mouse.wheelDelta));
 	}
 
-	mouseCallback(pointer: Phaser.Pointer, x: number, y: number, down: boolean) {
-
-		//Hack code to cause matches anywhere you move the mouse
-		//let index = (<any>this.matchDragHandler).findMatchableIndex(x, y);
-		//if (index)
-		//	(<InputApplier>(<any>this.matchDragHandler).inputApplier).swapMatchable(index.x, index.y, index.x + Math.round(Math.random() * 2 - 1), index.y + Math.round(Math.random() * 2 - 1)); 
-		//return;
-
-		//Movement drag handling
-		if (pointer.middleButton.isDown && !down) {
-			this.renderer.translate(pointer.movementX, pointer.movementY);
-		}
-		
-		this.matchDragHandler.mouseMove(pointer, x, y, down, pointer.leftButton.isDown);
-	}
-	
-	private previousPointer1Px: XY;
-	private previousPointer2Px: XY;
-	private touchBecameMulti: boolean;
-	
-	touchCallback(pointer: Phaser.Pointer, x: number, y: number, down: boolean) {
-		
-		if (this.game.input.pointer1.isDown && this.game.input.pointer2.isDown) {
-			if (!this.touchBecameMulti)
-				this.matchDragHandler.mouseCancel(this.game.input.pointer1);
-			this.touchBecameMulti = true;
-			
-			if (this.previousPointer1Px) {
-
-				let previousCenter = this.calculateCenter(this.previousPointer1Px, this.previousPointer2Px);
-				let center = this.calculateCenter(this.game.input.pointer1, this.game.input.pointer2);
-				
-				//Translate
-				this.renderer.translate(center.x - previousCenter.x, center.y - previousCenter.y);
-				
-				//Scale
-				var previousDist = this.distanceBetween(this.previousPointer1Px, this.previousPointer2Px)
-				var newDist = this.distanceBetween(this.game.input.pointer1, this.game.input.pointer2);
-				
-				var scaleChange = newDist / previousDist;
-				this.renderer.zoomAt(center.x, center.y, scaleChange);
+	private pointerDown(pointer: Phaser.Pointer) {
+		if (pointer.pointerMode != Phaser.PointerMode.CURSOR) {
+			this.activeTouches++;
+			if (this.activeTouches >= 2 && !this.touchBecameMulti) {
+				this.matchDragHandler.mouseUp(this.game.input.pointer1);
+				this.touchBecameMulti = true;
 			}
-			
-			this.previousPointer1Px = new XY(this.game.input.pointer1.x, this.game.input.pointer1.y);
-			this.previousPointer2Px = new XY(this.game.input.pointer2.x, this.game.input.pointer2.y);
 		}
-		else {
-			delete this.previousPointer1Px;
-			delete this.previousPointer2Px;
-			
-			//Swap drag
-			if (!this.game.input.pointer1.isDown && !this.game.input.pointer2.isDown) {
+
+		if (!this.touchBecameMulti) {
+			this.matchDragHandler.mouseDown(pointer);
+		}
+	}
+
+	private pointerMove(pointer: Phaser.Pointer) {
+		if (pointer.middleButton.isDown) {
+			this.renderer.translate(pointer.rawMovementX, pointer.rawMovementY);
+		} else {
+			if (this.touchBecameMulti) {
+				this.multitouch(pointer);
+			}
+			else {
+				this.matchDragHandler.mouseMove(pointer);
+			}
+		}
+	}
+
+	private pointerUp(pointer: Phaser.Pointer) {
+		this.matchDragHandler.mouseUp(pointer);
+		if (pointer.pointerMode != Phaser.PointerMode.CURSOR) {
+			this.activeTouches--;
+			if (this.activeTouches == 0) {
 				this.touchBecameMulti = false;
 			}
-			
-			if (pointer == this.game.input.pointer1)
-				this.matchDragHandler.mouseMove(pointer, x ,y, down, pointer.isDown);
 		}
 	}
-	
-	calculateCenter(a: IXY, b: IXY) : XY {
+
+	private multitouch(pointer: Phaser.Pointer) {
+		if (this.activeTouches == 2 && (pointer.movementX || pointer.movementY)) {
+			let previousCenter = this.calculatePreviousCenter(this.game.input.pointer1, this.game.input.pointer2);
+			let center = this.calculateCenter(this.game.input.pointer1, this.game.input.pointer2);
+			
+			//Translate
+			this.renderer.translate(center.x - previousCenter.x, center.y - previousCenter.y);
+			
+			//Scale
+			var previousDist = this.previousDistanceBetween(this.game.input.pointer1, this.game.input.pointer2)
+			var newDist = this.distanceBetween(this.game.input.pointer1, this.game.input.pointer2);
+
+			var scaleChange = newDist / previousDist;
+			this.renderer.zoomAt(center.x, center.y, scaleChange);
+			
+			this.game.input.pointer1.resetMovement();
+			this.game.input.pointer2.resetMovement();
+		}
+	}
+
+	calculatePreviousCenter(pointer1: Phaser.Pointer, pointer2: Phaser.Pointer): XY {
+
+		return new XY(
+			(pointer1.x - pointer1.movementX + pointer2.x - pointer2.movementX) / 2,
+			(pointer1.y - pointer1.movementY + pointer2.y - pointer2.movementY) / 2
+		);
+	}
+
+	calculateCenter(a: IXY, b: IXY): XY {
 		return new XY((a.x + b.x) / 2, (a.y + b.y) / 2);
 	}
-	
-	distanceBetween(a: IXY, b: IXY) : number {
+
+	previousDistanceBetween(a: Phaser.Pointer, b: Phaser.Pointer): number {
+		var x = (a.x - a.movementX) - (b.x - b.movementX);
+		var y = (a.y - a.movementY) - (b.y - b.movementY);
+
+		return Math.sqrt(x * x + y * y);
+	}
+
+	distanceBetween(a: IXY, b: IXY): number {
 		var x = a.x - b.x;
 		var y = a.y - b.y;
-		
+
 		return Math.sqrt(x * x + y * y);
 	}
 }

@@ -12,41 +12,35 @@ class MatchDragHandler {
 	private grid: Grid;
 	private inputApplier: InputApplier;
 
-	private startDragPx: Array<XY>;
 	private startDragMatchable: Array<XY>;
-	private consumed: Array<boolean>;
 
 	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: InputApplier) {
 		this.renderer = renderer;
 		this.grid = grid;
 		this.inputApplier = inputApplier;
 
-		this.startDragPx = [null, null];
 		this.startDragMatchable = [null, null];
-		this.consumed = [false, false];
 	}
 
 	private get minDragPx() {
 		return this.renderer.getScale() * MatchableNode.PositionScalar / 2;
 	}
 
+	mouseDown(pointer: Phaser.Pointer) {
+		let selected = this.findMatchableIndex(pointer.x, pointer.y)
 
-	mouseMove(pointer: Phaser.Pointer, x: number, y: number, justDown: boolean, held: boolean) {
-		if (held && justDown) {
-			let selected = this.findMatchableIndex(x, y)
+		if (selected) {
+			console.log(selected.x, selected.y);
 
-			if (selected) {
-				console.log(selected.x, selected.y);
-
-				this.startDragPx[pointer.id] = new XY(x, y);
-				this.startDragMatchable[pointer.id] = selected;
-				this.consumed[pointer.id] = false;
-			}
+			this.startDragMatchable[pointer.id] = selected;
 		}
-		else if (this.startDragPx[pointer.id] && !this.consumed[pointer.id]) {
+	}
 
-			let xDiff = x - this.startDragPx[pointer.id].x;
-			let yDiff = y - this.startDragPx[pointer.id].y;
+	mouseMove(pointer: Phaser.Pointer) {
+		if (this.startDragMatchable[pointer.id]) {
+
+			let xDiff = pointer.movementX;
+			let yDiff = pointer.movementY;
 			
 			//If there is a movement in just one direction
 			if (Math.abs(xDiff) > this.minDragPx !== Math.abs(yDiff) > this.minDragPx) {
@@ -64,17 +58,12 @@ class MatchDragHandler {
 				let dir = { x: horizontal ? (xDiff > 0 ? 1 : -1) : 0, y: !horizontal ? (yDiff > 0 ? -1 : 1) : 0}
 				this.inputApplier.swapMatchable(left, right, dir);
 
-				this.mouseCancel(pointer);
+				this.mouseUp(pointer);
 			}
-		}
-		else if (!held) {
-			this.mouseCancel(pointer);
 		}
 	}
 
-	mouseCancel(pointer: Phaser.Pointer) {
-		this.consumed[pointer.id] = true;
-		this.startDragPx[pointer.id] = null;
+	mouseUp(pointer: Phaser.Pointer) {
 		this.startDragMatchable[pointer.id] = null;
 	}
 
