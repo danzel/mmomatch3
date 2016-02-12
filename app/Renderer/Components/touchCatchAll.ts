@@ -51,19 +51,21 @@ class TouchCatchAll {
 
 
 			} else {
-				this.pointerUp.trigger(pointer);
-				delete this.lastPointerPosition[pointer.id];
+				this.checkForUp(pointer);
 			}
 		};
 		
-		
 		//For some reason we don't get update calls when a touch is released, so use the sprite event for that
 		this.sprite.events.onInputUp.add((sprite: Phaser.Sprite, pointer: Phaser.Pointer) => {
-			if (this.lastPointerPosition[pointer.id]) {
-				this.pointerUp.trigger(pointer);
-				delete this.lastPointerPosition[pointer.id];
-			}
+			this.checkForUp(pointer);
 		});
+	}
+
+	private checkForUp(pointer: Phaser.Pointer) {
+		if (this.lastPointerPosition[pointer.id]) {
+			this.pointerUp.trigger(pointer);
+			delete this.lastPointerPosition[pointer.id];
+		}
 	}
 }
 

@@ -18,9 +18,9 @@ class InputHandler {
 	private activeTouches: number = 0;
 	private touchBecameMulti: boolean = false;
 
-	constructor(private game: Phaser.Game, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
-		this.touchCatchAll = new TouchCatchAll(game);
-		this.game.world.add(this.touchCatchAll.sprite);
+	constructor(private group: Phaser.Group, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
+		this.touchCatchAll = new TouchCatchAll(group.game);
+		group.add(this.touchCatchAll.sprite);
 
 		this.touchCatchAll.pointerDown.on((data) => this.pointerDown(data));
 		this.touchCatchAll.pointerMove.on((data) => this.pointerMove(data));
@@ -28,7 +28,7 @@ class InputHandler {
 
 		this.matchDragHandler = new MatchDragHandler(renderer, simulation.grid, inputApplier);
 
-		this.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
+		this.group.game.input.mouse.mouseWheelCallback = this.mouseWheel.bind(this);
 
 		inputApplier.failedToSwap.on((data) => {
 			this.renderer.failedToSwap(data.matchable, data.direction);
@@ -40,14 +40,14 @@ class InputHandler {
 	}
 
 	private mouseWheel(event: MouseEvent) {
-		this.renderer.zoomAt(event.clientX, event.clientY, (1 + 0.1 * this.game.input.mouse.wheelDelta));
+		this.renderer.zoomAt(event.clientX, event.clientY, (1 + 0.1 * this.group.game.input.mouse.wheelDelta));
 	}
 
 	private pointerDown(pointer: Phaser.Pointer) {
 		if (pointer.pointerMode != Phaser.PointerMode.CURSOR) {
 			this.activeTouches++;
 			if (this.activeTouches >= 2 && !this.touchBecameMulti) {
-				this.matchDragHandler.mouseUp(this.game.input.pointer1);
+				this.matchDragHandler.mouseUp(this.group.game.input.pointer1);
 				this.touchBecameMulti = true;
 			}
 		}
@@ -82,21 +82,21 @@ class InputHandler {
 
 	private multitouch(pointer: Phaser.Pointer) {
 		if (this.activeTouches == 2 && (pointer.movementX || pointer.movementY)) {
-			let previousCenter = this.calculatePreviousCenter(this.game.input.pointer1, this.game.input.pointer2);
-			let center = this.calculateCenter(this.game.input.pointer1, this.game.input.pointer2);
+			let previousCenter = this.calculatePreviousCenter(this.group.game.input.pointer1, this.group.game.input.pointer2);
+			let center = this.calculateCenter(this.group.game.input.pointer1, this.group.game.input.pointer2);
 			
 			//Translate
 			this.renderer.translate(center.x - previousCenter.x, center.y - previousCenter.y);
 			
 			//Scale
-			var previousDist = this.previousDistanceBetween(this.game.input.pointer1, this.game.input.pointer2)
-			var newDist = this.distanceBetween(this.game.input.pointer1, this.game.input.pointer2);
+			var previousDist = this.previousDistanceBetween(this.group.game.input.pointer1, this.group.game.input.pointer2)
+			var newDist = this.distanceBetween(this.group.game.input.pointer1, this.group.game.input.pointer2);
 
 			var scaleChange = newDist / previousDist;
 			this.renderer.zoomAt(center.x, center.y, scaleChange);
 			
-			this.game.input.pointer1.resetMovement();
-			this.game.input.pointer2.resetMovement();
+			this.group.game.input.pointer1.resetMovement();
+			this.group.game.input.pointer2.resetMovement();
 		}
 	}
 
