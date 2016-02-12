@@ -32,7 +32,6 @@ gulp.task('webpack', function (callback) {
 });
 
 gulp.task('uglify-primus', function () {
-	//TODO
 	return gulp.src('primus.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('dist'));

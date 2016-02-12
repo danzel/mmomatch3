@@ -28,7 +28,6 @@ class MatchableNode {
 			var diffX = otherMatchable.x - this.matchable.x;
 			var diffY = otherMatchable.y - this.matchable.y;
 			
-			//TODO: Easing
 			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
 			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
 		}

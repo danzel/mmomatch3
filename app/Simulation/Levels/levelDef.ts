@@ -21,7 +21,7 @@ class LevelDef {
 	limitValue: any;
 	victoryValue: any;
 	
-	//TODO: MaxMoves, Matches Required?, Points Required?, RNG seed?
+	//MaxMoves, Matches Required?, Points Required?, RNG seed?
 	
 	// Level Types
 	// http://candycrush.wikia.com/wiki/Level_Types

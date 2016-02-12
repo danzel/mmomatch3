@@ -43,7 +43,7 @@ class Client {
 		
 		if (!this.haveReceivedSimulation && packet.packetType == PacketType.boot) {
 			let bootData = <BootData>packet.data;
-			this.simulationReceived.trigger({ level: <LevelDef>bootData.level, simulation: this.packetGenerator.recreateSimulation(bootData) }); //TODO: Unhack LevelDef cast
+			this.simulationReceived.trigger({ level: this.packetGenerator.recreateLevelDefData(bootData.level), simulation: this.packetGenerator.recreateSimulation(bootData) });
 			this.playerIdReceived.trigger(bootData.playerId);
 			
 			this.haveReceivedSimulation = true;

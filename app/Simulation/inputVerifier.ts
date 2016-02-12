@@ -63,7 +63,6 @@ class InputVerifier {
 			return true;
 		}
 		
-		//TODO: Show visually when you fail to swap because of this
 		return false;
 	}
 	

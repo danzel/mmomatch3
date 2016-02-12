@@ -26,7 +26,7 @@ class PacketGenerator {
 	}
 	
 	private generateLevelDefData(level: LevelDef): LevelDefData {
-		return <LevelDefData>level; //TODO: Casting HACK
+		return <LevelDefData>level;
 	}
 
 	private generateGridData(grid: Grid): GridData {
@@ -70,6 +70,10 @@ class PacketGenerator {
 	}
 
 
+	
+	recreateLevelDefData(level: LevelDefData): LevelDef {
+		return <LevelDef>level;
+	}
 
 	recreateSimulation(bootData: BootData): Simulation {
 		let matchableFactory = new MatchableFactory(bootData.matchableIdCounter);
