@@ -1,4 +1,3 @@
-/// <reference path="../../typings/phaser/phaser.comments.d.ts" />
 import TickPoints = require('../DataPackets/tickPoints');
 
 class ScoreRenderer {

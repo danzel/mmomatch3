@@ -1,61 +1,55 @@
-/// <reference path="../typings/phaser/phaser.comments.d.ts" />
-import Color = require('./Simulation/color');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
-import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
+import LevelDef = require('./Simulation/Levels/levelDef');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
-import Serializer = require('./Serializer/simple');
+import Scene = require('./Scenes/scene');
 import Simulation = require('./Simulation/simulation');
-import SimulationRenderer = require('./Renderer/simulationRenderer');
+import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
 
 class AppEntry {
 	game: Phaser.Game;
-	simulation: Simulation;
-	renderer: SimulationRenderer;
-	input: InputHandler;
+	scene: Scene;
 
 	constructor() {
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
-		
-		let level = new LevelDefFactory().getLevel(0);
-		
-		let grid = new Grid(level.width, level.height);
-		for (let i = 0; i < level.holes.length; i++) {
-			let hole = level.holes[i];
-			grid.setHole(hole.x, hole.y);
-		}
-		
-		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
-		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 	}
 
 	preload() {
 		console.log("preload");
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-		
+
 		GraphicsLoader.loadBalls(this.game, 'basic', 11);
+	}
+
+	private createSimulationFromLevel(level: LevelDef) {
+		let grid = new Grid(level.width, level.height);
+		for (let i = 0; i < level.holes.length; i++) {
+			let hole = level.holes[i];
+			grid.setHole(hole.x, hole.y);
+		}
+
+		let matchableFactory = new MatchableFactory();
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
+		return new Simulation(grid, spawnManager, matchableFactory);
 	}
 
 	create() {
 		console.log('create');
-		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
-		this.input = new InputHandler(this.game, this.renderer, this.simulation, new SinglePlayerInputApplier(this.simulation.swapHandler, new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true), this.simulation.grid));
+
+		let level = new LevelDefFactory().getLevel(0);
+		let simulation = this.createSimulationFromLevel(level);
+		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, new InputVerifier(simulation.grid, simulation.matchChecker, true), simulation.grid);
+		this.scene = new SimulationScene(this.game.add.group(), level, simulation, inputApplier);
 	}
-	
+
 	update() {
-		
-		this.simulation.update(this.game.time.physicsElapsed);
-		this.renderer.update(this.game.time.physicsElapsed);
-		
-		//var data = Serializer.serialize(this.simulation);
-		//debugger;
+		this.scene.update();
 	}
 }
 

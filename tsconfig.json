@@ -1,13 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true,
-	"noImplicitAny": true
-  },
-  "files": [
-    "app/entry_client.ts",
-    "app/entry_server.ts",
-    "app/entry_solo.ts"
-  ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"sourceMap": true,
+		"noImplicitAny": true
+	},
+	"files": [
+		"typings/phaser/phaser.comments.d.ts",
+		"app/entry_client.ts",
+		"app/entry_server.ts",
+		"app/entry_solo.ts"
+	]
 }

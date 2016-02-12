@@ -1,5 +1,3 @@
-/// <reference path="../../typings/phaser/phaser.comments.d.ts" />
-
 class PlayerCountRenderer {
 	textStyle: Phaser.PhaserTextStyle = {
 		fill: 'white',

@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/phaser/phaser.comments.d.ts" />
 import LiteEvent = require('../../liteEvent');
 
 //ref https://github.com/photonstorm/phaser/blob/c9c85330ab60547b39ba4c9400c258ed7fb2a317/src/input/InputHandler.js#L819-L858

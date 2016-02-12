@@ -1,26 +1,22 @@
-/// <reference path="../typings/phaser/phaser.comments.d.ts" />
 import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
 import FrameData = require('./DataPackets/frameData');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
-import PlayerCountRenderer = require('./Renderer/playerCountRenderer');
-import ScoreRenderer = require('./Renderer/scoreRenderer');
-import Simulation = require('./Simulation/simulation');
-import SimulationRenderer = require('./Renderer/simulationRenderer');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
+import Scene = require('./Scenes/scene');
 import Serializer = require('./Serializer/simple');
+import Simulation = require('./Simulation/simulation');
+import SimulationScene = require('./Scenes/simulationScene');
 import TickData = require('./DataPackets/tickData');
 
 class AppEntry {
 	client: Client;
 	game: Phaser.Game;
 	simulation: Simulation;
-	renderer: SimulationRenderer;
-	scoreRenderer: ScoreRenderer;
-	playerCountRenderer: PlayerCountRenderer;
-	input: InputHandler;
+
+	scene: Scene;
 
 	private frameQueue: Array<FrameData> = [];
 
@@ -48,15 +44,13 @@ class AppEntry {
 
 	simulationReceived(simulation: Simulation) {
 		this.simulation = simulation;
+		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid);
 
-		this.renderer = new SimulationRenderer(this.game, this.simulation, this.game.add.group());
-		this.scoreRenderer = new ScoreRenderer(this.game.add.group());
-		this.playerCountRenderer = new PlayerCountRenderer(this.game.add.group());
-		this.input = new InputHandler(this.game, this.renderer, this.simulation, new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid));
+		this.scene = new SimulationScene(this.game.add.group(), null/*TODO*/, this.simulation, inputApplier);
 	}
-	
+
 	playerIdReceived(playerId: number) {
-		this.scoreRenderer.notifyPlayerId(playerId);
+		(<SimulationScene>this.scene).scoreRenderer.notifyPlayerId(playerId); //TODO: Unhack
 	}
 
 	tickReceived(tickData: TickData) {
@@ -71,10 +65,10 @@ class AppEntry {
 		
 		//This should really be applied at the end of playing the frameQueue
 		if (tickData.points) {
-			this.scoreRenderer.updateData(tickData.points);
+			(<SimulationScene>this.scene).scoreRenderer.updateData(tickData.points); //TODO: Unhack
 		}
 		if (tickData.playerCount) {
-			this.playerCountRenderer.updateData(tickData.playerCount);
+			(<SimulationScene>this.scene).playerCountRenderer.updateData(tickData.playerCount); //TODO: Unhack
 		}
 	}
 
@@ -84,8 +78,7 @@ class AppEntry {
 		}
 
 		this.runNextFrame();
-
-		this.renderer.update(this.game.time.physicsElapsed);
+		this.scene.update();
 	}
 
 	private runNextFrame() {
@@ -103,8 +96,6 @@ class AppEntry {
 			//Spawns
 			(<ClientSpawnManager>this.simulation.spawnManager).notifySpawns(frame.spawnData);
 		}
-
-		this.simulation.update(1.0 / 60);
 	}
 }
 

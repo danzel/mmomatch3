@@ -1,4 +1,3 @@
-/// <reference path="../../typings/phaser/phaser.comments.d.ts" />
 import Grid = require('../Simulation/grid');
 import InputApplier = require('../Simulation/inputApplier');
 import Matchable = require('../Simulation/matchable');
