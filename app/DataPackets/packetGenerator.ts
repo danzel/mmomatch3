@@ -1,11 +1,14 @@
 import BootData = require('./bootData');
 import GridData = require('./BootParts/gridData');
+import LevelDefData = require('./BootParts/levelDefData');
 import MatchableData = require('./BootParts/matchableData');
 import SwapData = require('./BootParts/swapData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
 
 import ClientSpawnManager = require('../Client/clientSpawnManager');
 import Grid = require('../Simulation/grid');
+import GridFactory = require('../Simulation/Levels/gridFactory');
+import LevelDef = require('../Simulation/Levels/levelDef');
 import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import Simulation = require('../Simulation/simulation');
@@ -13,14 +16,17 @@ import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
 
 class PacketGenerator {
-	generateBootData(simulation: Simulation): BootData {
+	generateBootData(level: LevelDef, simulation: Simulation): BootData {
 		return new BootData(
+			this.generateLevelDefData(level),
 			simulation.matchableFactory.idForSerializing,
-			simulation.grid.width,
-			simulation.grid.height,
 			this.generateGridData(simulation.grid),
 			this.generateSwapHandlerData(simulation.swapHandler)
 		);
+	}
+	
+	private generateLevelDefData(level: LevelDef): LevelDefData {
+		return <LevelDefData>level; //TODO: Casting HACK
 	}
 
 	private generateGridData(grid: Grid): GridData {
@@ -67,7 +73,7 @@ class PacketGenerator {
 
 	recreateSimulation(bootData: BootData): Simulation {
 		let matchableFactory = new MatchableFactory(bootData.matchableIdCounter);
-		let grid = new Grid(bootData.width, bootData.height);
+		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory);
 

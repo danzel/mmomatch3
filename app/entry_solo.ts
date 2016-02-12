@@ -1,5 +1,6 @@
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
+import GridFactory = require('./Simulation/Levels/gridFactory');
 import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import LevelDef = require('./Simulation/Levels/levelDef');
@@ -28,11 +29,7 @@ class AppEntry {
 	}
 
 	private createSimulationFromLevel(level: LevelDef) {
-		let grid = new Grid(level.width, level.height);
-		for (let i = 0; i < level.holes.length; i++) {
-			let hole = level.holes[i];
-			grid.setHole(hole.x, hole.y);
-		}
+		let grid = GridFactory.createGrid(level);
 
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);

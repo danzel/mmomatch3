@@ -5,6 +5,7 @@ import FrameData = require('./DataPackets/frameData');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
+import LevelDef = require('./Simulation/Levels/levelDef');
 import Scene = require('./Scenes/scene');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
@@ -42,11 +43,11 @@ class AppEntry {
 		this.client.playerIdReceived.on(this.playerIdReceived.bind(this));
 	}
 
-	simulationReceived(simulation: Simulation) {
-		this.simulation = simulation;
-		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, simulation.matchChecker, true), this.simulation.grid);
+	simulationReceived(data: { level: LevelDef, simulation: Simulation }) {
+		this.simulation = data.simulation;
+		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, true), this.simulation.grid);
 
-		this.scene = new SimulationScene(this.game.add.group(), null/*TODO*/, this.simulation, inputApplier);
+		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier);
 	}
 
 	playerIdReceived(playerId: number) {

@@ -1,5 +1,6 @@
 /// <reference path="../../typings/primus/primusClient.d.ts" />
 import BootData = require('../DataPackets/bootData');
+import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
@@ -14,7 +15,7 @@ class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private primus: Primus;
 	
-	simulationReceived = new LiteEvent<Simulation>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation }>();
 	playerIdReceived = new LiteEvent<number>();
 	tickReceived = new LiteEvent<TickData>();
 	
@@ -41,8 +42,9 @@ class Client {
 		let packet = this.serializer.deserialize(data);
 		
 		if (!this.haveReceivedSimulation && packet.packetType == PacketType.boot) {
-			this.simulationReceived.trigger(this.packetGenerator.recreateSimulation(<BootData>packet.data));
-			this.playerIdReceived.trigger((<BootData>packet.data).playerId);
+			let bootData = <BootData>packet.data;
+			this.simulationReceived.trigger({ level: <LevelDef>bootData.level, simulation: this.packetGenerator.recreateSimulation(bootData) }); //TODO: Unhack LevelDef cast
+			this.playerIdReceived.trigger(bootData.playerId);
 			
 			this.haveReceivedSimulation = true;
 		}

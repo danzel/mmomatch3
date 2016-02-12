@@ -23,7 +23,7 @@ class LevelDef {
 	
 	//TODO: MaxMoves, Matches Required?, Points Required?, RNG seed?
 	
-	// Level TYpes
+	// Level Types
 	// http://candycrush.wikia.com/wiki/Level_Types
 	// http://candycrushsoda.wikia.com/wiki/Level_Types
 	

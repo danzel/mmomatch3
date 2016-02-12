@@ -8,6 +8,7 @@ import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import FrameData = require('../DataPackets/frameData');
 import Primus = require('primus');
 import InputVerifier = require('../Simulation/inputVerifier');
+import LevelDef = require('../Simulation/Levels/levelDef');
 import Matchable = require('../Simulation/matchable');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
@@ -24,10 +25,6 @@ import TickData = require('../DataPackets/tickData');
 import TickDataFactory = require('./tickDataFactory');
 
 class Server {
-	private simulation: Simulation;
-	private serializer: Serializer;
-	private inputVerifier: InputVerifier;
-	
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
 	private scoreTracker: ScoreTracker;
@@ -43,10 +40,7 @@ class Server {
 
 	private dataReceivedBound = this.dataReceived.bind(this);
 	
-	constructor(simulation: Simulation, serializer: Serializer, inputVerifier: InputVerifier) {
-		this.simulation = simulation;
-		this.serializer = serializer;
-		this.inputVerifier = inputVerifier;
+	constructor(private level: LevelDef, private simulation: Simulation, private serializer: Serializer, private inputVerifier: InputVerifier) {
 		
 		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
 		this.tickDataFactory = new TickDataFactory(simulation, this.scoreTracker);
@@ -130,7 +124,7 @@ class Server {
 		this.bootData = null;
 
 		if (this.sparksRequiringBoot.length > 0) {
-			this.bootData = this.packetGenerator.generateBootData(this.simulation);
+			this.bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
 			this.sparksRequiringBoot.forEach((spark) => {
 				this.initSparkAsPlayer(spark);
 			});

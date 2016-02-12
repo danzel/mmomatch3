@@ -1,6 +1,8 @@
 import Color = require('./Simulation/color');
 import Grid = require('./Simulation/grid');
+import GridFactory = require('./Simulation/Levels/gridFactory');
 import InputVerifier = require('./Simulation/inputVerifier');
+import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import Serializer = require('./Serializer/simple');
@@ -16,11 +18,13 @@ class AppEntry {
 	tickRate: number;
 
 	constructor() {
-		let grid = new Grid(50, 20);
+
+		let level = new LevelDefFactory().getLevel(0);
+		let grid = GridFactory.createGrid(level);
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), Color.Max);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
-		this.server = new Server(this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true));
+		this.server = new Server(level, this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true));
 	}
 
 	update() {
