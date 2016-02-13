@@ -41,14 +41,14 @@ class Client {
 		console.log('data');
 		let packet = this.serializer.deserialize(data);
 		
-		if (!this.haveReceivedSimulation && packet.packetType == PacketType.boot) {
+		if (!this.haveReceivedSimulation && packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 			this.simulationReceived.trigger({ level: this.packetGenerator.recreateLevelDefData(bootData.level), simulation: this.packetGenerator.recreateSimulation(bootData) });
 			this.playerIdReceived.trigger(bootData.playerId);
 			
 			this.haveReceivedSimulation = true;
 		}
-		else if (packet.packetType == PacketType.tick) {
+		else if (packet.packetType == PacketType.Tick) {
 			this.tickReceived.trigger(<TickData>packet.data);
 		} else {
 			console.warn('Received unexpected packet ', packet);

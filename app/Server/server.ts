@@ -93,7 +93,7 @@ class Server {
 		}
 
 		let packet = this.serializer.deserialize(data);
-		if (packet.packetType != PacketType.swapClient)
+		if (packet.packetType != PacketType.SwapClient)
 			return;
 		let swapData = <SwapClientData>packet.data
 		

@@ -15,17 +15,17 @@ interface SerializedBoot {
 //TODO: This class will need to do some data validation, can't trust the client!
 class SimpleSerializer implements Serializer {
 	serializeBoot(bootData: BootData): any {
-		(<any>bootData).packetType = PacketType.boot;
+		(<any>bootData).packetType = PacketType.Boot;
 		return bootData;
 	}
 
 	serializeTick(tickData: TickData): any {
-		(<any>tickData).packetType = PacketType.tick;
+		(<any>tickData).packetType = PacketType.Tick;
 		return tickData;
 	}
 
 	serializeClientSwap(swapData: SwapClientData): any {
-		(<any>swapData).packetType = PacketType.swapClient;
+		(<any>swapData).packetType = PacketType.SwapClient;
 		return swapData;
 	}
 

@@ -1,14 +1,14 @@
 enum PacketType {
 	
 	/** Server sends to client when the client connects */
-	boot,
+	Boot,
 	/** Server sends periodically to the client to run the simulation */
-	tick,
+	Tick,
 	/** Client sends to server to  */
-	swapClient,
+	SwapClient,
 	
 	/** Not a real packet, means corrupt/invalid data */
-	corrupt
+	Corrupt
 }
 
 export = PacketType;
