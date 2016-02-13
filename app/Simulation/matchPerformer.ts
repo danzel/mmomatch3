@@ -9,6 +9,7 @@ import SwapHandler = require('./swapHandler');
 class MatchPerformer {
 	private matchChecker: MatchChecker;
 
+	/** Fired whenever a matchable starts disappearing */
 	matchPerformed = new LiteEvent<Array<Matchable>>();
 
 	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics) {

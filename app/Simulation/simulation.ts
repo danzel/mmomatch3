@@ -1,5 +1,6 @@
 import Disappearer = require('./disappearer');
 import Grid = require('./grid');
+import LiteEvent = require('../liteEvent');
 import MatchChecker = require('./matchChecker');
 import MatchPerformer = require('./matchPerformer');
 import MatchableFactory = require('../Simulation/matchableFactory');
@@ -18,11 +19,14 @@ class Simulation {
 	matchChecker: MatchChecker;
 	matchPerformer: MatchPerformer;
 	disappearer: Disappearer;
-	
-	quietColumnDetector: QuietColumnDetector;
-	
-	framesElapsed: number;
 
+	quietColumnDetector: QuietColumnDetector;
+
+	framesElapsed: number;
+	timeRunning: number;
+
+	frameCompleted = new LiteEvent<void>();
+	
 	constructor(grid: Grid, spawnManager: SpawnManager, matchableFactory: MatchableFactory) {
 		this.grid = grid;
 		this.spawnManager = spawnManager;
@@ -32,9 +36,9 @@ class Simulation {
 		this.matchChecker = new MatchChecker(this.grid);
 		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
 		this.disappearer = new Disappearer(this.grid);
-		
+
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
-		
+
 		this.framesElapsed = 0;
 	}
 
@@ -44,10 +48,13 @@ class Simulation {
 		this.swapHandler.update(dt);
 		this.disappearer.update(dt);
 		this.spawnManager.update(dt);
-		
+
 		this.quietColumnDetector.lateUpdate(dt);
-		
+
 		this.framesElapsed++;
+		this.timeRunning += dt;
+
+		this.frameCompleted.trigger();
 	}
 }
 
