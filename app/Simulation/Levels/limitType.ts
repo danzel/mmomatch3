@@ -1,7 +1,7 @@
 enum LimitType {
 	/** Time is not implemented */
-	time,
-	swaps
+	Time,
+	Swaps
 }
 
 export = LimitType;

@@ -54,20 +54,20 @@ class LevelDetailsOverlay {
 	
 	private getVictoryText(): string {
 		switch (this.level.victoryType) {
-			case VictoryType.matches:
+			case VictoryType.Matches:
 				return "Match " + this.level.victoryValue + " {Thingies???}"; //TODO: Thingies
-			case VictoryType.points:
+			case VictoryType.Points:
 				return "Get " + this.level.victoryType + " Points";
 			default:
-				throw new Error("Don't know about LimitType " + this.level.limitType + " " + LimitType[this.level.limitType])
+				throw new Error("Don't know about LimitType " + this.level.limitType + " " + LimitType[this.level.limitType]);
 		}
 	}
 	
 	private getLimitText(): string {
 		switch (this.level.limitType) {
-			case LimitType.swaps:
+			case LimitType.Swaps:
 				return "Within " + this.level.limitValue + " Swaps";
-			case LimitType.time:
+			case LimitType.Time:
 				return "Within " + this.level.limitValue + " Seconds";
 			default:
 				throw new Error("Don't know about LimitType " + this.level.limitType + " " + LimitType[this.level.limitType])
