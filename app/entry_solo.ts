@@ -1,3 +1,4 @@
+import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import GridFactory = require('./Simulation/Levels/gridFactory');
@@ -22,7 +23,7 @@ class AppEntry {
 
 	preload() {
 		console.log("preload");
-		this.game.stage.disableVisibilityChange = true;
+		//this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
 		GraphicsLoader.loadBalls(this.game, 'basic', 11);
@@ -41,8 +42,9 @@ class AppEntry {
 
 		let level = new LevelDefFactory().getLevel(0);
 		let simulation = this.createSimulationFromLevel(level);
+		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, new InputVerifier(simulation.grid, simulation.matchChecker, true), simulation.grid);
-		this.scene = new SimulationScene(this.game.add.group(), level, simulation, inputApplier);
+		this.scene = new SimulationScene(this.game.add.group(), level, simulation, inputApplier, false);
 	}
 
 	update() {

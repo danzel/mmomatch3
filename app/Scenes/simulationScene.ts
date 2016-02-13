@@ -17,7 +17,7 @@ class SimulationScene implements Scene {
 	
 	levelDetailsOverlay: LevelDetailsOverlay;
 	
-	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier) {
+	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, private alwaysRunUpdates: boolean) {
 		this.renderer = new SimulationRenderer(group.game, this.simulation, new Phaser.Group(group.game, group));
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 		
@@ -28,12 +28,12 @@ class SimulationScene implements Scene {
 	}
 	
 	update(): void {
-		//TODO: If we are single player then the simulation shouldn't run until the level details are dismissed (for time failure conditions)
-		
 		this.levelDetailsOverlay.update();
 		
-		this.simulation.update(this.group.game.time.physicsElapsed);
-		this.renderer.update(this.group.game.time.physicsElapsed);
+		if (this.alwaysRunUpdates || this.levelDetailsOverlay.closed) {
+			this.simulation.update(this.group.game.time.physicsElapsed);
+			this.renderer.update(this.group.game.time.physicsElapsed);
+		}
 	}
 }
 

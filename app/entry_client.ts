@@ -47,7 +47,7 @@ class AppEntry {
 		this.simulation = data.simulation;
 		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, true), this.simulation.grid);
 
-		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier);
+		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, true);
 	}
 
 	playerIdReceived(playerId: number) {

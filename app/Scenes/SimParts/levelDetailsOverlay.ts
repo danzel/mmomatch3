@@ -6,6 +6,8 @@ import VictoryType = require('../../Simulation/Levels/victoryType');
 class LevelDetailsOverlay {
 	gfx: Phaser.Graphics;
 	
+	closed = false;
+	
 	constructor(private group: Phaser.Group, private level: LevelDef) {
 		
 		this.addTouchCatchAll();
@@ -19,6 +21,7 @@ class LevelDetailsOverlay {
 		
 		touchCatchAll.pointerUp.on((data) => {
 			console.log('up?', data);
+			this.closed = true;
 			this.group.destroy();
 			this.group = null;
 		})
