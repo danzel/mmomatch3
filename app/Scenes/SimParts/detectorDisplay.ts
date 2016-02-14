@@ -1,0 +1,5 @@
+interface DetectorDisplay {
+	
+}
+
+export = DetectorDisplay;

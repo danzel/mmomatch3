@@ -1,5 +1,5 @@
+import FailureType = require('../../Simulation/Levels/failureType');
 import LevelDef = require('../../Simulation/Levels/levelDef');
-import LimitType = require('../../Simulation/Levels/limitType');
 import TouchCatchAll = require('../../Renderer/Components/touchCatchAll');
 import VictoryType = require('../../Simulation/Levels/victoryType');
 
@@ -62,18 +62,18 @@ class LevelDetailsOverlay {
 			case VictoryType.Points:
 				return "Get " + this.level.victoryType + " Points";
 			default:
-				throw new Error("Don't know about LimitType " + this.level.limitType + " " + LimitType[this.level.limitType]);
+				throw new Error("Don't know about FailureType " + this.level.failureType + " " + FailureType[this.level.failureType]);
 		}
 	}
 	
 	private getLimitText(): string {
-		switch (this.level.limitType) {
-			case LimitType.Swaps:
-				return "Within " + this.level.limitValue + " Swaps";
-			case LimitType.Time:
-				return "Within " + this.level.limitValue + " Seconds";
+		switch (this.level.failureType) {
+			case FailureType.Swaps:
+				return "Within " + this.level.failureValue + " Swaps";
+			case FailureType.Time:
+				return "Within " + this.level.failureValue + " Seconds";
 			default:
-				throw new Error("Don't know about LimitType " + this.level.limitType + " " + LimitType[this.level.limitType])
+				throw new Error("Don't know about LimitType " + this.level.failureType + " " + FailureType[this.level.failureType])
 		}
 	}
 	

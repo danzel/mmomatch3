@@ -1,3 +1,6 @@
+import Detector = require('../Simulation/Levels/detector');
+import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
+import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
@@ -17,12 +20,16 @@ class SimulationScene implements Scene {
 	
 	levelDetailsOverlay: LevelDetailsOverlay;
 	
-	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, private alwaysRunUpdates: boolean) {
+	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private alwaysRunUpdates: boolean) {
 		this.renderer = new SimulationRenderer(group.game, this.simulation, new Phaser.Group(group.game, group));
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 		
 		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group));
 		this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
+		
+		//TODO: Victory/Failure (gameEndDetector)
+		this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
+		this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 		
 		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level);
 	}
@@ -34,6 +41,15 @@ class SimulationScene implements Scene {
 			this.simulation.update(this.group.game.time.physicsElapsed);
 			this.renderer.update(this.group.game.time.physicsElapsed);
 		}
+	}
+	
+	
+	createFailureConditionDisplay(detector: Detector) {
+		DetectorDisplayFactory.createDisplay(new Phaser.Group(this.group.game, this.group), detector);
+	}
+
+	createVictoryConditionDisplay(detector: Detector) {
+		DetectorDisplayFactory.createDisplay(new Phaser.Group(this.group.game, this.group), detector);
 	}
 }
 

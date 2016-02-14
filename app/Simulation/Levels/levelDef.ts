@@ -1,5 +1,5 @@
+import FailureType = require('./failureType');
 import VictoryType = require('./victoryType');
-import LimitType = require('./limitType');
 
 interface XY {
 	x: number;
@@ -15,10 +15,10 @@ class LevelDef {
 	
 	colorCount: number;
 	
-	limitType: LimitType;
+	failureType: FailureType;
 	victoryType: VictoryType;
 	
-	limitValue: any;
+	failureValue: any;
 	victoryValue: any;
 	
 	//MaxMoves, Matches Required?, Points Required?, RNG seed?
@@ -27,7 +27,7 @@ class LevelDef {
 	// http://candycrush.wikia.com/wiki/Level_Types
 	// http://candycrushsoda.wikia.com/wiki/Level_Types
 	
-	constructor(levelNumber: number, width: number, height: number, holes: Array<XY>, colorCount: number, limitType: LimitType, victoryType: VictoryType, limitValue: any, victoryValue: any) {
+	constructor(levelNumber: number, width: number, height: number, holes: Array<XY>, colorCount: number, failureType: FailureType, victoryType: VictoryType, failureValue: any, victoryValue: any) {
 		this.levelNumber = levelNumber;
 		
 		this.width = width;
@@ -36,10 +36,10 @@ class LevelDef {
 		
 		this.colorCount = colorCount;
 
-		this.limitType = limitType;
+		this.failureType = failureType;
 		this.victoryType = victoryType;
 
-		this.limitValue = limitValue;
+		this.failureValue = failureValue;
 		this.victoryValue = victoryValue;
 	}
 }

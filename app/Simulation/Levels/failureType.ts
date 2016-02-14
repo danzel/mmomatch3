@@ -1,7 +1,7 @@
-enum LimitType {
+enum FailureType {
 	/** Time is not implemented */
 	Time,
 	Swaps
 }
 
-export = LimitType;
+export = FailureType;
