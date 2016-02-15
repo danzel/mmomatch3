@@ -45,11 +45,15 @@ class SimulationScene implements Scene {
 	
 	
 	createFailureConditionDisplay(detector: Detector) {
-		DetectorDisplayFactory.createDisplay(new Phaser.Group(this.group.game, this.group), detector);
+		let group = new Phaser.Group(this.group.game, this.group);
+		group.y = 30;
+		DetectorDisplayFactory.createDisplay(group, detector);
 	}
 
 	createVictoryConditionDisplay(detector: Detector) {
-		DetectorDisplayFactory.createDisplay(new Phaser.Group(this.group.game, this.group), detector);
+		let group = new Phaser.Group(this.group.game, this.group);
+		group.y = 60;
+		DetectorDisplayFactory.createDisplay(group, detector);
 	}
 }
 

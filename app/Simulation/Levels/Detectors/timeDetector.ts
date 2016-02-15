@@ -16,6 +16,8 @@ class TimeDetector extends Detector {
 			}
 			
 			this.timeRemaining = Math.max(0, this.totalTime - simulation.timeRunning);
+			
+			this.valueChanged.trigger();
 		});
 	}
 }

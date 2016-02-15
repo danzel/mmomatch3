@@ -22,8 +22,8 @@ class Simulation {
 
 	quietColumnDetector: QuietColumnDetector;
 
-	framesElapsed: number;
-	timeRunning: number;
+	framesElapsed: number = 0;
+	timeRunning: number = 0;
 
 	frameCompleted = new LiteEvent<void>();
 	
@@ -38,8 +38,6 @@ class Simulation {
 		this.disappearer = new Disappearer(this.grid);
 
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
-
-		this.framesElapsed = 0;
 	}
 
 	update(dt: number) {
