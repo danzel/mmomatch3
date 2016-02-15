@@ -2,6 +2,7 @@ import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
 import FrameData = require('./DataPackets/frameData');
+import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import InputHandler = require('./Input/inputHandler');
 import InputVerifier = require('./Simulation/inputVerifier');
@@ -45,9 +46,10 @@ class AppEntry {
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation }) {
 		this.simulation = data.simulation;
-		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, true), this.simulation.grid);
+		let gameEndDetector = new GameEndDetector(data.level, data.simulation); //TODO: Do we need a special client version?
+		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, gameEndDetector, true), this.simulation.grid);
 
-		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, true);
+		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, gameEndDetector, true);
 	}
 
 	playerIdReceived(playerId: number) {

@@ -3,18 +3,17 @@ import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
 import SwapHandler = require('./swapHandler');
 
+interface GameEndDetector {
+	gameHasEnded: boolean;
+}
+
 class InputVerifier {
-	private grid: Grid;
-	private matchChecker: MatchChecker;
-	private requireSwapsToMakeMatches: boolean;
-	
-	constructor(grid: Grid, matchChecker: MatchChecker, requireSwapsToMakeMatches: boolean) {
-		this.grid = grid;
-		this.matchChecker = matchChecker;
-		this.requireSwapsToMakeMatches = requireSwapsToMakeMatches;
+	constructor(private grid: Grid, private matchChecker: MatchChecker, private gameEndDetector: GameEndDetector, private requireSwapsToMakeMatches: boolean) {
 	}
 	
 	swapIsValid(left: Matchable, right: Matchable) : boolean {
+		if (this.gameEndDetector.gameHasEnded)
+			return false;
 		if (!this.inValidState(left))
 			return false;
 		if (!this.inValidState(right))

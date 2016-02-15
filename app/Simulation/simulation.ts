@@ -23,7 +23,7 @@ class Simulation {
 	quietColumnDetector: QuietColumnDetector;
 
 	framesElapsed: number = 0;
-	timeRunning: number = 0;
+	timeRunning: number = 0; //TODO: Need to serialize this and send to client
 
 	frameCompleted = new LiteEvent<void>();
 	

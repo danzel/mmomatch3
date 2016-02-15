@@ -17,7 +17,7 @@ class GameEndDetector {
 	failureDetector: Detector;
 	victoryDetector: Detector;
 	
-	private gameHasEnded = false;
+	gameHasEnded = false;
 	private gameEndedInVictory: boolean;
 
 	constructor(private level: LevelDef, private simulation: Simulation) {
@@ -37,6 +37,7 @@ class GameEndDetector {
 		this.gameEndedInVictory = victory;
 		
 		this.gameEnded.trigger(victory);
+		console.log("game end", victory);
 	}
 
 	private createFailureDetector(): Detector {
