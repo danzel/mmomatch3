@@ -1,22 +1,23 @@
-/// <reference path="../../typings/express/express.d.ts" />
-/// <reference path="../../typings/primus/primus.d.ts" />
-import express = require('express');
-import http = require('http');
-
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import FrameData = require('../DataPackets/frameData');
-import Primus = require('primus');
+import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
+import GridFactory = require('../Simulation/Levels/gridFactory');
 import InputVerifier = require('../Simulation/inputVerifier');
 import LevelDef = require('../Simulation/Levels/levelDef');
+import LevelDefFactory = require('../Simulation/Levels/levelDefFactory');
 import Matchable = require('../Simulation/matchable');
+import MatchableFactory = require('../Simulation/matchableFactory');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
 import Player = require('../Simulation/Scoring/player');
 import PlayerProvider = require('../Simulation/Scoring/playerProvider');
+import RandomGenerator = require('../Simulation/randomGenerator');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Serializer = require('../Serializer/serializer');
 import Simulation = require('../Simulation/simulation');
+import SocketServer = require('./socketServer');
+import SpawningSpawnManager = require('../Simulation/spawningSpawnManager');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
 import SwapClientData = require('../DataPackets/swapClientData');
@@ -30,115 +31,95 @@ class Server {
 	private scoreTracker: ScoreTracker;
 	private tickDataFactory: TickDataFactory;
 	
-	private app: express.Express;
-	private httpServer: http.Server;
-	private primus: Primus;
+	private level: LevelDef;
+	private simulation: Simulation;
+	private inputVerifier: InputVerifier;
 
-	private bootData: BootData;
-	private sparksRequiringBoot: Array<Primus.Spark> = [];
-	private bootedSparks: { [id: string]: Player } = {};
+	private clientsRequiringBoot: Array<string> = [];
+	private clients: { [id: string]: Player } = {};
 
-	private dataReceivedBound = this.dataReceived.bind(this);
-	
-	constructor(private level: LevelDef, private simulation: Simulation, private serializer: Serializer, private inputVerifier: InputVerifier) {
-		
+	constructor(private socketServer: SocketServer, private levelDefFactory: LevelDefFactory) {
+		//TOOD: Event listeners
+		socketServer.connected.on((id) => this.connectionReceived(id));
+		socketServer.disconnected.on((id) => this.connectionDisconnected(id));
+		socketServer.swapReceived.on((data) => this.swapReceived(data));
+	}
+
+	loadLevel(levelNumber: number) {
+		this.level = new LevelDefFactory().getLevel(levelNumber);
+		let grid = GridFactory.createGrid(this.level);
+		let matchableFactory = new MatchableFactory();
+		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), this.level.colorCount);
+		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let gameEndDetector = new GameEndDetector(this.level, this.simulation);
+		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, gameEndDetector, true);
 		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
-		this.tickDataFactory = new TickDataFactory(simulation, this.scoreTracker);
+		this.tickDataFactory = new TickDataFactory(this.simulation, this.scoreTracker);
 
-		this.app = express();
-		this.app.use(express.static('dist'));
-		this.httpServer = http.createServer(this.app);
-		this.httpServer.listen(8091);
+		//TODO: Should we split boot and levels? boot has playerid in it which sucks
+		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
+		for (let i in this.clients) {
+			bootData.playerId = this.clients[i].id;
+			this.socketServer.sendBoot(bootData, i);
+		}
 		
-		this.primus = new Primus(this.httpServer, {
-			pathname: '/sock'
-		});
-
-		this.primus.on('connection', this.connectionReceived.bind(this));
-		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
+		gameEndDetector.gameEnded.on((victory) => {
+			setTimeout(() => this.loadLevel(levelNumber + (victory ? 1 : 0)), 5000);
+		})
 	}
 
-	private connectionReceived(spark: Primus.Spark) {
-		console.log("connection", spark.id);
-		
-		let callback = this.dataReceivedBound;
-		spark.on('data', function(data: any) {
-			callback(spark, data);
-		} );
-
-		if (this.bootData) {
-			this.initSparkAsPlayer(spark);
-		}
-		else {
-			this.sparksRequiringBoot.push(spark);
-		}
+	private connectionReceived(id: string) {
+		this.clientsRequiringBoot.push(id);
 	}
-	
-	private connectionDisconnected(spark: Primus.Spark) {
-		console.log('disconnection', spark.id);
-		if (this.bootedSparks[spark.id]) {
-			delete this.bootedSparks[spark.id];
+
+	private connectionDisconnected(id: string) {
+		console.log('disconnection', id);
+		if (this.clients[id]) {
+			delete this.clients[id];
 		} else {
-			this.sparksRequiringBoot.splice(this.sparksRequiringBoot.indexOf(spark), 1);
+			this.clientsRequiringBoot.splice(this.clientsRequiringBoot.indexOf(id), 1);
 		}
 	}
 
-	private dataReceived(spark: Primus.Spark, data: any) {
-		console.log("data", data);
-		
-		var player = this.bootedSparks[spark.id];
+	private swapReceived(data: { id: string, swap: SwapClientData }) {
+		var player = this.clients[data.id];
 		if (!player) {
-			console.log("ignoring received data from spark before booted");
+			console.log("ignoring received data from client before booted");
 			return;
 		}
 
-		let packet = this.serializer.deserialize(data);
-		if (packet.packetType != PacketType.SwapClient)
-			return;
-		let swapData = <SwapClientData>packet.data
-		
 		//Find the two
-		let left = this.simulation.grid.findMatchableById(swapData.leftId);
-		let right = this.simulation.grid.findMatchableById(swapData.rightId);
+		let left = this.simulation.grid.findMatchableById(data.swap.leftId);
+		let right = this.simulation.grid.findMatchableById(data.swap.rightId);
 		if (this.inputVerifier.swapIsValid(left, right)) {
 			this.simulation.swapHandler.swap(player.id, left, right);
 		}
 	}
 
 	update(dt: number) {
-		
-		var tickData = this.tickDataFactory.getTickIfReady(Object.keys(this.bootedSparks).length + this.sparksRequiringBoot.length);
+
+		this.simulation.update(dt);
+
+		var tickData = this.tickDataFactory.getTickIfReady(Object.keys(this.clients).length + this.clientsRequiringBoot.length);
 
 		if (!tickData) {
 			return;
 		}
 
 		//We should only be sending updates to clients we've already sent a boot to
-		var data = this.serializer.serializeTick(tickData);
-		var bootedSparks = this.bootedSparks;
-		this.primus.forEach(function(spark: Primus.Spark, id: string) {
-			if (bootedSparks[id]) {
-				spark.write(data);
-			}
-		});
-		this.bootData = null;
+		this.socketServer.sendTick(tickData, Object.keys(this.clients));
 
-		if (this.sparksRequiringBoot.length > 0) {
-			this.bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
-			this.sparksRequiringBoot.forEach((spark) => {
-				this.initSparkAsPlayer(spark);
+		if (this.clientsRequiringBoot.length > 0) {
+			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
+			this.clientsRequiringBoot.forEach((id) => {
+				var player = this.playerProvider.createPlayer();
+				bootData.playerId = player.id;
+				this.socketServer.sendBoot(bootData, id);
+
+				this.clients[id] = player;
 			});
-			this.sparksRequiringBoot.length = 0;
+			this.clientsRequiringBoot.length = 0;
 		}
-	}
-	
-	private initSparkAsPlayer(spark: Primus.Spark) {
-		var player = this.playerProvider.createPlayer();
-		this.bootData.playerId = player.id;
-		spark.write(this.serializer.serializeBoot(this.bootData));
-
-		this.bootedSparks[spark.id] = player;
-
 	}
 }
 
