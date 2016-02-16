@@ -1,5 +1,5 @@
-interface DetectorDisplay {
-	
+abstract class DetectorDisplay {
+	disabled = false;
 }
 
 export = DetectorDisplay;

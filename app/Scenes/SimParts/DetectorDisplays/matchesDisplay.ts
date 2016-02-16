@@ -3,15 +3,18 @@ import MatchesDetector = require('../../../Simulation/Levels/Detectors/matchesDe
 import DetectorDisplay = require('../detectorDisplay');
 
 
-class MatchesDisplay implements DetectorDisplay {
+class MatchesDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: MatchesDetector) {
+		super();
 		let text = new Phaser.Text(group.game, 0, 0, "Matches Remaining: " + detector.matchesRemaining, {
 			fill: 'white'
 		});
 		this.group.add(text);
 
 		detector.valueChanged.on(() => {
-			text.text = "Matches Remaining: " + detector.matchesRemaining;
+			if (!this.disabled) {
+				text.text = "Matches Remaining: " + detector.matchesRemaining;
+			}
 		});
 	}
 }
