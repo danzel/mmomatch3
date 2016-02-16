@@ -49,7 +49,7 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(data.level, data.simulation); //TODO: Do we need a special client version?
 		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, gameEndDetector, true), this.simulation.grid);
 
-		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, gameEndDetector, true);
+		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, gameEndDetector, { alwaysRunUpdates: true, gameOverHasCountdown: true });
 	}
 
 	playerIdReceived(playerId: number) {
