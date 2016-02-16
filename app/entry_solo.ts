@@ -12,6 +12,7 @@ import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
+import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
 
 class AppEntry {
 	game: Phaser.Game;
@@ -40,15 +41,30 @@ class AppEntry {
 	create() {
 		console.log('create');
 
-		let level = new LevelDefFactory().getLevel(0);
-		let simulation = this.createSimulationFromLevel(level);
-		let gameEndDetector = new GameEndDetector(level, simulation);
-		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, new InputVerifier(simulation.grid, simulation.matchChecker, gameEndDetector, true), simulation.grid);
-		this.scene = new SimulationScene(this.game.add.group(), level, simulation, inputApplier, gameEndDetector, {});
+		this.createSimulationScene(1);
 	}
 
 	update() {
 		this.scene.update();
+	}
+
+	private createSimulationScene(levelNumber: number) {
+		let level = new LevelDefFactory().getLevel(levelNumber);
+		let simulation = this.createSimulationFromLevel(level);
+		let gameEndDetector = new GameEndDetector(level, simulation);
+		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, new InputVerifier(simulation.grid, simulation.matchChecker, gameEndDetector, true), simulation.grid);
+		let sceneGroup = this.game.add.group();
+		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, {});
+		
+		gameEndDetector.gameEnded.on(() => {
+			let catchAll = new TouchCatchAll(this.game);
+			sceneGroup.add(catchAll.sprite);
+			
+			catchAll.pointerUp.on(() => {
+				sceneGroup.destroy();
+				this.createSimulationScene(levelNumber + 1);
+			});
+		});
 	}
 }
 
