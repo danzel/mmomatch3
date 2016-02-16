@@ -19,6 +19,7 @@ class AppEntry {
 	simulation: Simulation;
 
 	scene: Scene;
+	sceneGroup: Phaser.Group;
 
 	private frameQueue: Array<FrameData> = [];
 
@@ -45,11 +46,16 @@ class AppEntry {
 	}
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation }) {
+		if (this.sceneGroup) {
+			this.sceneGroup.destroy();
+		}
+		
 		this.simulation = data.simulation;
 		let gameEndDetector = new GameEndDetector(data.level, data.simulation); //TODO: Do we need a special client version?
 		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, gameEndDetector, true), this.simulation.grid);
 
-		this.scene = new SimulationScene(this.game.add.group(), data.level, this.simulation, inputApplier, gameEndDetector, { alwaysRunUpdates: true, gameOverHasCountdown: true });
+		this.sceneGroup = this.game.add.group();
+		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulation, inputApplier, gameEndDetector, { alwaysRunUpdates: true, gameOverCountdown: 5 });
 	}
 
 	playerIdReceived(playerId: number) {
