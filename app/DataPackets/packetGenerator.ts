@@ -21,7 +21,8 @@ class PacketGenerator {
 			this.generateLevelDefData(level),
 			simulation.matchableFactory.idForSerializing,
 			this.generateGridData(simulation.grid),
-			this.generateSwapHandlerData(simulation.swapHandler)
+			this.generateSwapHandlerData(simulation.swapHandler),
+			simulation.framesElapsed
 		);
 	}
 	
@@ -83,7 +84,8 @@ class PacketGenerator {
 
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
-
+		simulation.framesElapsed = bootData.simulationFramesElapsed;
+		
 		return simulation;
 	}
 

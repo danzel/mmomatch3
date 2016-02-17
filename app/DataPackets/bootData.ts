@@ -6,7 +6,7 @@ import SwapHandlerData = require('./BootParts/swapHandlerData');
 
 class BootData {
 	playerId: number;
-	constructor(public level: LevelDefData, public matchableIdCounter: number, public grid: GridData, public swapHandler: SwapHandlerData) {
+	constructor(public level: LevelDefData, public matchableIdCounter: number, public grid: GridData, public swapHandler: SwapHandlerData, public simulationFramesElapsed: number) {
 	}
 }
 

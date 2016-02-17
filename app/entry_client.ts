@@ -49,6 +49,7 @@ class AppEntry {
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
 		}
+		this.frameQueue.length = 0;
 		
 		this.simulation = data.simulation;
 		let gameEndDetector = new GameEndDetector(data.level, data.simulation); //TODO: Do we need a special client version?
@@ -65,7 +66,7 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		//Apply all existing frameQueue
 		while (this.frameQueue.length > 0) {
-			this.runNextFrame();
+			this.update();
 		}
 
 		for (let i = 0; i < tickData.framesElapsed; i++) {
