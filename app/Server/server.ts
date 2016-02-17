@@ -1,5 +1,6 @@
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
+import DebugLogger = require('../debugLogger');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GridFactory = require('../Simulation/Levels/gridFactory');
@@ -55,6 +56,7 @@ class Server {
 		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, gameEndDetector, true);
 		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.scoreTracker);
+		//new DebugLogger(this.simulation);
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);

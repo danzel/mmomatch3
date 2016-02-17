@@ -1,6 +1,7 @@
 import Client = require('./Client/client');
 import ClientInputApplier = require('./Client/clientInputApplier');
 import ClientSpawnManager = require('./Client/clientSpawnManager');
+import DebugLogger = require('./debugLogger');
 import FrameData = require('./DataPackets/frameData');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
@@ -57,6 +58,7 @@ class AppEntry {
 
 		this.sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulation, inputApplier, gameEndDetector, { alwaysRunUpdates: true, gameOverCountdown: 5 });
+		//new DebugLogger(data.simulation);
 	}
 
 	playerIdReceived(playerId: number) {
