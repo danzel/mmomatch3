@@ -38,10 +38,19 @@ class SimulationRenderer {
 				this.onMatchableSpawned(col[y]);
 			}
 		}
-		
 	}
 
-	failedToSwap(matchable: Matchable, direction: IXY)  {
+	fitToBounds(width: number, height: number) {
+		this.scale = Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableNode.PositionScalar;
+		
+		let scaledWidth = this.scale * this.simulation.grid.width * MatchableNode.PositionScalar;
+		let scaledHeight = this.scale * this.simulation.grid.height * MatchableNode.PositionScalar;
+		
+		this.group.x = (width - scaledWidth) / 2;
+		this.group.y = height - (height - scaledHeight) / 2;
+	}
+
+	failedToSwap(matchable: Matchable, direction: IXY) {
 		if (matchable) {
 			this.matchableNodes[matchable.id].failedToSwap(direction);
 		}
@@ -76,15 +85,15 @@ class SimulationRenderer {
 		//Update scale
 		this.scale = newScale;
 	}
-	
+
 	getPosition(): IXY {
 		return this.group;
 	}
-	
+
 	getScale(): number {
 		return this.group.scale.x;
 	}
-		
+
 	private get scale(): number {
 		return this.group.scale.x;
 	}
@@ -96,7 +105,7 @@ class SimulationRenderer {
 	private onMatchableSpawned(matchable: Matchable) {
 		this.matchableNodes[matchable.id] = new MatchableNode(matchable, this.matchablesGroup);
 	}
-	
+
 	private onMatchableDisappeared(matchable: Matchable) {
 		this.matchableNodes[matchable.id].disappear();
 		delete this.matchableNodes[matchable.id];
@@ -115,11 +124,11 @@ class SimulationRenderer {
 
 			node.updatePosition();
 		}
-		
+
 		var swaps = this.simulation.swapHandler.swaps;
 		for (let i = 0; i < swaps.length; i++) {
 			var swap = swaps[i];
-			
+
 			this.matchableNodes[swap.left.id].updatePosition(swap);
 			this.matchableNodes[swap.right.id].updatePosition(swap);
 		}

@@ -25,6 +25,8 @@ class SimulationScene implements Scene {
 	private renderer: SimulationRenderer;
 	private input: InputHandler;
 
+	private haveFitRenderer = false;
+
 	scoreRenderer: ScoreRenderer;
 	playerCountRenderer: PlayerCountRenderer;
 
@@ -59,6 +61,11 @@ class SimulationScene implements Scene {
 
 	update(): void {
 		this.levelDetailsOverlay.update();
+
+		if (!this.haveFitRenderer && this.group.game.width != 0) {
+			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
+			this.haveFitRenderer = true;
+		}
 
 		if (this.gameOverOverlay) {
 			this.gameOverOverlay.update();
