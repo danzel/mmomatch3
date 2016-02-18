@@ -65,7 +65,7 @@ class ComboOwnership {
 	//When a match happens, the player gets ownership in that column from that height until the column is quiet again
 	private matchPerformed(matches: Array<Matchable>) {
 		//Calculate owners
-		var owners: { [playerId: number]: boolean } = {};
+		let owners: { [playerId: number]: boolean } = {};
 		for (let i = 0; i < matches.length; i++) {
 			let match = matches[i];
 			let ownersInCol = this.ownersByColumn[match.x];
@@ -82,7 +82,7 @@ class ComboOwnership {
 		//Optimization: Don't need to add multiple if they are in the same column
 		//Optimization: Don't need to add again if there is already a better (stricter) match for this player in this column
 		for (let i = 0; i < matches.length; i++) {
-			var m = matches[i]
+			let m = matches[i]
 			let ownersInCol = this.ownersByColumn[m.x];
 			for (let key in owners) {
 				ownersInCol.push(new Owner(m.y, key));
@@ -91,7 +91,7 @@ class ComboOwnership {
 
 
 		//Fire a match with owners event
-		var ownersArray: Array<number> = [];
+		let ownersArray: Array<number> = [];
 		for (let key in owners) {
 			ownersArray.push(parseInt(key, 10));
 		}
