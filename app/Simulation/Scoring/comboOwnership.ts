@@ -27,8 +27,10 @@ class Owner {
  */
 class ComboOwnership {
 	private ownersByColumn: Array<Array<Owner>>;
+	private ownerMatchCount: { [playerId: number]: number } = {};
 
 	ownedMatchPerformed = new LiteEvent<OwnedMatch>();
+	playerNoLongerInCombo = new LiteEvent<number>();
 
 	constructor(gridWidth: IGridWidth, swapHandler: SwapHandler, matchPerformer: MatchPerformer, quietColumnDetector: QuietColumnDetector) {
 		
@@ -55,6 +57,8 @@ class ComboOwnership {
 		//TODO: playerId
 		this.ownersByColumn[swap.left.x].push(new Owner(swap.left.y, swap.playerId));
 		this.ownersByColumn[swap.right.x].push(new Owner(swap.right.y, swap.playerId));
+
+		this.ownerMatchCount[swap.playerId] = (this.ownerMatchCount[swap.playerId] || 0) + 2;
 	}
 
 	private swapOccurred(swap: Swap) {
@@ -100,6 +104,14 @@ class ComboOwnership {
 	}
 
 	private columnBecameQuiet(x: number) {
+		let col = this.ownersByColumn[x];
+		for (var i = 0; i < col.length; i++) {
+			var owner = col[i];
+			this.ownerMatchCount[owner.playerId]--;
+			if (this.ownerMatchCount[owner.playerId] == 0) {
+				this.playerNoLongerInCombo.trigger(owner.playerId);
+			}
+		}
 		this.ownersByColumn[x].length = 0;
 	}
 }

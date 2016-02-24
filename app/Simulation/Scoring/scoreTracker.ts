@@ -2,24 +2,30 @@ import ComboOwnership = require('./comboOwnership');
 import OwnedMatch = require('./ownedMatch');
 
 class ScoreTracker {
+	pointsPerMatchable = 10;
 	points: { [playerId: number]: number } = {};
 
+	private playerComboSize: { [playerId: number]: number } = {};
+
 	constructor(comboOwnership: ComboOwnership) {
-		comboOwnership.ownedMatchPerformed.on(this.ownedMatchPerformed.bind(this));
+		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
+		comboOwnership.playerNoLongerInCombo.on((playerId) => this.playerNoLongerInCombo(playerId));
 	}
 
-	ownedMatchPerformed(data: OwnedMatch) {
+	private ownedMatchPerformed(data: OwnedMatch) {
 		for (let i = 0; i < data.players.length; i++) {
 			var playerId = data.players[i];
-			if (!this.points[playerId]) {
-				this.points[playerId] = data.matchables.length;
-			}
-			else {
-				this.points[playerId] += data.matchables.length;
-			}
+
+			let comboSize = (this.playerComboSize[playerId] || 0) + 1;
+			this.playerComboSize[playerId] = comboSize;
+			this.points[playerId] = (this.points[playerId] || 0) + comboSize * this.pointsPerMatchable * data.matchables.length;
 		}
-		
-		this.debugPrint();
+
+		//this.debugPrint();
+	}
+
+	private playerNoLongerInCombo(playerId: number) {
+		this.playerComboSize[playerId] = 0;
 	}
 
 	debugPrint() {
@@ -28,9 +34,9 @@ class ScoreTracker {
 		for (let i in this.points) {
 			list.push({ playerId: i, points: this.points[i] });
 		}
-		
+
 		list.sort((a: any, b: any) => b.points - a.points);
-		
+
 		for (let i = 0; i < list.length; i++) {
 			var p = list[i];
 			console.log(i + ": " + p.playerId + ' @ ' + p.points);
