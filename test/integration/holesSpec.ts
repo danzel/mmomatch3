@@ -82,7 +82,7 @@ describe('Holes', () => {
 			'1',
 			'X'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][2], simulation.grid.cells[0][3])).toBe(true);
 	});
@@ -94,7 +94,7 @@ describe('Holes', () => {
 			'1',
 			'X'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[0][1])).toBe(true);
 	});
@@ -104,7 +104,7 @@ describe('Holes', () => {
 			'1211',
 			'X456'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][1])).toBe(true);
 	});
@@ -114,7 +114,7 @@ describe('Holes', () => {
 			'1211',
 			'3X56'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][1], simulation.grid.cells[1][0])).toBe(true);
 	});
@@ -124,7 +124,7 @@ describe('Holes', () => {
 			'1211',
 			'34X6'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][1], simulation.grid.cells[1][1])).toBe(true);
 	});
@@ -138,7 +138,7 @@ describe('Holes', () => {
 		]);
 		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 		let ownershipChecker = new OwnershipMatchChecker(ownership);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		let left = simulation.grid.cells[3][0];
 		let right = simulation.grid.cells[3][1];

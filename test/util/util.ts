@@ -28,6 +28,10 @@ class TestUtil {
 
 		return simulation;
 	}
+	
+	static gameNeverOver() {
+		return { gameHasEnded: false }; 
+	}
 
 }
 

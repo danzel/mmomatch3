@@ -13,7 +13,7 @@ let expectValidSwap = function(a: Matchable, b: Matchable, canSwap: boolean) {
 
 describe('InputVerifier', () => {
 	function init() {
-		inputVerifier = new InputVerifier(null, null, false);
+		inputVerifier = new InputVerifier(null, null, TestUtil.gameNeverOver(), false);
 	}
     it('Can swap two horizontal neighbours', () => {
 		init();
@@ -79,7 +79,7 @@ describe('InputVerifier.requireSwapsToMakeMatches', () => {
 	let grid: Grid;
 	function baseInit() {
 		grid = new Grid(3, 3);
-		inputVerifier = new InputVerifier(grid, new MatchChecker(grid), true);
+		inputVerifier = new InputVerifier(grid, new MatchChecker(grid), TestUtil.gameNeverOver(), true);
 	}
 	
 	describe('on a 3x3 grid', () => {
