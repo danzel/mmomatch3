@@ -1,5 +1,4 @@
 ///<reference path="../../typings/jasmine/jasmine.d.ts"/>
-import ComboOwnership = require('../../app/Simulation/Scoring/comboOwnership');
 import Grid = require('../../app/Simulation/grid');
 import InputVerifier = require('../../app/Simulation/inputVerifier');
 import Matchable = require('../../app/Simulation/matchable');
@@ -136,8 +135,7 @@ describe('Holes', () => {
 			'2112',
 			'34X1'
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
 
 		let left = simulation.grid.cells[3][0];

@@ -1,5 +1,4 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
-import ComboOwnership = require('../../../app/Simulation/Scoring/comboOwnership');
 import Grid = require('../../../app/Simulation/grid');
 import QuietColumnDetector = require('../../../app/Simulation/quietColumnDetector');
 import MatchableFactory = require('../../../app/Simulation/matchableFactory');
@@ -19,9 +18,8 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 		let simulation = TestUtil.prepareForTest([
 			"1211"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
@@ -39,9 +37,8 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"1",
 			"1"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
@@ -57,9 +54,8 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"3223",
 			"1211"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
@@ -81,9 +77,8 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 			"13344",
 			"21212"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);

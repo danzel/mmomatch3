@@ -1,3 +1,4 @@
+import ComboOwnership = require('./Scoring/comboOwnership');
 import Disappearer = require('./disappearer');
 import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
@@ -6,6 +7,7 @@ import MatchPerformer = require('./matchPerformer');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import Physics = require('./physics');
 import SpawnManager = require('./spawnManager');
+import ScoreTracker = require('./Scoring/scoreTracker');
 import SwapHandler = require('./swapHandler');
 
 import QuietColumnDetector = require('./quietColumnDetector');
@@ -21,6 +23,8 @@ class Simulation {
 	disappearer: Disappearer;
 
 	quietColumnDetector: QuietColumnDetector;
+	comboOwnership: ComboOwnership;
+	scoreTracker: ScoreTracker;
 
 	framesElapsed: number = 0;
 	timeRunning: number = 0; //TODO: Need to serialize this and send to client
@@ -38,6 +42,8 @@ class Simulation {
 		this.disappearer = new Disappearer(this.grid);
 
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
+		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
+		this.scoreTracker = new ScoreTracker(this.comboOwnership);
 	}
 
 	update(dt: number) {

@@ -1,5 +1,4 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
-import ComboOwnership = require('../../../app/Simulation/Scoring/comboOwnership');
 import Grid = require('../../../app/Simulation/grid');
 import QuietColumnDetector = require('../../../app/Simulation/quietColumnDetector');
 import MatchableFactory = require('../../../app/Simulation/matchableFactory');
@@ -19,9 +18,8 @@ describe('ComboOwnership.stopOwning', () => {
 			"2255",
 			"1121"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
@@ -45,9 +43,8 @@ describe('ComboOwnership.stopOwning', () => {
 			"223244",
 			"441311"
 		]);
-		let ownership = new ComboOwnership(simulation.grid, simulation.swapHandler, simulation.matchPerformer, simulation.quietColumnDetector);
 
-		let ownershipChecker = new OwnershipMatchChecker(ownership);
+		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]); //1

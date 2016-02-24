@@ -29,7 +29,6 @@ import TickDataFactory = require('./tickDataFactory');
 class Server {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
-	private scoreTracker: ScoreTracker;
 	private tickDataFactory: TickDataFactory;
 	
 	private level: LevelDef;
@@ -54,8 +53,7 @@ class Server {
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 		let gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, gameEndDetector, true);
-		this.scoreTracker = new ScoreTracker(new ComboOwnership(this.simulation.grid, this.simulation.swapHandler, this.simulation.matchPerformer, this.simulation.quietColumnDetector));
-		this.tickDataFactory = new TickDataFactory(this.simulation, this.scoreTracker);
+		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker);
 		//new DebugLogger(this.simulation);
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
