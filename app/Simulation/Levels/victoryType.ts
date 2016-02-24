@@ -1,8 +1,7 @@
 enum VictoryType {
 	
-	/** Points are not implemented */
-	Points,
-	Matches
+	Matches,
+	Score
 }
 
 export = VictoryType;

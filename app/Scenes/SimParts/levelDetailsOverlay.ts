@@ -59,8 +59,8 @@ class LevelDetailsOverlay {
 		switch (this.level.victoryType) {
 			case VictoryType.Matches:
 				return "Match " + this.level.victoryValue + " {Thingies???}"; //TODO: Thingies
-			case VictoryType.Points:
-				return "Get " + this.level.victoryType + " Points";
+			case VictoryType.Score:
+				return "Get " + this.level.victoryValue + " Points";
 			default:
 				throw new Error("Don't know about FailureType " + this.level.failureType + " " + FailureType[this.level.failureType]);
 		}
