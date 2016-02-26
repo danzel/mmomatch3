@@ -45,7 +45,7 @@ class LevelDetailsOverlay {
 			fill: 'white'
 		}));
 		
-		this.group.add(new Phaser.Text(this.group.game, 50, 140, this.getVictoryText() + " " + this.getLimitText(), {
+		this.group.add(new Phaser.Text(this.group.game, 50, 140, this.getVictoryText() + " " + this.getFailureText(), {
 			fill: 'white'
 		}));
 		
@@ -58,7 +58,7 @@ class LevelDetailsOverlay {
 		return this.victoryDetector.getDetailsText();
 	}
 	
-	private getLimitText(): string {
+	private getFailureText(): string {
 		return this.failureDetector.getDetailsText();
 	}
 	
