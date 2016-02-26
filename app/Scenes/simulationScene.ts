@@ -46,7 +46,7 @@ class SimulationScene implements Scene {
 		this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
 		this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 
-		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level);
+		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
 		//Disable the displays (stop them updating) when the game ends
 		gameEndDetector.gameEnded.on((victory: boolean) => {

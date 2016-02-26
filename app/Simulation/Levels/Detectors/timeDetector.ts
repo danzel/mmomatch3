@@ -20,6 +20,10 @@ class TimeDetector extends Detector {
 			this.valueChanged.trigger();
 		});
 	}
+	
+	getDetailsText(): string {
+		return "Within " + this.totalTime + " Seconds";
+	}
 }
 
 export = TimeDetector;

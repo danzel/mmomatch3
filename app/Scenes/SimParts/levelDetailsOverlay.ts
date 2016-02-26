@@ -1,14 +1,13 @@
-import FailureType = require('../../Simulation/Levels/failureType');
+import Detector = require('../../Simulation/Levels/detector');
 import LevelDef = require('../../Simulation/Levels/levelDef');
 import TouchCatchAll = require('../../Renderer/Components/touchCatchAll');
-import VictoryType = require('../../Simulation/Levels/victoryType');
 
 class LevelDetailsOverlay {
 	gfx: Phaser.Graphics;
 	
 	closed = false;
 	
-	constructor(private group: Phaser.Group, private level: LevelDef) {
+	constructor(private group: Phaser.Group, private level: LevelDef, private victoryDetector: Detector, private failureDetector: Detector) {
 		
 		this.addTouchCatchAll();
 		this.addBackground();
@@ -56,25 +55,11 @@ class LevelDetailsOverlay {
 	}
 	
 	private getVictoryText(): string {
-		switch (this.level.victoryType) {
-			case VictoryType.Matches:
-				return "Match " + this.level.victoryValue + " {Thingies???}"; //TODO: Thingies
-			case VictoryType.Score:
-				return "Get " + this.level.victoryValue + " Points";
-			default:
-				throw new Error("Don't know about FailureType " + this.level.failureType + " " + FailureType[this.level.failureType]);
-		}
+		return this.victoryDetector.getDetailsText();
 	}
 	
 	private getLimitText(): string {
-		switch (this.level.failureType) {
-			case FailureType.Swaps:
-				return "Within " + this.level.failureValue + " Swaps";
-			case FailureType.Time:
-				return "Within " + this.level.failureValue + " Seconds";
-			default:
-				throw new Error("Don't know about LimitType " + this.level.failureType + " " + FailureType[this.level.failureType])
-		}
+		return this.failureDetector.getDetailsText();
 	}
 	
 	update() {
