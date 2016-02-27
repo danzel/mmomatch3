@@ -7,6 +7,7 @@ import VictoryType = require('./victoryType');
 
 import MatchesDetector = require('./Detectors/matchesDetector');
 import ScoreDetector = require('./Detectors/scoreDetector');
+import SwapsDetector = require('./Detectors/swapsDetector');
 import TimeDetector = require('./Detectors/timeDetector');
 
 
@@ -14,37 +15,39 @@ class GameEndDetector {
 	
 	/** Passes true if the game was won */
 	gameEnded = new LiteEvent<boolean>();
-	
+
 	failureDetector: Detector;
 	victoryDetector: Detector;
-	
+
 	gameHasEnded = false;
 	private gameEndedInVictory: boolean;
 
 	constructor(private level: LevelDef, private simulation: Simulation) {
 		this.failureDetector = this.createFailureDetector();
 		this.victoryDetector = this.createVictoryDetector();
-		
+
 		this.failureDetector.detected.on(() => this.checkForGameEnd(false));
 		this.victoryDetector.detected.on(() => this.checkForGameEnd(true));
 	}
-	
+
 	private checkForGameEnd(victory: boolean) {
 		if (this.gameHasEnded) {
 			return;
 		}
-		
+
 		this.gameHasEnded = true;
 		this.gameEndedInVictory = victory;
-		
+
+		this.simulation.inputVerifier.inputDisabled = true;
+
 		this.gameEnded.trigger(victory);
 		console.log("game end", victory);
 	}
 
 	private createFailureDetector(): Detector {
 		switch (this.level.failureType) {
-			//case FailureType.Swaps:
-			//	return new SwapsDetector(this.level.limitValue); //TODO: You get to wait for the swap happen. When this is triggered input should be disabled and we wait until the grid is quiet
+			case FailureType.Swaps:
+				return new SwapsDetector(this.simulation, this.level.failureValue);
 			case FailureType.Time:
 				return new TimeDetector(this.simulation, this.level.failureValue);
 			default:

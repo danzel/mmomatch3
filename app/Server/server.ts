@@ -52,7 +52,7 @@ class Server {
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), this.level.colorCount);
 		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
 		let gameEndDetector = new GameEndDetector(this.level, this.simulation);
-		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, gameEndDetector, true);
+		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker);
 		//new DebugLogger(this.simulation);
 

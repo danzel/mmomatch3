@@ -52,7 +52,7 @@ class AppEntry {
 		let level = new LevelDefFactory().getLevel(levelNumber);
 		let simulation = this.createSimulationFromLevel(level);
 		let gameEndDetector = new GameEndDetector(level, simulation);
-		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, new InputVerifier(simulation.grid, simulation.matchChecker, gameEndDetector, true), simulation.grid);
+		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, {});
 		

@@ -1,18 +1,20 @@
 import Grid = require('./grid');
 import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
-import SwapHandler = require('./swapHandler');
 
 interface GameEndDetector {
 	gameHasEnded: boolean;
 }
 
 class InputVerifier {
-	constructor(private grid: Grid, private matchChecker: MatchChecker, private gameEndDetector: GameEndDetector, private requireSwapsToMakeMatches: boolean) {
+	
+	inputDisabled = false;
+	
+	constructor(private grid: Grid, private matchChecker: MatchChecker, private requireSwapsToMakeMatches: boolean) {
 	}
 	
 	swapIsValid(left: Matchable, right: Matchable) : boolean {
-		if (this.gameEndDetector.gameHasEnded)
+		if (this.inputDisabled)
 			return false;
 		if (!this.inValidState(left))
 			return false;
