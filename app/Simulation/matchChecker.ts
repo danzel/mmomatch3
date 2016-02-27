@@ -20,6 +20,7 @@ class MatchChecker {
 		this.grid = grid;
 	}
 
+	/** Returns null if there is no match */
 	testForMatch(matchable: Matchable): MatchDetails {
 		
 		//Horizontal Test

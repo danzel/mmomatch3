@@ -51,10 +51,11 @@ class Simulation {
 
 	update(dt: number) {
 		//console.log('run', dt);
-		this.physics.update(dt);
-		this.swapHandler.update(dt);
+		this.physics.updateMovement(dt);
 		this.disappearer.update(dt);
+		this.swapHandler.update(dt);
 		this.spawnManager.update(dt);
+		this.physics.updateMomentum(dt);
 
 		this.quietColumnDetector.lateUpdate(dt);
 

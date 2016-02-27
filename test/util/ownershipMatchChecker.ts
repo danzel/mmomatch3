@@ -7,7 +7,12 @@ class OwnershipMatchChecker {
 	
 	constructor(comboOwnership: ComboOwnership) {
 		let matches = this.matches;
-		comboOwnership.ownedMatchPerformed.on(data => matches.push(data));
+		comboOwnership.ownedMatchPerformed.on((data) => {
+			if (data.players.length == 0) {
+				throw new Error("Match happened with no owners. " + data.matchables.length + " were matched");
+			}
+			matches.push(data);
+		});
 	}
 	
 	verifyMatch(matchableCount: number, players: Array<number>){

@@ -77,13 +77,10 @@ class QuietColumnDetector {
 		//TODO: Check for distinct x values
 		for (let i = 0; i < this.columnsNeedingCheck.length; i++) {
 			var x = this.columnsNeedingCheck[i];
-			var col = this.grid.cells[x];
 
-			if (this.columnDisappearingCount[x] == 0 && this.columnSwapsInProgressCount[x] == 0) {
-				if (col.length == 0 || (!col[col.length - 1].isMoving && col[col.length - 1].y == col.length - 1)) {
-					this.columnBecameQuiet.trigger(x);
-					oneBecameQuiet = true;
-				}
+			if (this.columnIsQuiet(x)) {
+				this.columnBecameQuiet.trigger(x);
+				oneBecameQuiet = true;
 			}
 		}
 		this.columnsNeedingCheck.length = 0;
@@ -108,7 +105,16 @@ class QuietColumnDetector {
 		var col = this.grid.cells[x];
 
 		if (this.columnDisappearingCount[x] == 0 && this.columnSwapsInProgressCount[x] == 0) {
-			if (col.length == 0 || (!col[col.length - 1].isMoving && col[col.length - 1].y == col.length - 1)) {
+			let colLengthExpected = this.grid.maxMatchablesInColumn(x);
+			if (colLengthExpected == 0) {
+				return true;
+			}
+			if (col.length == 0) {
+				return true;
+			}
+			let lastMatchable = col[col.length - 1];
+			
+			if (!lastMatchable.isMoving) {
 				return true;
 			}
 		}

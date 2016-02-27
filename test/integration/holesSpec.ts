@@ -34,7 +34,8 @@ describe('Holes', () => {
 		let matchable = new Matchable(1, 0, 2, 0);
 		grid.cells[0].push(matchable);
 
-		physics.update(1);
+		physics.updateMomentum(10);
+		physics.updateMovement(10);
 
 		expect(matchable.y).toBe(1);
 		expect(matchable.yMomentum).toBe(0);
@@ -48,7 +49,8 @@ describe('Holes', () => {
 		let matchable = new Matchable(1, 0, 4, 0);
 		grid.cells[0].push(matchable);
 
-		physics.update(10);
+		physics.updateMomentum(10);
+		physics.updateMovement(10);
 
 		expect(matchable.y).toBe(0);
 		expect(matchable.yMomentum).toBe(0);
@@ -64,7 +66,8 @@ describe('Holes', () => {
 		let matchable2 = new Matchable(2, 0, 5, 0);
 		grid.cells[0].push(matchable2);
 
-		physics.update(10);
+		physics.updateMomentum(10);
+		physics.updateMovement(10);
 
 		expect(matchable.y).toBe(0);
 		expect(matchable.yMomentum).toBe(0);
@@ -81,7 +84,7 @@ describe('Holes', () => {
 			'1',
 			'X'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][2], simulation.grid.cells[0][3])).toBe(true);
 	});
@@ -93,7 +96,7 @@ describe('Holes', () => {
 			'1',
 			'X'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[0][1])).toBe(true);
 	});
@@ -103,7 +106,7 @@ describe('Holes', () => {
 			'1211',
 			'X456'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][1])).toBe(true);
 	});
@@ -113,7 +116,7 @@ describe('Holes', () => {
 			'1211',
 			'3X56'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][1], simulation.grid.cells[1][0])).toBe(true);
 	});
@@ -123,7 +126,7 @@ describe('Holes', () => {
 			'1211',
 			'34X6'
 		]);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		expect(inputVerifier.swapIsValid(simulation.grid.cells[0][1], simulation.grid.cells[1][1])).toBe(true);
 	});
@@ -136,7 +139,7 @@ describe('Holes', () => {
 			'34X1'
 		]);
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
-		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, TestUtil.gameNeverOver(), true);
+		let inputVerifier = new InputVerifier(simulation.grid, simulation.matchChecker, true);
 
 		let left = simulation.grid.cells[3][0];
 		let right = simulation.grid.cells[3][1];

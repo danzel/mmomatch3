@@ -6,18 +6,18 @@ import Physics = require('../../../app/Simulation/physics');
 describe('Physics', () => {
 	let grid: Grid;
 	let physics: Physics;
-	
+
 	beforeEach(() => {
 		grid = new Grid(1, 1);
 		physics = new Physics(grid);
 	});
-	
+
 	it('makes Matchables fall', () => {
 		let m = new Matchable(1, 0, 1, 1);
 
 		grid.cells[0].push(m);
-		physics.update(1 / 60);
-		
+		physics.updateMomentum(1 / 60);
+
 		expect(m.isMoving).toBe(true);
 	});
 
@@ -26,8 +26,8 @@ describe('Physics', () => {
 		m.isDisappearing = true;
 
 		grid.cells[0].push(m);
-		physics.update(1 / 60);
-		
+		physics.updateMomentum(1 / 60);
+
 		expect(m.isMoving).toBe(false);
 	});
 
@@ -36,8 +36,8 @@ describe('Physics', () => {
 		m.beingSwapped = true;
 
 		grid.cells[0].push(m);
-		physics.update(1 / 60);
-		
+		physics.updateMomentum(1 / 60);
+
 		expect(m.isMoving).toBe(false);
 	});
 });

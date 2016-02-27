@@ -3,29 +3,14 @@ import Color = require('./color');
 class Matchable {
 	public static TimeToDisappear = 0.4;
 	
-	id: number;
-	x: number;
-	y: number;
-	color: Color;
+	isDisappearing = false;
+	disappearingTime = 0;
 
-	isDisappearing: boolean;
-	disappearingTime: number;
+	yMomentum = 0;
 
-	yMomentum: number;
+	beingSwapped = false;
 
-	beingSwapped: boolean;
-
-	constructor(id: number, x: number, y: number, color: Color) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.color = color;
-
-		this.isDisappearing = false;
-		this.disappearingTime = 0;
-
-		this.yMomentum = 0;
-		this.beingSwapped = false;
+	constructor(public id: number, public x: number, public y: number, public color: Color) {
 	}
 	
 	get isMoving(): boolean {

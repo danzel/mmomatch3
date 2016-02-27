@@ -59,8 +59,9 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < 4; i++)
+		for (let i = 0; i < 4; i++) {
 			simulation.update(1);
+		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId1]);
@@ -71,19 +72,20 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		//Match 2,3,4
 		let simulation = TestUtil.prepareForTest([
-			"3    ",
 			"2    ",
-			"2 4  ",
-			"13344",
-			"21212"
+			"1    ",
+			"1 3  ",
+			"82233",
+			"19898"
 		]);
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
-		for (let i = 0; i < 4; i++)
+		for (let i = 0; i < 4; i++) {
 			simulation.update(1);
+		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId1]);

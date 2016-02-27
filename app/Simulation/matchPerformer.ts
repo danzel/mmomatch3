@@ -20,18 +20,27 @@ class MatchPerformer {
 	}
 
 	private onSwapOccurred(swap: Swap) {
-		this.testForMatch(swap.left);
+		let didSwap = this.testForMatch(swap.left);
 
-		if (!swap.right.isDisappearing)
-			this.testForMatch(swap.right);
+		if (!swap.right.isDisappearing) {
+			didSwap = this.testForMatch(swap.right) || didSwap;
+		}
+		
+		//TODO: Only if swaps making a match is required
+		if (!didSwap) {
+			throw new Error("Swapped " + swap.left.x + "," + swap.left.y + " " + swap.right.x + "," + swap.right.y + " and there was no match!");
+		}
 	}
 
-	private testForMatch(matchable: Matchable) {
+	private testForMatch(matchable: Matchable): boolean {
 		var matchDetails = this.matchChecker.testForMatch(matchable);
 
 		if (matchDetails) {
 			this.performMatch(matchable, matchDetails.horizontal, matchDetails.vertical);
+			return true;
 		}
+		
+		return false;
 	}
 
 	private performMatch(matchable: Matchable, horizontal: boolean, vertical: boolean) {
