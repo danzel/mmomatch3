@@ -33,9 +33,9 @@ class QuietColumnDetector {
 	}
 
 	matchableLanded(matchable: Matchable) {
-		//If we land and we are in our correct place and there is nothing above us
+		//If we land and there is nothing above us
 		let col = this.grid.cells[matchable.x];
-		if (matchable.y == col.indexOf(matchable) && matchable.y == col.length - 1) {
+		if (matchable == col[col.length -1]) {
 			this.columnsNeedingCheck.push(matchable.x);
 		}
 	}

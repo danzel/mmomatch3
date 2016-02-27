@@ -19,12 +19,11 @@ describe('QuietColumnsDetector', () => {
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 
 		simulation.update(1);
-console.log('checking');
+
 		//At this stage the swap should be done and the match started
-		expect(quietColumns).toContain(1); 
+		expect(quietColumns).toContain(1);
 		expect(quietColumns).not.toContain(0);
-		console.log('checked')
-		simulation.update(1);
+
 		simulation.update(1);
 
 		expect(columnQuietCount).toBeGreaterThan(1); //Ideally it would be 2
@@ -36,6 +35,7 @@ console.log('checking');
 
 	it('detects quiet columns when there are holes', () => {
 		let simulation = TestUtil.prepareForTest([
+			"85",
 			"X5",
 			"16",
 			"17",
@@ -54,11 +54,13 @@ console.log('checking');
 		simulation.update(1);
 
 		//At this stage the swap should be done and the match started
-		expect(quietColumns).toContain(1); 
-		expect(quietColumns).not.toContain(0);	
+		expect(quietColumns).toContain(1);
+		expect(quietColumns).not.toContain(0);
+		expect(gridQuietCount).toBe(0);
 
-		simulation.update(1);
-		simulation.update(1);
+		for (let i = 0; i < 2; i++) {
+			simulation.update(1);
+		}
 
 		expect(columnQuietCount).toBeGreaterThan(1); //Ideally it would be 2
 		expect(quietColumns).toContain(0);
