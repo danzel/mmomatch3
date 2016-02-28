@@ -32,6 +32,14 @@ class TestUtil {
 	static gameNeverOver() {
 		return { gameHasEnded: false }; 
 	}
+	
+	static expectGridQuiet(simulation: Simulation) {
+		let busyColumns = simulation.quietColumnDetector.columnIsQuiet.map((quiet, index) => quiet ? -1 : index).filter(x => x != -1);
+		
+		if (busyColumns.length != 0) {
+			expect(busyColumns).toBe([]);
+		}
+	}
 
 }
 

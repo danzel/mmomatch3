@@ -26,11 +26,12 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.update(1);
 
-		expect(columnQuietCount).toBeGreaterThan(1); //Ideally it would be 2
+		expect(columnQuietCount).toBe(2);
 		expect(quietColumns).toContain(0);
 		expect(quietColumns).toContain(1);
 
 		expect(gridQuietCount).toBe(1);
+		TestUtil.expectGridQuiet(simulation);
 	});
 
 	it('detects quiet columns when there are holes', () => {
@@ -62,10 +63,11 @@ describe('QuietColumnsDetector', () => {
 			simulation.update(1);
 		}
 
-		expect(columnQuietCount).toBeGreaterThan(1); //Ideally it would be 2
+		expect(columnQuietCount).toBe(2);
 		expect(quietColumns).toContain(0);
 		expect(quietColumns).toContain(1);
 
 		expect(gridQuietCount).toBe(1);
+		TestUtil.expectGridQuiet(simulation);
 	});
 });

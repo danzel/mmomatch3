@@ -13,6 +13,7 @@ class QuietColumnDetector {
 	private columnSwapsInProgressCount: Array<number> = [];
 	private columnDisappearingCount: Array<number> = [];
 
+	columnIsQuiet = new Array<boolean>();
 	columnBecameQuiet = new LiteEvent<number>();
 	gridBecameQuiet = new LiteEvent<void>();
 
@@ -21,6 +22,7 @@ class QuietColumnDetector {
 		for (let i = 0; i < grid.width; i++) {
 			this.columnSwapsInProgressCount.push(0);
 			this.columnDisappearingCount.push(0);
+			this.columnIsQuiet.push(true);
 		}
 
 		physics.matchableLanded.on(this.matchableLanded.bind(this));
@@ -42,6 +44,8 @@ class QuietColumnDetector {
 
 
 	onSwapStarted(swap: Swap) {
+		this.columnIsQuiet[swap.left.x] = false;
+		this.columnIsQuiet[swap.right.x] = false;
 		this.columnSwapsInProgressCount[swap.left.x]++;
 		this.columnSwapsInProgressCount[swap.right.x]++;
 	}
@@ -60,6 +64,7 @@ class QuietColumnDetector {
 
 	onMatchPerformed(matchables: Matchable[]) {
 		for (let i = 0; i < matchables.length; i++) {
+			this.columnIsQuiet[matchables[i].x] = false;
 			this.columnDisappearingCount[matchables[i].x]++;
 		}
 	}
@@ -67,18 +72,18 @@ class QuietColumnDetector {
 	onMatchableDisappeared(matchable: Matchable) {
 		this.columnDisappearingCount[matchable.x]--;
 
-		//TODO: Only if this is the last matchable in the column
+		//Optimisation: Only if this is the last matchable in the column (in which case it may mean none above it started to fall)
 		this.columnsNeedingCheck.push(matchable.x);
 	}
 
 	lateUpdate(dt: number) {
 		let oneBecameQuiet = false;
 		
-		//TODO: Check for distinct x values
 		for (let i = 0; i < this.columnsNeedingCheck.length; i++) {
 			var x = this.columnsNeedingCheck[i];
 
-			if (this.columnIsQuiet(x)) {
+			if (!this.columnIsQuiet[x] && this.isColumnQuiet(x)) {
+				this.columnIsQuiet[x] = true;
 				this.columnBecameQuiet.trigger(x);
 				oneBecameQuiet = true;
 			}
@@ -87,21 +92,15 @@ class QuietColumnDetector {
 		
 		//Check if there are now no columns busy
 		if (oneBecameQuiet) {
-			let anyColumnIsBusy = false;
-			for (let x = 0; x < this.grid.width; x++) {
-				if (!this.columnIsQuiet(x)) {
-					anyColumnIsBusy = true;
-					break;
-				}
-			}
+			let allQuiet = this.columnIsQuiet.every(x => x);
 
-			if (!anyColumnIsBusy) {
+			if (allQuiet) {
 				this.gridBecameQuiet.trigger();
 			}
 		}
 	}
 
-	private columnIsQuiet(x: number) {
+	private isColumnQuiet(x: number) {
 		var col = this.grid.cells[x];
 
 		if (this.columnDisappearingCount[x] == 0 && this.columnSwapsInProgressCount[x] == 0) {

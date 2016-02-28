@@ -53,10 +53,13 @@ describe('ComboOwnership.stopOwning', () => {
 			simulation.update(1);
 		}
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][1], simulation.grid.cells[3][1]); //2
-		simulation.update(1);
+		for (let i = 0; i < 3; i++) {
+			simulation.update(1);
+		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId2]);
 		ownershipChecker.verifyNoRemainingMatches();
+		TestUtil.expectGridQuiet(simulation);
 	});
 });

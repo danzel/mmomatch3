@@ -12,7 +12,7 @@ describe('Points.singleOwner', () => {
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < 3; i++)
+		for (let i = 0; i < 4; i++)
 			simulation.update(1);
 
 		let points =
@@ -20,6 +20,7 @@ describe('Points.singleOwner', () => {
 			2 * simulation.scoreTracker.pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
+		TestUtil.expectGridQuiet(simulation);
 	});
 	
 	it('doesnt combo if there is a time break between', () => {
@@ -41,6 +42,7 @@ describe('Points.singleOwner', () => {
 			1 * simulation.scoreTracker.pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
+		TestUtil.expectGridQuiet(simulation);
 	});
 
 	it('combos if two unrelated matches happen a the same time', () => {
@@ -60,5 +62,6 @@ describe('Points.singleOwner', () => {
 			2 * simulation.scoreTracker.pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
+		TestUtil.expectGridQuiet(simulation);
 	});
 });

@@ -34,12 +34,8 @@ class ComboOwnership {
 
 	constructor(gridWidth: IGridWidth, swapHandler: SwapHandler, matchPerformer: MatchPerformer, quietColumnDetector: QuietColumnDetector) {
 		
-		//TODO: Need to know when a swap happens and who caused it.
-		//TODO: Need to clear ownership after a swap?
 		swapHandler.swapStarted.on(this.swapStarted.bind(this));
-		swapHandler.swapOccurred.on(this.swapOccurred.bind(this));
 		
-		//TODO: Need to know when a match happens to push ownership to those that fall down because of it
 		matchPerformer.matchPerformed.on(this.matchPerformed.bind(this));
 
 		quietColumnDetector.columnBecameQuiet.on(this.columnBecameQuiet.bind(this));
@@ -49,21 +45,20 @@ class ComboOwnership {
 			this.ownersByColumn.push([]);
 		}
 	}
+	
+	/** For tests */
+	isPlayerInCombo(playerId: number): boolean {
+		return this.ownerMatchCount[playerId] != 0;
+	}
 
 	//When a swap happens this gives ownership until the swap finishes and the resulting match happens (if any match)
 	private swapStarted(swap: Swap) {
 		
-		//Optimization: For a vertical swap we only need to add one
-		//TODO: playerId
+		//Optimisation: For a vertical swap we only need to add one
 		this.ownersByColumn[swap.left.x].push(new Owner(swap.left.y, swap.playerId));
 		this.ownersByColumn[swap.right.x].push(new Owner(swap.right.y, swap.playerId));
 
 		this.ownerMatchCount[swap.playerId] = (this.ownerMatchCount[swap.playerId] || 0) + 2;
-	}
-
-	private swapOccurred(swap: Swap) {
-		//TODO: This should happen in a late update
-		//TODO: Forget about the swap? - We will when the become quiet, but they might not cause a match so that might not happen
 	}
 
 	//When a match happens, the player gets ownership in that column from that height until the column is quiet again
@@ -83,13 +78,14 @@ class ComboOwnership {
 		}
 		
 		//Re-record them in the owners list if needed
-		//Optimization: Don't need to add multiple if they are in the same column
-		//Optimization: Don't need to add again if there is already a better (stricter) match for this player in this column
+		//Optimisation: Don't need to add multiple if they are in the same column
+		//Optimisation: Don't need to add again if there is already a better (stricter) match for this player in this column
 		for (let i = 0; i < matches.length; i++) {
 			let m = matches[i]
 			let ownersInCol = this.ownersByColumn[m.x];
 			for (let key in owners) {
 				ownersInCol.push(new Owner(m.y, key));
+				this.ownerMatchCount[key]++;
 			}
 		}		
 
@@ -112,7 +108,7 @@ class ComboOwnership {
 				this.playerNoLongerInCombo.trigger(owner.playerId);
 			}
 		}
-		this.ownersByColumn[x].length = 0;
+		col.length = 0;
 	}
 }
 

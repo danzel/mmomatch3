@@ -24,9 +24,11 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 		simulation.update(1);
+		simulation.update(1);
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
-		ownershipChecker.verifyNoRemainingMatches()
+		ownershipChecker.verifyNoRemainingMatches();
+		expect(simulation.comboOwnership.isPlayerInCombo(playerId1)).toBe(false);
 	});
 
     it('gives ownership of a single vertical swap', () => {
@@ -42,10 +44,13 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
-		simulation.update(1);
+		for (let i = 0; i < 3; i++) {
+			simulation.update(1);
+		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyNoRemainingMatches();
+		expect(simulation.comboOwnership.isPlayerInCombo(playerId1)).toBe(false);
 	});
 
     it('gives ownership of a double combo', () => {
@@ -66,6 +71,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyNoRemainingMatches();
+		expect(simulation.comboOwnership.isPlayerInCombo(playerId1)).toBe(false);
 	});
 
     it('gives ownership of a complicated combo', () => {
@@ -83,7 +89,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update(1);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			simulation.update(1);
 		}
 
@@ -91,5 +97,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyNoRemainingMatches();
+		TestUtil.expectGridQuiet(simulation);
+		expect(simulation.comboOwnership.isPlayerInCombo(playerId1)).toBe(false);
 	});
 });
