@@ -46,6 +46,7 @@ class ScoreTracker {
 
 		list.sort((a: any, b: any) => b.points - a.points);
 
+		console.log('total: ' + this.totalPoints);
 		for (let i = 0; i < list.length; i++) {
 			var p = list[i];
 			console.log(i + ": " + p.playerId + ' @ ' + p.points);
