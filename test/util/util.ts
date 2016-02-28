@@ -5,7 +5,10 @@ import NeverSpawnManager = require('./neverSpawnManager');
 import Simulation = require('../../app/Simulation/simulation');
 
 class TestUtil {
-	static populateGrid(grid: Grid, contents: Array<string>) {
+	/** Populate a grid with the given contents.
+	 * @see prepareForTest
+	 */
+	static populateGrid(grid: Grid, contents: Array<string>, specialColors?: string) {
 		let idCounter = 1;
 		for (var x = 0; x < grid.width; x++) {
 			for (var y = 0; y < grid.height; y++) {
@@ -13,6 +16,7 @@ class TestUtil {
 				if (c == 'X') {
 					grid.setHole(x, y);
 				} else {
+					//TODO: specialColors if required
 					grid.cells[x].push(new Matchable(idCounter, x, y, parseInt(c, 10)));
 					idCounter++;
 				}
@@ -20,9 +24,21 @@ class TestUtil {
 		}
 	}
 	
-	static prepareForTest(gridConfig: Array<string>): Simulation {
+	/** Populate a grid with the given contents.
+	 * Use 0-9 for the matchable 'color'.
+	 * X for holes
+	 * * for unclearable
+	 * (Unimplemented follow)
+	 * C for color clear
+	 * - for horizontal clear
+	 * | for vertical clear
+	 * + for horizontal and vertical clear
+	 * # for 3x3 clear
+	 * @param specialColors The coors of the special matchables in bottom to top, left to right order
+	 */
+	static prepareForTest(gridConfig: Array<string>, specialColors?: string): Simulation {
 		var grid = new Grid(gridConfig[0].length, gridConfig.length);
-		TestUtil.populateGrid(grid, gridConfig);
+		TestUtil.populateGrid(grid, gridConfig, specialColors);
 		var matchableFactory = new MatchableFactory();
 		var simulation = new Simulation(grid, new NeverSpawnManager(grid, matchableFactory), matchableFactory);
 
