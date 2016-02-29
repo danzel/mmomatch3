@@ -1,5 +1,8 @@
 enum MatchType {
-	Normal,
+	NormalHorizontal,
+	NormalVertical,
+	/** Horizontal and Vertical */
+	NormalCross,
 	
 	HorizontalClear
 }

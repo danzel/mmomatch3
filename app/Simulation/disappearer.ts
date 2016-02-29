@@ -6,6 +6,7 @@ class Disappearer {
 	private grid: Grid;
 
 	matchableDisappeared = new LiteEvent<Matchable>();
+	matchableTransformed = new LiteEvent<Matchable>();
 
 	constructor(grid: Grid) {
 		this.grid = grid;
@@ -23,8 +24,16 @@ class Disappearer {
 					matchable.disappearingTime += dt;
 					
 					if (matchable.disappearingPercent >= 1) {
-						col.splice(y, 1);
-						this.matchableDisappeared.trigger(matchable);
+						if (matchable.transformTo) {
+							matchable.isDisappearing = false;
+							matchable.disappearingTime = 0;
+							matchable.type = matchable.transformTo;
+							matchable.transformTo = null;
+							this.matchableTransformed.trigger(matchable);
+						} else {
+							col.splice(y, 1);
+							this.matchableDisappeared.trigger(matchable);
+						}
 					}
 				}
 			}

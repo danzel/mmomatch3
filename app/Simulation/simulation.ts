@@ -5,7 +5,8 @@ import InputVerifier = require('./inputVerifier');
 import LiteEvent = require('../liteEvent');
 import MatchChecker = require('./matchChecker');
 import MatchPerformer = require('./matchPerformer');
-import MatchableFactory = require('../Simulation/matchableFactory');
+import MatchableFactory = require('./matchableFactory');
+import MatchableReplacer = require('./matchableReplacer');
 import Physics = require('./physics');
 import QuietColumnDetector = require('./quietColumnDetector');
 import ScoreTracker = require('./Scoring/scoreTracker');
@@ -24,6 +25,7 @@ class Simulation {
 	matchPerformer: MatchPerformer;
 	disappearer: Disappearer;
 	specialMatchPerformer: SpecialMatchPerformer;
+	matchableReplacer: MatchableReplacer;
 
 	inputVerifier: InputVerifier;
 	quietColumnDetector: QuietColumnDetector;
@@ -46,6 +48,7 @@ class Simulation {
 		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
 		this.disappearer = new Disappearer(this.grid);
 		this.specialMatchPerformer = new SpecialMatchPerformer(this.grid, this.matchChecker, this.matchPerformer, this.disappearer);
+		this.matchableReplacer = new MatchableReplacer(this.matchPerformer);
 
 		//Things just stored in the simulation for convenience
 		this.inputVerifier = new InputVerifier(this.grid, this.matchChecker, true);

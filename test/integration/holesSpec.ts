@@ -8,6 +8,7 @@ import Physics = require('../../app/Simulation/physics');
 import RandomGenerator = require('../../app/Simulation/randomGenerator');
 import Simulation = require('../../app/Simulation/simulation');
 import SpawningSpawnManager = require('../../app/Simulation/spawningSpawnManager');
+import Type = require('../../app/Simulation/type');
 import TestUtil = require('../util/util');
 
 describe('Holes', () => {
@@ -31,7 +32,7 @@ describe('Holes', () => {
 		grid.setHole(0, 0);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 2, 0);
+		let matchable = new Matchable(1, 0, 2, 0, Type.Normal);
 		grid.cells[0].push(matchable);
 
 		physics.updateMomentum(10);
@@ -46,7 +47,7 @@ describe('Holes', () => {
 		grid.setHole(0, 1);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 4, 0);
+		let matchable = new Matchable(1, 0, 4, 0, Type.Normal);
 		grid.cells[0].push(matchable);
 
 		physics.updateMomentum(10);
@@ -61,9 +62,9 @@ describe('Holes', () => {
 		grid.setHole(0, 1);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 4, 0);
+		let matchable = new Matchable(1, 0, 4, 0, Type.Normal);
 		grid.cells[0].push(matchable);
-		let matchable2 = new Matchable(2, 0, 5, 0);
+		let matchable2 = new Matchable(2, 0, 5, 0, Type.Normal);
 		grid.cells[0].push(matchable2);
 
 		physics.updateMomentum(10);

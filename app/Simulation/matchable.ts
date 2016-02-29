@@ -6,6 +6,7 @@ class Matchable {
 	
 	isDisappearing = false;
 	disappearingTime = 0;
+	transformTo: Type;
 
 	yMomentum = 0;
 

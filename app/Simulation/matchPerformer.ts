@@ -48,18 +48,25 @@ class MatchPerformer {
 	private performMatch(matchable: Matchable, horizontal: boolean, vertical: boolean) {
 		let matched = [matchable];
 
+		let matchType: MatchType;
 		if (horizontal) {
+			matchType = MatchType.NormalHorizontal;
 			this.matchChecker.scanLeft(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
 			this.matchChecker.scanRight(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
 		}
 		if (vertical) {
+			matchType = MatchType.NormalVertical;
 			this.matchChecker.scanUp(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
 			this.matchChecker.scanDown(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
+		}
+		
+		if (horizontal && vertical) {
+			matchType = MatchType.NormalCross;
 		}
 
 		matchable.isDisappearing = true;
 		
-		this.matchPerformed.trigger(new Match(MatchType.Normal, matched));
+		this.matchPerformed.trigger(new Match(matchType, matched));
 	}
 }
 
