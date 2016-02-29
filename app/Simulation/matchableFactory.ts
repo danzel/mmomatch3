@@ -1,5 +1,6 @@
 import Matchable = require('./matchable');
 import Color = require('./color');
+import Type = require('./type');
 
 class MatchableFactory {
 	private nextId: number;
@@ -9,7 +10,7 @@ class MatchableFactory {
 	}
 
 	create(x: number, y: number, color: Color): Matchable {
-		var m = new Matchable(this.nextId, x, y, color);
+		var m = new Matchable(this.nextId, x, y, color, Type.Normal);
 
 		this.nextId++;
 

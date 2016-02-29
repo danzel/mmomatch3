@@ -39,6 +39,17 @@ class MatchChecker {
 		
 		return null;
 	}
+	
+	/** Not moving, disappearing, being swapped */
+	matchableIsAbleToMatch(matchable: Matchable) {
+		if (matchable.isDisappearing)
+			return false;
+		if (matchable.isMoving)
+			return false;
+		if (matchable.beingSwapped)
+			return false;
+		return true;
+	}
 
 	private matches(a: Matchable, b: Matchable): boolean {
 		if (!a || !b)
@@ -46,12 +57,10 @@ class MatchChecker {
 
 		if (a.color != b.color)
 			return false;
-
-		if (a.isDisappearing || b.isDisappearing)
+			
+		if (!this.matchableIsAbleToMatch(a))
 			return false;
-		if (a.isMoving || b.isMoving)
-			return false;
-		if (a.beingSwapped || b.beingSwapped)
+		if (!this.matchableIsAbleToMatch(b))
 			return false;
 
 		return true;

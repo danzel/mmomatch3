@@ -4,6 +4,7 @@ class MatchableData {
 		public x: number,
 		public y: number,
 		public color: number,
+		public type: number,
 		public isDisappearing: boolean,
 		public disappearingTime: number,
 		public yMomentum: number,

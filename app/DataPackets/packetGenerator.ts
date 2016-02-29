@@ -52,6 +52,7 @@ class PacketGenerator {
 			matchable.x,
 			matchable.y,
 			matchable.color,
+			matchable.type,
 			matchable.isDisappearing,
 			matchable.disappearingTime,
 			matchable.yMomentum,
@@ -101,7 +102,7 @@ class PacketGenerator {
 				let matchableData = dataCol[y];
 				
 				//We aren't using the factory here, if we did the id would get out of sync
-				let matchable = new Matchable(matchableData.id, matchableData.x, matchableData.y, matchableData.color);
+				let matchable = new Matchable(matchableData.id, matchableData.x, matchableData.y, matchableData.color, matchableData.type);
 				matchable.isDisappearing = matchableData.isDisappearing;
 				matchable.disappearingTime = matchableData.disappearingTime;
 				matchable.yMomentum = matchableData.yMomentum;

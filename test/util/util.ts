@@ -1,8 +1,10 @@
+import Color = require('../../app/Simulation/color');
 import Grid = require('../../app/Simulation/grid');
 import Matchable = require('../../app/Simulation/matchable');
 import MatchableFactory = require('../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('./neverSpawnManager');
 import Simulation = require('../../app/Simulation/simulation');
+import Type = require('../../app/Simulation/type');
 
 class TestUtil {
 	/** Populate a grid with the given contents.
@@ -16,8 +18,20 @@ class TestUtil {
 				if (c == 'X') {
 					grid.setHole(x, y);
 				} else {
-					//TODO: specialColors if required
-					grid.cells[x].push(new Matchable(idCounter, x, y, parseInt(c, 10)));
+					let color: Color;
+					let type = Type.Normal;
+					if (c == '-') {
+						type = Type.HorizontalClearWhenMatched;
+					}
+
+					if (type == Type.Normal) {
+						color = parseInt(c, 10)
+					} else {
+						color = parseInt(specialColors[0], 10);
+						specialColors = specialColors.substring(1);
+					}
+
+					grid.cells[x].push(new Matchable(idCounter, x, y, color, type));
 					idCounter++;
 				}
 			}
@@ -44,14 +58,14 @@ class TestUtil {
 
 		return simulation;
 	}
-	
+
 	static gameNeverOver() {
-		return { gameHasEnded: false }; 
+		return { gameHasEnded: false };
 	}
-	
+
 	static expectGridQuiet(simulation: Simulation) {
 		let busyColumns = simulation.quietColumnDetector.columnIsQuiet.map((quiet, index) => quiet ? -1 : index).filter(x => x != -1);
-		
+
 		if (busyColumns.length != 0) {
 			expect(busyColumns).toBe([]);
 		}

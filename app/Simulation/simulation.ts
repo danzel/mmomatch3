@@ -10,6 +10,7 @@ import Physics = require('./physics');
 import QuietColumnDetector = require('./quietColumnDetector');
 import ScoreTracker = require('./Scoring/scoreTracker');
 import SpawnManager = require('./spawnManager');
+import SpecialMatchPerformer = require('./specialMatchPerformer');
 import SwapHandler = require('./swapHandler');
 
 
@@ -22,6 +23,7 @@ class Simulation {
 	matchChecker: MatchChecker;
 	matchPerformer: MatchPerformer;
 	disappearer: Disappearer;
+	specialMatchPerformer: SpecialMatchPerformer;
 
 	inputVerifier: InputVerifier;
 	quietColumnDetector: QuietColumnDetector;
@@ -34,6 +36,7 @@ class Simulation {
 	frameCompleted = new LiteEvent<void>();
 	
 	constructor(grid: Grid, spawnManager: SpawnManager, matchableFactory: MatchableFactory) {
+		//Things the simulation requires to work
 		this.grid = grid;
 		this.spawnManager = spawnManager;
 		this.matchableFactory = matchableFactory;
@@ -42,7 +45,9 @@ class Simulation {
 		this.matchChecker = new MatchChecker(this.grid);
 		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
 		this.disappearer = new Disappearer(this.grid);
+		this.specialMatchPerformer = new SpecialMatchPerformer(this.grid, this.matchChecker, this.matchPerformer, this.disappearer);
 
+		//Things just stored in the simulation for convenience
 		this.inputVerifier = new InputVerifier(this.grid, this.matchChecker, true);
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
