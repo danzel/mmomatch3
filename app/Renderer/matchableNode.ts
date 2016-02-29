@@ -1,5 +1,6 @@
 import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
+import Type = require('../Simulation/type');
 
 class MatchableNode {
 	public static PositionScalar = 100;
@@ -27,12 +28,12 @@ class MatchableNode {
 
 			var diffX = otherMatchable.x - this.matchable.x;
 			var diffY = otherMatchable.y - this.matchable.y;
-			
+
 			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
 			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
 		}
 	}
-	
+
 	private static easingFunction(p: number): number {
 		return Math.sin(p * Math.PI * 2) * (1 - p * p);
 	}
@@ -48,6 +49,18 @@ class MatchableNode {
 			x: startX + direction.x * 0.5 * MatchableNode.PositionScalar,
 			y: startY - direction.y * 0.5 * MatchableNode.PositionScalar
 		}, 300, MatchableNode.easingFunction, true);
+	}
+
+	updateForTransform() {
+		switch (this.matchable.type) {
+			case Type.HorizontalClearWhenMatched:
+				let child = new Phaser.Sprite(this.sprite.game, 0, 0, 'overlay_horizontal');
+				child.anchor.set(0.5, 0.5);
+				this.sprite.addChild(child);
+				break;
+			default:
+				throw new Error("Don't know how to update for transform to type " + this.matchable.type)
+		}
 	}
 
 	disappear() {
