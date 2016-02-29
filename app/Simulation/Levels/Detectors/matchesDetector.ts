@@ -10,9 +10,9 @@ class MatchesDetector extends Detector {
 		
 		this.matchesRemaining = totalMatchesRequired;
 		
-		simulation.matchPerformer.matchPerformed.on((data) => {
+		simulation.matchPerformer.matchPerformed.on((match) => {
 			if (this.matchesRemaining > 0) {
-				this.matchesRemaining = Math.max(0, this.matchesRemaining - data.length);
+				this.matchesRemaining = Math.max(0, this.matchesRemaining - match.matchables.length);
 				this.valueChanged.trigger();
 				if (this.matchesRemaining <= 0) {
 					this.detected.trigger();

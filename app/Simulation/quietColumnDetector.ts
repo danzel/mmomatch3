@@ -1,6 +1,7 @@
 import Disappearer = require('./disappearer');
 import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
+import Match = require('./match');
 import Matchable = require('./matchable');
 import MatchPerformer = require('./matchPerformer');
 import Physics = require('./physics');
@@ -25,13 +26,13 @@ class QuietColumnDetector {
 			this.columnIsQuiet.push(true);
 		}
 
-		physics.matchableLanded.on(this.matchableLanded.bind(this));
+		physics.matchableLanded.on((matchable) => this.matchableLanded(matchable));
 
-		swapHandler.swapStarted.on(this.onSwapStarted.bind(this));
-		swapHandler.swapOccurred.on(this.onSwapOccurred.bind(this));
+		swapHandler.swapStarted.on((swap) => this.onSwapStarted(swap));
+		swapHandler.swapOccurred.on((swap) => this.onSwapOccurred(swap));
 
-		matchPerformer.matchPerformed.on(this.onMatchPerformed.bind(this));
-		disappearer.matchableDisappeared.on(this.onMatchableDisappeared.bind(this))
+		matchPerformer.matchPerformed.on((match) => this.onMatchPerformed(match));
+		disappearer.matchableDisappeared.on((matchable) => this.onMatchableDisappeared(matchable))
 	}
 
 	matchableLanded(matchable: Matchable) {
@@ -62,7 +63,9 @@ class QuietColumnDetector {
 	}
 
 
-	onMatchPerformed(matchables: Matchable[]) {
+	onMatchPerformed(match: Match) {
+		let matchables = match.matchables;
+		
 		for (let i = 0; i < matchables.length; i++) {
 			this.columnIsQuiet[matchables[i].x] = false;
 			this.columnDisappearingCount[matchables[i].x]++;

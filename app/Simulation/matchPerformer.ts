@@ -1,7 +1,9 @@
 import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
+import Match = require('./match');
 import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
+import MatchType = require('./matchType');
 import Physics = require('./physics');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
@@ -10,7 +12,7 @@ class MatchPerformer {
 	private matchChecker: MatchChecker;
 
 	/** Fired whenever a matchable starts disappearing */
-	matchPerformed = new LiteEvent<Array<Matchable>>();
+	matchPerformed = new LiteEvent<Match>();
 
 	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics) {
 		this.matchChecker = matchChecker;
@@ -57,7 +59,7 @@ class MatchPerformer {
 
 		matchable.isDisappearing = true;
 		
-		this.matchPerformed.trigger(matched);
+		this.matchPerformed.trigger(new Match(MatchType.Normal, matched));
 	}
 }
 

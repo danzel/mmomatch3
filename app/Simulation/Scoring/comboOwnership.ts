@@ -1,4 +1,5 @@
 import LiteEvent = require('../../liteEvent');
+import Match = require('../match');
 import Matchable = require('../matchable');
 import MatchPerformer = require('../matchPerformer');
 import OwnedMatch = require('./ownedMatch');
@@ -34,11 +35,11 @@ class ComboOwnership {
 
 	constructor(gridWidth: IGridWidth, swapHandler: SwapHandler, matchPerformer: MatchPerformer, quietColumnDetector: QuietColumnDetector) {
 		
-		swapHandler.swapStarted.on(this.swapStarted.bind(this));
+		swapHandler.swapStarted.on((swap) => this.swapStarted(swap));
 		
-		matchPerformer.matchPerformed.on(this.matchPerformed.bind(this));
+		matchPerformer.matchPerformed.on(match => this.matchPerformed(match));
 
-		quietColumnDetector.columnBecameQuiet.on(this.columnBecameQuiet.bind(this));
+		quietColumnDetector.columnBecameQuiet.on(column => this.columnBecameQuiet(column));
 
 		this.ownersByColumn = [];
 		for (let i = 0; i < gridWidth.width; i++) {
@@ -62,7 +63,9 @@ class ComboOwnership {
 	}
 
 	//When a match happens, the player gets ownership in that column from that height until the column is quiet again
-	private matchPerformed(matches: Array<Matchable>) {
+	private matchPerformed(match: Match) {
+		let matches = match.matchables;
+		
 		//Calculate owners
 		let owners: { [playerId: number]: boolean } = {};
 		for (let i = 0; i < matches.length; i++) {
