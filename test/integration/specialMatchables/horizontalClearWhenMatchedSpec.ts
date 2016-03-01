@@ -1,4 +1,6 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
+import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
+import ScoreEarnedChecker = require('../../util/scoreEarnedChecker');
 import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
 
@@ -15,7 +17,9 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 
 		let transformCount = 0;
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
-
+		new OwnershipMatchChecker(simulation.comboOwnership);
+		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
+		
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
 		for (let i = 0; i < 4; i++) {
@@ -23,7 +27,8 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		}
 
 		expect(transformCount).toBe(1);
-		//Check the grid
+		TestUtil.expectGridQuiet(simulation);
+		scoreEarnedChecker.expectScore(40);
 		TestUtil.expectGridSize(simulation.grid, [1, 4, 4, 4]);
 
 		//Check the matchable looks right
@@ -41,5 +46,9 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		
 		//Check the grid, one is cleared in the last column that doesn't match
 		TestUtil.expectGridSize(simulation.grid, [0, 3, 3, 3]);
+		
+		TestUtil.expectGridQuiet(simulation);
+		scoreEarnedChecker.expectScore(40);
+		scoreEarnedChecker.expectNoMoreScores();
 	});
 });

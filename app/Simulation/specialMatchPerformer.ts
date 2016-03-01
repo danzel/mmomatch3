@@ -10,7 +10,7 @@ import Type = require('./type');
 /** Handles the special effects that happen when a matchable of not-normal type is matched/disappeared */
 class SpecialMatchPerformer {
 	constructor(private grid: Grid, private matchChecker: MatchChecker, private matchPerformer: MatchPerformer, disappearer: Disappearer) {
-		matchPerformer.matchPerformed.on((match) => this.matchPerformed(match));
+		matchPerformer.matchPerformedEarly.on((match) => this.matchPerformed(match));
 	}
 
 	private matchPerformed(match: Match) {
@@ -23,10 +23,10 @@ class SpecialMatchPerformer {
 				case Type.Normal:
 					break;
 				case Type.HorizontalClearWhenMatched:
-					this.horizontalClear(m);
+					this.horizontalClear(m, match);
 					break;
 				case Type.VerticalClearWhenMatched:
-					this.verticalClear(m);
+					this.verticalClear(m, match);
 					break;
 				default:
 					throw new Error("Don't know what to do when a Type " + Type[m.type] + " is matched");
@@ -34,39 +34,29 @@ class SpecialMatchPerformer {
 		}
 	}
 
-	private horizontalClear(source: Matchable) {
-		let matched = new Array<Matchable>();
-
+	private horizontalClear(source: Matchable, match: Match) {
 		for (let x = 0; x < this.grid.width; x++) {
 			let hit = this.grid.findMatchableAtPosition(x, source.y);
 
 			if (hit && this.matchChecker.matchableIsAbleToMatch(hit)) {
 				hit.isDisappearing = true;
-				matched.push(hit);
+				match.matchables.push(hit);
 			}
 		}
-
-		if (matched.length > 0) {
-			this.matchPerformer.matchPerformed.trigger(new Match(MatchType.HorizontalClear, matched));
-		}
+		match.matchType = MatchType.HorizontalClear;
 	}
 
-	private verticalClear(source: Matchable) {
-		let matched = new Array<Matchable>();
-
+	private verticalClear(source: Matchable, match: Match) {
 		let col = this.grid.cells[source.x];
 		for (let y = 0; y < col.length; y++) {
 			let hit = col[y];
 
 			if (this.matchChecker.matchableIsAbleToMatch(hit)) {
 				hit.isDisappearing = true;
-				matched.push(hit);
+				match.matchables.push(hit);
 			}
 		}
-
-		if (matched.length > 0) {
-			this.matchPerformer.matchPerformed.trigger(new Match(MatchType.HorizontalClear, matched));
-		}
+		match.matchType = MatchType.VerticalClear;
 	}
 }
 

@@ -4,7 +4,8 @@ enum MatchType {
 	/** Horizontal and Vertical */
 	NormalCross,
 	
-	HorizontalClear
+	HorizontalClear,
+	VerticalClear
 }
 
 export = MatchType;

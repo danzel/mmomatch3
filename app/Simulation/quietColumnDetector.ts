@@ -32,7 +32,8 @@ class QuietColumnDetector {
 		swapHandler.swapOccurred.on((swap) => this.onSwapOccurred(swap));
 
 		matchPerformer.matchPerformed.on((match) => this.onMatchPerformed(match));
-		disappearer.matchableDisappeared.on((matchable) => this.onMatchableDisappeared(matchable))
+		disappearer.matchableDisappeared.on((matchable) => this.onMatchableDisappeared(matchable));
+		disappearer.matchableTransformed.on((matchable) => this.onMatchableDisappeared(matchable));
 	}
 
 	matchableLanded(matchable: Matchable) {

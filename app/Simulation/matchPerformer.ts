@@ -14,6 +14,9 @@ class MatchPerformer {
 	/** Fired whenever a matchable starts disappearing */
 	matchPerformed = new LiteEvent<Match>();
 
+	/** Fired before matchPerformed, only use this if you alter the match */
+	matchPerformedEarly = new LiteEvent<Match>();
+
 	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics) {
 		this.matchChecker = matchChecker;
 
@@ -66,7 +69,9 @@ class MatchPerformer {
 
 		matchable.isDisappearing = true;
 		
-		this.matchPerformed.trigger(new Match(matchType, matched));
+		let match = new Match(matchType, matched);
+		this.matchPerformedEarly.trigger(match);
+		this.matchPerformed.trigger(match);
 	}
 }
 

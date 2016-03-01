@@ -2,12 +2,17 @@ import ComboOwnership = require('./comboOwnership');
 import LiteEvent = require('../../liteEvent');
 import OwnedMatch = require('./ownedMatch');
 
+class Score {
+	constructor(public playerId: number, public points: number) {
+	}
+}
+
 class ScoreTracker {
 	pointsPerMatchable = 10;
 	points: { [playerId: number]: number } = {};
 	totalPoints: number = 0;
 	
-	playerEarnedPoints = new LiteEvent<number>();
+	playerEarnedPoints = new LiteEvent<Score>();
 	
 	private playerComboSize: { [playerId: number]: number } = {};
 
@@ -22,12 +27,13 @@ class ScoreTracker {
 
 			let comboSize = (this.playerComboSize[playerId] || 0) + 1;
 			let points = comboSize * this.pointsPerMatchable * data.matchables.length;
+			//console.log('player', playerId, 'comboSize', comboSize, 'size', data.matchables.length, '=', points)
 
 			this.playerComboSize[playerId] = comboSize;
 			this.points[playerId] = (this.points[playerId] || 0) + points;
 			this.totalPoints += points;
 			
-			this.playerEarnedPoints.trigger(playerId);
+			this.playerEarnedPoints.trigger(new Score(playerId, points));
 		}
 
 		//this.debugPrint();

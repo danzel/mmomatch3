@@ -9,7 +9,7 @@ class OwnershipMatchChecker {
 		let matches = this.matches;
 		comboOwnership.ownedMatchPerformed.on((data) => {
 			if (data.players.length == 0) {
-				throw new Error("Match happened with no owners. " + data.matchables.length + " were matched");
+				expect('match to have owners').toBe(true);
 			}
 			matches.push(data);
 		});
