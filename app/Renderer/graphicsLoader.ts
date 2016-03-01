@@ -5,6 +5,7 @@ class GraphicsLoader {
 		}
 		
 		game.load.image('overlay_horizontal', 'img/skin/' + spriteSet +'/balloverlays/horizontal.png');
+		game.load.image('overlay_vertical', 'img/skin/' + spriteSet +'/balloverlays/vertical.png');
 	}
 }
 

@@ -75,9 +75,11 @@ class TestUtil {
 		if (grid.width != columnSizes.length) {
 			throw new Error("TEST BUG: columnSizes doesn't match the grid width")
 		}
+		let actualSizes = new Array<number>();
 		for (let i = 0; i < grid.width; i++) {
-			expect(grid.cells[i].length).toBe(columnSizes[i]);
+			actualSizes.push(grid.cells[i].length);
 		}
+		expect(actualSizes).toEqual(columnSizes);
 	}
 }
 

@@ -1,6 +1,7 @@
 enum Type {
 	Normal,
-	HorizontalClearWhenMatched
+	HorizontalClearWhenMatched,
+	VerticalClearWhenMatched
 };
 
 export = Type;

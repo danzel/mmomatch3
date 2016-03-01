@@ -52,15 +52,21 @@ class MatchableNode {
 	}
 
 	updateForTransform() {
+		let key: string;
 		switch (this.matchable.type) {
+			case Type.VerticalClearWhenMatched:
+				key = 'overlay_vertical';
+				break;
 			case Type.HorizontalClearWhenMatched:
-				let child = new Phaser.Sprite(this.sprite.game, 0, 0, 'overlay_horizontal');
-				child.anchor.set(0.5, 0.5);
-				this.sprite.addChild(child);
+				key = 'overlay_horizontal';
 				break;
 			default:
-				throw new Error("Don't know how to update for transform to type " + this.matchable.type)
+				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.type])
 		}
+
+		let child = new Phaser.Sprite(this.sprite.game, 0, 0, key);
+		child.anchor.set(0.5, 0.5);
+		this.sprite.addChild(child);
 	}
 
 	disappear() {
