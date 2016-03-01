@@ -36,7 +36,7 @@ class InputVerifier {
 	}
 	
 	private inValidState(matchable: Matchable) : boolean {
-		if (!matchable || matchable.isMoving || matchable.isDisappearing || matchable.beingSwapped) {
+		if (!matchable || !this.matchChecker.matchableIsAbleToMatch(matchable)) {
 			return false;
 		}
 		return true;

@@ -15,10 +15,7 @@ class MatchDetails {
 class MatchChecker {
 	public static MinimumSizeToMatch = 3;
 	
-	grid: Grid;
-
-	constructor(grid: Grid) {
-		this.grid = grid;
+	constructor(private grid: Grid) {
 	}
 
 	/** Returns null if there is no match */

@@ -14,7 +14,7 @@ let expectValidSwap = function(a: Matchable, b: Matchable, canSwap: boolean) {
 
 describe('InputVerifier', () => {
 	function init() {
-		inputVerifier = new InputVerifier(null, null, false);
+		inputVerifier = new InputVerifier(null, new MatchChecker(null), false);
 	}
     it('Can swap two horizontal neighbours', () => {
 		init();
