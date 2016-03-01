@@ -24,7 +24,6 @@ class Simulation {
 	matchChecker: MatchChecker;
 	matchPerformer: MatchPerformer;
 	disappearer: Disappearer;
-	specialMatchPerformer: SpecialMatchPerformer;
 	matchableTransformer: MatchableTransformer;
 
 	inputVerifier: InputVerifier;
@@ -45,9 +44,9 @@ class Simulation {
 		this.physics = new Physics(this.grid);
 		this.swapHandler = new SwapHandler(this.grid);
 		this.matchChecker = new MatchChecker(this.grid);
-		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics);
+		let specialMatchPerformer = new SpecialMatchPerformer(this.grid, this.matchChecker);
+		this.matchPerformer = new MatchPerformer(this.matchChecker, this.swapHandler, this.physics, specialMatchPerformer);
 		this.disappearer = new Disappearer(this.grid);
-		this.specialMatchPerformer = new SpecialMatchPerformer(this.grid, this.matchChecker, this.matchPerformer, this.disappearer);
 		this.matchableTransformer = new MatchableTransformer(this.matchPerformer);
 
 		//Things just stored in the simulation for convenience

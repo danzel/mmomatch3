@@ -5,6 +5,7 @@ import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
 import MatchType = require('./matchType');
 import Physics = require('./physics');
+import SpecialMatchPerformer = require('./specialMatchPerformer');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
 
@@ -14,10 +15,7 @@ class MatchPerformer {
 	/** Fired whenever a matchable starts disappearing */
 	matchPerformed = new LiteEvent<Match>();
 
-	/** Fired before matchPerformed, only use this if you alter the match */
-	matchPerformedEarly = new LiteEvent<Match>();
-
-	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics) {
+	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics, private specialMatchPerformer: SpecialMatchPerformer) {
 		this.matchChecker = matchChecker;
 
 		swapHandler.swapOccurred.on(this.onSwapOccurred.bind(this));
@@ -70,7 +68,7 @@ class MatchPerformer {
 		matchable.isDisappearing = true;
 		
 		let match = new Match(matchType, matched);
-		this.matchPerformedEarly.trigger(match);
+		this.specialMatchPerformer.applyToMatch(match);
 		this.matchPerformed.trigger(match);
 	}
 }

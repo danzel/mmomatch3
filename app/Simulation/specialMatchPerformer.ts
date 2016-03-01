@@ -1,4 +1,3 @@
-import Disappearer = require('./disappearer');
 import Grid = require('./grid');
 import Match = require('./match');
 import Matchable = require('./matchable');
@@ -9,11 +8,11 @@ import Type = require('./type');
 
 /** Handles the special effects that happen when a matchable of not-normal type is matched/disappeared */
 class SpecialMatchPerformer {
-	constructor(private grid: Grid, private matchChecker: MatchChecker, private matchPerformer: MatchPerformer, disappearer: Disappearer) {
-		matchPerformer.matchPerformedEarly.on((match) => this.matchPerformed(match));
+	constructor(private grid: Grid, private matchChecker: MatchChecker) {
 	}
 
-	private matchPerformed(match: Match) {
+	/** Triggers any special matchables in the given match */
+	applyToMatch(match: Match) {
 		let matchables = match.matchables;
 
 		for (let i = 0; i < matchables.length; i++) {
