@@ -27,8 +27,12 @@ class Disappearer {
 						if (matchable.transformTo) {
 							matchable.isDisappearing = false;
 							matchable.disappearingTime = 0;
+							
 							matchable.type = matchable.transformTo;
 							matchable.transformTo = null;
+							matchable.color = matchable.transformToColor;
+							matchable.transformToColor = null;
+							
 							this.matchableTransformed.trigger(matchable);
 						} else {
 							col.splice(y, 1);

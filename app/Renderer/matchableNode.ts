@@ -6,7 +6,9 @@ class MatchableNode {
 	public static PositionScalar = 100;
 
 	matchable: Matchable;
+	
 	sprite: Phaser.Sprite;
+	replacementSprite: Phaser.Sprite;
 	overlay: Phaser.Sprite;
 
 	constructor(matchable: Matchable, parent: Phaser.Group) {
@@ -22,13 +24,18 @@ class MatchableNode {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
 
-		if (this.matchable.transformTo) {
+		if (this.matchable.transformTo && this.overlay) {
 			this.overlay.alpha = this.matchable.disappearingPercent;
 		} else {
 			if (this.overlay) {
 				this.overlay.alpha = 1;
 			}
 			this.sprite.alpha = 1 - this.matchable.disappearingPercent;
+		}
+		if (this.replacementSprite) {
+			this.replacementSprite.alpha = 1 - this.sprite.alpha;
+			this.replacementSprite.x = this.sprite.x;
+			this.replacementSprite.y = this.sprite.y;
 		}
 
 		if (swap) {
@@ -60,6 +67,13 @@ class MatchableNode {
 	}
 
 	updateForTransforming() {
+		if (this.matchable.transformTo == Type.ColorClearWhenSwapped) {
+			this.replacementSprite = new Phaser.Sprite(this.sprite.game, 0, 0, 'ball_colorclear');
+			this.replacementSprite.anchor.set(0.5, 0.5);
+			this.sprite.parent.addChild(this.replacementSprite);
+			return;
+		}
+		
 		let key: string;
 		switch (this.matchable.transformTo) {
 			case Type.VerticalClearWhenMatched:
@@ -69,13 +83,21 @@ class MatchableNode {
 				key = 'overlay_horizontal';
 				break;
 			default:
-				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.type])
+				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.transformTo])
 		}
 
 		let child = new Phaser.Sprite(this.sprite.game, 0, 0, key);
 		child.anchor.set(0.5, 0.5);
 		this.sprite.addChild(child);
 		this.overlay = child;
+	}
+	
+	updateForTransformed() {
+		if (this.replacementSprite) {
+			this.sprite.destroy();
+			this.sprite = this.replacementSprite;
+			delete this.replacementSprite;
+		}
 	}
 
 	disappear() {

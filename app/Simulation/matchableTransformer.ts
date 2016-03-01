@@ -1,3 +1,4 @@
+import Color = require('./color');
 import LiteEvent = require('../liteEvent');
 import Match = require('./match');
 import Matchable = require('./matchable');
@@ -8,10 +9,11 @@ import Type = require('./type');
 /**
  * Match 4 vertically -> Horizontal clearer
  * Match 4 horizontally -> Vertical clearer
+ * Match 5 either -> Color clearer
  */
 class MatchableTransformer {
 	private matchTypesThatCauseReplacements = [ /*MatchType.NormalCross, */ MatchType.NormalHorizontal, MatchType.NormalVertical];
-	
+
 	matchableTransforming = new LiteEvent<Matchable>();
 
 	constructor(matchPerformer: MatchPerformer) {
@@ -22,7 +24,7 @@ class MatchableTransformer {
 		if (this.matchTypesThatCauseReplacements.indexOf(match.matchType) == -1) {
 			return;
 		}
-		if (match.matchables.length != 4) { //TODO: 5 for the other types
+		if (match.matchables.length != 4 && match.matchables.length != 5) {
 			return;
 		}
 		
@@ -69,15 +71,21 @@ class MatchableTransformer {
 			}
 		}
 
-		switch (match.matchType) {
-			case MatchType.NormalVertical:
-				closest.transformTo = Type.HorizontalClearWhenMatched;
-				break;
-			case MatchType.NormalHorizontal:
-				closest.transformTo = Type.VerticalClearWhenMatched;
-				break;
-			default:
-				throw new Error("Don't know what to replace with for this match type");
+		if (match.matchables.length == 5) {
+			closest.transformToColor = Color.None;
+			closest.transformTo = Type.ColorClearWhenSwapped;
+		} else {
+			closest.transformToColor = closest.color;
+			switch (match.matchType) {
+				case MatchType.NormalVertical:
+					closest.transformTo = Type.HorizontalClearWhenMatched;
+					break;
+				case MatchType.NormalHorizontal:
+					closest.transformTo = Type.VerticalClearWhenMatched;
+					break;
+				default:
+					throw new Error("Don't know what to replace with for this match type");
+			}
 		}
 		this.matchableTransforming.trigger(closest);
 	}

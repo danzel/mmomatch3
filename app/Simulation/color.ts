@@ -1,4 +1,5 @@
 enum Color {
+	None = -1,
 	Max = 11
 }
 

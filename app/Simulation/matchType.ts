@@ -5,7 +5,9 @@ enum MatchType {
 	NormalCross,
 	
 	HorizontalClear,
-	VerticalClear
+	VerticalClear,
+	
+	ColorClear
 }
 
 export = MatchType;

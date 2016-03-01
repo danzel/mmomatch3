@@ -23,6 +23,13 @@ class MatchPerformer {
 	}
 
 	private onSwapOccurred(swap: Swap) {
+
+		let specialMatch = this.specialMatchPerformer.tryPerformSwapMatch(swap);
+		if (specialMatch) {
+			this.triggerMatch(specialMatch);
+			return;
+		}
+
 		let didSwap = this.testForMatch(swap.left);
 
 		if (!swap.right.isDisappearing) {
@@ -42,7 +49,7 @@ class MatchPerformer {
 			this.performMatch(matchable, matchDetails.horizontal, matchDetails.vertical);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -60,14 +67,18 @@ class MatchPerformer {
 			this.matchChecker.scanUp(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
 			this.matchChecker.scanDown(matchable, (hit: Matchable) => { matched.push(hit); hit.isDisappearing = true });
 		}
-		
+
 		if (horizontal && vertical) {
 			matchType = MatchType.NormalCross;
 		}
 
 		matchable.isDisappearing = true;
-		
+
 		let match = new Match(matchType, matched);
+		this.triggerMatch(match);
+	}
+
+	private triggerMatch(match: Match) {
 		this.specialMatchPerformer.applyToMatch(match);
 		this.matchPerformed.trigger(match);
 	}

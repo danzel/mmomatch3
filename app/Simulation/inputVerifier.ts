@@ -1,6 +1,8 @@
+import Color = require('./color');
 import Grid = require('./grid');
 import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
+import Type = require('./type');
 
 interface GameEndDetector {
 	gameHasEnded: boolean;
@@ -52,9 +54,11 @@ class InputVerifier {
 		return false;
 	}
 	
-
 	private swapWillMakeAMatch(left: Matchable, right: Matchable): boolean {
 		
+		if (this.isExplictlySwappable(left, right)) {
+			return true;
+		}
 		//Swapping and unswapping is sorta hax, but easiest way to do this
 		this.grid.swap(left, right);
 		var res = this.matchChecker.testForMatch(left) || this.matchChecker.testForMatch(right);
@@ -64,6 +68,16 @@ class InputVerifier {
 			return true;
 		}
 		
+		return false;
+	}
+
+	private isExplictlySwappable(left: Matchable, right: Matchable): boolean {
+		if (left.type == Type.ColorClearWhenSwapped && right.color != Color.None) {
+			return true;
+		}
+		if (right.type == Type.ColorClearWhenSwapped && left.color != Color.None) {
+			return true;
+		}
 		return false;
 	}
 	
