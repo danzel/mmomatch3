@@ -1,3 +1,4 @@
+import Color = require('./color');
 import Grid = require('./grid');
 import Matchable = require('./matchable');
 
@@ -54,7 +55,9 @@ class MatchChecker {
 	private matches(a: Matchable, b: Matchable): boolean {
 		if (!a || !b)
 			return false;
-
+			
+		if (a.color == Color.None || b.color == Color.None)
+			return false;
 		if (a.color != b.color)
 			return false;
 			

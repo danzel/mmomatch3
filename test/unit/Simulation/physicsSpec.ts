@@ -2,6 +2,7 @@
 import Grid = require('../../../app/Simulation/grid');
 import Matchable = require('../../../app/Simulation/matchable');
 import Physics = require('../../../app/Simulation/physics');
+import Type = require('../../../app/Simulation/type');
 
 describe('Physics', () => {
 	let grid: Grid;
@@ -13,7 +14,7 @@ describe('Physics', () => {
 	});
 
 	it('makes Matchables fall', () => {
-		let m = new Matchable(1, 0, 1, 1);
+		let m = new Matchable(1, 0, 1, 1, Type.Normal);
 
 		grid.cells[0].push(m);
 		physics.updateMomentum(1 / 60);
@@ -22,7 +23,7 @@ describe('Physics', () => {
 	});
 
 	it('doesnt make disappearing Matchables fall', () => {
-		let m = new Matchable(1, 0, 1, 1);
+		let m = new Matchable(1, 0, 1, 1, Type.Normal);
 		m.isDisappearing = true;
 
 		grid.cells[0].push(m);
@@ -32,7 +33,7 @@ describe('Physics', () => {
 	});
 
 	it('doesnt make swapping Matchables fall', () => {
-		let m = new Matchable(1, 0, 1, 1);
+		let m = new Matchable(1, 0, 1, 1, Type.Normal);
 		m.beingSwapped = true;
 
 		grid.cells[0].push(m);

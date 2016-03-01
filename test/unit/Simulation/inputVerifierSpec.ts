@@ -4,6 +4,7 @@ import Grid = require('../../../app/Simulation/grid');
 import Matchable = require('../../../app/Simulation/matchable');
 import MatchChecker = require('../../../app/Simulation/matchChecker');
 import TestUtil = require('../../util/util');
+import Type = require('../../../app/Simulation/type');
 
 let inputVerifier: InputVerifier;
 let expectValidSwap = function(a: Matchable, b: Matchable, canSwap: boolean) {
@@ -17,36 +18,36 @@ describe('InputVerifier', () => {
 	}
     it('Can swap two horizontal neighbours', () => {
 		init();
-		var left = new Matchable(1, 2, 0, 0);
-		var right = new Matchable(1, 3, 0, 0);
+		var left = new Matchable(1, 2, 0, 0, Type.Normal);
+		var right = new Matchable(1, 3, 0, 0, Type.Normal);
 		expectValidSwap(left, right, true);
     });
 
     it('Can swap two vertical neighbours', () => {
 		init();
-		var up = new Matchable(1, 2, 0, 0);
-		var down = new Matchable(1, 2, 1, 0);
+		var up = new Matchable(1, 2, 0, 0, Type.Normal);
+		var down = new Matchable(1, 2, 1, 0, Type.Normal);
 		expectValidSwap(up, down, true);
     });
 
     it('Cannot swap two diagonal neighbours', () => {
 		init();
-		var a = new Matchable(1, 2, 0, 0);
-		var b = new Matchable(1, 3, 1, 0);
+		var a = new Matchable(1, 2, 0, 0, Type.Normal);
+		var b = new Matchable(1, 3, 1, 0, Type.Normal);
 		expectValidSwap(a, b, false);
     });
 
     it('Cannot swap with itself', () => {
 		init();
-		var a = new Matchable(1, 2, 0, 0);
+		var a = new Matchable(1, 2, 0, 0, Type.Normal);
 		expectValidSwap(a, a, false);
     });
 
 
     it('Cannot swap if one is moving', () => {
 		init();
-		var left = new Matchable(1, 2, 0, 0);
-		var right = new Matchable(1, 3, 0, 0);
+		var left = new Matchable(1, 2, 0, 0, Type.Normal);
+		var right = new Matchable(1, 3, 0, 0, Type.Normal);
 
 		left.yMomentum = 1;
 
@@ -55,8 +56,8 @@ describe('InputVerifier', () => {
 
     it('Cannot swap if one is disappearing', () => {
 		init();
-		var left = new Matchable(1, 2, 0, 0);
-		var right = new Matchable(1, 3, 0, 0);
+		var left = new Matchable(1, 2, 0, 0, Type.Normal);
+		var right = new Matchable(1, 3, 0, 0, Type.Normal);
 
 		left.isDisappearing = true;
 
@@ -65,8 +66,8 @@ describe('InputVerifier', () => {
 
     it('Cannot swap if one is being swapped', () => {
 		init();
-		var left = new Matchable(1, 2, 0, 0);
-		var right = new Matchable(1, 3, 0, 0);
+		var left = new Matchable(1, 2, 0, 0, Type.Normal);
+		var right = new Matchable(1, 3, 0, 0, Type.Normal);
 
 		left.beingSwapped = true;
 

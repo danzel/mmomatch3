@@ -17,15 +17,25 @@ class TestUtil {
 				var c = contents[grid.height - 1 - y][x];
 				if (c == 'X') {
 					grid.setHole(x, y);
+				} else if (c == ' ') {
+					continue;
 				} else {
 					let color: Color;
 					let type = Type.Normal;
 					if (c == '-') {
 						type = Type.HorizontalClearWhenMatched;
+					} else if (c == '|') {
+						type = Type.VerticalClearWhenMatched;
+					} else if (c == 'C') {
+						type = Type.ColorClearWhenSwapped;
 					}
 
 					if (type == Type.Normal) {
-						color = parseInt(c, 10)
+						if (c == '*') {
+							color = Color.None;
+						} else {
+							color = parseInt(c, 10);
+						}
 					} else {
 						color = parseInt(specialColors[0], 10);
 						specialColors = specialColors.substring(1);
@@ -42,10 +52,10 @@ class TestUtil {
 	 * Use 0-9 for the matchable 'color'.
 	 * X for holes
 	 * * for unclearable
-	 * (Unimplemented follow)
-	 * C for color clear
 	 * - for horizontal clear
 	 * | for vertical clear
+	 * C for color clear
+	 * (Unimplemented follow)
 	 * + for horizontal and vertical clear
 	 * # for 3x3 clear
 	 * @param specialColors The coors of the special matchables in bottom to top, left to right order

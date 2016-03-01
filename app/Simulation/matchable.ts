@@ -14,6 +14,12 @@ class Matchable {
 	beingSwapped = false;
 
 	constructor(public id: number, public x: number, public y: number, public color: Color, public type: Type) {
+		if (isNaN(color)) {
+			throw new Error("color is NaN");
+		}
+		if (isNaN(type)) {
+			throw new Error("type is NaN");
+		}
 	}
 	
 	get isMoving(): boolean {
