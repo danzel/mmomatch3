@@ -28,7 +28,6 @@ describe('SpecialMatchables.Unclearable', () => {
 			simulation.update(1);
 		}
 		
-		expect(simulation.grid.cells[0].length).toBe(0);
-		expect(simulation.grid.cells[1].length).toBe(3);
+		TestUtil.expectGridSize(simulation.grid, [0, 3]);
 	});
 });

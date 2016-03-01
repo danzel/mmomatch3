@@ -71,6 +71,14 @@ class TestUtil {
 		}
 	}
 
+	static expectGridSize(grid: Grid, columnSizes: Array<number>) {
+		if (grid.width != columnSizes.length) {
+			throw new Error("TEST BUG: columnSizes doesn't match the grid width")
+		}
+		for (let i = 0; i < grid.width; i++) {
+			expect(grid.cells[i].length).toBe(columnSizes[i]);
+		}
+	}
 }
 
 export = TestUtil;
