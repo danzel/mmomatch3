@@ -1,3 +1,4 @@
+import LiteEvent = require('../liteEvent');
 import Match = require('./match');
 import Matchable = require('./matchable');
 import MatchType = require('./matchType');
@@ -6,10 +7,12 @@ import Type = require('./type');
 
 /**
  * Match 4 vertically -> Horizontal clearer
+ * Match 4 horizontally -> Vertical clearer
  */
-class MatchableReplacer {
-
+class MatchableTransformer {
 	private matchTypesThatCauseReplacements = [ /*MatchType.NormalCross, */ MatchType.NormalHorizontal, MatchType.NormalVertical];
+	
+	matchableTransforming = new LiteEvent<Matchable>();
 
 	constructor(matchPerformer: MatchPerformer) {
 		matchPerformer.matchPerformed.on(match => this.matchPerformed(match));
@@ -66,8 +69,6 @@ class MatchableReplacer {
 			}
 		}
 
-		if (!closest) { return; }
-
 		switch (match.matchType) {
 			case MatchType.NormalVertical:
 				closest.transformTo = Type.HorizontalClearWhenMatched;
@@ -78,7 +79,8 @@ class MatchableReplacer {
 			default:
 				throw new Error("Don't know what to replace with for this match type");
 		}
+		this.matchableTransforming.trigger(closest);
 	}
 }
 
-export = MatchableReplacer;
+export = MatchableTransformer;

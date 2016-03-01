@@ -30,7 +30,8 @@ class SimulationRenderer {
 
 		simulation.spawnManager.matchableSpawned.on(matchable => this.onMatchableSpawned(matchable));
 		simulation.disappearer.matchableDisappeared.on(matchable => this.onMatchableDisappeared(matchable));
-		simulation.disappearer.matchableTransformed.on(matchable => this.onMatchableTransformed(matchable));
+
+		simulation.matchableTransformer.matchableTransforming.on(matchable => this.onMatchableTransforming(matchable));
 		
 		//Populate initial matchables from what's on the grid currently
 		for (let x = 0; x < this.simulation.grid.width; x++) {
@@ -43,10 +44,10 @@ class SimulationRenderer {
 
 	fitToBounds(width: number, height: number) {
 		this.scale = Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableNode.PositionScalar;
-		
+
 		let scaledWidth = this.scale * this.simulation.grid.width * MatchableNode.PositionScalar;
 		let scaledHeight = this.scale * this.simulation.grid.height * MatchableNode.PositionScalar;
-		
+
 		this.group.x = (width - scaledWidth) / 2;
 		this.group.y = height - (height - scaledHeight) / 2;
 	}
@@ -111,9 +112,9 @@ class SimulationRenderer {
 		this.matchableNodes[matchable.id].disappear();
 		delete this.matchableNodes[matchable.id];
 	}
-	
-	private onMatchableTransformed(matchable: Matchable) {
-		this.matchableNodes[matchable.id].updateForTransform();
+
+	private onMatchableTransforming(matchable: Matchable) {
+		this.matchableNodes[matchable.id].updateForTransforming();
 	}
 
 	private addDebugOverlay() {

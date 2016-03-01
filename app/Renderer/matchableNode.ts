@@ -5,8 +5,9 @@ import Type = require('../Simulation/type');
 class MatchableNode {
 	public static PositionScalar = 100;
 
-	matchable: Matchable
+	matchable: Matchable;
 	sprite: Phaser.Sprite;
+	overlay: Phaser.Sprite;
 
 	constructor(matchable: Matchable, parent: Phaser.Group) {
 		this.matchable = matchable;
@@ -21,7 +22,14 @@ class MatchableNode {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
 
-		this.sprite.alpha = 1 - this.matchable.disappearingPercent;
+		if (this.matchable.transformTo) {
+			this.overlay.alpha = this.matchable.disappearingPercent;
+		} else {
+			if (this.overlay) {
+				this.overlay.alpha = 1;
+			}
+			this.sprite.alpha = 1 - this.matchable.disappearingPercent;
+		}
 
 		if (swap) {
 			let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
@@ -51,9 +59,9 @@ class MatchableNode {
 		}, 300, MatchableNode.easingFunction, true);
 	}
 
-	updateForTransform() {
+	updateForTransforming() {
 		let key: string;
-		switch (this.matchable.type) {
+		switch (this.matchable.transformTo) {
 			case Type.VerticalClearWhenMatched:
 				key = 'overlay_vertical';
 				break;
@@ -67,6 +75,7 @@ class MatchableNode {
 		let child = new Phaser.Sprite(this.sprite.game, 0, 0, key);
 		child.anchor.set(0.5, 0.5);
 		this.sprite.addChild(child);
+		this.overlay = child;
 	}
 
 	disappear() {
