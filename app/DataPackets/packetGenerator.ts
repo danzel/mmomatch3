@@ -2,6 +2,7 @@ import BootData = require('./bootData');
 import GridData = require('./BootParts/gridData');
 import LevelDefData = require('./BootParts/levelDefData');
 import MatchableData = require('./BootParts/matchableData');
+import SimulationData = require('./BootParts/simulationData');
 import SwapData = require('./BootParts/swapData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
 
@@ -19,9 +20,15 @@ class PacketGenerator {
 	generateBootData(level: LevelDef, simulation: Simulation): BootData {
 		return new BootData(
 			this.generateLevelDefData(level),
-			simulation.matchableFactory.idForSerializing,
 			this.generateGridData(simulation.grid),
 			this.generateSwapHandlerData(simulation.swapHandler),
+			this.generateSimulationData(simulation)
+		);
+	}
+	
+	private generateSimulationData(simulation: Simulation): SimulationData {
+		return new SimulationData(
+			simulation.matchableFactory.idForSerializing,
 			simulation.framesElapsed
 		);
 	}
@@ -78,14 +85,14 @@ class PacketGenerator {
 	}
 
 	recreateSimulation(bootData: BootData): Simulation {
-		let matchableFactory = new MatchableFactory(bootData.matchableIdCounter);
+		let matchableFactory = new MatchableFactory(bootData.simulationData.matchableIdCounter);
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory);
 
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
-		simulation.framesElapsed = bootData.simulationFramesElapsed;
+		simulation.framesElapsed = bootData.simulationData.framesElapsed;
 		
 		return simulation;
 	}
