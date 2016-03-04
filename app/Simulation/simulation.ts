@@ -32,7 +32,6 @@ class Simulation {
 	scoreTracker: ScoreTracker;
 
 	framesElapsed: number = 0;
-	timeRunning: number = 0; //TODO: Need to serialize this and send to client
 
 	frameCompleted = new LiteEvent<void>();
 	
@@ -67,10 +66,11 @@ class Simulation {
 		this.quietColumnDetector.lateUpdate(dt);
 
 		this.framesElapsed++;
-		this.timeRunning += dt;
 
 		this.frameCompleted.trigger();
 	}
+
+	get timeRunning(): number { return this.framesElapsed * 1/60; }
 }
 
 export = Simulation;
