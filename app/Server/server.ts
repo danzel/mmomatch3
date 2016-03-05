@@ -40,9 +40,9 @@ class Server {
 
 	constructor(private socketServer: SocketServer, private levelDefFactory: LevelDefFactory) {
 		//TOOD: Event listeners
-		socketServer.connected.on((id) => this.connectionReceived(id));
-		socketServer.disconnected.on((id) => this.connectionDisconnected(id));
-		socketServer.swapReceived.on((data) => this.swapReceived(data));
+		socketServer.connected.on(id => this.connectionReceived(id));
+		socketServer.disconnected.on(id => this.connectionDisconnected(id));
+		socketServer.swapReceived.on(data => this.swapReceived(data));
 	}
 
 	loadLevel(levelNumber: number) {
