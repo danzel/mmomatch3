@@ -8,10 +8,11 @@ import LiteEvent = require('../liteEvent');
 import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
 import Serializer = require('../Serializer/serializer');
+import ServerComms = require('./serverComms');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
-class SocketServer {
+class SocketServer extends ServerComms {
 	private app: express.Express;
 	private httpServer: http.Server;
 	private primus: Primus;
@@ -20,11 +21,8 @@ class SocketServer {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	connected = new LiteEvent<string>();
-	disconnected = new LiteEvent<string>();
-	swapReceived = new LiteEvent<{ id: string, swap: SwapClientData }>();
-
 	constructor(private serializer: Serializer) {
+		super();
 		this.app = express();
 		this.app.use(express.static('dist'));
 		this.httpServer = http.createServer(this.app);
@@ -83,7 +81,6 @@ class SocketServer {
 	sendBoot(bootData: BootData, id: string) {
 		this.clients[id].write(this.serializer.serializeBoot(bootData));
 	}
-
 }
 
 export = SocketServer;

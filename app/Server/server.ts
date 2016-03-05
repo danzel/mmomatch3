@@ -16,8 +16,8 @@ import PlayerProvider = require('../Simulation/Scoring/playerProvider');
 import RandomGenerator = require('../Simulation/randomGenerator');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Serializer = require('../Serializer/serializer');
+import ServerComms = require('./serverComms');
 import Simulation = require('../Simulation/simulation');
-import SocketServer = require('./socketServer');
 import SpawningSpawnManager = require('../Simulation/spawningSpawnManager');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
@@ -38,11 +38,11 @@ class Server {
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
 
-	constructor(private socketServer: SocketServer, private levelDefFactory: LevelDefFactory) {
+	constructor(private serverComms: ServerComms, private levelDefFactory: LevelDefFactory) {
 		//TOOD: Event listeners
-		socketServer.connected.on(id => this.connectionReceived(id));
-		socketServer.disconnected.on(id => this.connectionDisconnected(id));
-		socketServer.swapReceived.on(data => this.swapReceived(data));
+		serverComms.connected.on(id => this.connectionReceived(id));
+		serverComms.disconnected.on(id => this.connectionDisconnected(id));
+		serverComms.swapReceived.on(data => this.swapReceived(data));
 	}
 
 	loadLevel(levelNumber: number) {
@@ -60,7 +60,7 @@ class Server {
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
 		for (let i in this.clients) {
 			bootData.playerId = this.clients[i].id;
-			this.socketServer.sendBoot(bootData, i);
+			this.serverComms.sendBoot(bootData, i);
 		}
 		
 		gameEndDetector.gameEnded.on((victory) => {
@@ -107,14 +107,14 @@ class Server {
 		}
 
 		//We should only be sending updates to clients we've already sent a boot to
-		this.socketServer.sendTick(tickData, Object.keys(this.clients));
+		this.serverComms.sendTick(tickData, Object.keys(this.clients));
 
 		if (this.clientsRequiringBoot.length > 0) {
 			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
 			this.clientsRequiringBoot.forEach((id) => {
 				var player = this.playerProvider.createPlayer();
 				bootData.playerId = player.id;
-				this.socketServer.sendBoot(bootData, id);
+				this.serverComms.sendBoot(bootData, id);
 
 				this.clients[id] = player;
 			});
