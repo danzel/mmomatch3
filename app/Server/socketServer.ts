@@ -17,7 +17,7 @@ class SocketServer extends ServerComms {
 	private httpServer: http.Server;
 	private primus: Primus;
 
-	private dataReceivedBound = this.dataReceived.bind(this);
+	private sparkDataReceivedBound = this.sparkDataReceived.bind(this);
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
@@ -39,7 +39,7 @@ class SocketServer extends ServerComms {
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark.id);
 
-		let callback = this.dataReceivedBound;
+		let callback = this.sparkDataReceivedBound;
 		spark.on('data', function(data: any) {
 			callback(spark, data);
 		});
@@ -55,15 +55,11 @@ class SocketServer extends ServerComms {
 		this.disconnected.trigger(spark.id);
 	}
 
-	private dataReceived(spark: Primus.Spark, data: any) {
+	private sparkDataReceived(spark: Primus.Spark, data: any) {
 		//console.log("data", data);
 		
 		let packet = this.serializer.deserialize(data);
-		if (packet.packetType == PacketType.SwapClient) {
-			this.swapReceived.trigger({ id: spark.id, swap: <SwapClientData>packet.data });
-		} else {
-			console.warn('Received unexpected packet ', packet);
-		}
+		this.dataReceived.trigger({ id: spark.id, packet: packet });
 	}
 
 	private send(data: any, ids: Array<string>) {

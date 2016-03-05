@@ -12,6 +12,7 @@ import Scene = require('./Scenes/scene');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
+import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
 
 class AppEntry {
@@ -39,8 +40,9 @@ class AppEntry {
 	create() {
 		console.log('create');
 		
-		this.client = new Client(window.location.origin, new Serializer());
-		//this.client = new Client('http://' + window.location.hostname + ':8091', new Serializer());
+		let socket = new SocketClient(window.location.origin, new Serializer());
+		//let socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
+		this.client = new Client(socket);
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
 		this.client.playerIdReceived.on(playerId => this.playerIdReceived(playerId));
@@ -51,7 +53,7 @@ class AppEntry {
 			this.sceneGroup.destroy();
 		}
 		this.frameQueue.length = 0;
-		
+
 		this.simulation = data.simulation;
 		let gameEndDetector = new GameEndDetector(data.level, data.simulation); //TODO: Do we need a special client version?
 		let inputApplier = new ClientInputApplier(this.client, new InputVerifier(this.simulation.grid, data.simulation.matchChecker, true), this.simulation.grid);

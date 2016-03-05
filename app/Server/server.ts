@@ -42,7 +42,7 @@ class Server {
 		//TOOD: Event listeners
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
-		serverComms.swapReceived.on(data => this.swapReceived(data));
+		serverComms.dataReceived.on(data => this.dataReceived(data));
 	}
 
 	loadLevel(levelNumber: number) {
@@ -80,17 +80,26 @@ class Server {
 			this.clientsRequiringBoot.splice(this.clientsRequiringBoot.indexOf(id), 1);
 		}
 	}
+	
+	private dataReceived(data: { id: string, packet: { packetType: PacketType, data: any }}) {
+		if (data.packet.packetType == PacketType.SwapClient) {
+			this.swapReceived(data.id, <SwapClientData>data.packet.data);
+		} else {
+			console.warn('Received unexpected packet ', data.packet);
+		}
 
-	private swapReceived(data: { id: string, swap: SwapClientData }) {
-		var player = this.clients[data.id];
+	}
+
+	private swapReceived(id: string, swap: SwapClientData) {
+		var player = this.clients[id];
 		if (!player) {
 			console.log("ignoring received data from client before booted");
 			return;
 		}
 
 		//Find the two
-		let left = this.simulation.grid.findMatchableById(data.swap.leftId);
-		let right = this.simulation.grid.findMatchableById(data.swap.rightId);
+		let left = this.simulation.grid.findMatchableById(swap.leftId);
+		let right = this.simulation.grid.findMatchableById(swap.rightId);
 		if (this.inputVerifier.swapIsValid(left, right)) {
 			this.simulation.swapHandler.swap(player.id, left, right);
 		}
