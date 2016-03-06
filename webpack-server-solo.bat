@@ -1,3 +1,3 @@
-start "" http://localhost:8080/webpack-dev-server/index.html
+start "" http://localhost:8081/webpack-dev-server/index.html
 
-webpack-dev-server --progress --colors --config webpack.config.solo.js
+webpack-dev-server --port 8081 --progress --colors --config webpack.config.solo.js
