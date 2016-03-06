@@ -3,22 +3,18 @@ import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import DebugLogger = require('../debugLogger');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
-import GridFactory = require('../Simulation/Levels/gridFactory');
 import InputVerifier = require('../Simulation/inputVerifier');
 import LevelDef = require('../Simulation/Levels/levelDef');
-import LevelDefFactory = require('../Simulation/Levels/levelDefFactory');
+import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import Matchable = require('../Simulation/matchable');
-import MatchableFactory = require('../Simulation/matchableFactory');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
 import Player = require('../Simulation/Scoring/player');
 import PlayerProvider = require('../Simulation/Scoring/playerProvider');
-import RandomGenerator = require('../Simulation/randomGenerator');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
 import Simulation = require('../Simulation/simulation');
-import SpawningSpawnManager = require('../Simulation/spawningSpawnManager');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
 import SwapClientData = require('../DataPackets/swapClientData');
@@ -38,7 +34,7 @@ class Server {
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
 
-	constructor(private serverComms: ServerComms, private levelDefFactory: LevelDefFactory) {
+	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider) {
 		//TOOD: Event listeners
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
@@ -46,11 +42,10 @@ class Server {
 	}
 
 	loadLevel(levelNumber: number) {
-		this.level = new LevelDefFactory().getLevel(levelNumber);
-		let grid = GridFactory.createGrid(this.level);
-		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), this.level.colorCount);
-		this.simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let level = this.levelAndSimulationProvider.loadLevel(levelNumber);
+		this.level = level.level;
+		this.simulation = level.simulation;
+		
 		let gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker);

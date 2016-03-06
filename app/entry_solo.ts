@@ -16,6 +16,7 @@ import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
 
 class AppEntry {
 	game: Phaser.Game;
+	simulation: Simulation;
 	scene: Scene;
 
 	constructor() {
@@ -54,12 +55,12 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, {});
-		
+		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true });
+
 		gameEndDetector.gameEnded.on((victory) => {
 			let catchAll = new TouchCatchAll(this.game);
 			sceneGroup.add(catchAll.sprite);
-			
+
 			catchAll.pointerUp.on(() => {
 				sceneGroup.destroy();
 				this.createSimulationScene(levelNumber + (victory ? 1 : 0));

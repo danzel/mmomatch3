@@ -1,3 +1,4 @@
+import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
@@ -10,8 +11,7 @@ class AppEntry {
 	tickRate: number;
 
 	constructor() {
-		//this.server = new Server(level, this.simulation, new Serializer(), new InputVerifier(this.simulation.grid, this.simulation.matchChecker, gameEndDetector, true));
-		this.server = new Server(new SocketServer(new Serializer()), new LevelDefFactory());
+		this.server = new Server(new SocketServer(new Serializer()), new DefaultLevelAndSimulationProvider(new LevelDefFactory()));
 		
 		this.server.loadLevel(1);
 	}

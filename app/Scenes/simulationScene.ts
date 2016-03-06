@@ -14,8 +14,8 @@ import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
 
 interface SimulationSceneConfiguration {
-	/** If true updates run even when the levelDetailsOverlay is showing */
-	alwaysRunUpdates?: boolean;
+	/** If true we update the simulation, otherwise it is controlled externally */
+	inChargeOfSimulation?: boolean;
 	
 	/** If set  game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
 	gameOverCountdown?: number;
@@ -71,10 +71,10 @@ class SimulationScene implements Scene {
 			this.gameOverOverlay.update();
 		}
 
-		if (this.config.alwaysRunUpdates || this.levelDetailsOverlay.closed) {
+		if (this.config.inChargeOfSimulation && this.levelDetailsOverlay.closed) {
 			this.simulation.update(this.group.game.time.physicsElapsed);
-			this.renderer.update(this.group.game.time.physicsElapsed);
 		}
+		this.renderer.update(this.group.game.time.physicsElapsed);
 	}
 
 

@@ -1,10 +1,13 @@
 import Color = require('../../app/Simulation/color');
+import FailureType = require('../../app/Simulation/Levels/failureType');
 import Grid = require('../../app/Simulation/grid');
+import LevelDef = require('../../app/Simulation/Levels/levelDef');
 import Matchable = require('../../app/Simulation/matchable');
 import MatchableFactory = require('../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('./neverSpawnManager');
 import Simulation = require('../../app/Simulation/simulation');
 import Type = require('../../app/Simulation/type');
+import VictoryType = require('../../app/Simulation/Levels/victoryType');
 
 class TestUtil {
 	/** Populate a grid with the given contents.
@@ -90,6 +93,10 @@ class TestUtil {
 			actualSizes.push(grid.cells[i].length);
 		}
 		expect(actualSizes).toEqual(columnSizes);
+	}
+	
+	static createNeverEndingLevel(width: number, height: number): LevelDef {
+		return new LevelDef(1, width, height, [], 8, FailureType.Time, VictoryType.Matches, 9999999, 9999999);
 	}
 }
 
