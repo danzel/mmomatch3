@@ -112,7 +112,7 @@ class TestLASProvider implements LevelAndSimulationProvider {
 
 describe('Sync.comboSync', () => {
     it('correctly syncs the current scores and ownership of columns for combos', () => {
-		let serverComms = new FakeServerComms(1 / 10);
+		let serverComms = new FakeServerComms(1 / 20);
 		let simulation = TestUtil.prepareForTest([
 			"8218",
 			"1122"
@@ -126,10 +126,13 @@ describe('Sync.comboSync', () => {
 		serverComms.update();
 
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 40; i++) {
+		for (let i = 0; i < 24; i++) {
 			serverComms.addClient();
 			serverComms.update();
+			//TODO: Should be able to validate all simulations are the same every second tick
 		}
+		//TODO: check the server has no ticks saved
+		//TODO: Run all clients until they are done (instead of this 2 update finish...)
 		serverComms.update();
 		serverComms.update();
 
@@ -138,7 +141,7 @@ describe('Sync.comboSync', () => {
 			2 * simulation.scoreTracker.pointsPerMatchable * 3;
 
 		let simulations = serverComms.getAllSimulations();
-		expect(simulations.length).toBe(42); //server + 1 + 40
+		expect(simulations.length).toBe(26); //server + 1 + 24
 		
 		let score = 0;
 		for (let i = 0; i < simulations.length; i++) {
@@ -148,6 +151,7 @@ describe('Sync.comboSync', () => {
 			if (sim.scoreTracker.points[1] == points) {
 				score++;
 			}
+			TestUtil.expectGridSize(sim.grid, [1,0,0,1]); // The [2, 3] fail goes away if we run 2 more ticks, so probably just do the todos above
 			TestUtil.expectGridQuiet(sim);
 		}
 		

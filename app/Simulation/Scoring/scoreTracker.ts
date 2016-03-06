@@ -14,7 +14,7 @@ class ScoreTracker {
 	
 	playerEarnedPoints = new LiteEvent<Score>();
 	
-	private playerComboSize: { [playerId: number]: number } = {};
+	playerComboSize: { [playerId: number]: number } = {};
 
 	constructor(comboOwnership: ComboOwnership) {
 		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
@@ -41,15 +41,6 @@ class ScoreTracker {
 
 	private playerNoLongerInCombo(playerId: number) {
 		this.playerComboSize[playerId] = 0;
-	}
-
-	/** For packetGenerator to deserialize points when booting */	
-	setPoints(points: { [playerId: number]: number }) {
-		Object.keys(points).forEach(key => {
-			let playerId = parseInt(key, 10);
-			this.points[playerId] = points[playerId];
-			this.totalPoints += points[playerId];
-		});
 	}
 
 	debugPrint() {

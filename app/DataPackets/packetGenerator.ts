@@ -25,15 +25,7 @@ class PacketGenerator {
 			this.generateSimulationData(simulation)
 		);
 	}
-	
-	private generateSimulationData(simulation: Simulation): SimulationData {
-		return new SimulationData(
-			simulation.matchableFactory.idForSerializing,
-			simulation.framesElapsed,
-			simulation.scoreTracker.points
-		);
-	}
-	
+
 	private generateLevelDefData(level: LevelDef): LevelDefData {
 		return <LevelDefData>level;
 	}
@@ -69,7 +61,7 @@ class PacketGenerator {
 	}
 
 	private generateSwapHandlerData(swapHandler: SwapHandler): SwapHandlerData {
-		let res:Array<SwapData> = [];
+		let res: Array<SwapData> = [];
 
 		for (let i = 0; i < swapHandler.swaps.length; i++) {
 			let swap = swapHandler.swaps[i];
@@ -79,8 +71,33 @@ class PacketGenerator {
 		return new SwapHandlerData(res);
 	}
 
+	private generateSimulationData(simulation: Simulation): SimulationData {
+		return new SimulationData(
+			simulation.matchableFactory.idForSerializing,
+			simulation.framesElapsed,
+			simulation.scoreTracker.points,
+			simulation.scoreTracker.playerComboSize,
+			this.generateComboOwners(simulation)
+		);
+	}
 
-	
+	private generateComboOwners(simulation: Simulation): Array<{ x: number, y: number, playerId: number }> {
+		let res = new Array<{ x: number, y: number, playerId: number }>();
+
+		let owners = simulation.comboOwnership.getComboOwners();
+		for (let x = 0; x < owners.length; x++) {
+			let col = owners[x];
+			for (let y = 0; y < col.length; y++) {
+				let owner = col[y];
+
+				res.push({ x: x, y: owner.y, playerId: owner.playerId });
+			}
+		}
+
+		return res;
+	}
+
+
 	recreateLevelDefData(level: LevelDefData): LevelDef {
 		return <LevelDef>level;
 	}
@@ -90,20 +107,34 @@ class PacketGenerator {
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory);
-		
-		simulation.scoreTracker.setPoints(bootData.simulationData.pointsData);
+
+		Object.keys(bootData.simulationData.pointsData).forEach(key => {
+			let playerId = parseInt(key, 10);
+			let points = bootData.simulationData.pointsData[playerId];
+			simulation.scoreTracker.points[playerId] = points;
+			simulation.scoreTracker.totalPoints += points;
+		});
+		Object.keys(bootData.simulationData.comboSize).forEach(key => {
+			let playerId = parseInt(key, 10);
+			let size = bootData.simulationData.comboSize[playerId];
+			simulation.scoreTracker.playerComboSize[playerId] = size;
+		})
+
+		bootData.simulationData.comboOwners.forEach(owner => {
+			simulation.comboOwnership.addComboOwner(owner.x, owner.y, owner.playerId);
+		});
 
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
 		simulation.framesElapsed = bootData.simulationData.framesElapsed;
-		
+
 		return simulation;
 	}
 
 	private deserializeGrid(grid: Grid, gridData: GridData): any {
-		let matchableById:{[id: number]: Matchable} = {};
+		let matchableById: { [id: number]: Matchable } = {};
 		let data = gridData.matchables;
-		
+
 		for (let x = 0; x < data.length; x++) {
 			let dataCol = data[x];
 			let col = grid.cells[x];
@@ -128,7 +159,7 @@ class PacketGenerator {
 
 	private deserializeSwapHandler(swapHandler: SwapHandler, swapHandlerData: SwapHandlerData, matchableById: any): any {
 		let data = swapHandlerData.swaps;
-		
+
 		for (let i = 0; i < data.length; i++) {
 			let s = data[i];
 			let swap = new Swap(s.playerId, matchableById[s.leftId], matchableById[s.rightId]);

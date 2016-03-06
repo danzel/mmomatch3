@@ -113,6 +113,17 @@ class ComboOwnership {
 		}
 		col.length = 0;
 	}
+	
+	/** Only for packetGenerator */
+	getComboOwners(): Array<Array<Owner>> {
+		return this.ownersByColumn;
+	}
+	/** Only for packetGenerator */
+	addComboOwner(x: number, y: number, playerId: number) {
+		this.ownersByColumn[x].push(new Owner(y, playerId));
+
+		this.ownerMatchCount[playerId] = (this.ownerMatchCount[playerId] || 0) + 1;
+	}
 }
 
 export = ComboOwnership;
