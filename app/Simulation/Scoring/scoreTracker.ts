@@ -43,6 +43,15 @@ class ScoreTracker {
 		this.playerComboSize[playerId] = 0;
 	}
 
+	/** For packetGenerator to deserialize points when booting */	
+	setPoints(points: { [playerId: number]: number }) {
+		Object.keys(points).forEach(key => {
+			let playerId = parseInt(key, 10);
+			this.points[playerId] = points[playerId];
+			this.totalPoints += points[playerId];
+		});
+	}
+
 	debugPrint() {
 		let list: any = [];
 

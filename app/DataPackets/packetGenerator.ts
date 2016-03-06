@@ -29,7 +29,8 @@ class PacketGenerator {
 	private generateSimulationData(simulation: Simulation): SimulationData {
 		return new SimulationData(
 			simulation.matchableFactory.idForSerializing,
-			simulation.framesElapsed
+			simulation.framesElapsed,
+			simulation.scoreTracker.points
 		);
 	}
 	
@@ -89,6 +90,8 @@ class PacketGenerator {
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		
+		simulation.scoreTracker.setPoints(bootData.simulationData.pointsData);
 
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
