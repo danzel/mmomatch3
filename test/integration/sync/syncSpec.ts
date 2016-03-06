@@ -111,7 +111,7 @@ class TestLASProvider implements LevelAndSimulationProvider {
 };
 
 describe('Sync.comboSync', () => {
-    it('correctly syncs the current scoring state of combos', () => {
+    it('correctly syncs the current scores and ownership of columns for combos', () => {
 		let serverComms = new FakeServerComms(1 / 10);
 		let simulation = TestUtil.prepareForTest([
 			"8218",
@@ -140,14 +140,17 @@ describe('Sync.comboSync', () => {
 		let simulations = serverComms.getAllSimulations();
 		expect(simulations.length).toBe(42); //server + 1 + 40
 		
-		console.log(simulation.scoreTracker.points);
-		
+		let score = 0;
 		for (let i = 0; i < simulations.length; i++) {
 			let sim = simulations[i];
-			console.log(i, sim.scoreTracker.points[1]);
+			//console.log(i, sim.scoreTracker.points[1]);
 			expect(sim.scoreTracker.points[1]).toBe(points);
-
+			if (sim.scoreTracker.points[1] == points) {
+				score++;
+			}
 			TestUtil.expectGridQuiet(sim);
 		}
+		
+		console.log(score, '/', simulations.length);
 	});
 });
