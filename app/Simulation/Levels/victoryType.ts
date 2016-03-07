@@ -1,5 +1,4 @@
 enum VictoryType {
-	
 	Matches,
 	Score
 }

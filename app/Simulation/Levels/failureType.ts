@@ -1,5 +1,4 @@
 enum FailureType {
-	/** Time is not implemented */
 	Time,
 	Swaps
 }
