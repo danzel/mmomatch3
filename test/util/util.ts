@@ -83,6 +83,18 @@ class TestUtil {
 			expect(busyColumns).toBe([]);
 		}
 	}
+	
+	static expectQuietDetectorIsSane(simulation: Simulation) {
+		let badSwaps = simulation.quietColumnDetector.columnSwapsInProgressCount.map((count, index) => count >= 0 ? -1 : index).filter(x => x != -1);
+		let badDisappearCount = simulation.quietColumnDetector.columnDisappearingCount.map((count, index) => count >= 0 ? -1 : index).filter(x => x != -1);
+		
+		if (badSwaps.length != 0) {
+			expect('columns with negative swaps: ' + badSwaps).toBe('empty');
+		}
+		if (badDisappearCount.length != 0) {
+			expect('columns with negative disappear count: ' + badDisappearCount).toBe('empty');
+		}
+	}
 
 	static expectGridSize(grid: Grid, columnSizes: Array<number>) {
 		if (grid.width != columnSizes.length) {

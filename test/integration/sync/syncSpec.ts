@@ -99,6 +99,14 @@ class FakeServerComms extends ServerComms {
 
 		return res;
 	}
+
+	flushClients() {
+		Object.keys(this.clientsLookup).forEach(key => {
+			for (var i = 0; i < 10; i++) {
+				this.clientsLookup[key].update();
+			}
+		});
+	}
 };
 
 class TestLASProvider implements LevelAndSimulationProvider {
@@ -110,9 +118,9 @@ class TestLASProvider implements LevelAndSimulationProvider {
 	}
 };
 
-describe('Sync.comboSync', () => {
-    it('correctly syncs the current scores and ownership of columns for combos', () => {
-		let serverComms = new FakeServerComms(1 / 20);
+describe('Sync', () => {
+    it('correctly syncs the current scores, ownership, quiet state of columns for combos', () => {
+		let serverComms = new FakeServerComms(1 / 60);
 		let simulation = TestUtil.prepareForTest([
 			"8218",
 			"1122"
@@ -126,22 +134,27 @@ describe('Sync.comboSync', () => {
 		serverComms.update();
 
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 24; i++) {
+		for (let i = 0; i < 74; i++) {
 			serverComms.addClient();
 			serverComms.update();
-			//TODO: Should be able to validate all simulations are the same every second tick
+			
+			//Should be able to validate all simulations are the same every second tick
+			serverComms.getAllSimulations().forEach(sim => {
+				TestUtil.expectQuietDetectorIsSane(sim);
+			})
 		}
-		//TODO: check the server has no ticks saved
-		//TODO: Run all clients until they are done (instead of this 2 update finish...)
 		serverComms.update();
 		serverComms.update();
+		serverComms.update();
+		serverComms.update();
+		serverComms.flushClients();
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
 			2 * simulation.scoreTracker.pointsPerMatchable * 3;
 
 		let simulations = serverComms.getAllSimulations();
-		expect(simulations.length).toBe(26); //server + 1 + 24
+		expect(simulations.length).toBe(76); //server + 1 + 74
 		
 		let score = 0;
 		for (let i = 0; i < simulations.length; i++) {
@@ -151,10 +164,13 @@ describe('Sync.comboSync', () => {
 			if (sim.scoreTracker.points[1] == points) {
 				score++;
 			}
-			TestUtil.expectGridSize(sim.grid, [1,0,0,1]); // The [2, 3] fail goes away if we run 2 more ticks, so probably just do the todos above
+
+			expect(sim.framesElapsed).toBe(80);
+			TestUtil.expectGridSize(sim.grid, [1, 0, 0, 1]);
 			TestUtil.expectGridQuiet(sim);
+			TestUtil.expectQuietDetectorIsSane(sim);
 		}
-		
+
 		console.log(score, '/', simulations.length);
 	});
 });

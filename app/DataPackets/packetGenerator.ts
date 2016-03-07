@@ -127,6 +127,16 @@ class PacketGenerator {
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
 		simulation.framesElapsed = bootData.simulationData.framesElapsed;
+		
+		simulation.swapHandler.swaps.forEach(swap => {
+			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.left.x]++;
+			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.right.x]++;
+		});
+		simulation.grid.cells.forEach(col => col.forEach(matchable => {
+			if (matchable.isDisappearing) {
+				simulation.quietColumnDetector.columnDisappearingCount[matchable.x]++;
+			}
+		}))
 
 		return simulation;
 	}

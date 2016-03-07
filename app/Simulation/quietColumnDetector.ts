@@ -11,8 +11,8 @@ import SwapHandler = require('./swapHandler');
 class QuietColumnDetector {
 	private columnsNeedingCheck: Array<number> = [];
 
-	private columnSwapsInProgressCount: Array<number> = [];
-	private columnDisappearingCount: Array<number> = [];
+	columnSwapsInProgressCount: Array<number> = [];
+	columnDisappearingCount: Array<number> = [];
 
 	columnIsQuiet = new Array<boolean>();
 	columnBecameQuiet = new LiteEvent<number>();
@@ -39,7 +39,7 @@ class QuietColumnDetector {
 	matchableLanded(matchable: Matchable) {
 		//If we land and there is nothing above us
 		let col = this.grid.cells[matchable.x];
-		if (matchable == col[col.length -1]) {
+		if (matchable == col[col.length - 1]) {
 			this.columnsNeedingCheck.push(matchable.x);
 		}
 	}
@@ -66,7 +66,7 @@ class QuietColumnDetector {
 
 	onMatchPerformed(match: Match) {
 		let matchables = match.matchables;
-		
+
 		for (let i = 0; i < matchables.length; i++) {
 			this.columnIsQuiet[matchables[i].x] = false;
 			this.columnDisappearingCount[matchables[i].x]++;
@@ -82,7 +82,7 @@ class QuietColumnDetector {
 
 	lateUpdate(dt: number) {
 		let oneBecameQuiet = false;
-		
+
 		for (let i = 0; i < this.columnsNeedingCheck.length; i++) {
 			var x = this.columnsNeedingCheck[i];
 
@@ -116,7 +116,7 @@ class QuietColumnDetector {
 				return true;
 			}
 			let lastMatchable = col[col.length - 1];
-			
+
 			if (!lastMatchable.isMoving) {
 				return true;
 			}
