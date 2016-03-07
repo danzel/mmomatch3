@@ -8,7 +8,9 @@ class MatchableData {
 		public isDisappearing: boolean,
 		public disappearingTime: number,
 		public yMomentum: number,
-		public beingSwapped: boolean) {
+		public beingSwapped: boolean,
+		public transformTo: number,
+		public transformToColor: number) {
 	}
 }
 

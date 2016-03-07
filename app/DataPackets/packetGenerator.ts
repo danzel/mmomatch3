@@ -56,7 +56,9 @@ class PacketGenerator {
 			matchable.isDisappearing,
 			matchable.disappearingTime,
 			matchable.yMomentum,
-			matchable.beingSwapped
+			matchable.beingSwapped,
+			matchable.transformTo,
+			matchable.transformToColor
 		);
 	}
 
@@ -158,6 +160,8 @@ class PacketGenerator {
 				matchable.disappearingTime = matchableData.disappearingTime;
 				matchable.yMomentum = matchableData.yMomentum;
 				matchable.beingSwapped = matchableData.beingSwapped;
+				matchable.transformTo = matchableData.transformTo;
+				matchable.transformToColor = matchableData.transformToColor;
 
 				col.push(matchable);
 				matchableById[matchable.id] = matchable;

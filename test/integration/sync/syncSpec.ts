@@ -122,10 +122,10 @@ describe('Sync', () => {
     it('correctly syncs the current scores, ownership, quiet state of columns for combos', () => {
 		let serverComms = new FakeServerComms(1 / 60);
 		let simulation = TestUtil.prepareForTest([
-			"8218",
-			"1122"
+			"82189",
+			"11222"
 		]);
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(4, 2), simulation));
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation));
 		server.loadLevel(1);
 		serverComms.server = server;
 
@@ -151,7 +151,7 @@ describe('Sync', () => {
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
-			2 * simulation.scoreTracker.pointsPerMatchable * 3;
+			2 * simulation.scoreTracker.pointsPerMatchable * 4;
 
 		let simulations = serverComms.getAllSimulations();
 		expect(simulations.length).toBe(76); //server + 1 + 74
@@ -161,7 +161,7 @@ describe('Sync', () => {
 			expect(sim.scoreTracker.points[1]).toBe(points);
 
 			expect(sim.framesElapsed).toBe(80);
-			TestUtil.expectGridSize(sim.grid, [1, 0, 0, 1]);
+			TestUtil.expectGridSize(sim.grid, [1, 0, 1, 1, 1]);
 			TestUtil.expectGridQuiet(sim);
 			TestUtil.expectQuietDetectorIsSane(sim);
 		}
