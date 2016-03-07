@@ -156,21 +156,14 @@ describe('Sync', () => {
 		let simulations = serverComms.getAllSimulations();
 		expect(simulations.length).toBe(76); //server + 1 + 74
 		
-		let score = 0;
 		for (let i = 0; i < simulations.length; i++) {
 			let sim = simulations[i];
-			//console.log(i, sim.scoreTracker.points[1]);
 			expect(sim.scoreTracker.points[1]).toBe(points);
-			if (sim.scoreTracker.points[1] == points) {
-				score++;
-			}
 
 			expect(sim.framesElapsed).toBe(80);
 			TestUtil.expectGridSize(sim.grid, [1, 0, 0, 1]);
 			TestUtil.expectGridQuiet(sim);
 			TestUtil.expectQuietDetectorIsSane(sim);
 		}
-
-		console.log(score, '/', simulations.length);
 	});
 });
