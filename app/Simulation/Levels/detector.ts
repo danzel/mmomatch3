@@ -6,7 +6,7 @@ abstract class Detector {
 	
 	/** For the LevelDetailsOverlay */
 	abstract getDetailsText(): string;
-	/** Perform an initially check after being constructed */
+	/** Perform an initial check after being constructed */
 	abstract update(): void;
 }
 

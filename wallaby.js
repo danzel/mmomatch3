@@ -18,7 +18,7 @@ module.exports = function (w) {
 		// https://github.com/Microsoft/TypeScript/blob/master/src/compiler/types.ts
 		compilers: {
 		  '**/*.ts': w.compilers.typeScript({
-			  module: 1 //commmonjs
+			  module: 1 //commonjs
 		  })
 		},
 		
