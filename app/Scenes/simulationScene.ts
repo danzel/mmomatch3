@@ -72,7 +72,7 @@ class SimulationScene implements Scene {
 		}
 
 		if (this.config.inChargeOfSimulation && this.levelDetailsOverlay.closed) {
-			this.simulation.update(this.group.game.time.physicsElapsed);
+			this.simulation.update();
 		}
 		this.renderer.update(this.group.game.time.physicsElapsed);
 	}

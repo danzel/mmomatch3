@@ -101,9 +101,9 @@ class Server {
 		}
 	}
 
-	update(dt: number) {
+	update() {
 
-		this.simulation.update(dt);
+		this.simulation.update();
 
 		var tickData = this.tickDataFactory.getTickIfReady(Object.keys(this.clients).length + this.clientsRequiringBoot.length);
 

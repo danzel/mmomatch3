@@ -17,7 +17,7 @@ class AppEntry {
 	}
 
 	update() {
-		this.server.update(this.tickRate);
+		this.server.update();
 	}
 
 	run(fps: number) {

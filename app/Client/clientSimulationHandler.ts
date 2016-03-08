@@ -48,7 +48,7 @@ class ClientSimulationHandler {
 			(<ClientSpawnManager>this.simulation.spawnManager).notifySpawns(frame.spawnData);
 		}
 
-		this.simulation.update(this.tickRate);
+		this.simulation.update();
 		
 		return true;
 	}

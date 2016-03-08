@@ -1,6 +1,7 @@
 import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
 import DebugLogger = require('./debugLogger');
+import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import Scene = require('./Scenes/scene');
@@ -41,11 +42,11 @@ class AppEntry {
 		this.client.playerIdReceived.on(playerId => this.playerIdReceived(playerId));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation }) {
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
 		}
-		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, this.client, 1 / 60);
+		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 });
