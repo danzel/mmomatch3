@@ -32,7 +32,7 @@ class Simulation {
 	scoreTracker: ScoreTracker;
 
 	framesElapsed: number = 0;
-
+	private tickRate = 0;
 	frameCompleted = new LiteEvent<void>();
 	
 	constructor(grid: Grid, spawnManager: SpawnManager, matchableFactory: MatchableFactory) {
@@ -66,11 +66,12 @@ class Simulation {
 		this.quietColumnDetector.lateUpdate(dt);
 
 		this.framesElapsed++;
+		this.tickRate = dt;
 
 		this.frameCompleted.trigger();
 	}
 
-	get timeRunning(): number { return this.framesElapsed * 1/60; }
+	get timeRunning(): number { return this.framesElapsed * this.tickRate; }
 }
 
 export = Simulation;
