@@ -25,7 +25,7 @@ describe('SpecialMatchables.Unclearable', () => {
 		
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 		
 		TestUtil.expectGridSize(simulation.grid, [0, 3]);

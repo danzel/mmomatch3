@@ -25,7 +25,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][2], simulation.grid.cells[1][2]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		expect(transformCount).toBe(1);
@@ -44,7 +44,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		expect(simulation.inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][0])).toBe(true);
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		//Check the grid, only 5,6,7,8s should remain

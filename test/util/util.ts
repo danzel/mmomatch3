@@ -63,11 +63,11 @@ class TestUtil {
 	 * # for 3x3 clear
 	 * @param specialColors The coors of the special matchables in bottom to top, left to right order
 	 */
-	static prepareForTest(gridConfig: Array<string>, specialColors?: string): Simulation {
+	static prepareForTest(gridConfig: Array<string>, specialColors?: string, tickRate: number = 1): Simulation {
 		var grid = new Grid(gridConfig[0].length, gridConfig.length);
 		TestUtil.populateGrid(grid, gridConfig, specialColors);
 		var matchableFactory = new MatchableFactory();
-		var simulation = new Simulation(grid, new NeverSpawnManager(grid, matchableFactory), matchableFactory);
+		var simulation = new Simulation(grid, new NeverSpawnManager(grid, matchableFactory), matchableFactory, tickRate);
 
 		return simulation;
 	}

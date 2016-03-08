@@ -17,7 +17,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		let grid = GridFactory.createGrid(level);
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
-		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory, 60);
 
 		return { level: level, simulation: simulation };
 	}

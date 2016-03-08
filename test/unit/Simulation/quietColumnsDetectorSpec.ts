@@ -7,7 +7,8 @@ describe('QuietColumnsDetector', () => {
 		let simulation = TestUtil.prepareForTest([
 			"17",
 			"18",
-			"91"]);
+			"91"
+		]);
 
 		let quietColumns = new Array<number>();
 		let columnQuietCount = 0;
@@ -18,13 +19,13 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 
-		simulation.update(1);
+		simulation.update();
 
 		//At this stage the swap should be done and the match started
 		expect(quietColumns).toContain(1);
 		expect(quietColumns).not.toContain(0);
 
-		simulation.update(1);
+		simulation.update();
 
 		expect(columnQuietCount).toBe(2);
 		expect(quietColumns).toContain(0);
@@ -41,7 +42,8 @@ describe('QuietColumnsDetector', () => {
 			"16",
 			"17",
 			"81",
-			"X9"]);
+			"X9"
+		]);
 
 		let quietColumns = new Array<number>();
 		let columnQuietCount = 0;
@@ -52,7 +54,7 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][1]);
 
-		simulation.update(1);
+		simulation.update();
 
 		//At this stage the swap should be done and the match started
 		expect(quietColumns).toContain(1);
@@ -60,7 +62,7 @@ describe('QuietColumnsDetector', () => {
 		expect(gridQuietCount).toBe(0);
 
 		for (let i = 0; i < 2; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		expect(columnQuietCount).toBe(2);

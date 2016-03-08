@@ -36,6 +36,7 @@ describe('SyncDetectors', () => {
 			serverComms.update();
 			serverComms.update();
 		}
+		serverComms.flushClients();
 
 		let gameEndDetectors = serverComms.getAllGameEndDetectors();
 		for (let i = 0; i < gameEndDetectors.length; i++) {
@@ -66,6 +67,7 @@ describe('SyncDetectors', () => {
 			serverComms.update();
 			serverComms.update();
 		}
+		serverComms.flushClients();
 
 		let gameEndDetectors = serverComms.getAllGameEndDetectors();
 		for (let i = 0; i < gameEndDetectors.length; i++) {
@@ -96,6 +98,7 @@ describe('SyncDetectors', () => {
 			serverComms.update();
 			serverComms.update();
 		}
+		serverComms.flushClients();
 
 		let gameEndDetectors = serverComms.getAllGameEndDetectors();
 		for (let i = 0; i < gameEndDetectors.length; i++) {
@@ -126,6 +129,7 @@ describe('SyncDetectors', () => {
 			serverComms.update();
 			serverComms.update();
 		}
+		serverComms.flushClients();
 
 		let gameEndDetectors = serverComms.getAllGameEndDetectors();
 		for (let i = 0; i < gameEndDetectors.length; i++) {

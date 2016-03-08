@@ -23,7 +23,7 @@ describe('SpecialMatchables.VerticalClearWhenMatched', () => {
 		//Swap to form it in the bottom row
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[1][0], simulation.grid.cells[1][1]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		expect(transformCount).toBe(1);
@@ -41,7 +41,7 @@ describe('SpecialMatchables.VerticalClearWhenMatched', () => {
 		//Now swap to match the VerticalClearWhenMatched
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 		
 		//Check the grid, all of the second column is cleared, which don't match

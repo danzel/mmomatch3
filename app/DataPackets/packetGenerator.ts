@@ -77,6 +77,7 @@ class PacketGenerator {
 		return new SimulationData(
 			simulation.matchableFactory.idForSerializing,
 			simulation.framesElapsed,
+			simulation.tickRate,
 			simulation.scoreTracker.points,
 			simulation.scoreTracker.playerComboSize,
 			this.generateComboOwners(simulation)
@@ -108,7 +109,7 @@ class PacketGenerator {
 		let matchableFactory = new MatchableFactory(bootData.simulationData.matchableIdCounter);
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
-		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory, bootData.simulationData.tickRate);
 
 		Object.keys(bootData.simulationData.pointsData).forEach(key => {
 			let playerId = parseInt(key, 10);

@@ -21,10 +21,10 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		simulation.update(1);
-		simulation.update(1);
+		simulation.update();
+		simulation.update();
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyNoRemainingMatches();
@@ -42,10 +42,10 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
 		for (let i = 0; i < 3; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
@@ -62,10 +62,10 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
@@ -87,10 +87,10 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
 		for (let i = 0; i < 5; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);

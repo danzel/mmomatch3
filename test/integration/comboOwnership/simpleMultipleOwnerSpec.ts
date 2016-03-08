@@ -20,12 +20,11 @@ describe('ComboOwnership.simpleMultipleOwner', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		simulation.update(0.1); //So the swaps both resolve at the same time
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[5][0], simulation.grid.cells[6][0]);
-		simulation.update(1);
-		simulation.update(1);
+		simulation.update();
+		simulation.update();
 
 		//It is fluke that these happen in this order
 		ownershipChecker.verifyMatch(3, [playerId2]);

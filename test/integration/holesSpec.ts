@@ -146,9 +146,9 @@ describe('Holes', () => {
 		let right = simulation.grid.cells[3][1];
 		expect(inputVerifier.swapIsValid(left, right)).toBe(true);
 		simulation.swapHandler.swap(0, left, right);
-		simulation.update(1);
-		simulation.update(1);
-		simulation.update(1);
+		simulation.update();
+		simulation.update();
+		simulation.update();
 
 		ownershipChecker.verifyMatch(3, [0]);
 		ownershipChecker.verifyNoRemainingMatches();
@@ -165,12 +165,12 @@ describe('Holes', () => {
 		let matchableFactory = new MatchableFactory();
 		let randomGenerator = new RandomGenerator(1);
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 5);
-		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory, 1);
 
 		simulation.matchPerformer.matchPerformed.on(() => { throw new Error("No match should be performed") })
 
 		for (var i = 0; i < 10; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 	});
 
@@ -190,12 +190,12 @@ describe('Holes', () => {
 		let matchableFactory = new MatchableFactory();
 		let randomGenerator = new RandomGenerator(1);
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 5);
-		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory, 0.05);
 
 		simulation.matchPerformer.matchPerformed.on(() => { throw new Error("No match should be performed") });
 
 		for (var i = 0; i < 10; i++) {
-			simulation.update(0.05);
+			simulation.update();
 		}
 
 		expect(grid.cells[0][0].y).toBe(0);
@@ -222,12 +222,12 @@ describe('Holes', () => {
 		let matchableFactory = new MatchableFactory();
 		let randomGenerator = new RandomGenerator(1);
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 5);
-		let simulation = new Simulation(grid, spawnManager, matchableFactory);
+		let simulation = new Simulation(grid, spawnManager, matchableFactory, 0.05);
 
 		simulation.matchPerformer.matchPerformed.on(() => { throw new Error("No match should be performed") });
 
 		for (var i = 0; i < 10; i++) {
-			simulation.update(0.05);
+			simulation.update();
 		}
 
 		expect(grid.cells[0][0].y).toBe(0);

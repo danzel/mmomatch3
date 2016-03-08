@@ -31,11 +31,11 @@ class Simulation {
 	comboOwnership: ComboOwnership;
 	scoreTracker: ScoreTracker;
 
+	private dt: number;
 	framesElapsed: number = 0;
-	private tickRate = 0;
 	frameCompleted = new LiteEvent<void>();
-	
-	constructor(grid: Grid, spawnManager: SpawnManager, matchableFactory: MatchableFactory) {
+
+	constructor(grid: Grid, spawnManager: SpawnManager, matchableFactory: MatchableFactory, public tickRate: number) {
 		//Things the simulation requires to work
 		this.grid = grid;
 		this.spawnManager = spawnManager;
@@ -53,25 +53,26 @@ class Simulation {
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
 		this.scoreTracker = new ScoreTracker(this.comboOwnership);
+
+		this.dt = 1 / tickRate;
 	}
 
-	update(dt: number) {
+	update() {
 		//console.log('run', dt);
-		this.physics.updateMovement(dt);
-		this.disappearer.update(dt);
-		this.swapHandler.update(dt);
-		this.spawnManager.update(dt);
-		this.physics.updateMomentum(dt);
+		this.physics.updateMovement(this.dt);
+		this.disappearer.update(this.dt);
+		this.swapHandler.update(this.dt);
+		this.spawnManager.update(this.dt);
+		this.physics.updateMomentum(this.dt);
 
-		this.quietColumnDetector.lateUpdate(dt);
+		this.quietColumnDetector.lateUpdate(this.dt);
 
 		this.framesElapsed++;
-		this.tickRate = dt;
 
 		this.frameCompleted.trigger();
 	}
 
-	get timeRunning(): number { return this.framesElapsed * this.tickRate; }
+	get timeRunning(): number { return this.framesElapsed * this.dt; }
 }
 
 export = Simulation;

@@ -36,7 +36,7 @@ class AppEntry {
 
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
-		return new Simulation(grid, spawnManager, matchableFactory);
+		return new Simulation(grid, spawnManager, matchableFactory, 60);
 	}
 
 	create() {
