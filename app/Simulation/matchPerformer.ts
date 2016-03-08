@@ -15,6 +15,8 @@ class MatchPerformer {
 	/** Fired whenever a matchable starts disappearing */
 	matchPerformed = new LiteEvent<Match>();
 
+	totalMatchablesMatched = 0;
+	
 	constructor(matchChecker: MatchChecker, swapHandler: SwapHandler, physics: Physics, private specialMatchPerformer: SpecialMatchPerformer) {
 		this.matchChecker = matchChecker;
 
@@ -80,6 +82,7 @@ class MatchPerformer {
 
 	private triggerMatch(match: Match) {
 		this.specialMatchPerformer.applyToMatch(match);
+		this.totalMatchablesMatched += match.matchables.length;
 		this.matchPerformed.trigger(match);
 	}
 }

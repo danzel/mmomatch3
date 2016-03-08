@@ -78,6 +78,7 @@ class PacketGenerator {
 			simulation.matchableFactory.idForSerializing,
 			simulation.framesElapsed,
 			simulation.tickRate,
+			simulation.matchPerformer.totalMatchablesMatched,
 			simulation.scoreTracker.points,
 			simulation.scoreTracker.playerComboSize,
 			this.generateComboOwners(simulation)
@@ -111,26 +112,29 @@ class PacketGenerator {
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, bootData.simulationData.tickRate);
 
+		//Points
 		Object.keys(bootData.simulationData.pointsData).forEach(key => {
 			let playerId = parseInt(key, 10);
 			let points = bootData.simulationData.pointsData[playerId];
 			simulation.scoreTracker.points[playerId] = points;
 			simulation.scoreTracker.totalPoints += points;
 		});
+		//Combo Size
 		Object.keys(bootData.simulationData.comboSize).forEach(key => {
 			let playerId = parseInt(key, 10);
 			let size = bootData.simulationData.comboSize[playerId];
 			simulation.scoreTracker.playerComboSize[playerId] = size;
 		})
-
+		//Combo owners
 		bootData.simulationData.comboOwners.forEach(owner => {
 			simulation.comboOwnership.addComboOwner(owner.x, owner.y, owner.playerId);
 		});
 
+		//Swap handler
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
-		simulation.framesElapsed = bootData.simulationData.framesElapsed;
 		
+		//QuietColumnDetector
 		simulation.swapHandler.swaps.forEach(swap => {
 			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.left.x]++;
 			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.right.x]++;
@@ -140,6 +144,10 @@ class PacketGenerator {
 				simulation.quietColumnDetector.columnDisappearingCount[matchable.x]++;
 			}
 		}))
+		
+		//Misc fields
+		simulation.framesElapsed = bootData.simulationData.framesElapsed;
+		simulation.matchPerformer.totalMatchablesMatched = bootData.simulationData.totalMatchablesMatched;
 
 		return simulation;
 	}
