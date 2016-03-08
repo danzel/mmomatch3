@@ -9,13 +9,11 @@ import Simulation = require('../Simulation/simulation');
 import TickData = require('../DataPackets/tickData');
 
 class ClientSimulationHandler {
-	gameEndDetector: GameEndDetector;
 	inputApplier: ClientInputApplier;
 
 	private frameQueue = new Array<FrameData>();
 
-	constructor(public level: LevelDef, public simulation: Simulation, client: Client, private tickRate: number) {
-		this.gameEndDetector = new GameEndDetector(level, simulation);
+	constructor(public level: LevelDef, public simulation: Simulation, public gameEndDetector: GameEndDetector, client: Client, private tickRate: number) {
 		this.inputApplier = new ClientInputApplier(client, new InputVerifier(simulation.grid, simulation.matchChecker, true), simulation.grid);
 	}
 

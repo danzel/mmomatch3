@@ -1,5 +1,6 @@
 import BootData = require('../DataPackets/bootData');
 import ClientComms = require('./clientComms');
+import GameEndDetector = require('../Simulation/Levels/GameEndDetector');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
@@ -12,7 +13,7 @@ import TickData = require('../DataPackets/tickData');
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 
-	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation }>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
 	playerIdReceived = new LiteEvent<number>();
 	tickReceived = new LiteEvent<TickData>();
 
@@ -27,7 +28,13 @@ class Client {
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
 		if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
-			this.simulationReceived.trigger({ level: this.packetGenerator.recreateLevelDefData(bootData.level), simulation: this.packetGenerator.recreateSimulation(bootData) });
+			let level = this.packetGenerator.recreateLevelDefData(bootData.level)
+			let simulation = this.packetGenerator.recreateSimulation(bootData);
+			this.simulationReceived.trigger({
+				level: level,
+				simulation: simulation,
+				gameEndDetector: new GameEndDetector(level, simulation)
+			});
 			this.playerIdReceived.trigger(bootData.playerId);
 		} else if (packet.packetType == PacketType.Tick) {
 			this.tickReceived.trigger(<TickData>packet.data);

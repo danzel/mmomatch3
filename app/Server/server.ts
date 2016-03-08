@@ -30,6 +30,7 @@ class Server {
 	private level: LevelDef;
 	private simulation: Simulation;
 	private inputVerifier: InputVerifier;
+	private gameEndDetector: GameEndDetector;
 
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
@@ -46,7 +47,7 @@ class Server {
 		this.level = level.level;
 		this.simulation = level.simulation;
 		
-		let gameEndDetector = new GameEndDetector(this.level, this.simulation);
+		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker);
 		//new DebugLogger(this.simulation);
@@ -58,7 +59,7 @@ class Server {
 			this.serverComms.sendBoot(bootData, i);
 		}
 		
-		gameEndDetector.gameEnded.on((victory) => {
+		this.gameEndDetector.gameEnded.on((victory) => {
 			setTimeout(() => this.loadLevel(levelNumber + (victory ? 1 : 0)), 5000);
 		})
 	}

@@ -1,6 +1,6 @@
 import Detector = require('./detector');
 import FailureType = require('./failureType');
-import LevelDef = require('./levelDef');
+import GameEndConditions = require('./gameEndConditions');
 import LiteEvent = require('../../liteEvent');
 import Simulation = require('../simulation');
 import VictoryType = require('./victoryType');
@@ -22,7 +22,7 @@ class GameEndDetector {
 	gameHasEnded = false;
 	private gameEndedInVictory: boolean;
 
-	constructor(private level: LevelDef, private simulation: Simulation) {
+	constructor(private gameEndConditions: GameEndConditions, private simulation: Simulation) {
 		this.failureDetector = this.createFailureDetector();
 		this.victoryDetector = this.createVictoryDetector();
 
@@ -41,28 +41,27 @@ class GameEndDetector {
 		this.simulation.inputVerifier.inputDisabled = true;
 
 		this.gameEnded.trigger(victory);
-		console.log("game end", victory);
 	}
 
 	private createFailureDetector(): Detector {
-		switch (this.level.failureType) {
+		switch (this.gameEndConditions.failureType) {
 			case FailureType.Swaps:
-				return new SwapsDetector(this.simulation, this.level.failureValue);
+				return new SwapsDetector(this.simulation, this.gameEndConditions.failureValue);
 			case FailureType.Time:
-				return new TimeDetector(this.simulation, this.level.failureValue);
+				return new TimeDetector(this.simulation, this.gameEndConditions.failureValue);
 			default:
-				throw new Error("Don't know about FailureType " + this.level.failureType + " " + FailureType[this.level.failureType])
+				throw new Error("Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[this.gameEndConditions.failureType])
 		}
 	}
 
 	private createVictoryDetector(): Detector {
-		switch (this.level.victoryType) {
+		switch (this.gameEndConditions.victoryType) {
 			case VictoryType.Matches:
-				return new MatchesDetector(this.simulation, this.level.victoryValue);
+				return new MatchesDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.Score:
-				return new ScoreDetector(this.simulation, this.level.victoryValue);
+				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
 			default:
-				throw new Error("Don't know about VictoryType " + this.level.victoryType + " " + VictoryType[this.level.victoryType]);
+				throw new Error("Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
 		}
 	}
 }
