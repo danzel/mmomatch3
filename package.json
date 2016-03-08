@@ -1,5 +1,6 @@
 {
   "name": "mmomatch3",
+  "version": "0.0.1",
   "scripts": {
     "start": "node built_server/entry_server.js"
   },
