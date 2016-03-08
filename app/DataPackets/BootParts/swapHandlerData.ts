@@ -1,7 +1,9 @@
 import SwapData = require('./swapData');
 
 class SwapHandlerData {
-	constructor(public swaps: Array<SwapData>) {
+	constructor(
+		public swaps: Array<SwapData>,
+		public totalSwapsCount: number) {
 		
 	}
 }

@@ -70,7 +70,7 @@ class PacketGenerator {
 
 			res.push(new SwapData(swap.playerId, swap.left.id, swap.right.id, swap.time, swap.percent)); //TODO: percent (or time) can be calculated
 		}
-		return new SwapHandlerData(res);
+		return new SwapHandlerData(res, swapHandler.totalSwapsCount);
 	}
 
 	private generateSimulationData(simulation: Simulation): SimulationData {
@@ -190,6 +190,8 @@ class PacketGenerator {
 			swap.percent = s.percent;
 			swapHandler.swaps.push(swap);
 		}
+		
+		swapHandler.totalSwapsCount = swapHandlerData.totalSwapsCount;
 	}
 
 }

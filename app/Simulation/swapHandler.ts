@@ -10,6 +10,7 @@ class SwapHandler {
 	swapOccurred = new LiteEvent<Swap>();
 
 	private grid: Grid;
+	totalSwapsCount = 0;
 	swaps: Array<Swap>;
 
 	constructor(grid: Grid) {
@@ -20,11 +21,12 @@ class SwapHandler {
 	swap(playerId: number, left: Matchable, right: Matchable) {
 		let swap = new Swap(playerId, left, right);
 		this.checkPreSwap(swap);
-		
+
 		swap.left.beingSwapped = true;
 		swap.right.beingSwapped = true;
 
 		this.swaps.push(swap);
+		this.totalSwapsCount++;
 		this.swapStarted.trigger(swap);
 	}
 
@@ -50,7 +52,7 @@ class SwapHandler {
 			}
 		}
 	}
-	
+
 	private checkPreSwap(swap: Swap) {
 		if (swap.left.beingSwapped)
 			throw "Left is already being swapped";
@@ -61,17 +63,17 @@ class SwapHandler {
 			throw "swapping left == right";
 
 		//Check we are at a good index
-		if (swap.left.y != (swap.left.y|0))
+		if (swap.left.y != (swap.left.y | 0))
 			throw "Left isn't at an integer y";
-		if (swap.right.y != (swap.right.y|0))
+		if (swap.right.y != (swap.right.y | 0))
 			throw "Right isn't at an integer y";
 	}
-	
+
 	private checkSwap(swap: Swap) {
 		//Check we are at a good index
-		if (swap.left.y != (swap.left.y|0))
+		if (swap.left.y != (swap.left.y | 0))
 			throw "Left isn't at an integer y";
-		if (swap.right.y != (swap.right.y|0))
+		if (swap.right.y != (swap.right.y | 0))
 			throw "Right isn't at an integer y";
 	}
 }
