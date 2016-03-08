@@ -5,21 +5,23 @@ class ScoreDetector extends Detector {
 
 	scoreRequiredRemaining: number;
 
-	constructor(simulation: Simulation, public scoreRequired: number) {
+	constructor(private simulation: Simulation, public scoreRequired: number) {
 		super();
 
 		this.scoreRequiredRemaining = scoreRequired;
 
-		simulation.scoreTracker.playerEarnedPoints.on(() => {
-			if (this.scoreRequiredRemaining > 0) {
-				this.scoreRequiredRemaining = Math.max(0, scoreRequired - simulation.scoreTracker.totalPoints);
-				this.valueChanged.trigger();
+		simulation.scoreTracker.playerEarnedPoints.on(() => this.update());
+	}
 
-				if (this.scoreRequiredRemaining == 0) {
-					this.detected.trigger();
-				}
+	update() {
+		if (this.scoreRequiredRemaining > 0) {
+			this.scoreRequiredRemaining = Math.max(0, this.scoreRequired - this.simulation.scoreTracker.totalPoints);
+			this.valueChanged.trigger();
+
+			if (this.scoreRequiredRemaining == 0) {
+				this.detected.trigger();
 			}
-		});
+		}
 	}
 	
 	getDetailsText(): string {

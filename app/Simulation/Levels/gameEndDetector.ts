@@ -12,7 +12,7 @@ import TimeDetector = require('./Detectors/timeDetector');
 
 
 class GameEndDetector {
-	
+
 	/** Passes true if the game was won */
 	gameEnded = new LiteEvent<boolean>();
 
@@ -28,6 +28,9 @@ class GameEndDetector {
 
 		this.failureDetector.detected.on(() => this.checkForGameEnd(false));
 		this.victoryDetector.detected.on(() => this.checkForGameEnd(true));
+
+		this.failureDetector.update();
+		this.victoryDetector.update();
 	}
 
 	private checkForGameEnd(victory: boolean) {

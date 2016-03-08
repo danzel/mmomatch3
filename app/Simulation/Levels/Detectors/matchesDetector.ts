@@ -20,6 +20,10 @@ class MatchesDetector extends Detector {
 			}
 		});
 	}
+
+	update() {
+		
+	}
 	
 	getDetailsText(): string {
 		return "Match " + this.totalMatchesRequired + " {Thingies???}"; //TODO: Thingies
