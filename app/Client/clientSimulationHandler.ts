@@ -18,8 +18,8 @@ class ClientSimulationHandler {
 	}
 
 	tickReceived(tickData: TickData) {
-		//Apply all existing frameQueue
-		while (this.frameQueue.length > 0) {
+		//Apply the frameQueue, keep some so we are less affected by lag
+		while (this.frameQueue.length > 2) {
 			this.update();
 		}
 

@@ -4,31 +4,58 @@ import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
 import SocketServer = require('./Server/socketServer');
 
+class TimeBank {
+
+	private tickMilliseconds: number;
+	private pooledMilliseconds = 0;
+	private lastTick: Array<number>;
+
+	constructor(tickRate: number) {
+		this.tickMilliseconds = (1000 / tickRate);
+		this.lastTick = process.hrtime();
+	}
+
+	tick(): boolean {
+		let now = process.hrtime();
+		
+		let diff = (now[0] - this.lastTick[0]) * 1000;
+		diff += (now[1] - this.lastTick[1]) / 1000000; //nanoseconds to milliseconds
+		
+		this.lastTick = now;
+		this.pooledMilliseconds += diff;
+		
+		if (this.pooledMilliseconds >= this.tickMilliseconds) {
+			this.pooledMilliseconds -= this.tickMilliseconds;
+			return true;
+		}
+		return false;
+	}
+}
+
 class AppEntry {
 	server: Server;
 
-	fps: number;
-	tickRate: number;
+	fps = 60;
+	timeBank = new TimeBank(this.fps);
 
 	constructor() {
 		this.server = new Server(new SocketServer(new Serializer()), new DefaultLevelAndSimulationProvider(new LevelDefFactory()));
-		
+
 		this.server.loadLevel(1);
 	}
 
 	update() {
-		this.server.update();
+		while (this.timeBank.tick()) {
+			this.server.update();
+		}
 	}
 
-	run(fps: number) {
-		this.fps = fps;
-		this.tickRate = 1 / fps;
-
-		setInterval(this.update.bind(this), this.tickRate * 1000);
+	run() {
+		setInterval(this.update.bind(this), 1000 / this.fps);
 	}
 
 	public static main(): number {
-		new AppEntry().run(60);
+		new AppEntry().run();
 		return 0;
 	}
 }

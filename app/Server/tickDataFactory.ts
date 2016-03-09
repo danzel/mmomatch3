@@ -39,20 +39,20 @@ class TickDataFactory {
 	getTickIfReady(playerCount: number): TickData {
 		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 
-		if (elapsed < 2)
+		if (elapsed < 3)
 			return null;
 
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		let res = new TickData(elapsed, this.frameData);
 		this.frameData = {};
 
-		//Send points every 2 seconds		
+		//Send points every 2 seconds
 		if (this.simulation.framesElapsed - this.lastSentPointsFramesElapsed > 2 * 60) {
 			this.lastSentPointsFramesElapsed = this.simulation.framesElapsed;
 			
 			res.points = [];
 			for (let l in this.scoreTracker.points) {
-				res.points.push(new TickPoints(l, "player " + l, this.scoreTracker.points[l]));
+				res.points.push(new TickPoints(parseInt(l, 10), "player " + l, this.scoreTracker.points[l]));
 			}
 			res.points.sort((a, b) => b.points - a.points);
 			if (res.points.length > 3) {
