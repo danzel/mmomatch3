@@ -1,4 +1,6 @@
+var fs = require('fs');
 var gulp = require('gulp');
+var GulpSSH = require('gulp-ssh');
 var gutil = require("gulp-util");
 var sourcemaps = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
@@ -7,7 +9,15 @@ var webpack = require("webpack");
 var zip = require("gulp-zip");
 
 var webpackConfig = require("./webpack.config.js");
-
+var gulpSSH = new GulpSSH({
+	ignoreErrors: false,
+	sshConfig: {
+		host: 'mmomatch.australiaeast.cloudapp.azure.com',
+		port: 22,
+		username: 'azureuser',
+		privateKey: fs.readFileSync('./z_id_rsa')
+	}
+})
 
 gulp.task("default", ["webpack", 'uglify-primus', 'copy-img', 'server']);
 
@@ -59,3 +69,8 @@ gulp.task('package', ['default'], function () {
 		.pipe(zip('archive.zip'))
 		.pipe(gulp.dest(''));
 });
+
+gulp.task('deploy', ['package'], function () {
+	return gulp.src('archive.zip')
+		.pipe(gulpSSH.sftp('write', '/home/azureuser/archive.zip'));
+})

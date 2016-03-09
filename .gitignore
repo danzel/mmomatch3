@@ -3,3 +3,5 @@ built_server/
 dist/img
 dist/bundle.*
 dist/primus.js
+z_id_rsa
+archive.zip
