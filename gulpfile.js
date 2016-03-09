@@ -39,7 +39,7 @@ gulp.task('copy-img', function () {
 })
 
 gulp.task('server', function() {
-	return gulp.src('app/**/*.ts')
+	return gulp.src(['typings/**/*.d.ts', 'app/**/*.ts'])
 		.pipe(sourcemaps.init())
 		.pipe(ts({
 			module: 'commonjs',
