@@ -33,9 +33,13 @@ class AppEntry {
 
 	create() {
 		console.log('create');
-		
-		let socket = new SocketClient(window.location.origin, new Serializer());
-		//let socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
+
+		let socket: SocketClient;
+		if (window.location.host == window.location.hostname) { //Standard port
+			socket = new SocketClient(window.location.origin, new Serializer());
+		} else { //Non-standard port
+			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
+		}
 		this.client = new Client(socket);
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
