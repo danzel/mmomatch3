@@ -2,3 +2,7 @@ Install instructions:
 
 npm install
 npm install -g webpack webpack-dev-server
+
+
+On linux to remap the port:
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8091
