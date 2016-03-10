@@ -21,7 +21,7 @@ describe('SyncDetectors', () => {
 			"11222"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 7);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation));
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), 2);
 		server.loadLevel(1);
 		serverComms.server = server;
 
@@ -52,7 +52,7 @@ describe('SyncDetectors', () => {
 			"11222"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 999999, 70);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation));
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), 2);
 		server.loadLevel(1);
 		serverComms.server = server;
 
@@ -83,7 +83,7 @@ describe('SyncDetectors', () => {
 			"11222"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 1, 999999);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation));
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), 2);
 		server.loadLevel(1);
 		serverComms.server = server;
 
@@ -114,7 +114,7 @@ describe('SyncDetectors', () => {
 			"11222"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Time, VictoryType.Score, 12, 999999);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation));
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), 2);
 		server.loadLevel(1);
 		serverComms.server = server;
 

@@ -14,7 +14,7 @@ describe('Sync', () => {
 			"82189",
 			"11222"
 		]);
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation));
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), 2);
 		server.loadLevel(1);
 		serverComms.server = server;
 

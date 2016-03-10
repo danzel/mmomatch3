@@ -8,16 +8,21 @@ import SocketServer = require('./Server/socketServer');
 class AppEntry {
 	server: Server;
 
+	framesPerTick = 3;
 	fps = 60;
 
 	constructor() {
-		this.server = new Server(new SocketServer(new Serializer()), new DefaultLevelAndSimulationProvider(new LevelDefFactory()));
+		this.server = new Server(new SocketServer(new Serializer()), new DefaultLevelAndSimulationProvider(new LevelDefFactory()), this.framesPerTick);
 
 		this.server.loadLevel(1);
 	}
 
 	run() {
-		new BetterInterval(1000 / this.fps, () => this.server.update()).start();
+		new BetterInterval(1000 / this.fps * this.framesPerTick, () => {
+			for (let i = 0; i < this.framesPerTick; i++) {
+				this.server.update();
+			}
+		}).start();
 	}
 
 	public static main(): number {

@@ -35,7 +35,7 @@ class Server {
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
 
-	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider) {
+	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private framesPerTick: number) {
 		//TOOD: Event listeners
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
@@ -49,7 +49,7 @@ class Server {
 		
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true);
-		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker);
+		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.framesPerTick);
 		//new DebugLogger(this.simulation);
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks

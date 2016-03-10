@@ -14,7 +14,7 @@ class TickDataFactory {
 	private lastSentPointsFramesElapsed: number = 0;
 	private frameData: { [frame: number]: FrameData } = {};
 
-	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker) {
+	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker, private framesPerTick: number) {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 
 		simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
@@ -39,7 +39,7 @@ class TickDataFactory {
 	getTickIfReady(playerCount: number): TickData {
 		let elapsed = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 
-		if (elapsed < 3)
+		if (elapsed < this.framesPerTick)
 			return null;
 
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
