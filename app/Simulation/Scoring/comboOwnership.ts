@@ -87,7 +87,7 @@ class ComboOwnership {
 			let m = matches[i]
 			let ownersInCol = this.ownersByColumn[m.x];
 			for (let key in owners) {
-				ownersInCol.push(new Owner(m.y, key));
+				ownersInCol.push(new Owner(m.y, parseInt(key, 10)));
 				this.ownerMatchCount[key]++;
 			}
 		}		
