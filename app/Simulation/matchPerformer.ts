@@ -40,7 +40,7 @@ class MatchPerformer {
 		
 		//TODO: Only if swaps making a match is required
 		if (!didSwap) {
-			throw new Error("Swapped " + swap.left.x + "," + swap.left.y + " " + swap.right.x + "," + swap.right.y + " and there was no match!");
+			//throw new Error("Swapped " + swap.left.x + "," + swap.left.y + " " + swap.right.x + "," + swap.right.y + " and there was no match!");
 		}
 	}
 
