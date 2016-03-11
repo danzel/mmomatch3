@@ -18,6 +18,16 @@ var gulpSSH = new GulpSSH({
 		privateKey: fs.readFileSync('./z_id_rsa')
 	}
 })
+var gulpSSHusw = new GulpSSH({
+	ignoreErrors: false,
+	sshConfig: {
+		host: 'mmomatch.westus.cloudapp.azure.com',
+		port: 22,
+		username: 'azureuser',
+		privateKey: fs.readFileSync('./z_id_rsa')
+	}
+})
+
 
 gulp.task("default", ["webpack", 'uglify-primus', 'copy-img', 'server']);
 
@@ -73,4 +83,9 @@ gulp.task('package', ['default'], function () {
 gulp.task('deploy', ['package'], function () {
 	return gulp.src('archive.zip')
 		.pipe(gulpSSH.sftp('write', '/home/azureuser/archive.zip'));
+})
+
+gulp.task('deployusw', ['package'], function () {
+	return gulp.src('archive.zip')
+		.pipe(gulpSSHusw.sftp('write', '/home/azureuser/archive.zip'));
 })
