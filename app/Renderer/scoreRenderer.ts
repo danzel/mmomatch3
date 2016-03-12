@@ -1,4 +1,4 @@
-import TickPoints = require('../DataPackets/tickPoints');
+import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 
 class ScoreRenderer {
 	textStyle = {
@@ -11,6 +11,7 @@ class ScoreRenderer {
 	};
 
 	scoreGroup: Phaser.Group;
+	scoreText: Array<Phaser.Text> = [];
 	title: Phaser.Text;
 	
 	background: Phaser.Graphics;
@@ -19,7 +20,7 @@ class ScoreRenderer {
 	
 	playerId: number;
 
-	constructor(private group: Phaser.Group) {
+	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker) {
 
 		this.background = new Phaser.Graphics(this.group.game);
 		this.background.beginFill(0x000000, 0.5);
@@ -31,30 +32,41 @@ class ScoreRenderer {
 		this.group.add(this.title);
 		
 		this.scoreGroup = new Phaser.Group(group. game, group);
+		
+		for (let i = 0; i < 3; i++) {
+			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 16 * (i + 1), "");
+			this.scoreGroup.add(text);
+			this.scoreText.push(text);
+		}
 	}
 	
 	notifyPlayerId(playerId: number) {
 		this.playerId = playerId;
 	}
 
-	updateData(data: Array<TickPoints>) {
-		//Can probably do this more efficiently by reusing existing text objects?
+	updateData() {
+		let array = new Array<{playerId: number, points: number }>();
+		for (let playerId in this.scoreTracker.points) {
+			array.push({ playerId: parseInt(playerId), points: this.scoreTracker.points[playerId]});
+		}
+		array.sort((a,b) => {
+			return b.points - a.points;
+		})
 		
-		this.scoreGroup.removeAll();
-
 		let maxWidth = this.title.width;
 
-		for (let i = 0; i < data.length; i++) {
-			let val = data[i];
+		for (let i = 0; i < Math.min(3, array.length); i++) {
+			let val = array[i];
 
+			let text = this.scoreText[i];
 			let style = (this.playerId == val.playerId) ? this.myScoreTextStyle : this.textStyle;
-			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 16 * (i + 1), val.name + ": " + val.points, style);
-			this.scoreGroup.add(text);
+			text.setStyle(style)
+			text.text = "Player " + val.playerId + ": " + val.points; //TODO: Player Name
 			maxWidth = Math.max(text.width, maxWidth);
 		}
 
 		let backgroundWidth = maxWidth + 4;
-		let backgroundHeight = (data.length + 1) * 16 + 8;
+		let backgroundHeight = (Math.min(3, array.length) + 1) * 16 + 8;
 
 		if (this.backgroundWidth != backgroundWidth || this.backgroundHeight != backgroundHeight) {
 			this.background.scale.x = backgroundWidth;

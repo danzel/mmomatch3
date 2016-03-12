@@ -39,7 +39,7 @@ class SimulationScene implements Scene {
 		this.renderer = new SimulationRenderer(group.game, this.simulation, new Phaser.Group(group.game, group));
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 
-		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group));
+		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker);
 		this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
 		
 		//TODO: Victory/Failure (gameEndDetector)
@@ -66,6 +66,8 @@ class SimulationScene implements Scene {
 			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
 			this.haveFitRenderer = true;
 		}
+		
+		this.scoreRenderer.updateData()
 
 		if (this.gameOverOverlay) {
 			this.gameOverOverlay.update();

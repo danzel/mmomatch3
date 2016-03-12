@@ -64,10 +64,6 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 		
-		//This should really be applied at the end of playing the frameQueue
-		if (tickData.points) {
-			(<SimulationScene>this.scene).scoreRenderer.updateData(tickData.points); //TODO: Unhack assumption of child scene
-		}
 		if (tickData.playerCount) {
 			(<SimulationScene>this.scene).playerCountRenderer.updateData(tickData.playerCount); //TODO: Unhack assumption of child scene
 		}

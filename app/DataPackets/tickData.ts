@@ -6,7 +6,6 @@ class TickData {
 	framesElapsed: number;
 	frameData: { [frame: number]: FrameData }
 
-	points: Array<TickPoints>;
 	playerCount: number;
 
 	constructor(framesElapsed: number, frames: { [frame: number]: FrameData }) {
