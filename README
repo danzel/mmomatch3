@@ -14,6 +14,6 @@ mkdir a
 
 one time:
 npm install
-
+(Maybe npm install --only=prod)
 
 rm -rf built_server dist package.json && unzip ../archive.zip && chmod 700 * -R && npm start
