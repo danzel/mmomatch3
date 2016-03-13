@@ -1,3 +1,4 @@
+///<reference path="../../typings/jasmine/jasmine.d.ts"/>
 import Color = require('../../app/Simulation/color');
 import FailureType = require('../../app/Simulation/Levels/failureType');
 import Grid = require('../../app/Simulation/grid');
@@ -69,6 +70,9 @@ class TestUtil {
 		var matchableFactory = new MatchableFactory();
 		var simulation = new Simulation(grid, new NeverSpawnManager(grid, matchableFactory), matchableFactory, tickRate);
 
+		simulation.matchPerformer.swapDidntCauseAMatch.on((swap) => {
+			expect("Swapped " + swap.left.x + "," + swap.left.y + " " + swap.right.x + "," + swap.right.y + " and there was no match!").toBe("");
+		});
 		return simulation;
 	}
 
