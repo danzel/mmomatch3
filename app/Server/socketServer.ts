@@ -57,7 +57,7 @@ class SocketServer extends ServerComms {
 		} else {
 			console.log('starting http');
 			this.httpServer = http.createServer(this.app);
-			this.httpServer.listen(config.httpsPort);
+			this.httpServer.listen(config.httpPort);
 		}
 
 		this.primus = new Primus(this.httpServer, {
