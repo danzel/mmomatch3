@@ -5,3 +5,4 @@ dist/bundle.*
 dist/primus.js
 z_id_rsa
 archive.zip
+dist/index.html

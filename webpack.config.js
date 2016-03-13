@@ -1,4 +1,6 @@
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
 	context: __dirname + path.sep + 'app',
 	entry: './entry_client.ts',
@@ -16,5 +18,12 @@ module.exports = {
 			{ test: /\.tsx?$/, loader: 'ts-loader' }
 		]
 	},
-	plugins: []
+	plugins: [
+		new HtmlWebpackPlugin({
+			filename: 'index.html',
+			template: '../dist/index.template.html',
+			hash: true,
+			inject: false
+		})
+	]
 };
