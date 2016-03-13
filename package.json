@@ -7,6 +7,7 @@
   "dependencies": {
     "bit-array": "^0.2.2",
     "express": "^4.13.3",
+    "letsencrypt-express": "1.1.1",
     "mersenne-twister": "^1.0.1",
     "phaser": "^2.4.4",
     "primus": "^4.0.4",

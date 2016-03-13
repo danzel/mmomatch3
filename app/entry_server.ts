@@ -1,8 +1,11 @@
+import fs = require('fs');
+
 import BetterInterval = require('./Server/betterInterval');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
+import ServerConfig = require('./Server/serverConfig');
 import SocketServer = require('./Server/socketServer');
 
 class AppEntry {
@@ -11,8 +14,8 @@ class AppEntry {
 	framesPerTick = 3;
 	fps = 60;
 
-	constructor() {
-		this.server = new Server(new SocketServer(new Serializer()), new DefaultLevelAndSimulationProvider(new LevelDefFactory()), this.framesPerTick);
+	constructor(config: ServerConfig) {
+		this.server = new Server(new SocketServer(new Serializer(), config), new DefaultLevelAndSimulationProvider(new LevelDefFactory()), this.framesPerTick);
 
 		this.server.loadLevel(1);
 	}
@@ -25,10 +28,12 @@ class AppEntry {
 		}).start();
 	}
 
-	public static main(): number {
-		new AppEntry().run();
+	public static main(config: ServerConfig): number {
+		new AppEntry(config).run();
 		return 0;
 	}
 }
 
-AppEntry.main();
+let config = JSON.parse(fs.readFileSync('./serverconfig.json', 'utf8'));
+
+AppEntry.main(config);

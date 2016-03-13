@@ -1,7 +1,10 @@
 /// <reference path="../../typings/express/express.d.ts" />
+/// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
 import http = require('http');
+import https = require('https');
+import LEX = require('letsencrypt-express');
 
 import BootData = require('../DataPackets/bootData');
 import LiteEvent = require('../liteEvent');
@@ -9,24 +12,53 @@ import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
+import ServerConfig = require('./serverConfig');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
 class SocketServer extends ServerComms {
 	private app: express.Express;
-	private httpServer: http.Server;
+	private httpServer: http.Server | https.Server;
 	private primus: Primus;
 
 	private sparkDataReceivedBound = this.sparkDataReceived.bind(this);
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer) {
+	constructor(private serializer: Serializer, config: ServerConfig) {
 		super();
 		this.app = express();
 		this.app.use(express.static('dist'));
-		this.httpServer = http.createServer(this.app);
-		this.httpServer.listen(8091);
+
+		if (config.httpsPort && config.domain && config.email) {
+			console.log('starting https');
+
+			LEX.debug = true;
+			if (!console.debug) {
+				console.debug = console.log;
+			}
+
+			var lex = LEX.create({
+				configDir: './letsencrypt/etc',
+				approveRegistration: function(hostname, cb) {
+					if (hostname == config.domain) {
+						cb(null, { domains: [hostname], email: config.email, agreeTos: true });
+					}
+				}
+			});
+			http.createServer(LEX.createAcmeResponder(lex, function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
+				res.setHeader('Location', 'https://' + config.domain + req.url);
+				res.statusCode = 302;
+				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
+			})).listen(config.httpPort);
+
+			this.httpServer = https.createServer(lex.httpsOptions, LEX.createAcmeResponder(lex, this.app));
+			this.httpServer.listen(config.httpsPort);
+		} else {
+			console.log('starting http');
+			this.httpServer = http.createServer(this.app);
+			this.httpServer.listen(config.httpsPort);
+		}
 
 		this.primus = new Primus(this.httpServer, {
 			pathname: '/sock'
@@ -57,7 +89,7 @@ class SocketServer extends ServerComms {
 
 	private sparkDataReceived(spark: Primus.Spark, data: any) {
 		//console.log("data", data);
-		
+
 		let packet = this.serializer.deserialize(data);
 		this.dataReceived.trigger({ id: spark.id, packet: packet });
 	}
@@ -73,7 +105,7 @@ class SocketServer extends ServerComms {
 
 		this.send(data, ids);
 	}
-	
+
 	sendBoot(bootData: BootData, id: string) {
 		this.clients[id].write(this.serializer.serializeBoot(bootData));
 	}

@@ -2,6 +2,7 @@
 
 declare module "primus" {
 	import * as http from "http";
+	import * as https from "https";
 	import * as stream from "stream";
 	
 	interface PrimusOptions {
@@ -33,7 +34,7 @@ declare module "primus" {
 		/**
 		 * Server constructor
 		 */
-		constructor(server: http.Server, options?: PrimusOptions);
+		constructor(server: http.Server | https.Server, options?: PrimusOptions);
 		
 		static createServer(options: any) : Primus;
 		static createServer(onConnection: Function, options: any) : Primus;

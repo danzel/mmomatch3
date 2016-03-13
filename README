@@ -9,6 +9,7 @@ wget https://deb.nodesource.com/setup_5.x
 sudo bash setup_5.x
 sudo apt-get install nodejs unzip
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8091
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8092
 mkdir a
 
 
