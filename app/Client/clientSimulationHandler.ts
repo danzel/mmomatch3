@@ -14,7 +14,7 @@ class ClientSimulationHandler {
 	private frameQueue = new Array<FrameData>();
 
 	constructor(public level: LevelDef, public simulation: Simulation, public gameEndDetector: GameEndDetector, client: Client, private tickRate: number) {
-		this.inputApplier = new ClientInputApplier(client, new InputVerifier(simulation.grid, simulation.matchChecker, true), simulation.grid);
+		this.inputApplier = new ClientInputApplier(client, simulation.inputVerifier, simulation.grid);
 	}
 
 	tickReceived(tickData: TickData) {

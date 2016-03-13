@@ -29,7 +29,6 @@ class Server {
 	
 	private level: LevelDef;
 	private simulation: Simulation;
-	private inputVerifier: InputVerifier;
 	private gameEndDetector: GameEndDetector;
 
 	private clientsRequiringBoot: Array<string> = [];
@@ -48,7 +47,6 @@ class Server {
 		this.simulation = level.simulation;
 		
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
-		this.inputVerifier = new InputVerifier(this.simulation.grid, this.simulation.matchChecker, true);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.framesPerTick);
 		//new DebugLogger(this.simulation);
 
@@ -96,7 +94,7 @@ class Server {
 		//Find the two
 		let left = this.simulation.grid.findMatchableById(swap.leftId);
 		let right = this.simulation.grid.findMatchableById(swap.rightId);
-		if (this.inputVerifier.swapIsValid(left, right)) {
+		if (this.simulation.inputVerifier.swapIsValid(left, right)) {
 			this.simulation.swapHandler.swap(player.id, left, right);
 		}
 	}
