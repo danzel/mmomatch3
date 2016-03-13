@@ -17,4 +17,4 @@ one time:
 npm install
 (Maybe npm install --only=prod)
 
-rm -rf built_server dist package.json && unzip ../archive.zip && chmod 700 * -R && npm start
+rm -rf built_server dist package.json && unzip ../archive.zip && chmod 700 built_server -R && npm start
