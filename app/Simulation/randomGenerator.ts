@@ -1,5 +1,4 @@
 /// <reference path="../../typings/mersenne-twister/mersenne-twister.d.ts" />
-
 import MersenneTwister = require('mersenne-twister');
 
 class RandomGenerator {
