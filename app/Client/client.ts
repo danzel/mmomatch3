@@ -13,8 +13,7 @@ import TickData = require('../DataPackets/tickData');
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 
-	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
-	playerIdReceived = new LiteEvent<number>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }>();
 	tickReceived = new LiteEvent<TickData>();
 
 	constructor(private clientComms: ClientComms) {
@@ -33,9 +32,9 @@ class Client {
 			this.simulationReceived.trigger({
 				level: level,
 				simulation: simulation,
-				gameEndDetector: new GameEndDetector(level, simulation)
+				gameEndDetector: new GameEndDetector(level, simulation),
+				playerId: bootData.playerId
 			});
-			this.playerIdReceived.trigger(bootData.playerId);
 		} else if (packet.packetType == PacketType.Tick) {
 			this.tickReceived.trigger(<TickData>packet.data);
 		} else {

@@ -35,7 +35,7 @@ class PlayersOnSimulation {
 	group: Phaser.Group;
 	playerSprites: { [playerId: number]: PlayerSprite } = {};
 
-	constructor(simulation: Simulation, simulationGroup: Phaser.Group) {
+	constructor(simulation: Simulation, simulationGroup: Phaser.Group, private playerId: number) {
 		//We are a child of simGroup so we get the scaling and stuff
 		this.group = simulationGroup.game.add.group(simulationGroup);
 
@@ -43,7 +43,9 @@ class PlayersOnSimulation {
 	}
 
 	private swapStarted(swap: Swap) {
-		//TODO: Don't do anything if this is us doing the swap
+		if (swap.playerId == this.playerId) {
+			return;
+		}
 
 		//Sorta stolen from MatchableNode.updatePosition
 		let x = (swap.left.x + swap.right.x) / 2 * MatchableNode.PositionScalar + (MatchableNode.PositionScalar / 2);

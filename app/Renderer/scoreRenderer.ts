@@ -18,9 +18,7 @@ class ScoreRenderer {
 	backgroundHeight: number;
 	backgroundWidth: number;
 	
-	playerId: number;
-
-	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker) {
+	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number) {
 
 		this.background = new Phaser.Graphics(this.group.game);
 		this.background.beginFill(0x000000, 0.5);
@@ -38,10 +36,6 @@ class ScoreRenderer {
 			this.scoreGroup.add(text);
 			this.scoreText.push(text);
 		}
-	}
-	
-	notifyPlayerId(playerId: number) {
-		this.playerId = playerId;
 	}
 
 	updateData() {

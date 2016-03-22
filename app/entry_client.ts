@@ -43,22 +43,17 @@ class AppEntry {
 		this.client = new Client(socket);
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
-		this.client.playerIdReceived.on(playerId => this.playerIdReceived(playerId));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }) {
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
 		}
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 });
+		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId);
 		//new DebugLogger(data.simulation);
-	}
-
-	playerIdReceived(playerId: number) {
-		(<SimulationScene>this.scene).scoreRenderer.notifyPlayerId(playerId); //TODO: Unhack assumption of child scene
 	}
 
 	tickReceived(tickData: TickData) {

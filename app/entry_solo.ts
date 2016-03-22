@@ -55,7 +55,7 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true });
+		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true }, 0);
 
 		gameEndDetector.gameEnded.on((victory) => {
 			let catchAll = new TouchCatchAll(this.game);
