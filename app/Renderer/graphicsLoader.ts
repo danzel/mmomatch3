@@ -8,6 +8,9 @@ class GraphicsLoader {
 		game.load.image('overlay_vertical', 'img/skin/' + spriteSet +'/balloverlays/vertical.png');
 
 		game.load.image('ball_colorclear', 'img/skin/' + spriteSet +'/balls/11.png'); //TODO: UNHACK. Needs its own graphics
+		
+		game.load.image('player', 'img/skin/' + spriteSet +'/player.png');
+		
 	}
 }
 

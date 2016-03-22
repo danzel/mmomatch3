@@ -8,6 +8,7 @@ import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
+import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
 import Scene = require('./scene');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
@@ -23,6 +24,7 @@ interface SimulationSceneConfiguration {
 
 class SimulationScene implements Scene {
 	private renderer: SimulationRenderer;
+	private playersOnSimulation: PlayersOnSimulation;
 	private input: InputHandler;
 
 	private haveFitRenderer = false;
@@ -36,7 +38,10 @@ class SimulationScene implements Scene {
 	detectorDisplays = new Array<DetectorDisplay>();
 
 	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration) {
-		this.renderer = new SimulationRenderer(group.game, this.simulation, new Phaser.Group(group.game, group));
+		let simulationGroup = new Phaser.Group(group.game, group);
+		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
+		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup)
+		
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 
 		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker);
