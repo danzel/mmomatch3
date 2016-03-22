@@ -7,6 +7,7 @@ import Swap = require('../Simulation/swap');
 
 class PlayerSprite {
 	sprite: Phaser.Sprite;
+	lastUpdate: number;
 
 	constructor(parentGroup: Phaser.Group, private playerId: number, x: number, y: number) {
 		this.sprite = parentGroup.game.add.sprite(x, y, 'player', null, parentGroup);
@@ -22,12 +23,19 @@ class PlayerSprite {
 			tint += (mask + rand.random() * maskNeg) | 0;
 		}
 		this.sprite.tint = tint;
+
+		this.lastUpdate = this.sprite.game.time.now;
 	}
 
 	notifyPosition(x: number, y: number) {
+		this.lastUpdate = this.sprite.game.time.now;
 		this.sprite.game.add.tween(this.sprite)
 			.to({ x: x, y: y }, 100, Phaser.Easing.Cubic.In)
 			.start();
+	}
+
+	update() {
+		this.sprite.alpha = Math.min(1, 1 - (this.sprite.game.time.now - this.lastUpdate - 2000) / 1000);
 	}
 }
 
@@ -57,6 +65,12 @@ class PlayersOnSimulation {
 
 		} else {
 			this.playerSprites[swap.playerId] = new PlayerSprite(this.group, swap.playerId, x, y);
+		}
+	}
+
+	update() {
+		for (let i in this.playerSprites) {
+			this.playerSprites[i].update();
 		}
 	}
 }

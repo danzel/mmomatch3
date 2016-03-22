@@ -82,6 +82,7 @@ class SimulationScene implements Scene {
 			this.simulation.update();
 		}
 		this.renderer.update(this.group.game.time.physicsElapsed);
+		this.playersOnSimulation.update();
 	}
 
 
