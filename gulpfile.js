@@ -9,7 +9,7 @@ var webpack = require("webpack");
 var zip = require("gulp-zip");
 
 var webpackConfig = require("./webpack.config.js");
-var gulpSSH = new GulpSSH({
+var gulpSSHoce = new GulpSSH({
 	ignoreErrors: false,
 	sshConfig: {
 		host: 'mmomatch.australiaeast.cloudapp.azure.com',
@@ -32,14 +32,14 @@ var gulpSSHusw = new GulpSSH({
 gulp.task("default", ["webpack", 'uglify-primus', 'copy-img', 'server']);
 
 
-gulp.task('webpack', function (callback) {
+gulp.task('webpack', function(callback) {
 
 	var config = Object.create(webpackConfig);
 	//Alter the config
 	config.devtool = 'source-map';
 	config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 
-	webpack(config, function (err, stats) {
+	webpack(config, function(err, stats) {
         if (err) throw new gutil.PluginError("webpack", err);
         gutil.log("[webpack]", stats.toString({
             // output options
@@ -48,13 +48,13 @@ gulp.task('webpack', function (callback) {
     });
 });
 
-gulp.task('uglify-primus', function () {
+gulp.task('uglify-primus', function() {
 	return gulp.src('primus.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('copy-img', function () {
+gulp.task('copy-img', function() {
 	gulp.src(['img/**/*']).pipe(gulp.dest('dist/img'));
 })
 
@@ -70,22 +70,51 @@ gulp.task('server', function() {
 		.pipe(gulp.dest('built_server'));
 });
 
-gulp.task('package', ['default'], function () {
+gulp.task('package', ['default'], function() {
 	return gulp.src([
 		'./built_server/**/*',
 		'./dist/**/*',
-		'./package.json'
+		'./package.json',
+		'./upstart-mmomatch.conf'
 	], { base: '.' })
 		.pipe(zip('archive.zip'))
 		.pipe(gulp.dest(''));
 });
 
-gulp.task('deploy', ['package'], function () {
+gulp.task('copy-oce', ['package'], function() {
 	return gulp.src('archive.zip')
-		.pipe(gulpSSH.sftp('write', '/home/azureuser/archive.zip'));
-})
-
-gulp.task('deployusw', ['package'], function () {
+		.pipe(gulpSSHoce.sftp('write', '/home/azureuser/archive.zip'));
+});
+gulp.task('copy-usw', ['package'], function() {
 	return gulp.src('archive.zip')
 		.pipe(gulpSSHusw.sftp('write', '/home/azureuser/archive.zip'));
+});
+
+gulp.task('deploy-oce', ['copy-oce'], function() {
+	return gulpSSHoce
+		.shell([
+			'cd /home/azureuser/a',
+			'rm -rf built_server dist package.json',
+			'unzip -o ../archive.zip',
+			'chmod 700 built_server -R',
+			'sudo service mmomatch restart'
+		], { filePath: 'shell-oce.log' })
+		.on('ssh2Data', function(data) {
+			process.stdout.write(data.toString());
+		});
+});
+gulp.task('deploy-usw', ['copy-usw'], function() {
+	return gulpSSHusw
+		.shell([
+			'cd /home/azureuser/a',
+			'rm -rf built_server dist package.json',
+			'unzip -o ../archive.zip',
+			'chmod 700 built_server -R',
+			'sudo service mmomatch restart'
+		], { filePath: 'shell-oce.log' })
+		.on('ssh2Data', function(data) {
+			process.stdout.write(data.toString());
+		});
 })
+
+gulp.task('deploy', ['deploy-oce', 'deploy-usw']);
