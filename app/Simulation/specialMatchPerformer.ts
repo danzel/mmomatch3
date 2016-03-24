@@ -9,6 +9,9 @@ import Type = require('./type');
 
 /** Handles the special effects that happen when a matchable of not-normal type is matched/disappeared */
 class SpecialMatchPerformer {
+	
+	colorClearRange = 10;
+	
 	constructor(private grid: Grid, private matchChecker: MatchChecker) {
 	}
 	
@@ -49,6 +52,14 @@ class SpecialMatchPerformer {
 		}
 	}
 	
+	private distanceLessThanOrEqual(a: Matchable, b: Matchable, maxDistance: number): boolean {
+		let x = a.x - b.x;
+		let y = a.y - b.y;
+		
+		let distSquared = x * x + y * y;
+		return distSquared <= maxDistance * maxDistance;
+	}
+
 	private colorClear(colorClear: Matchable, triggered: Matchable): Match {
 		let matchingColor = triggered.color;
 
@@ -61,7 +72,7 @@ class SpecialMatchPerformer {
 			let col = this.grid.cells[x];
 			for (let y = 0; y < col.length; y++) {
 				let m = col[y];
-				if (this.matchChecker.matchableIsAbleToMatch(m) && m.color == matchingColor) {
+				if (this.matchChecker.matchableIsAbleToMatch(m) && m.color == matchingColor && this.distanceLessThanOrEqual(colorClear, m, this.colorClearRange)) {
 					m.isDisappearing = true;
 					matchables.push(m);
 				}
