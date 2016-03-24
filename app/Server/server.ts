@@ -6,6 +6,7 @@ import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import InputVerifier = require('../Simulation/inputVerifier');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
+import LiteEvent = require('../liteEvent');
 import Matchable = require('../Simulation/matchable');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
@@ -23,10 +24,12 @@ import TickData = require('../DataPackets/tickData');
 import TickDataFactory = require('./tickDataFactory');
 
 class Server {
+	levelStarted = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
+
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
 	private tickDataFactory: TickDataFactory;
-	
+
 	private level: LevelDef;
 	private simulation: Simulation;
 	private gameEndDetector: GameEndDetector;
@@ -41,11 +44,13 @@ class Server {
 		serverComms.dataReceived.on(data => this.dataReceived(data));
 	}
 
+	getPlayerCount(): number { return Object.keys(this.clients).length; }
+
 	loadLevel(levelNumber: number) {
 		let level = this.levelAndSimulationProvider.loadLevel(levelNumber);
 		this.level = level.level;
 		this.simulation = level.simulation;
-		
+
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.framesPerTick);
 		//new DebugLogger(this.simulation);
@@ -56,10 +61,12 @@ class Server {
 			bootData.playerId = this.clients[i].id;
 			this.serverComms.sendBoot(bootData, i);
 		}
-		
+
 		this.gameEndDetector.gameEnded.on((victory) => {
 			setTimeout(() => this.loadLevel(levelNumber + (victory ? 1 : 0)), 5000);
-		})
+		});
+
+		this.levelStarted.trigger({ level: this.level, simulation: this.simulation, gameEndDetector: this.gameEndDetector });
 	}
 
 	private connectionReceived(id: string) {
@@ -74,8 +81,8 @@ class Server {
 			this.clientsRequiringBoot.splice(this.clientsRequiringBoot.indexOf(id), 1);
 		}
 	}
-	
-	private dataReceived(data: { id: string, packet: { packetType: PacketType, data: any }}) {
+
+	private dataReceived(data: { id: string, packet: { packetType: PacketType, data: any } }) {
 		if (data.packet.packetType == PacketType.SwapClient) {
 			this.swapReceived(data.id, <SwapClientData>data.packet.data);
 		} else {
