@@ -35,7 +35,7 @@ class PlayerSprite {
 	}
 
 	update() {
-		this.sprite.alpha = Math.min(1, 1 - (this.sprite.game.time.now - this.lastUpdate - 2000) / 1000);
+		this.sprite.alpha = Math.min(1, 1 - (this.sprite.game.time.now - this.lastUpdate - 5000) / 1000);
 	}
 }
 
