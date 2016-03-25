@@ -17,11 +17,14 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 			"1227",
 		]);
 
+		let willTransformCount = 0;
+		simulation.matchableTransformer.matchableTransforming.on(() => willTransformCount++);
 		let transformCount = 0;
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
+
 		new OwnershipMatchChecker(simulation.comboOwnership);
 		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
-		
+
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][2], simulation.grid.cells[1][2]);
 		for (let i = 0; i < 4; i++) {
@@ -38,7 +41,9 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		expect(m.isDisappearing).toBe(false);
 		expect(m.type).toBe(Type.ColorClearWhenSwapped);
 		expect(m.color).toBe(Color.None);
-		
+		expect(willTransformCount).toBe(1);
+		expect(transformCount).toBe(1);
+
 
 		//Now swap with a 2 to clear them all
 		expect(simulation.inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][0])).toBe(true);
@@ -53,5 +58,22 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		TestUtil.expectGridQuiet(simulation);
 		scoreEarnedChecker.expectScore(60);
 		scoreEarnedChecker.expectNoMoreScores();
+	});
+
+	it('is formed when 5 are matched horizontally which also makes a T', () => {
+		let simulation = TestUtil.prepareForTest([
+			"  1  ",
+			"  1  ",
+			"11211",
+			"88188",
+		]);
+
+		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
+		for (let i = 0; i < 4; i++) {
+			simulation.update();
+		}
+		
+		let result = simulation.grid.cells[2][1];
+		expect(result.type).toBe(Type.ColorClearWhenSwapped);
 	});
 });
