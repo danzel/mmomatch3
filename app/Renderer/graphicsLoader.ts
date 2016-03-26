@@ -6,6 +6,7 @@ class GraphicsLoader {
 		
 		game.load.image('overlay_horizontal', 'img/skin/' + spriteSet +'/balloverlays/horizontal.png');
 		game.load.image('overlay_vertical', 'img/skin/' + spriteSet +'/balloverlays/vertical.png');
+		game.load.image('overlay_areaclear', 'img/skin/' + spriteSet +'/balloverlays/areaclear.png');
 
 		game.load.image('ball_colorclear', 'img/skin/' + spriteSet +'/balls/11.png'); //TODO: UNHACK. Needs its own graphics
 		

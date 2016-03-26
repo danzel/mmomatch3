@@ -2,7 +2,8 @@ enum Type {
 	Normal,
 	HorizontalClearWhenMatched,
 	VerticalClearWhenMatched,
-	ColorClearWhenSwapped
+	ColorClearWhenSwapped,
+	AreaClear3x3WhenMatched
 };
 
 export = Type;

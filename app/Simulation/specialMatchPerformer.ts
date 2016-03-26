@@ -46,6 +46,9 @@ class SpecialMatchPerformer {
 				case Type.VerticalClearWhenMatched:
 					this.verticalClear(m, match);
 					break;
+				case Type.AreaClear3x3WhenMatched:
+					this.areaClear3x3(m, match);
+					break;
 				default:
 					throw new Error("Don't know what to do when a Type " + Type[m.type] + " is matched");
 			}
@@ -105,6 +108,25 @@ class SpecialMatchPerformer {
 			}
 		}
 		match.matchType = MatchType.VerticalClear;
+	}
+	
+	private areaClear3x3(source: Matchable, match: Match) {
+		let startX = Math.max(0, source.x - 1);
+		let maxX = Math.min(this.grid.width, source.x + 2);
+		let startY = Math.max(0, source.y - 1);
+		let maxY = Math.min(this.grid.height, source.y + 2);
+		
+		for (let x = startX; x < maxX; x++) {
+			for (let y = startY; y < maxY; y++) {
+				let m = this.grid.findMatchableAtPosition(x, y);
+				if (m != null && this.matchChecker.matchableIsAbleToMatch(m)) {
+					m.isDisappearing = true;
+					match.matchables.push(m);
+				}
+			}
+		}
+		
+		match.matchType = MatchType.AreaClear3x3;
 	}
 }
 

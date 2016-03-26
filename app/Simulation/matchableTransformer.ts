@@ -31,7 +31,10 @@ class MatchableTransformer {
 				return;
 			}
 		}
-		//TODO if (match.matchType == MatchType.NormalCross)
+		if (match.matchType == MatchType.NormalCross) {
+			this.matchCrossPerformed(match);
+			return;
+		}
 	}
 
 	private match4Performed(match: Match) {
@@ -92,8 +95,9 @@ class MatchableTransformer {
 	}
 
 	private tryMatch5(match: Match): boolean {
+		let m: Matchable;
 		for (let i = 0; i < match.matchables.length - 4; i++) {
-			let m = match.matchables[i];
+			m = match.matchables[i];
 
 			let xMatchCount = this.count(match.matchables, mm => m.x == mm.x);
 			if (xMatchCount >= 5) {
@@ -134,6 +138,44 @@ class MatchableTransformer {
 			}
 		}
 		return res;
+	}
+
+	private matchCrossPerformed(match: Match) {
+
+		let mostX: number;
+		let mostXCount = -1;
+
+		let mostY: number;
+		let mostYCount = -1;
+
+		let m: Matchable;
+		for (let i = 0; i < match.matchables.length; i++) {
+			m = match.matchables[i];
+
+			let xCount = this.count(match.matchables, mm => m.x == mm.x);
+			if (xCount > mostXCount) {
+				mostX = m.x;
+				mostXCount = xCount;
+			}
+
+			let yCount = this.count(match.matchables, mm => m.y == mm.y);
+			if (yCount > mostYCount) {
+				mostY = m.y;
+				mostYCount = yCount;
+			}
+		}
+		
+		for (let i = 0; i < match.matchables.length; i++) {
+			let m = match.matchables[i];
+			
+			if (m.x == mostX && m.y == mostY) {
+				m.transformTo = Type.AreaClear3x3WhenMatched;
+				m.transformToColor = m.color;
+				this.matchableTransforming.trigger(m);
+				
+				return;
+			}
+		}		
 	}
 }
 

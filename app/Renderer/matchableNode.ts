@@ -82,6 +82,9 @@ class MatchableNode {
 			case Type.HorizontalClearWhenMatched:
 				key = 'overlay_horizontal';
 				break;
+			case Type.AreaClear3x3WhenMatched:
+				key = 'overlay_areaclear';
+				break;
 			default:
 				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.transformTo])
 		}
