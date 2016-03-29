@@ -4,7 +4,7 @@ import VictoryType = require('./victoryType');
 
 class LevelDefFactory {
 
-	debugLevel = true;
+	debugLevel = false;
 
 	getLevel(levelNumber: number): LevelDef {
 		if (this.debugLevel) {
