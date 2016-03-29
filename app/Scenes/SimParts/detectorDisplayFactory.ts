@@ -3,6 +3,7 @@ import DetectorDisplay = require('./detectorDisplay');
 import Detectors = require('../../Simulation/Levels/Detectors/allDetectors');
 
 import MatchesDisplay = require('./DetectorDisplays/matchesDisplay');
+import RequireMatchDisplay = require('./DetectorDisplays/requireMatchDisplay')
 import ScoreDisplay = require('./DetectorDisplays/scoreDisplay');
 import SwapsDisplay = require('./DetectorDisplays/swapsDisplay');
 import TimeDisplay = require('./DetectorDisplays/timeDisplay');
@@ -19,6 +20,8 @@ var DetectorDisplayFactory = {
 			return new ScoreDisplay(group, detector);
 		} else if (detector instanceof Detectors.Swaps) {
 			return new SwapsDisplay(group, detector);
+		} else if (detector instanceof Detectors.RequireMatch) {
+			return new RequireMatchDisplay(group, detector);
 		} else {
 			throw new Error("Don't know about detector " + detector);
 		}

@@ -4,13 +4,11 @@ import VictoryType = require('./victoryType');
 
 class LevelDefFactory {
 
-	debugLevel = false;
+	debugLevel = true;
 
 	getLevel(levelNumber: number): LevelDef {
 		if (this.debugLevel) {
-			let level = new LevelDef(levelNumber, 10, 10, [], 8, FailureType.Time, VictoryType.Matches, 10, 31);
-			level.requireMatches.push({x: 4, y: 4, amount: 1});
-			return level;
+			return new LevelDef(levelNumber, 10, 10, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{x: 4, y: 4, amount: 1}, {x: 7, y: 4, amount: 1}]);
 		}
 		
 		if (levelNumber % 3 == 0) {

@@ -6,6 +6,7 @@ import Simulation = require('../simulation');
 import VictoryType = require('./victoryType');
 
 import MatchesDetector = require('./Detectors/matchesDetector');
+import RequireMatchDetector = require('./Detectors/requireMatchDetector');
 import ScoreDetector = require('./Detectors/scoreDetector');
 import SwapsDetector = require('./Detectors/swapsDetector');
 import TimeDetector = require('./Detectors/timeDetector');
@@ -63,6 +64,8 @@ class GameEndDetector {
 				return new MatchesDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.Score:
 				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
+			case VictoryType.RequireMatch:
+				return new RequireMatchDetector(this.simulation, this.gameEndConditions.victoryValue);
 			default:
 				throw new Error("Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
 		}

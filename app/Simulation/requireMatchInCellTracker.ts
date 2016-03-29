@@ -23,8 +23,8 @@ class RequireMatchInCellTracker {
 					r.amount--;
 
 					if (r.amount == 0) {
-						this.requirementMet.trigger(r);
 						this.requirements.splice(j, 1);
+						this.requirementMet.trigger(r);
 						j--;
 					} else {
 						this.requirementPartiallyMet.trigger(r);

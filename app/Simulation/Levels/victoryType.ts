@@ -1,6 +1,9 @@
 enum VictoryType {
 	Matches,
-	Score
+	Score,
+	
+	/** LevelDef.VictoryValue is a [{x, y, amount}] */
+	RequireMatch
 }
 
 export = VictoryType;

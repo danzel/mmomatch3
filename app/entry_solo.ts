@@ -39,7 +39,7 @@ class AppEntry {
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
 		let sim = new Simulation(grid, spawnManager, matchableFactory, 60);
 		
-		level.requireMatches.forEach(req => {
+		(<Array<{x: number, y: number, amount: number}>>level.victoryValue).forEach(req => {
 			sim.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
 		})
 		return sim;
