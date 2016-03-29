@@ -9,6 +9,7 @@ import MatchableFactory = require('./matchableFactory');
 import MatchableTransformer = require('./matchableTransformer');
 import Physics = require('./physics');
 import QuietColumnDetector = require('./quietColumnDetector');
+import RequireMatchInCellTracker = require('./requireMatchInCellTracker');
 import ScoreTracker = require('./Scoring/scoreTracker');
 import SpawnManager = require('./spawnManager');
 import SpecialMatchPerformer = require('./specialMatchPerformer');
@@ -30,6 +31,7 @@ class Simulation {
 	quietColumnDetector: QuietColumnDetector;
 	comboOwnership: ComboOwnership;
 	scoreTracker: ScoreTracker;
+	requireMatchInCellTracker: RequireMatchInCellTracker;
 
 	private dt: number;
 	framesElapsed: number = 0;
@@ -53,6 +55,7 @@ class Simulation {
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
 		this.scoreTracker = new ScoreTracker(this.comboOwnership);
+		this.requireMatchInCellTracker = new RequireMatchInCellTracker(this.matchPerformer);
 
 		this.dt = 1 / tickRate;
 	}

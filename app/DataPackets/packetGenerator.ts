@@ -2,6 +2,7 @@ import BootData = require('./bootData');
 import GridData = require('./BootParts/gridData');
 import LevelDefData = require('./BootParts/levelDefData');
 import MatchableData = require('./BootParts/matchableData');
+import RequireMatchData = require('./BootParts/requireMatchData');
 import SimulationData = require('./BootParts/simulationData');
 import SwapData = require('./BootParts/swapData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
@@ -12,6 +13,8 @@ import GridFactory = require('../Simulation/Levels/gridFactory');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
+import RequireMatch = require('../Simulation/requireMatch');
+import RequireMatchInCellTracker = require('../Simulation/requireMatchInCellTracker');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
@@ -22,7 +25,8 @@ class PacketGenerator {
 			this.generateLevelDefData(level),
 			this.generateGridData(simulation.grid),
 			this.generateSwapHandlerData(simulation.swapHandler),
-			this.generateSimulationData(simulation)
+			this.generateSimulationData(simulation),
+			this.generateRequireMatchData(simulation.requireMatchInCellTracker)
 		);
 	}
 
@@ -101,6 +105,17 @@ class PacketGenerator {
 		return res;
 	}
 
+	private generateRequireMatchData(requireMatch: RequireMatchInCellTracker): RequireMatchData {
+		let res = new RequireMatchData()
+
+		for (let i = 0; i < requireMatch.requirements.length; i++) {
+			let r = requireMatch.requirements[i];
+
+			res.data.push({ x: r.x, y: r.y, amount: r.amount });
+		}
+
+		return res;
+	}
 
 	recreateLevelDefData(level: LevelDefData): LevelDef {
 		return <LevelDef>level;
@@ -133,7 +148,7 @@ class PacketGenerator {
 		//Swap handler
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
 		this.deserializeSwapHandler(simulation.swapHandler, bootData.swapHandler, matchableById);
-		
+
 		//QuietColumnDetector
 		simulation.swapHandler.swaps.forEach(swap => {
 			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.left.x]++;
@@ -143,8 +158,12 @@ class PacketGenerator {
 			if (matchable.isDisappearing) {
 				simulation.quietColumnDetector.columnDisappearingCount[matchable.x]++;
 			}
-		}))
+		}));
 		
+		bootData.requireMatchData.data.forEach(req => {
+			simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
+		})
+
 		//Misc fields
 		simulation.framesElapsed = bootData.simulationData.framesElapsed;
 		simulation.matchPerformer.totalMatchablesMatched = bootData.simulationData.totalMatchablesMatched;
@@ -162,7 +181,7 @@ class PacketGenerator {
 
 			for (let y = 0; y < dataCol.length; y++) {
 				let matchableData = dataCol[y];
-				
+
 				//We aren't using the factory here, if we did the id would get out of sync
 				let matchable = new Matchable(matchableData.id, matchableData.x, matchableData.y, matchableData.color, matchableData.type);
 				matchable.isDisappearing = matchableData.isDisappearing;
@@ -190,7 +209,7 @@ class PacketGenerator {
 			swap.percent = s.percent;
 			swapHandler.swaps.push(swap);
 		}
-		
+
 		swapHandler.totalSwapsCount = swapHandlerData.totalSwapsCount;
 	}
 
