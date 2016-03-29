@@ -22,7 +22,7 @@ class MatchDragHandler {
 	}
 
 	private get minDragPx() {
-		return this.renderer.getScale() * MatchableNode.PositionScalar / 2;
+		return this.renderer.getScale() * MatchableNode.PositionScalar / 4;
 	}
 
 	mouseDown(pointer: Phaser.Pointer) {
