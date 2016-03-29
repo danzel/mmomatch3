@@ -6,6 +6,7 @@ import RequireMatch = require('./requireMatch');
 class RequireMatchInCellTracker {
 	requirements = new Array<RequireMatch>();
 	requirementMet = new LiteEvent<RequireMatch>();
+	requirementPartiallyMet = new LiteEvent<RequireMatch>();
 
 	constructor(matchPerformer: MatchPerformer) {
 		matchPerformer.matchPerformed.on((match) => this.matchPerformed(match));
@@ -25,6 +26,8 @@ class RequireMatchInCellTracker {
 						this.requirementMet.trigger(r);
 						this.requirements.splice(j, 1);
 						j--;
+					} else {
+						this.requirementPartiallyMet.trigger(r);
 					}
 				}
 			}

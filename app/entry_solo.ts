@@ -7,6 +7,7 @@ import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
+import RequireMatch = require('./Simulation/requireMatch');
 import Scene = require('./Scenes/scene');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
@@ -31,12 +32,17 @@ class AppEntry {
 		GraphicsLoader.loadBalls(this.game, 'basic', 11);
 	}
 
-	private createSimulationFromLevel(level: LevelDef) {
+	private createSimulationFromLevel(level: LevelDef): Simulation {
 		let grid = GridFactory.createGrid(level);
 
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
-		return new Simulation(grid, spawnManager, matchableFactory, 60);
+		let sim = new Simulation(grid, spawnManager, matchableFactory, 60);
+		
+		level.requireMatches.forEach(req => {
+			sim.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
+		})
+		return sim;
 	}
 
 	create() {

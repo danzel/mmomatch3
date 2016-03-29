@@ -14,6 +14,8 @@ class LevelDef implements GameEndConditions {
 	// http://candycrush.wikia.com/wiki/Level_Types
 	// http://candycrushsoda.wikia.com/wiki/Level_Types
 
+	requireMatches = new Array<{ x: number, y: number, amount: number }>();
+
 	constructor(
 		public levelNumber: number,
 		public width: number,

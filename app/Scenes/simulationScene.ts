@@ -9,6 +9,7 @@ import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
 import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
+import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
 import Scene = require('./scene');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
@@ -25,6 +26,7 @@ interface SimulationSceneConfiguration {
 class SimulationScene implements Scene {
 	private renderer: SimulationRenderer;
 	private playersOnSimulation: PlayersOnSimulation;
+	private requireMatchRenderer: RequireMatchRenderer;
 	private input: InputHandler;
 
 	private haveFitRenderer = false;
@@ -41,6 +43,7 @@ class SimulationScene implements Scene {
 		let simulationGroup = new Phaser.Group(group.game, group);
 		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
+		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
 		
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 

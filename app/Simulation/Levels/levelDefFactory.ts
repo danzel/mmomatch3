@@ -8,7 +8,9 @@ class LevelDefFactory {
 
 	getLevel(levelNumber: number): LevelDef {
 		if (this.debugLevel) {
-			return new LevelDef(levelNumber, 10, 10, [], 8, FailureType.Time, VictoryType.Matches, 10, 31);
+			let level = new LevelDef(levelNumber, 10, 10, [], 8, FailureType.Time, VictoryType.Matches, 10, 31);
+			level.requireMatches.push({x: 4, y: 4, amount: 1});
+			return level;
 		}
 		
 		if (levelNumber % 3 == 0) {
