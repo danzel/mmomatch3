@@ -1,3 +1,4 @@
+import GetThingToBottom = require('./getThingToBottomDetector');
 import Matches = require('./matchesDetector');
 import RequireMatch = require('./requireMatchDetector');
 import Score = require('./scoreDetector');
@@ -9,6 +10,7 @@ var AllDetectors = {
 	Matches: Matches,
 	Score: Score,
 	RequireMatch: RequireMatch,
+	GetThingToBottom: GetThingToBottom,
 	
 	//Failure
 	Swaps: Swaps,

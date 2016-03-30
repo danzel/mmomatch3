@@ -1,5 +1,8 @@
 enum Type {
 	Normal,
+	
+	GetToBottom,
+	
 	HorizontalClearWhenMatched,
 	VerticalClearWhenMatched,
 	ColorClearWhenSwapped,

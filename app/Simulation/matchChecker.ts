@@ -1,6 +1,7 @@
 import Color = require('./color');
 import Grid = require('./grid');
 import Matchable = require('./matchable');
+import Type = require('./type');
 
 class MatchDetails {
 	horizontal: boolean;
@@ -38,13 +39,21 @@ class MatchChecker {
 		return null;
 	}
 	
-	/** Not moving, disappearing, being swapped */
-	matchableIsAbleToMatch(matchable: Matchable) {
+	matchableIsAbleToSwap(matchable: Matchable) {
 		if (matchable.isDisappearing)
 			return false;
 		if (matchable.isMoving)
 			return false;
 		if (matchable.beingSwapped)
+			return false;
+		return true;
+	}
+	
+	/** Not moving, disappearing, being swapped */
+	matchableIsAbleToMatch(matchable: Matchable) {
+		if (!this.matchableIsAbleToSwap(matchable))
+			return false;
+		if (matchable.type == Type.GetToBottom)
 			return false;
 		return true;
 	}

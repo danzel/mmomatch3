@@ -1,3 +1,4 @@
+import Color = require('../Simulation/color');
 import GridFactory = require('../Simulation/Levels/gridFactory');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LevelDef = require('../Simulation/Levels/levelDef');
@@ -7,6 +8,7 @@ import RandomGenerator = require('../Simulation/randomGenerator');
 import RequireMatch = require('../Simulation/requireMatch');
 import Simulation = require('../Simulation/simulation');
 import SpawningSpawnManager = require('../Simulation/spawningSpawnManager');
+import Type = require('../Simulation/type');
 import VictoryType = require('../Simulation/Levels/victoryType');
 
 class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
@@ -26,6 +28,10 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			requireMatches.forEach(req => {
 				simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
 			})
+		}
+		if (level.victoryType == VictoryType.GetThingToBottom) {
+			//grid height is double because initial spawn is off the screen
+			matchableFactory.forceSpawn = { x: <number>level.victoryValue, y: grid.height + grid.height - 1, color: Color.None, type: Type.GetToBottom };
 		}
 
 		return { level: level, simulation: simulation };
