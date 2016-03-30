@@ -1,10 +1,11 @@
+import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import GridFactory = require('./Simulation/Levels/gridFactory');
 import InputVerifier = require('./Simulation/inputVerifier');
-import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import LevelDef = require('./Simulation/Levels/levelDef');
+import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import RequireMatch = require('./Simulation/requireMatch');
@@ -32,19 +33,6 @@ class AppEntry {
 		GraphicsLoader.loadBalls(this.game, 'basic', 11);
 	}
 
-	private createSimulationFromLevel(level: LevelDef): Simulation {
-		let grid = GridFactory.createGrid(level);
-
-		let matchableFactory = new MatchableFactory();
-		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
-		let sim = new Simulation(grid, spawnManager, matchableFactory, 60);
-		
-		(<Array<{x: number, y: number, amount: number}>>level.victoryValue).forEach(req => {
-			sim.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
-		})
-		return sim;
-	}
-
 	create() {
 		console.log('create');
 
@@ -56,8 +44,11 @@ class AppEntry {
 	}
 
 	private createSimulationScene(levelNumber: number) {
-		let level = new LevelDefFactory().getLevel(levelNumber);
-		let simulation = this.createSimulationFromLevel(level);
+		let loaded = new DefaultLevelAndSimulationProvider(new LevelDefFactory()).loadLevel(levelNumber);
+		
+		let level = loaded.level;
+		let simulation = loaded.simulation;
+		
 		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
