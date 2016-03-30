@@ -64,9 +64,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="451.57687"
-     inkscape:cy="225.97647"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="548.54559"
+     inkscape:cy="294.26055"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -98,7 +98,7 @@
        y="686.70575"
        x="211.98694"
        height="214"
-       width="221"
+       width="364.5"
        id="rect4161"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
@@ -262,7 +262,7 @@
          x="70"
          y="875.36224">*</tspan></text>
     <g
-       style="font-style:normal;font-weight:normal;font-size:472.2298584px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:472.2298584px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:19.99940829;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="text5626"
        transform="matrix(0.47151395,0,0,0.47151395,398.64272,429.89737)"
        inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\basic\balls\clearall.png"
@@ -270,9 +270,18 @@
        inkscape:export-ydpi="90">
       <path
          d="m 37.931965,900.17698 -54.878274,-1.61407 28.822623,47.2691 -38.045863,22.36636 -26.977975,-49.11375 -25.133327,48.422 -39.198769,-22.59693 28.822624,-46.34678 -54.186534,2.53639 0,-44.96329 54.186534,2.30581 -28.822624,-47.03852 39.198769,-23.28868 26.516813,49.11375 25.594489,-48.65259 38.045863,22.82752 -28.13088,45.65503 54.186531,-1.84465 0,44.9633 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Showcard Gothic';-inkscape-font-specification:'Showcard Gothic';stroke:#ffffff;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Showcard Gothic';-inkscape-font-specification:'Showcard Gothic';stroke:#ffffff;stroke-width:19.99940829;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path5631"
          inkscape:connector-curvature="0" />
     </g>
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 472.00211,757.24593 0,39.42562 -20.22086,0 42.75958,48.57454 42.75959,-48.57454 -20.2191,0 0,-39.42562 z"
+       id="path5633"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\basic\balls\gettobottom.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

@@ -8,6 +8,7 @@ class GraphicsLoader {
 		game.load.image('overlay_vertical', 'img/skin/' + spriteSet +'/balloverlays/vertical.png');
 		game.load.image('overlay_areaclear', 'img/skin/' + spriteSet +'/balloverlays/areaclear.png');
 		game.load.image('ball_colorclear', 'img/skin/' + spriteSet +'/balls/colorclear.png');
+		game.load.image('ball_gettobottom', 'img/skin/' + spriteSet +'/balls/gettobottom.png');
 		
 		game.load.image('requirematch', 'img/skin/' + spriteSet +'/requirematch.png');
 		

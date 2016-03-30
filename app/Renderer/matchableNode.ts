@@ -1,3 +1,4 @@
+import Color = require('../Simulation/color');
 import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
 import Type = require('../Simulation/type');
@@ -6,18 +7,27 @@ class MatchableNode {
 	public static PositionScalar = 100;
 
 	matchable: Matchable;
-	
+
 	sprite: Phaser.Sprite;
 	replacementSprite: Phaser.Sprite;
 	overlay: Phaser.Sprite;
 
 	constructor(matchable: Matchable, parent: Phaser.Group) {
 		this.matchable = matchable;
-		this.sprite = parent.create(0, 0, 'ball_' + (matchable.color + 1));
+
+		this.sprite = parent.create(0, 0, MatchableNode.getSpriteKey(matchable.color, matchable.type));
 
 		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
 
 		this.updatePosition();
+	}
+
+	static getSpriteKey(color: Color, type: Type): string {
+		if (type == Type.GetToBottom) {
+			return "ball_gettobottom";
+		}
+
+		return 'ball_' + (color + 1);
 	}
 
 	updatePosition(swap?: Swap) {
@@ -73,7 +83,7 @@ class MatchableNode {
 			this.sprite.parent.addChild(this.replacementSprite);
 			return;
 		}
-		
+
 		let key: string;
 		switch (this.matchable.transformTo) {
 			case Type.VerticalClearWhenMatched:
@@ -94,7 +104,7 @@ class MatchableNode {
 		this.sprite.addChild(child);
 		this.overlay = child;
 	}
-	
+
 	updateForTransformed() {
 		if (this.replacementSprite) {
 			this.sprite.destroy();
