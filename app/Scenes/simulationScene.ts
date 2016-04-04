@@ -18,7 +18,7 @@ import SimulationRenderer = require('../Renderer/simulationRenderer');
 interface SimulationSceneConfiguration {
 	/** If true we update the simulation, otherwise it is controlled externally */
 	inChargeOfSimulation?: boolean;
-	
+
 	/** If set  game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
 	gameOverCountdown?: number;
 }
@@ -44,24 +44,27 @@ class SimulationScene implements Scene {
 		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
-		
+
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 
 		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
 		this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
-		
-		//TODO: Victory/Failure (gameEndDetector)
-		this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
-		this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 
 		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
+
+		this.levelDetailsOverlay.becameClosed.on(() => {
+			this.createLevelNumberDisplay();
+			this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
+			this.createFailureConditionDisplay(gameEndDetector.failureDetector);
+		});
+
 
 		//Disable the displays (stop them updating) when the game ends
 		gameEndDetector.gameEnded.on((victory: boolean) => {
 			for (let i = 0; i < this.detectorDisplays.length; i++) {
 				this.detectorDisplays[i].disabled = true;
 			}
-			
+
 			//TODO: How do we get the timer / click events out of here
 			this.gameOverOverlay = new GameOverOverlay(new Phaser.Group(group.game, group), victory, config.gameOverCountdown);
 		});
@@ -74,7 +77,7 @@ class SimulationScene implements Scene {
 			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
 			this.haveFitRenderer = true;
 		}
-		
+
 		this.scoreRenderer.updateData()
 
 		if (this.gameOverOverlay) {
@@ -89,16 +92,26 @@ class SimulationScene implements Scene {
 	}
 
 
-	createFailureConditionDisplay(detector: Detector) {
-		let group = new Phaser.Group(this.group.game, this.group);
-		group.x = 130;
-		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
+	createLevelNumberDisplay() {
+		this.group.game.add.text(5, 5, "Level " + this.level.levelNumber, {
+			fill: 'white',
+			font: 'Chewy',
+			fontSize: 30,
+			strokeThickness: 8
+		}, this.group)
 	}
 
 	createVictoryConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
-		group.x = 130;
-		group.y = 30;
+		group.x = 5;
+		group.y = 40;
+		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
+	}
+
+	createFailureConditionDisplay(detector: Detector) {
+		let group = new Phaser.Group(this.group.game, this.group);
+		group.x = 5;
+		group.y = 70;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
 	}
 }

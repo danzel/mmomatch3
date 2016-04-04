@@ -1,5 +1,6 @@
 import Detector = require('../../Simulation/Levels/detector');
 import LevelDef = require('../../Simulation/Levels/levelDef');
+import LiteEvent = require('../../liteEvent');
 import TouchCatchAll = require('../../Renderer/Components/touchCatchAll');
 
 class LevelDetailsOverlay {
@@ -12,6 +13,8 @@ class LevelDetailsOverlay {
 	gfx: Phaser.Graphics;
 
 	closed = false;
+	
+	becameClosed = new LiteEvent<void>();
 
 	constructor(private group: Phaser.Group, private level: LevelDef, private victoryDetector: Detector, private failureDetector: Detector) {
 
@@ -29,6 +32,8 @@ class LevelDetailsOverlay {
 			this.closed = true;
 			this.group.destroy();
 			this.group = null;
+			
+			this.becameClosed.trigger();
 		})
 	}
 
