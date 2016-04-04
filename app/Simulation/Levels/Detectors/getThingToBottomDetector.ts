@@ -25,7 +25,7 @@ class GetThingToBottomDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Get the thing to the bottom";
+		return "Get the robot to the bottom";
 	}
 }
 

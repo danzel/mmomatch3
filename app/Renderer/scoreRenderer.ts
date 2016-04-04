@@ -1,23 +1,28 @@
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 
 class ScoreRenderer {
-	textStyle = {
+	
+	fontSize = 22;
+	
+	textStyle = <Phaser.PhaserTextStyle>{
 		fill: 'white',
-		fontSize: 16
+		font: 'Chewy',
+		fontSize: this.fontSize
 	};
-	myScoreTextStyle = {
+	myScoreTextStyle = <Phaser.PhaserTextStyle>{
 		fill: 'yellow',
-		fontSize: 16
+		font: 'Chewy',
+		fontSize: this.fontSize
 	};
 
 	scoreGroup: Phaser.Group;
 	scoreText: Array<Phaser.Text> = [];
 	title: Phaser.Text;
-	
+
 	background: Phaser.Graphics;
 	backgroundHeight: number;
 	backgroundWidth: number;
-	
+
 	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number) {
 
 		this.background = new Phaser.Graphics(this.group.game);
@@ -28,25 +33,25 @@ class ScoreRenderer {
 		group.add(this.background);
 		this.title = new Phaser.Text(this.group.game, 2, 2, "Scores", this.textStyle);
 		this.group.add(this.title);
-		
-		this.scoreGroup = new Phaser.Group(group. game, group);
-		
+
+		this.scoreGroup = new Phaser.Group(group.game, group);
+
 		for (let i = 0; i < 3; i++) {
-			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 16 * (i + 1), "");
+			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + this.fontSize * (i + 1), "");
 			this.scoreGroup.add(text);
 			this.scoreText.push(text);
 		}
 	}
 
 	updateData() {
-		let array = new Array<{playerId: number, points: number }>();
+		let array = new Array<{ playerId: number, points: number }>();
 		for (let playerId in this.scoreTracker.points) {
-			array.push({ playerId: parseInt(playerId), points: this.scoreTracker.points[playerId]});
+			array.push({ playerId: parseInt(playerId), points: this.scoreTracker.points[playerId] });
 		}
-		array.sort((a,b) => {
+		array.sort((a, b) => {
 			return b.points - a.points;
 		})
-		
+
 		let maxWidth = this.title.width;
 
 		for (let i = 0; i < Math.min(3, array.length); i++) {
@@ -60,7 +65,7 @@ class ScoreRenderer {
 		}
 
 		let backgroundWidth = maxWidth + 4;
-		let backgroundHeight = (Math.min(3, array.length) + 1) * 16 + 8;
+		let backgroundHeight = (Math.min(3, array.length) + 1) * this.fontSize + 8;
 
 		if (this.backgroundWidth != backgroundWidth || this.backgroundHeight != backgroundHeight) {
 			this.background.scale.x = backgroundWidth;

@@ -125,7 +125,7 @@ class SimulationRenderer {
 	private addDebugOverlay() {
 		let graphics = this.group.game.add.graphics(0, 0, this.group);
 		//graphics.beginFill(0x999999);
-		graphics.lineStyle(10, 0xFF0000, 1);
+		graphics.lineStyle(3, 0xFFFFFF, 0.7);
 		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableNode.PositionScalar, -this.simulation.grid.height * MatchableNode.PositionScalar);
 	}
 

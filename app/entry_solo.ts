@@ -1,3 +1,5 @@
+/// <reference path="../typings/webfontloader/webfontloader.d.ts" />
+
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
@@ -29,8 +31,9 @@ class AppEntry {
 		console.log("preload");
 		//this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		this.game.stage.backgroundColor = 0x273348;
 
-		GraphicsLoader.loadBalls(this.game, 'basic', 11);
+		GraphicsLoader.loadBalls(this.game, 'emojione-animals', 11);
 	}
 
 	create() {
@@ -45,10 +48,10 @@ class AppEntry {
 
 	private createSimulationScene(levelNumber: number) {
 		let loaded = new DefaultLevelAndSimulationProvider(new LevelDefFactory()).loadLevel(levelNumber);
-		
+
 		let level = loaded.level;
 		let simulation = loaded.simulation;
-		
+
 		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
@@ -66,4 +69,20 @@ class AppEntry {
 	}
 }
 
-new AppEntry();
+WebFont.load({
+	custom: {
+		families: ['Chewy'],
+		urls: ['img/skin/emojione-animals/chewy.css']
+	},
+    /*google: {
+		families: ['Chewy']
+    },*/
+	classes: false,
+
+	active: function() {
+		new AppEntry();
+	},
+	inactive: function() {
+		new AppEntry();
+	}
+});

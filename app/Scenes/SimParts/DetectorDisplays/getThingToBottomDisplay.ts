@@ -4,9 +4,7 @@ import DetectorDisplay = require('../detectorDisplay');
 class MatchesDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: GetThingToBottomDetector) {
 		super();
-		let text = new Phaser.Text(group.game, 0, 0, "Get the thing to the bottom", {
-			fill: 'white'
-		});
+		let text = new Phaser.Text(group.game, 0, 0, detector.getDetailsText(), this.textStyle);
 		this.group.add(text);
 	}
 }

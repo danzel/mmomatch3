@@ -27,8 +27,9 @@ class AppEntry {
 		console.log("preload");
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		this.game.stage.backgroundColor = 0x273348;
 
-		GraphicsLoader.loadBalls(this.game, 'basic', 11);
+		GraphicsLoader.loadBalls(this.game, 'emojione-animals', 11);
 	}
 
 	create() {
@@ -77,4 +78,20 @@ class AppEntry {
 	}
 }
 
-new AppEntry();
+WebFont.load({
+	/*custom: {
+		families: ['Chewy'],
+		urls: ['img/skin/emojione-animals/chewy.css']
+	},*/
+    google: {
+		families: ['Chewy']
+    },
+	classes: false,
+
+	active: function() {
+		new AppEntry();
+	},
+	inactive: function() {
+		new AppEntry();
+	}
+});

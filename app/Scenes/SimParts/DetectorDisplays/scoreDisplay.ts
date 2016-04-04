@@ -6,9 +6,7 @@ import DetectorDisplay = require('../detectorDisplay');
 class ScoreDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: ScoreDetector) {
 		super();
-		let text = new Phaser.Text(group.game, 0, 0, "Score Required: " + detector.scoreRequiredRemaining + "/" + detector.scoreRequired, {
-			fill: 'white'
-		});
+		let text = new Phaser.Text(group.game, 0, 0, "Score Required: " + detector.scoreRequiredRemaining + "/" + detector.scoreRequired, this.textStyle);
 		this.group.add(text);
 		
 		detector.valueChanged.on(() => {

@@ -6,9 +6,7 @@ import DetectorDisplay = require('../detectorDisplay');
 class RequireMatchDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: RequireMatchDetector) {
 		super();
-		let text = new Phaser.Text(group.game, 0, 0, "Require Matches Remaining: " + detector.requireMatches, {
-			fill: 'white'
-		});
+		let text = new Phaser.Text(group.game, 0, 0, "Require Matches Remaining: " + detector.requireMatches, this.textStyle);
 		this.group.add(text);
 
 		detector.valueChanged.on(() => {
