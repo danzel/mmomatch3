@@ -3,26 +3,46 @@ class GameOverOverlay {
 	gfx: Phaser.Graphics;
 	countdownText: Phaser.Text;
 
+	headStyle = <Phaser.PhaserTextStyle>{
+		fill: 'white',
+		font: 'Chewy',
+		fontSize: 70,
+		strokeThickness: 8,
+		boundsAlignH: "center",
+		boundsAlignV: "top"
+	}
+	footStyle = <Phaser.PhaserTextStyle>{
+		fill: 'white',
+		font: 'Chewy',
+		fontSize: 22,
+		strokeThickness: 4,
+		boundsAlignH: "center",
+		boundsAlignV: "middle"
+	}
+
+	width = 480;
+	height = 200;
+
 	constructor(private group: Phaser.Group, private victory: boolean, private countdown: number) {
 		this.addBackground();
 
-		group.add(new Phaser.Text(group.game, 100, 50, victory ? "You won yay!" : "Failure :(", { fill: 'white' }));
+		group.add(new Phaser.Text(group.game, this.width / 2, 10, victory ? "You won yay!" : "Failure :(", this.headStyle).setTextBounds(0, 0, 0, 0));
 
 		if (countdown) {
-			this.countdownText = new Phaser.Text(group.game, 100, 100, "??? in ???", { fill: 'white' })
+			this.countdownText = new Phaser.Text(group.game, this.width / 2, 140, "??? in ???", this.footStyle).setTextBounds(0, 0, 0, 0);
 			group.add(this.countdownText);
-			this.update(); // I think? Maybe not needed
 		} else {
-			group.add(new Phaser.Text(group.game, 100, 100, "Click to continue", { fill: 'white' }));
+			group.add(new Phaser.Text(group.game, this.width / 2, 180, "Click to continue", this.footStyle).setTextBounds(0, 0, 0, 0));
 		}
+		this.update();
 	}
 
 	private addBackground() {
 		this.gfx = new Phaser.Graphics(this.group.game);
-		this.gfx.beginFill(0, 0.4);
-		this.gfx.drawRect(0, 0, 1, 1);
+		this.gfx.beginFill(0x8FB863, 1);
+		this.gfx.lineStyle(5, 0x6382B8);
+		this.gfx.drawRoundedRect(0, 0, this.width, this.height, 20);
 		this.gfx.endFill();
-		this.gfx.scale.set(this.group.game.width, this.group.game.height);
 
 		this.group.add(this.gfx);
 	}
@@ -37,7 +57,7 @@ class GameOverOverlay {
 			this.countdownText.text = (this.victory ? "Next Level in " : "Restarting in ") + this.countdown.toFixed(1) + " seconds";
 		}
 
-		this.gfx.scale.set(this.group.game.width, this.group.game.height);
+		this.group.position.set((this.group.game.width - this.width) / 2, 50);
 	}
 }
 
