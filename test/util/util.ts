@@ -32,6 +32,8 @@ class TestUtil {
 						type = Type.VerticalClearWhenMatched;
 					} else if (c == 'C') {
 						type = Type.ColorClearWhenSwapped;
+					} else if (c == 'B') {
+						type = Type.GetToBottom
 					}
 
 					if (type == Type.Normal) {
@@ -40,6 +42,8 @@ class TestUtil {
 						} else {
 							color = parseInt(c, 10);
 						}
+					} else if (type == Type.GetToBottom) {
+						color = Color.None;
 					} else {
 						color = parseInt(specialColors[0], 10);
 						specialColors = specialColors.substring(1);
@@ -59,10 +63,11 @@ class TestUtil {
 	 * - for horizontal clear
 	 * | for vertical clear
 	 * C for color clear
+	 * B for get to bottom
 	 * (Unimplemented follow)
 	 * + for horizontal and vertical clear
 	 * # for 3x3 clear
-	 * @param specialColors The coors of the special matchables in bottom to top, left to right order
+	 * @param specialColors The colors of the special matchables in bottom to top, left to right order
 	 */
 	static prepareForTest(gridConfig: Array<string>, specialColors?: string, tickRate: number = 1): Simulation {
 		var grid = new Grid(gridConfig[0].length, gridConfig.length);

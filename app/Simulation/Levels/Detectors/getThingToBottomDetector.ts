@@ -3,6 +3,9 @@ import Simulation = require('../../simulation');
 import Type = require('../../type');
 
 class GetThingToBottomDetector extends Detector {
+	
+	hasTriggered = false;
+	
 	constructor(private simulation: Simulation) {
 		super();
 
@@ -12,7 +15,8 @@ class GetThingToBottomDetector extends Detector {
 	private columnBecameQuiet(colIndex: number) {
 		let col = this.simulation.grid.cells[colIndex];
 
-		if (col.length > 1 && col[0].type == Type.GetToBottom) {
+		if (!this.hasTriggered && col.length >= 1 && col[0].type == Type.GetToBottom) {
+			this.hasTriggered = true;
 			this.valueChanged.trigger();
 			this.detected.trigger();
 		}
