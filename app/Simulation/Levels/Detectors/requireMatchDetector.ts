@@ -29,7 +29,7 @@ class RequireMatchDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Clear " + this.totalRequireMatches + " required matches (jellies?)";
+		return "Collect all of the presents";
 	}
 }
 

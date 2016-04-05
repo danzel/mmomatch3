@@ -24,7 +24,7 @@ class TimeDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Within " + this.totalTime + " Seconds";
+		return "within " + this.totalTime + " Seconds";
 	}
 }
 

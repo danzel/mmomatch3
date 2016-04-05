@@ -38,7 +38,7 @@ class SwapsDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Within " + this.totalSwaps + " Moves";
+		return "within " + this.totalSwaps + " Moves";
 	}
 }
 

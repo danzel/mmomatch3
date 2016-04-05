@@ -24,7 +24,7 @@ class MatchesDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Match " + this.totalMatchesRequired + " {Thingies???}"; //TODO: Thingies
+		return "Match " + this.totalMatchesRequired + " Animals";
 	}
 }
 
