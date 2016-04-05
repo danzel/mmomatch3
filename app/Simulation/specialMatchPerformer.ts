@@ -11,6 +11,7 @@ import Type = require('./type');
 class SpecialMatchPerformer {
 	
 	colorClearRange = 10;
+	lineClearRange = 10;
 	
 	constructor(private grid: Grid, private matchChecker: MatchChecker) {
 	}
@@ -86,7 +87,7 @@ class SpecialMatchPerformer {
 	}
 
 	private horizontalClear(source: Matchable, match: Match) {
-		for (let x = 0; x < this.grid.width; x++) {
+		for (let x = Math.max(0, source.x - this.lineClearRange); x < Math.min(source.x + this.lineClearRange, this.grid.width); x++) {
 			let hit = this.grid.findMatchableAtPosition(x, source.y);
 
 			if (hit && this.matchChecker.matchableIsAbleToMatch(hit)) {
@@ -99,7 +100,7 @@ class SpecialMatchPerformer {
 
 	private verticalClear(source: Matchable, match: Match) {
 		let col = this.grid.cells[source.x];
-		for (let y = 0; y < col.length; y++) {
+		for (let y = Math.max(0, source.y - this.lineClearRange); y < Math.min(col.length, source.y + this.lineClearRange); y++) {
 			let hit = col[y];
 
 			if (this.matchChecker.matchableIsAbleToMatch(hit)) {
