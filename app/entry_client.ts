@@ -60,7 +60,7 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 		
-		if (tickData.playerCount) {
+		if (tickData.playerCount && (<SimulationScene>this.scene).playerCountRenderer) {
 			(<SimulationScene>this.scene).playerCountRenderer.updateData(tickData.playerCount); //TODO: Unhack assumption of child scene
 		}
 	}

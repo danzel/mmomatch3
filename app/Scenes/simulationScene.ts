@@ -47,15 +47,15 @@ class SimulationScene implements Scene {
 
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 
-		this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
-		this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
-
 		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
 		this.levelDetailsOverlay.becameClosed.on(() => {
 			this.createLevelNumberDisplay();
 			this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
 			this.createFailureConditionDisplay(gameEndDetector.failureDetector);
+
+			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
+			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
 		});
 
 
@@ -78,8 +78,9 @@ class SimulationScene implements Scene {
 			this.haveFitRenderer = true;
 		}
 
-		this.scoreRenderer.updateData()
-
+		if (this.scoreRenderer) {
+			this.scoreRenderer.updateData()
+		}
 		if (this.gameOverOverlay) {
 			this.gameOverOverlay.update();
 		}
