@@ -4,7 +4,6 @@ import DebugLogger = require('./debugLogger');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import LevelDef = require('./Simulation/Levels/levelDef');
-import Scene = require('./Scenes/scene');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
@@ -16,7 +15,7 @@ class AppEntry {
 	game: Phaser.Game;
 	simulationHandler: ClientSimulationHandler;
 
-	scene: Scene;
+	scene: SimulationScene;
 	sceneGroup: Phaser.Group;
 
 	constructor() {
@@ -60,8 +59,8 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 		
-		if (tickData.playerCount && (<SimulationScene>this.scene).playerCountRenderer) {
-			(<SimulationScene>this.scene).playerCountRenderer.updateData(tickData.playerCount); //TODO: Unhack assumption of child scene
+		if (tickData.playerCount && this.scene.playerCountRenderer) {
+			this.scene.playerCountRenderer.updateData(tickData.playerCount);
 		}
 	}
 

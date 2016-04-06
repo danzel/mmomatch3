@@ -10,7 +10,6 @@ import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
 import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
 import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
-import Scene = require('./scene');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
@@ -23,7 +22,7 @@ interface SimulationSceneConfiguration {
 	gameOverCountdown?: number;
 }
 
-class SimulationScene implements Scene {
+class SimulationScene {
 	private renderer: SimulationRenderer;
 	private playersOnSimulation: PlayersOnSimulation;
 	private requireMatchRenderer: RequireMatchRenderer;

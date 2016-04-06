@@ -11,7 +11,6 @@ import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import RequireMatch = require('./Simulation/requireMatch');
-import Scene = require('./Scenes/scene');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
@@ -21,7 +20,7 @@ import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
 class AppEntry {
 	game: Phaser.Game;
 	simulation: Simulation;
-	scene: Scene;
+	scene: SimulationScene;
 
 	constructor() {
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
