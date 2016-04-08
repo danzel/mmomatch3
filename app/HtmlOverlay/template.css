@@ -62,7 +62,7 @@ text {
 	left: 0;
 	right: 0;
 	
-	width: 540px;
+	width: 460px;
 	margin: 0 auto;
 	
 	text-align: center;
@@ -74,6 +74,6 @@ text {
 }
 
 .help-overlay .details {
-	font-size: 26px;
-	stroke-width: 4px;
+	font-size: 22px;
+	stroke-width: 6px;
 }
