@@ -13,7 +13,8 @@ module.exports = {
 	module: {
 		loaders: [
 			{ test: /\.json$/, loader: 'json' },
-			{ test: /\.tsx?$/, loader: 'ts-loader' }
+			{ test: /\.tsx?$/, loader: 'ts-loader' },
+			{ test: /\.handlebars$/, loader: 'handlebars-loader' }
 		]
 	},
 	plugins: []

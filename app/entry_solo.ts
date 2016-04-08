@@ -16,6 +16,7 @@ import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
 import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
+import HtmlOverlayManager = require('./HtmlOverlay/manager')
 
 class AppEntry {
 	game: Phaser.Game;
@@ -23,6 +24,7 @@ class AppEntry {
 	scene: SimulationScene;
 
 	constructor() {
+		new HtmlOverlayManager('overlay');
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
