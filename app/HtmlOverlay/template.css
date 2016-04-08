@@ -1,4 +1,46 @@
+text {
+	font-family: 'Chewy';
+
+	fill: white;
+
+	paint-order: stroke;
+	stroke: black;
+	stroke-linejoin: round;
+
+	text-anchor: middle;
+}
+
+.overlay-background {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay {
+	background-color: #8FB863;
+	border: 5px #6382B8 solid;
+	border-radius: 10px;
+	
+	padding: 0 20px;
+}
+
+.close-button {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+	
+	width: 60px;
+	height: 60px;	
+}
+
+
 .help-button {
+	cursor: pointer;
 	position: absolute;
 	right: 0px;
 	bottom: 0px;
@@ -9,14 +51,29 @@
 }
 
 .help-button-text {
-	font-family: 'Chewy';
 	font-size: 30px;
+	stroke-width: 6px;
+}
 
-	fill: white;
 
-	stroke: black;
-	stroke-width: 2px;
-	stroke-linejoin: round;
+.help-overlay {
+	position: absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
 	
-	text-anchor: middle;
+	width: 540px;
+	margin: 0 auto;
+	
+	text-align: center;
+}
+
+.help-overlay .heading {
+	font-size: 50px;
+	stroke-width: 8px;
+}
+
+.help-overlay .details {
+	font-size: 26px;
+	stroke-width: 4px;
 }

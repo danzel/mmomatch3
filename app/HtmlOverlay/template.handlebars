@@ -1,5 +1,31 @@
 <div class="help-button">
-	<svg>
-		<text x="50%" y="50%" class="help-button-text" dy="0.3em">Help</text>
-	</svg>
+	<svg><text class="help-button-text">Help</text></svg>
 </div>
+
+{{#if helpVisible}}
+<div class="overlay-background"></div>
+{{/if}}
+
+{{#if helpVisible}}
+<div class="overlay help-overlay">
+	<p><svg><text class="heading">Help</text></svg></p>
+	
+	<p>
+	<svg><text class="details">
+	Click and drag animals to match them.
+	</text></svg> 
+	<svg><text class="details">
+	You can only drag ones that will make a match.
+	</text></svg> </p>
+	<p>
+	<svg><text class="details">
+	You can zoom in and out using your mouse wheel.
+	</text></svg> 
+	<svg><text class="details">
+	Drag with the middle mouse button to move around.
+	</text></svg>
+	</p>
+	
+	<img class="close-button" src="/img/ui/close.svg" />
+</div>
+{{/if}}
