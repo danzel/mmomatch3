@@ -1,0 +1,22 @@
+.help-button {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	
+	background-color: rgba(255,255,255,0.5);
+	padding:10px;
+	border-radius: 20px 0 0 0;
+}
+
+.help-button-text {
+	font-family: 'Chewy';
+	font-size: 30px;
+
+	fill: white;
+
+	stroke: black;
+	stroke-width: 2px;
+	stroke-linejoin: round;
+	
+	text-anchor: middle;
+}

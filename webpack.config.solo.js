@@ -1,4 +1,6 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var path = require('path');
+
 module.exports = {
 	context: __dirname + path.sep + 'app',
 	entry: './entry_solo.ts',
@@ -14,8 +16,11 @@ module.exports = {
 		loaders: [
 			{ test: /\.json$/, loader: 'json' },
 			{ test: /\.tsx?$/, loader: 'ts-loader' },
-			{ test: /\.handlebars$/, loader: 'handlebars-loader' }
+			{ test: /\.handlebars$/, loader: 'handlebars-loader' },
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract("css-loader") }
 		]
 	},
-	plugins: []
+	plugins: [
+		new ExtractTextPlugin("bundle.css")
+	]
 };
