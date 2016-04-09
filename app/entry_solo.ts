@@ -2,6 +2,7 @@
 
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
+import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import GridFactory = require('./Simulation/Levels/gridFactory');
@@ -69,20 +70,25 @@ class AppEntry {
 	}
 }
 
-WebFont.load({
-	custom: {
-		families: ['Chewy'],
-		urls: ['img/skin/emojione-animals/chewy.css']
-	},
-    /*google: {
-		families: ['Chewy']
-    },*/
-	classes: false,
+if (GoodBrowser) {
+	WebFont.load({
+		custom: {
+			families: ['Chewy'],
+			urls: ['img/skin/emojione-animals/chewy.css']
+		},
+		/*google: {
+			families: ['Chewy']
+		},*/
+		classes: false,
 
-	active: function() {
-		new AppEntry();
-	},
-	inactive: function() {
-		new AppEntry();
-	}
-});
+		active: function() {
+			new AppEntry();
+		},
+		inactive: function() {
+			new AppEntry();
+		}
+	});
+} else {
+	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
+	window.location.replace('http://outdatedbrowser.com/');
+}

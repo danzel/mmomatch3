@@ -2,6 +2,7 @@ import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
 import DebugLogger = require('./debugLogger');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
+import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import LevelDef = require('./Simulation/Levels/levelDef');
@@ -80,20 +81,25 @@ class AppEntry {
 	}
 }
 
-WebFont.load({
-	/*custom: {
-		families: ['Chewy'],
-		urls: ['img/skin/emojione-animals/chewy.css']
-	},*/
-    google: {
-		families: ['Chewy']
-    },
-	classes: false,
+if (GoodBrowser) {
+	WebFont.load({
+		/*custom: {
+			families: ['Chewy'],
+			urls: ['img/skin/emojione-animals/chewy.css']
+		},*/
+		google: {
+			families: ['Chewy']
+		},
+		classes: false,
 
-	active: function() {
-		new AppEntry();
-	},
-	inactive: function() {
-		new AppEntry();
-	}
-});
+		active: function() {
+			new AppEntry();
+		},
+		inactive: function() {
+			new AppEntry();
+		}
+	});
+} else {
+	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
+	window.location.replace('http://outdatedbrowser.com/');
+}
