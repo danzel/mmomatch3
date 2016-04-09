@@ -1,5 +1,9 @@
-<div class="help-button">
-	<svg><text class="help-button-text">Help</text></svg>
+<div class="bottom-corner-buttons">
+	<div class="feedback-button">
+		<svg><text>Feedback</text></svg>
+	</div><div class="help-button">
+		<svg><text>Help</text></svg>
+	</div>
 </div>
 
 {{#if overlayVisible}}
@@ -27,6 +31,14 @@
 		</text></svg>
 	</p>
 	
+	<img class="close-button" src="/img/ui/close.svg" />
+</div>
+{{/if}}
+
+{{#if feedbackVisible}}
+<div class="overlay feedback-overlay">
+	<svg class="loading"><text>Loading...</text></svg>
+	<iframe src="https://docs.google.com/forms/d/1Oe6QG2DLKTS8yg25mxoMzNIHKozqy8HQ8Dpv15uvd_8/viewform?embedded=true" width="400" height="600" frameborder="0" marginheight="0" marginwidth="0" style="position: relative">Loading...</iframe>
 	<img class="close-button" src="/img/ui/close.svg" />
 </div>
 {{/if}}

@@ -4,10 +4,11 @@ require('./template.css');
 
 class UIState {
 	get overlayVisible() {
-		return this.helpVisible || this.customOverlayVisible;
+		return this.helpVisible || this.feedbackVisible || this.customOverlayVisible;
 	}
 	helpVisible = false;
-	
+	feedbackVisible = false;
+
 	customOverlayVisible = false;
 	customOverlayClass: string;
 	customOverlayContent: string;
@@ -41,6 +42,10 @@ class Manager {
 			this.uiState.helpVisible = !this.uiState.helpVisible;
 			this.render();
 		});
+		this.element.getElementsByClassName("feedback-button")[0].addEventListener('click', () => {
+			this.uiState.feedbackVisible = true;
+			this.render();
+		});
 
 		let overlay = this.element.getElementsByClassName("overlay-background")[0];
 		if (overlay) {
@@ -56,6 +61,8 @@ class Manager {
 	private closeOverlays() {
 		if (this.uiState.helpVisible) {
 			this.uiState.helpVisible = false;
+		} else if (this.uiState.feedbackVisible) {
+			this.uiState.feedbackVisible = false;
 		} else if (this.uiState.customOverlayVisible) {
 			this.uiState.customOverlayVisible = false;
 			this.uiState.customOverlayClosedCallback();

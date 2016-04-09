@@ -46,19 +46,23 @@ text {
 	height: 60px;	
 }
 
-
-.help-button {
-	cursor: pointer;
+.bottom-corner-buttons {
 	position: absolute;
 	right: 0px;
-	bottom: 0px;
-	
-	background-color: rgba(255,255,255,0.5);
-	padding:10px;
-	border-radius: 20px 0 0 0;
+	bottom: -6px;
 }
 
-.help-button-text {
+.bottom-corner-buttons div {
+	display: inline-block;
+	cursor: pointer;
+
+	background-color: rgba(255,255,255,0.5);
+	padding:10px;
+	border-radius: 20px 20px 0 0;
+	margin-right: 6px;
+}
+
+.bottom-corner-buttons text {
 	font-size: 30px;
 	stroke-width: 6px;
 }
@@ -66,7 +70,6 @@ text {
 
 .help-overlay {
 	width: 460px;
-	
 }
 
 .help-overlay .heading {
@@ -76,5 +79,19 @@ text {
 
 .help-overlay .details {
 	font-size: 22px;
+	stroke-width: 6px;
+}
+
+
+.feedback-overlay {
+	width: 400px;
+	padding: 0;
+}
+
+.feedback-overlay .loading {
+	position: absolute;
+	width:100%;
+	
+	font-size: 30px;
 	stroke-width: 6px;
 }
