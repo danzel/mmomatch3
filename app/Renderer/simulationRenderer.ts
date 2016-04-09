@@ -44,7 +44,7 @@ class SimulationRenderer {
 	}
 
 	fitToBounds(width: number, height: number) {
-		this.scale = Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableNode.PositionScalar;
+		this.scale = this.scaleClamp(Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableNode.PositionScalar);
 
 		let scaledWidth = this.scale * this.simulation.grid.width * MatchableNode.PositionScalar;
 		let scaledHeight = this.scale * this.simulation.grid.height * MatchableNode.PositionScalar;
@@ -69,7 +69,7 @@ class SimulationRenderer {
 	//x and y are in screen pixels
 	zoomAt(x: number, y: number, scaleMultiplier: number) {
 		let ourScale = this.scale;
-		let newScale = Math.min(1, Math.max(0.1, ourScale * scaleMultiplier));
+		let newScale = this.scaleClamp(ourScale * scaleMultiplier);
 
 		//translate y in to be relative to our position
 		x -= this.group.x;
@@ -90,6 +90,10 @@ class SimulationRenderer {
 
 		//Update scale
 		this.scale = newScale;
+	}
+	
+	private scaleClamp(scale: number): number {
+		return Math.min(1, Math.max(0.1, scale));
 	}
 
 	private keepOnScreen() {
