@@ -11,14 +11,14 @@ class LevelDefFactory {
 			return new LevelDef(levelNumber, 10, 10, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{x: 4, y: 4, amount: 1}, {x: 7, y: 4, amount: 1}]);
 		}
 		
-		if (levelNumber % 3 == 0) {
-			return new LevelDef(levelNumber, 20, 50, [], 8, FailureType.Time, VictoryType.Score, 180, 200 * 1000);
-		}
 		if (levelNumber % 3 == 1) {
 			return new LevelDef(levelNumber, 50, 25, [], 8, FailureType.Time, VictoryType.Score, 180, 200 * 1000);
 		}
 		if (levelNumber % 3 == 2) {
 			return new LevelDef(levelNumber, 30, 30, [], 8, FailureType.Swaps, VictoryType.Score, 100, 60 * 1000);
+		}
+		if (levelNumber % 3 == 0) {
+			return new LevelDef(levelNumber, 20, 50, [], 8, FailureType.Time, VictoryType.Score, 180, 200 * 1000);
 		}
 	}
 }
