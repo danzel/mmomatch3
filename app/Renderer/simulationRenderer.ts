@@ -33,7 +33,7 @@ class SimulationRenderer {
 
 		simulation.matchableTransformer.matchableTransforming.on(matchable => this.onMatchableTransforming(matchable));
 		simulation.disappearer.matchableTransformed.on(matchable => this.onMatchableTransformed(matchable));
-		
+
 		//Populate initial matchables from what's on the grid currently
 		for (let x = 0; x < this.simulation.grid.width; x++) {
 			var col = this.simulation.grid.cells[x];
@@ -62,31 +62,42 @@ class SimulationRenderer {
 	translate(x: number, y: number) {
 		this.group.x += x;
 		this.group.y += y;
+
+		this.keepOnScreen();
 	}
-	
+
 	//x and y are in screen pixels
 	zoomAt(x: number, y: number, scaleMultiplier: number) {
 		let ourScale = this.scale;
-		let newScale = ourScale * scaleMultiplier;
-		
+		let newScale = Math.min(1, Math.max(0.1, ourScale * scaleMultiplier));
+
 		//translate y in to be relative to our position
 		x -= this.group.x;
 		y -= this.group.y;
-		
+
 		//flip because maths
 		x = -x;
 		y = -y;
-		
+
 		//Work our the magic amount to move ourselves so the place where the mouse is stays where it is
 		let diffX = x / ourScale * (newScale - ourScale);
 		let diffY = y / ourScale * (newScale - ourScale);
-		
+
 		//Move by that amount
 		this.group.x += diffX;
 		this.group.y += diffY;
-		
+		this.keepOnScreen();
+
 		//Update scale
 		this.scale = newScale;
+	}
+
+	private keepOnScreen() {
+		this.group.x = Math.min(this.group.game.width - 100, this.group.x);
+		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + 100)
+
+		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - 100, this.group.y);
+		this.group.y = Math.max(100, this.group.y);
 	}
 
 	getPosition(): IXY {
@@ -117,7 +128,7 @@ class SimulationRenderer {
 	private onMatchableTransforming(matchable: Matchable) {
 		this.matchableNodes[matchable.id].updateForTransforming();
 	}
-	
+
 	private onMatchableTransformed(matchable: Matchable) {
 		this.matchableNodes[matchable.id].updateForTransformed();
 	}
