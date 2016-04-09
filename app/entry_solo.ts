@@ -5,6 +5,7 @@ import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import Grid = require('./Simulation/grid');
 import GridFactory = require('./Simulation/Levels/gridFactory');
+import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
@@ -16,15 +17,15 @@ import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
 import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
 import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
-import HtmlOverlayManager = require('./HtmlOverlay/manager')
 
 class AppEntry {
+	htmlOverlayManager: HtmlOverlayManager;
 	game: Phaser.Game;
 	simulation: Simulation;
 	scene: SimulationScene;
 
 	constructor() {
-		new HtmlOverlayManager('overlay');
+		this.htmlOverlayManager = new HtmlOverlayManager('overlay');
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -56,7 +57,7 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(level, simulation);
 		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true }, 0);
+		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true }, 0);
 
 		gameEndDetector.gameEnded.on((victory) => {
 			let catchAll = new TouchCatchAll(this.game);

@@ -3,6 +3,7 @@ import ClientSimulationHandler = require('./Client/clientSimulationHandler');
 import DebugLogger = require('./debugLogger');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
+import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import LevelDef = require('./Simulation/Levels/levelDef');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
@@ -11,6 +12,7 @@ import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
 
 class AppEntry {
+	htmlOverlayManager: HtmlOverlayManager;
 	client: Client;
 	game: Phaser.Game;
 	simulationHandler: ClientSimulationHandler;
@@ -19,6 +21,7 @@ class AppEntry {
 	sceneGroup: Phaser.Group;
 
 	constructor() {
+		this.htmlOverlayManager = new HtmlOverlayManager('overlay');
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -52,13 +55,13 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId);
 		//new DebugLogger(data.simulation);
 	}
 
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
-		
+
 		if (tickData.playerCount && this.scene.playerCountRenderer) {
 			this.scene.playerCountRenderer.updateData(tickData.playerCount);
 		}

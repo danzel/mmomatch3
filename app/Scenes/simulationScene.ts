@@ -3,6 +3,7 @@ import DetectorDisplay = require('./SimParts/detectorDisplay');
 import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
+import HtmlOverlayManager = require('../HtmlOverlay/manager')
 import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
@@ -38,7 +39,7 @@ class SimulationScene {
 
 	detectorDisplays = new Array<DetectorDisplay>();
 
-	constructor(private group: Phaser.Group, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number) {
+	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number) {
 		let simulationGroup = new Phaser.Group(group.game, group);
 		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
@@ -46,7 +47,7 @@ class SimulationScene {
 
 		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
 
-		this.levelDetailsOverlay = new LevelDetailsOverlay(new Phaser.Group(group.game, group), level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
+		this.levelDetailsOverlay = new LevelDetailsOverlay(htmlOverlayManager, level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
 		this.levelDetailsOverlay.becameClosed.on(() => {
 			this.createLevelNumberDisplay();
@@ -70,8 +71,6 @@ class SimulationScene {
 	}
 
 	update(): void {
-		this.levelDetailsOverlay.update();
-
 		if (!this.haveFitRenderer && this.group.game.width != 0) {
 			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
 			this.haveFitRenderer = true;

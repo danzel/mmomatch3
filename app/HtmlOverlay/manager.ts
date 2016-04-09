@@ -1,10 +1,17 @@
 declare function require(filename: string): (data: {}) => string;
-
 var template = <(data: UIState) => string>require('./template.handlebars');
 require('./template.css');
 
 class UIState {
+	get overlayVisible() {
+		return this.helpVisible || this.customOverlayVisible;
+	}
 	helpVisible = false;
+	
+	customOverlayVisible = false;
+	customOverlayClass: string;
+	customOverlayContent: string;
+	customOverlayClosedCallback: () => void;
 }
 
 class Manager {
@@ -14,6 +21,15 @@ class Manager {
 	constructor(containerId: string) {
 		this.element = document.getElementById(containerId);
 
+		this.render();
+	}
+	
+	showOverlay(overlayClass: string, overlayContent: string, closedCallback: () => void) {
+		this.uiState.customOverlayVisible = true;
+		this.uiState.customOverlayClass = overlayClass;
+		this.uiState.customOverlayContent = overlayContent;
+		this.uiState.customOverlayClosedCallback = closedCallback;
+		
 		this.render();
 	}
 
@@ -38,7 +54,12 @@ class Manager {
 	}
 	
 	private closeOverlays() {
-		this.uiState.helpVisible = false;
+		if (this.uiState.helpVisible) {
+			this.uiState.helpVisible = false;
+		} else if (this.uiState.customOverlayVisible) {
+			this.uiState.customOverlayClosedCallback();
+			this.uiState.customOverlayVisible = false;
+		}
 		this.render();
 	}
 
