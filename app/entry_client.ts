@@ -63,8 +63,8 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 
-		if (tickData.playerCount && this.scene.playerCountRenderer) {
-			this.scene.playerCountRenderer.updateData(tickData.playerCount);
+		if (tickData.playerCount) {
+			this.scene.playerCount = tickData.playerCount;
 		}
 	}
 

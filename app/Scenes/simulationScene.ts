@@ -30,6 +30,7 @@ class SimulationScene {
 	private input: InputHandler;
 
 	private haveFitRenderer = false;
+	private playerCountValue = 1;
 
 	scoreRenderer: ScoreRenderer;
 	playerCountRenderer: PlayerCountRenderer;
@@ -66,8 +67,15 @@ class SimulationScene {
 			}
 
 			//TODO: How do we get the timer / click events out of here
-			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, victory, config.gameOverCountdown);
+			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, victory, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
 		});
+	}
+	
+	set playerCount(playerCount: number) {
+		this.playerCountValue = playerCount;
+		if (this.playerCountRenderer) {
+			this.playerCountRenderer.updateData(playerCount);
+		}
 	}
 
 	update(): void {

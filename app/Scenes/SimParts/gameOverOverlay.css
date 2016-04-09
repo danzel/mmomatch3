@@ -1,10 +1,17 @@
 .game-over-overlay {
 	width: 480px;
+
+	pointer-events: none;
 }
 
 .game-over-overlay .header {
 	font-size: 70px;
 	stroke-width: 8px;
+}
+
+.game-over-overlay .middle {
+	font-size: 28px;
+	stroke-width: 6px;
 }
 
 .game-over-overlay .bottom {
