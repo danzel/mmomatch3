@@ -1,7 +1,10 @@
 class PlayerCountRenderer {
 	textStyle: Phaser.PhaserTextStyle = {
+		font: 'Chewy',
+		fontSize: 22,
 		fill: 'white',
-		fontSize: 16,
+		strokeThickness: 4,
+		
 		boundsAlignH: 'right'
 	};
 
@@ -9,14 +12,7 @@ class PlayerCountRenderer {
 	text: Phaser.Text;
 
 	constructor(private group: Phaser.Group) {
-		this.background = new Phaser.Graphics(this.group.game);
-		this.background.beginFill(0x000000, 0.5);
-		this.background.drawRect(0, 0, 1, 1);
-		this.background.endFill();
-		this.background.scale.y = 16 + 8;
-
-		group.add(this.background);
-		this.text = new Phaser.Text(this.group.game, -2, 2, "Players: ?", this.textStyle);
+		this.text = new Phaser.Text(this.group.game, -4, 4, "Players: ?", this.textStyle);
 		this.text.setTextBounds(0, 0, 0, 0);
 		this.group.add(this.text);
 	}
@@ -24,9 +20,7 @@ class PlayerCountRenderer {
 	updateData(playerCount: number) {
 		this.text.text = "Players: " + playerCount;
 		
-		this.background.scale.x = -this.text.width - 4;
-		
-		this.group.position.x = this.group.game.width;
+		this.group.position.x = this.group.game.width - 4;
 	}
 }
 
