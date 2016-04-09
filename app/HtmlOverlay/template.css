@@ -62,7 +62,7 @@ text {
 	margin-right: 6px;
 }
 
-.bottom-corner-buttons text {
+.bottom-corner-buttons .text {
 	font-size: 30px;
 	stroke-width: 6px;
 }

@@ -24,13 +24,13 @@ class Manager {
 
 		this.render();
 	}
-	
+
 	showOverlay(overlayClass: string, overlayContent: string, closedCallback: () => void) {
 		this.uiState.customOverlayVisible = true;
 		this.uiState.customOverlayClass = overlayClass;
 		this.uiState.customOverlayContent = overlayContent;
 		this.uiState.customOverlayClosedCallback = closedCallback;
-		
+
 		this.render();
 	}
 
@@ -55,9 +55,9 @@ class Manager {
 		if (closeButton) {
 			closeButton.addEventListener('click', () => this.closeOverlays());
 		}
-		
+
 	}
-	
+
 	private closeOverlays() {
 		if (this.uiState.helpVisible) {
 			this.uiState.helpVisible = false;
@@ -70,6 +70,13 @@ class Manager {
 		this.render();
 	}
 
+	private NS = {
+		svg: "http://www.w3.org/2000/svg",
+		xlink: "http://www.w3.org/1999/xlink"
+	};
+
+	private idCounter = 0;
+
 	private fixSvgs(parent: HTMLElement) {
 
 		let texts = parent.getElementsByTagName("text");
@@ -79,6 +86,26 @@ class Manager {
 			t.setAttribute("x", "50%");
 			t.setAttribute("y", "50%");
 			t.setAttribute("dy", "0.3em");
+
+			//If you are on a crappy browser (IE11) that doesn't support paint-order, fix it
+			//ref http://radar.oreilly.com/2015/11/elegant-outlines-with-svg-paint-order.html
+			if ((<any>t).style["paint-order"] === undefined) {
+				t.id = t.id || ("z" + (this.idCounter++));
+				var g1 = document.createElementNS(this.NS.svg, "g");    //<5>
+				g1.setAttribute("class", t.getAttribute("class"));
+				t.removeAttribute("class");
+				t.parentNode.insertBefore(g1, t);
+
+				var g2 = document.createElementNS(this.NS.svg, "g");    //<6>
+				(<any>g2).style["fill"] = "none";
+				g2.insertBefore(t, null);
+				g1.insertBefore(g2, null);
+
+				var u = document.createElementNS(this.NS.svg, "use");   //<7>
+				u.setAttributeNS(this.NS.xlink, "href", "#" + t.id);
+				(<any>u).style["stroke-width"] = "0";
+				g1.insertBefore(u, null);
+			}
 		}
 
 		let svgs = parent.getElementsByTagName("svg")
