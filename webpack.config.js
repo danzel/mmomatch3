@@ -1,4 +1,5 @@
 var path = require('path');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -15,10 +16,13 @@ module.exports = {
 	module: {
 		loaders: [
 			{ test: /\.json$/, loader: 'json' },
-			{ test: /\.tsx?$/, loader: 'ts-loader' }
+			{ test: /\.tsx?$/, loader: 'ts-loader' },
+			{ test: /\.handlebars$/, loader: 'handlebars-loader' },
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract("css-loader") }
 		]
 	},
 	plugins: [
+		new ExtractTextPlugin("bundle.css"),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: '../dist/index.template.html',
