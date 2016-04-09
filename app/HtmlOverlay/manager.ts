@@ -57,8 +57,8 @@ class Manager {
 		if (this.uiState.helpVisible) {
 			this.uiState.helpVisible = false;
 		} else if (this.uiState.customOverlayVisible) {
-			this.uiState.customOverlayClosedCallback();
 			this.uiState.customOverlayVisible = false;
+			this.uiState.customOverlayClosedCallback();
 		}
 		this.render();
 	}
@@ -82,7 +82,6 @@ class Manager {
 
 	private fixSvg(svg: SVGElement): void {
 		let bbox = (<SVGLocatable><any>svg).getBBox();
-		console.log('bbox', bbox);
 
 		svg.setAttribute("width", Math.ceil(4 + bbox.width) + "px");
 		svg.setAttribute("height", Math.ceil(2 + bbox.height) + "px");

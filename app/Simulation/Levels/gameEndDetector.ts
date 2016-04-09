@@ -22,7 +22,7 @@ class GameEndDetector {
 	victoryDetector: Detector;
 
 	gameHasEnded = false;
-	private gameEndedInVictory: boolean;
+	gameEndedInVictory: boolean;
 
 	constructor(private gameEndConditions: GameEndConditions, private simulation: Simulation) {
 		this.failureDetector = this.createFailureDetector();

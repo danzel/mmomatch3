@@ -1,0 +1,13 @@
+.game-over-overlay {
+	width: 480px;
+}
+
+.game-over-overlay .header {
+	font-size: 70px;
+	stroke-width: 8px;
+}
+
+.game-over-overlay .bottom {
+	font-size: 22px;
+	stroke-width: 4px;
+}

@@ -59,12 +59,10 @@ class AppEntry {
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true }, 0);
 
-		gameEndDetector.gameEnded.on((victory) => {
-			let catchAll = new TouchCatchAll(this.game);
-			sceneGroup.add(catchAll.sprite);
-
-			catchAll.pointerUp.on(() => {
+		gameEndDetector.gameEnded.on((victory: boolean) => {
+			this.scene.gameOverOverlay.clicked.on(() => {
 				sceneGroup.destroy();
+				console.log('creating');
 				this.createSimulationScene(levelNumber + (victory ? 1 : 0));
 			});
 		});

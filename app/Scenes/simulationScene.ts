@@ -66,7 +66,7 @@ class SimulationScene {
 			}
 
 			//TODO: How do we get the timer / click events out of here
-			this.gameOverOverlay = new GameOverOverlay(new Phaser.Group(group.game, group), victory, config.gameOverCountdown);
+			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, victory, config.gameOverCountdown);
 		});
 	}
 

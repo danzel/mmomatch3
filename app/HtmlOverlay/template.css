@@ -22,6 +22,7 @@ text {
 
 .overlay {
 	position: absolute;
+	top: 60px;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
@@ -64,8 +65,6 @@ text {
 
 
 .help-overlay {
-	top: 20px;
-	
 	width: 460px;
 	
 }
