@@ -82,6 +82,10 @@ text {
 	stroke-width: 6px;
 }
 
+.help-overlay .emojione {
+	stroke-width: 4px;	
+}
+
 
 .feedback-overlay {
 	width: 400px;
