@@ -6,6 +6,9 @@ class RequireSprite {
 	sprite: Phaser.Sprite;
 	constructor(parentGroup: Phaser.Group, public req: RequireMatch) {
 		this.sprite = parentGroup.game.add.sprite(req.x * MatchableNode.PositionScalar, -(1 + req.y) * MatchableNode.PositionScalar, 'requirematch', null, parentGroup);
+		
+		parentGroup.game.add.tween(this.sprite.position)
+			.to({y: this.sprite.position.y - 5}, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
 	}
 }
 
