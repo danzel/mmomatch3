@@ -41,6 +41,11 @@ class MatchableNode {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
 
+		//Stop the failedToSwap tween if we start falling
+		if (this.matchable.yMomentum != 0) {
+			this.sprite.game.tweens.removeFrom(this.sprite);
+		}
+
 		if (this.matchable.transformTo && this.overlay) {
 			this.overlay.alpha = this.matchable.disappearingPercent;
 		} else {
@@ -71,6 +76,12 @@ class MatchableNode {
 	}
 
 	failedToSwap(direction: { x: number, y: number }) {
+
+		//Any of these mean there is something more important happening than showing this animation
+		if (this.matchable.isDisappearing || this.matchable.beingSwapped || this.matchable.yMomentum != 0) {
+			return;
+		}
+
 		//Wobble back and forwards a bit
 		let startX = this.sprite.x;
 		let startY = this.sprite.y;
