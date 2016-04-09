@@ -18,6 +18,13 @@ class MatchableNode {
 		this.sprite = parent.create(0, 0, MatchableNode.getSpriteKey(matchable.color, matchable.type));
 
 		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
+		
+		if (matchable.type == Type.GetToBottom) {
+			this.sprite.scale.set(0.9, 0.9);
+			parent.game.add.tween(this.sprite.scale)
+				.to({x: 1.1, y: 1.1}, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
+				.start();
+		}
 
 		this.updatePosition();
 	}
