@@ -3,9 +3,6 @@ import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('./matchableNode');
 
-const xOffset = MatchableNode.PositionScalar / 2;
-const yOffset = MatchableNode.PositionScalar / 2;
-
 interface IXY {
 	x: number;
 	y: number;
@@ -17,11 +14,8 @@ class SimulationRenderer {
 	private matchableNodes: { [id: number]: MatchableNode }
 
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
-		this.matchablesGroup = group.game.add.group(this.group);
+		this.matchablesGroup = group.game.add.spriteBatch(this.group);
 		this.matchableNodes = {};
-
-		this.matchablesGroup.x = xOffset;
-		this.matchablesGroup.y = -yOffset;
 
 		this.scale = 0.2;
 		this.group.y = 400;

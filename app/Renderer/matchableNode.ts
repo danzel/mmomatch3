@@ -3,8 +3,12 @@ import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
 import Type = require('../Simulation/type');
 
+const positionScalar = 100;
+const xOffset = positionScalar / 2;
+const yOffset = positionScalar / 2;
+
 class MatchableNode {
-	public static PositionScalar = 100;
+	public static PositionScalar = positionScalar;
 
 	matchable: Matchable;
 
@@ -38,22 +42,29 @@ class MatchableNode {
 	}
 
 	updatePosition(swap?: Swap) {
-		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar;
-		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar;
+		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar + xOffset;
+		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar - yOffset;
 
 		//Stop the failedToSwap tween if we start falling
 		if (this.matchable.yMomentum != 0) {
 			this.sprite.game.tweens.removeFrom(this.sprite);
 		}
 
-		if (this.matchable.transformTo && this.overlay) {
-			this.overlay.alpha = this.matchable.disappearingPercent;
-		} else {
-			if (this.overlay) {
+		if (this.overlay) {
+			if (this.matchable.transformTo) {
+				this.overlay.alpha = this.matchable.disappearingPercent;
+			} else {
 				this.overlay.alpha = 1;
 			}
-			this.sprite.alpha = 1 - this.matchable.disappearingPercent;
 		}
+
+		if (!this.matchable.transformTo || this.replacementSprite) {
+			this.sprite.alpha = 1 - this.matchable.disappearingPercent;
+			if (this.overlay) {
+				this.overlay.alpha = this.sprite.alpha;
+			}
+		}
+
 		if (this.replacementSprite) {
 			this.replacementSprite.alpha = 1 - this.sprite.alpha;
 			this.replacementSprite.x = this.sprite.x;
@@ -68,6 +79,10 @@ class MatchableNode {
 
 			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
 			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
+		}
+		
+		if (this.overlay) {
+			this.overlay.position.set(this.sprite.position.x, this.sprite.position.y);
 		}
 	}
 
@@ -111,7 +126,7 @@ class MatchableNode {
 				frame = 'balloverlays/horizontal.png';
 				break;
 			case Type.AreaClear3x3WhenMatched:
-				frame = 'balloverlaysareaclear.png';
+				frame = 'balloverlays/areaclear.png';
 				break;
 			default:
 				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.transformTo])
@@ -119,7 +134,7 @@ class MatchableNode {
 
 		let child = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', frame);
 		child.anchor.set(0.5, 0.5);
-		this.sprite.addChild(child);
+		this.sprite.parent.addChild(child);
 		this.overlay = child;
 
 		child.game.add.tween(child.scale)
