@@ -1,10 +1,11 @@
 declare function require(filename: string): (data: {}) => string;
 var template = <(data: UIState) => string>require('./template.handlebars');
+var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
 
 class UIState {
 	get overlayVisible() {
-		return this.helpVisible || this.feedbackVisible || this.customOverlayVisible;
+		return this.helpVisible || this.customOverlayVisible;
 	}
 	helpVisible = false;
 	feedbackVisible = false;
@@ -17,10 +18,14 @@ class UIState {
 
 class Manager {
 	element: HTMLElement;
+	feedbackElement: HTMLElement;
 	uiState = new UIState();
 
-	constructor(containerId: string) {
-		this.element = document.getElementById(containerId);
+	private feedbackVisible = false;
+
+	constructor() {
+		this.element = document.getElementById('overlay');
+		this.feedbackElement = document.getElementById('feedback-overlay');
 
 		this.render();
 	}
@@ -37,6 +42,14 @@ class Manager {
 	render() {
 		this.element.innerHTML = template(this.uiState);
 		this.fixSvgs(this.element);
+		
+		if (this.feedbackVisible != this.uiState.feedbackVisible) {
+			this.feedbackVisible = this.uiState.feedbackVisible;
+			this.feedbackElement.innerHTML = feedbackTemplate(this.uiState);
+			this.fixSvgs(this.feedbackElement);
+			
+			this.addEventHandlers(this.feedbackElement);
+		}
 
 		this.element.getElementsByClassName("help-button")[0].addEventListener('click', () => {
 			this.uiState.helpVisible = !this.uiState.helpVisible;
@@ -46,23 +59,27 @@ class Manager {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
+		this.addEventHandlers(this.element);
+	}
+	
+	private addEventHandlers(element: HTMLElement) {
 
-		let overlay = this.element.getElementsByClassName("overlay-background")[0];
+		let overlay = element.getElementsByClassName("overlay-background")[0];
 		if (overlay) {
 			overlay.addEventListener('click', () => this.closeOverlays());
 		}
-		let closeButton = this.element.getElementsByClassName("close-button")[0];
+		let closeButton = element.getElementsByClassName("close-button")[0];
 		if (closeButton) {
 			closeButton.addEventListener('click', () => this.closeOverlays());
 		}
-
+		
 	}
 
 	private closeOverlays() {
-		if (this.uiState.helpVisible) {
-			this.uiState.helpVisible = false;
-		} else if (this.uiState.feedbackVisible) {
+		if (this.uiState.feedbackVisible) {
 			this.uiState.feedbackVisible = false;
+		} else if (this.uiState.helpVisible) {
+			this.uiState.helpVisible = false;
 		} else if (this.uiState.customOverlayVisible) {
 			this.uiState.customOverlayVisible = false;
 			this.uiState.customOverlayClosedCallback();

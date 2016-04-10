@@ -22,7 +22,7 @@ class AppEntry {
 	sceneGroup: Phaser.Group;
 
 	constructor() {
-		this.htmlOverlayManager = new HtmlOverlayManager('overlay');
+		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
