@@ -8,14 +8,14 @@ class MatchableNode {
 
 	matchable: Matchable;
 
-	sprite: Phaser.Sprite;
-	replacementSprite: Phaser.Sprite;
-	overlay: Phaser.Sprite;
+	sprite: Phaser.Image;
+	replacementSprite: Phaser.Image;
+	overlay: Phaser.Image;
 
 	constructor(matchable: Matchable, parent: Phaser.Group) {
 		this.matchable = matchable;
 
-		this.sprite = parent.create(0, 0, MatchableNode.getSpriteKey(matchable.color, matchable.type));
+		this.sprite = parent.game.add.image(0, 0, 'atlas', MatchableNode.getSpriteFrame(matchable.color, matchable.type), parent);
 
 		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
 
@@ -29,12 +29,12 @@ class MatchableNode {
 		this.updatePosition();
 	}
 
-	static getSpriteKey(color: Color, type: Type): string {
+	static getSpriteFrame(color: Color, type: Type): string {
 		if (type == Type.GetToBottom) {
-			return "ball_gettobottom";
+			return "balls/gettobottom.png";
 		}
 
-		return 'ball_' + (color + 1);
+		return 'balls/' + (color + 1) + ".png";
 	}
 
 	updatePosition(swap?: Swap) {
@@ -96,28 +96,28 @@ class MatchableNode {
 
 	updateForTransforming() {
 		if (this.matchable.transformTo == Type.ColorClearWhenSwapped) {
-			this.replacementSprite = new Phaser.Sprite(this.sprite.game, 0, 0, 'ball_colorclear');
+			this.replacementSprite = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', 'balls/colorclear.png');
 			this.replacementSprite.anchor.set(0.5, 0.5);
 			this.sprite.parent.addChild(this.replacementSprite);
 			return;
 		}
 
-		let key: string;
+		let frame: string;
 		switch (this.matchable.transformTo) {
 			case Type.VerticalClearWhenMatched:
-				key = 'overlay_vertical';
+				frame = 'balloverlays/vertical.png';
 				break;
 			case Type.HorizontalClearWhenMatched:
-				key = 'overlay_horizontal';
+				frame = 'balloverlays/horizontal.png';
 				break;
 			case Type.AreaClear3x3WhenMatched:
-				key = 'overlay_areaclear';
+				frame = 'balloverlaysareaclear.png';
 				break;
 			default:
 				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.transformTo])
 		}
 
-		let child = new Phaser.Sprite(this.sprite.game, 0, 0, key);
+		let child = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', frame);
 		child.anchor.set(0.5, 0.5);
 		this.sprite.addChild(child);
 		this.overlay = child;
