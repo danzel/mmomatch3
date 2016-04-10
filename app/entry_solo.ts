@@ -9,7 +9,7 @@ import GridFactory = require('./Simulation/Levels/gridFactory');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDef = require('./Simulation/Levels/levelDef');
-import LevelDefFactory = require('./Simulation/Levels/levelDefFactory');
+import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import RequireMatch = require('./Simulation/requireMatch');
@@ -50,7 +50,7 @@ class AppEntry {
 	}
 
 	private createSimulationScene(levelNumber: number) {
-		let loaded = new DefaultLevelAndSimulationProvider(new LevelDefFactory()).loadLevel(levelNumber);
+		let loaded = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug()).loadLevel(levelNumber);
 
 		let level = loaded.level;
 		let simulation = loaded.simulation;

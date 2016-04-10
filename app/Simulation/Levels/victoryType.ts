@@ -6,7 +6,10 @@ enum VictoryType {
 	RequireMatch,
 	
 	/** LevelDef.VictoryValue is the column index to start the thing at the top of */
-	GetThingToBottom
+	GetThingToBottom,
+	
+	/** Not a real VictoryType, just for random gen */
+	Count
 }
 
 export = VictoryType;

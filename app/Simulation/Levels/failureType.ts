@@ -1,6 +1,9 @@
 enum FailureType {
 	Time,
-	Swaps
+	Swaps,
+	
+	/** Not a real FailureType, just for random gen */
+	Count
 }
 
 export = FailureType;
