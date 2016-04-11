@@ -4,16 +4,8 @@ import LevelDefFactory = require('./levelDefFactory');
 import RandomGenerator = require('../randomGenerator');
 import VictoryType = require('./victoryType');
 
-class LevelDefFactoryPreview1 implements LevelDefFactory {
-	levelCount = 100;
-	levels = new Array<LevelDef>();
-
-	constructor() {
-		for (let i = 0; i < this.levelCount; i++) {
-			this.levels.push(this.generateLevel(i + 1));
-			this.debugPrintLevel(this.levels[i]);
-		}
-	}
+class LevelDefFactoryDynamic1 implements LevelDefFactory {
+	playerCount = 10;
 
 	private debugPrintLevel(level: LevelDef) {
 		console.log(level.levelNumber, level.width + 'x' + level.height, level.colorCount);
@@ -21,7 +13,9 @@ class LevelDefFactoryPreview1 implements LevelDefFactory {
 	}
 
 	getLevel(levelNumber: number): LevelDef {
-		return this.levels[levelNumber - 1]; //levelNumber starts 1
+		let level = this.generateLevel(levelNumber);
+		this.debugPrintLevel(level);
+		return level;
 	}
 
 	private generateLevel(levelNumber: number): LevelDef {
@@ -34,8 +28,8 @@ class LevelDefFactoryPreview1 implements LevelDefFactory {
 		let colorCount: number = this.generateColorCount(levelNumber, size, gen);
 
 		let holes = this.generateHoles(levelNumber, size, victoryType, gen);
-		let victoryValue = this.generateVictoryValue(levelNumber, victoryType, size, holes, gen);
-		let failureValue = this.generateFailureValue(levelNumber, failureType, size, victoryType, victoryValue, gen);
+		let failureValue = this.generateFailureValue(levelNumber, failureType, gen);
+		let victoryValue = this.generateVictoryValue(levelNumber, victoryType, failureType, failureValue, colorCount, size, holes, gen);
 
 		return new LevelDef(levelNumber, size.width, size.height, holes, colorCount, failureType, victoryType, failureValue, victoryValue);
 	}
@@ -130,23 +124,67 @@ class LevelDefFactoryPreview1 implements LevelDefFactory {
 		}
 	}
 
-	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator): any {
+	private difficultyForColorCount(colorCount: number): number {
+		switch (colorCount) {
+			case 6:
+				return 3;
+			case 7:
+				return 2;
+			case 8:
+				return 1;
+			case 9:
+				return 0.95;
+			case 10:
+				return 0.9;
+			case 11:
+				return 0.85;
+		}
+	}
+	
+	private specificDifficultyScale(victoryType: VictoryType, failureType: FailureType, colorCount: number): number {
+		let res = 1;
+		
+		if (victoryType == VictoryType.Matches || victoryType == VictoryType.Score) {
+			res *= this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount);
+		}
+		if (victoryType == VictoryType.RequireMatch) {
+			res *= this.difficultyForColorCount(colorCount);
+		}
+		
+		return res;
+	}
+	
+	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, failureType: FailureType, failureValue: any, colorCount: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator): any {
+
+		let colorCountScale = this.difficultyForColorCount(colorCount);
+		let failureScale: number;
+		switch (failureType) {
+			case FailureType.Swaps:
+				failureScale = <number>failureValue;
+				break;
+			case FailureType.Time:
+				failureScale = <number>failureValue * ((this.playerCount + 0.5) / 1.5);
+				break;
+		}
+		let randomDifficultyScale = gen.intExclusive(80, 150) / 100;
+		let specificDifficultyScale = this.specificDifficultyScale(victoryType, failureType, colorCount);
+		let scale = colorCountScale * failureScale * randomDifficultyScale * specificDifficultyScale;
+
 		switch (victoryType) {
 			case VictoryType.GetThingToBottom:
+				//TODO: We may need to recalculate the height based on what the failure is
 				return Math.floor(size.width / 2);
 			case VictoryType.Matches:
-				return gen.intExclusive(100, 100 + 4 * size.width * size.height)
+				return Math.floor(10 * scale);
 			case VictoryType.RequireMatch:
-				return this.generateRequireMatchVictoryValue(levelNumber, size, holes, gen);
+				return this.generateRequireMatchVictoryValue(levelNumber, size, holes, gen, Math.floor(scale / 3));
 			case VictoryType.Score:
-				return 1000 * gen.intExclusive(100, 100 + size.height * 50);
+				return Math.floor(scale * 300);
 		}
 	}
 
-	private generateRequireMatchVictoryValue(levelNumber: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator): Array<{ x: number, y: number, amount: number }> {
+	private generateRequireMatchVictoryValue(levelNumber: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator, count: number): Array<{ x: number, y: number, amount: number }> {
 		let res = new Array<{ x: number, y: number, amount: number }>();
-
-		let count = gen.intExclusive(10, size.width * size.height / 2 - holes.length);
 
 		for (let i = 0; i < count; i++) {
 			let x = gen.intExclusive(0, size.width);
@@ -164,43 +202,14 @@ class LevelDefFactoryPreview1 implements LevelDefFactory {
 		return arr.some(i => i.x == x && i.y == y);
 	}
 
-	private generateFailureValue(levelNumber: number, failureType: FailureType, size: { width: number, height: number }, victoryType: VictoryType, victoryValue: any, gen: RandomGenerator): any {
-		
-		//TODO: Color Count dominates. 6 = combos everywhere, 10 = no combos
-		
+	private generateFailureValue(levelNumber: number, failureType: FailureType, gen: RandomGenerator): any {
 		switch (failureType) {
 			case FailureType.Swaps:
-				return Math.round(this.estimateRequiredSwaps(victoryType, victoryValue, size, gen) / 10) * 10;
+				return 10 * gen.intExclusive(5, 51); //50 - 500
 			case FailureType.Time:
-				return Math.round(this.estimateRequiredTime(victoryType, victoryValue, size, gen) / 30) * 30;
-		}
-	}
-
-	private estimateRequiredSwaps(victoryType: VictoryType, victoryValue: any, size: { width: number, height: number }, gen: RandomGenerator): number {
-		switch (victoryType) {
-			case VictoryType.GetThingToBottom:
-				return size.height * gen.intExclusive(1, 10) / 5;
-			case VictoryType.Matches:
-				return <number>victoryValue / gen.intExclusive(3, 12);
-			case VictoryType.RequireMatch:
-				return 10 + (<[]>victoryValue).length / gen.intExclusive(2, 5);
-			case VictoryType.Score:
-				return <number>victoryValue / gen.intExclusive(1000, 3000);
-		}
-	}
-
-	private estimateRequiredTime(victoryType: VictoryType, victoryValue: any, size: { width: number, height: number }, gen: RandomGenerator): number {
-		switch (victoryType) {
-			case VictoryType.GetThingToBottom:
-				return size.height * gen.intExclusive(10, 40) / 10;
-			case VictoryType.Matches:
-				return <number>victoryValue / gen.intExclusive(3, 20);
-			case VictoryType.RequireMatch:
-				return 30 + (<[]>victoryValue).length * gen.intExclusive(1, 5) / 6;
-			case VictoryType.Score:
-				return 10 + <number>victoryValue / gen.intExclusive(20000, 30000);
+				return gen.intExclusive(1, 5) * 30; //30 - 120
 		}
 	}
 }
 
-export = LevelDefFactoryPreview1;
+export = LevelDefFactoryDynamic1;
