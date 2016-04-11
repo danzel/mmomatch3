@@ -125,12 +125,9 @@ class LevelDefFactoryPreview1 implements LevelDefFactory {
 	}
 
 	private addIfNotInAlready(holes: Array<{ x: number, y: number }>, x: number, y: number) {
-		holes.forEach((hole) => {
-			if (hole.x == x && hole.y == y) {
-				return;
-			}
-		});
-		holes.push({ x: x, y: y });
+		if (!holes.some((hole) => hole.x == x && hole.y == y)) {
+			holes.push({ x: x, y: y });
+		}
 	}
 
 	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator): any {
