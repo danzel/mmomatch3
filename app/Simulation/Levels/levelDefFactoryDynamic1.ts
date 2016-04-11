@@ -114,7 +114,6 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 			}
 		}
 
-		//console.log(levelNumber, hasCornerCuts, hasHorizontalCuts, hasVerticalCuts);
 		return res;
 	}
 
@@ -127,25 +126,26 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 	private difficultyForColorCount(colorCount: number): number {
 		switch (colorCount) {
 			case 6:
-				return 3;
+				return 5;
 			case 7:
-				return 2;
+				return 3;
 			case 8:
-				return 1;
+				return 2;
 			case 9:
-				return 0.95;
+				return 1.5;
 			case 10:
-				return 0.9;
+				return 1.3;
 			case 11:
-				return 0.85;
+				return 1;
 		}
 	}
 	
-	private specificDifficultyScale(victoryType: VictoryType, failureType: FailureType, colorCount: number): number {
+	private specificDifficultyScale(victoryType: VictoryType, failureType: FailureType, colorCount: number, size: { width: number, height: number }): number {
 		let res = 1;
 		
 		if (victoryType == VictoryType.Matches || victoryType == VictoryType.Score) {
-			res *= this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount);
+			res *= this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount);
+			res *= size.height / 30;
 		}
 		if (victoryType == VictoryType.RequireMatch) {
 			res *= this.difficultyForColorCount(colorCount);
@@ -167,17 +167,18 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 				break;
 		}
 		let randomDifficultyScale = gen.intExclusive(80, 150) / 100;
-		let specificDifficultyScale = this.specificDifficultyScale(victoryType, failureType, colorCount);
+		let specificDifficultyScale = this.specificDifficultyScale(victoryType, failureType, colorCount, size);
 		let scale = colorCountScale * failureScale * randomDifficultyScale * specificDifficultyScale;
 
 		switch (victoryType) {
 			case VictoryType.GetThingToBottom:
 				//TODO: We may need to recalculate the height based on what the failure is
+				size.height = Math.floor(scale / 8);
 				return Math.floor(size.width / 2);
 			case VictoryType.Matches:
-				return Math.floor(10 * scale);
+				return Math.floor(1.2 * scale);
 			case VictoryType.RequireMatch:
-				return this.generateRequireMatchVictoryValue(levelNumber, size, holes, gen, Math.floor(scale / 3));
+				return this.generateRequireMatchVictoryValue(levelNumber, size, holes, gen, Math.floor(scale / 7));
 			case VictoryType.Score:
 				return Math.floor(scale * 300);
 		}
