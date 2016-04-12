@@ -27,7 +27,7 @@ class GameOverOverlay {
 	update() {
 		if (this.countdown) {
 			this.countdown = Math.max(0, this.countdown - this.time.physicsElapsed);
-			this.countdownText = (this.victory ? "Next Level in " : "Restarting in ") + this.countdown.toFixed(1) + " seconds";
+			this.countdownText = "Next Level in " + this.countdown.toFixed(1) + " seconds";
 			
 			this.render();
 		}

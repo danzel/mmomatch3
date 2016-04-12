@@ -63,7 +63,7 @@ class Server {
 		}
 
 		this.gameEndDetector.gameEnded.on((victory) => {
-			setTimeout(() => this.loadLevel(levelNumber + (victory ? 1 : 0)), 5000);
+			setTimeout(() => this.loadLevel(levelNumber + 1), 5000);
 		});
 
 		this.levelStarted.trigger({ level: this.level, simulation: this.simulation, gameEndDetector: this.gameEndDetector });
