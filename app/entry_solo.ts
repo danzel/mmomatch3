@@ -21,12 +21,14 @@ import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
+	levelAndSimulationProvider: DefaultLevelAndSimulationProvider;
 	game: Phaser.Game;
 	simulation: Simulation;
 	scene: SimulationScene;
 
 	constructor() {
 		this.htmlOverlayManager = new HtmlOverlayManager();
+		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -50,7 +52,7 @@ class AppEntry {
 	}
 
 	private createSimulationScene(levelNumber: number) {
-		let loaded = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug()).loadLevel(levelNumber);
+		let loaded = this.levelAndSimulationProvider.loadLevel(levelNumber);
 
 		let level = loaded.level;
 		let simulation = loaded.simulation;
