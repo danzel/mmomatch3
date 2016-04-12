@@ -40,13 +40,23 @@ class ServerLogger {
 			colorCount: data.level.colorCount,
 			holes: data.level.holes.length,
 			
-			failureType: data.level.failureType,
+			failureType: FailureType[data.level.failureType],
 			failureValue: this.encodeFailureValue(data.level.failureType, data.level.failureValue),
-			victoryType: data.level.victoryType,
+			victoryType: VictoryType[data.level.victoryType],
 			victoryValue: this.encodeVictoryValue(data.level.victoryType, data.level.victoryValue),
 			
 			playerCount: this.server.getPlayerCount(),
 			extra: data.level.extraData
+		});
+		
+		data.gameEndDetector.gameEnded.on(victory => {
+			this.logger.log('info', "Game Over", {
+				levelNumber: data.level.levelNumber,
+				victory: victory,
+				playerCount: this.server.getPlayerCount(),
+				swapsUsed: data.simulation.swapHandler.totalSwapsCount,
+				timeUsed: data.simulation.timeRunning
+			});
 		})
 	}
 	
