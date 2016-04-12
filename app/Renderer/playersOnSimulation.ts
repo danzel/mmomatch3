@@ -10,7 +10,7 @@ class PlayerSprite {
 	lastUpdate: number;
 
 	constructor(parentGroup: Phaser.Group, private playerId: number, x: number, y: number) {
-		this.sprite = parentGroup.game.add.sprite(x, y, 'player', null, parentGroup);
+		this.sprite = parentGroup.game.add.sprite(x, y, 'atlas', 'player.png', parentGroup);
 		this.sprite.anchor.set(0.5);
 
 		//Semi bad random color generator.
