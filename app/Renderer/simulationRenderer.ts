@@ -1,7 +1,9 @@
+import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('./matchableNode');
+import Type = require('../Simulation/type');
 
 interface IXY {
 	x: number;
@@ -10,6 +12,7 @@ interface IXY {
 
 class SimulationRenderer {
 	private matchablesGroup: Phaser.Group;
+	private getToBottomHighlighter: GetToBottomHighlighter;
 
 	private matchableNodes: { [id: number]: MatchableNode }
 
@@ -86,7 +89,7 @@ class SimulationRenderer {
 
 		this.keepOnScreen();
 	}
-	
+
 	private scaleClamp(scale: number): number {
 		return Math.min(1, Math.max(0.1, scale));
 	}
@@ -117,6 +120,10 @@ class SimulationRenderer {
 
 	private onMatchableSpawned(matchable: Matchable) {
 		this.matchableNodes[matchable.id] = new MatchableNode(matchable, this.matchablesGroup);
+
+		if (matchable.type == Type.GetToBottom) {
+			this.getToBottomHighlighter = new GetToBottomHighlighter(this.group, matchable);
+		}
 	}
 
 	private onMatchableDisappeared(matchable: Matchable) {
@@ -139,7 +146,11 @@ class SimulationRenderer {
 		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableNode.PositionScalar, -this.simulation.grid.height * MatchableNode.PositionScalar);
 	}
 
-	update(dt: Number) {
+	update(dt: number) {
+		if (this.getToBottomHighlighter) {
+			this.getToBottomHighlighter.update(dt);
+		}
+		
 		for (let key in this.matchableNodes) {
 			var node = this.matchableNodes[key];
 
