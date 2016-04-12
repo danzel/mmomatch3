@@ -37,6 +37,9 @@ class MatchableNode {
 		if (type == Type.GetToBottom) {
 			return "balls/gettobottom.png";
 		}
+		if (type == Type.ColorClearWhenSwapped) {
+			return 'balls/colorclear.png';
+		}
 
 		return 'balls/' + (color + 1) + ".png";
 	}
