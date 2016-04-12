@@ -80,10 +80,11 @@ class SimulationRenderer {
 		//Move by that amount
 		this.group.x += diffX;
 		this.group.y += diffY;
-		this.keepOnScreen();
 
 		//Update scale
 		this.scale = newScale;
+
+		this.keepOnScreen();
 	}
 	
 	private scaleClamp(scale: number): number {
