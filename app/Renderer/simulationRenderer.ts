@@ -1,3 +1,4 @@
+import FailedToSwapAnimator = require('./failedToSwapAnimator');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
@@ -5,7 +6,7 @@ import Matchable = require('../Simulation/matchable');
 import MatchableNode = require('./matchableNode');
 import Type = require('../Simulation/type');
 
-interface IXY {
+interface XY {
 	x: number;
 	y: number;
 }
@@ -13,6 +14,7 @@ interface IXY {
 class SimulationRenderer {
 	private matchablesGroup: Phaser.Group;
 	private getToBottomHighlighter: GetToBottomHighlighter;
+	private failedToSwapAnimator = new FailedToSwapAnimator();
 
 	private matchableNodes: { [id: number]: MatchableNode }
 
@@ -50,9 +52,9 @@ class SimulationRenderer {
 		this.group.y = height - (height - scaledHeight) / 2;
 	}
 
-	failedToSwap(matchable: Matchable, direction: IXY) {
+	failedToSwap(matchable: Matchable, direction: XY) {
 		if (matchable) {
-			this.matchableNodes[matchable.id].failedToSwap(direction);
+			this.failedToSwapAnimator.failedToSwap(matchable, this.matchableNodes[matchable.id], direction);
 		}
 	}
 
@@ -102,7 +104,7 @@ class SimulationRenderer {
 		this.group.y = Math.max(100, this.group.y);
 	}
 
-	getPosition(): IXY {
+	getPosition(): XY {
 		return this.group;
 	}
 
@@ -166,6 +168,8 @@ class SimulationRenderer {
 			node.updatePosition();
 		}*/
 
+
+		this.failedToSwapAnimator.update(dt);
 
 		var swaps = this.simulation.swapHandler.swaps;
 		for (let i = 0; i < swaps.length; i++) {

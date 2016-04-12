@@ -48,11 +48,6 @@ class MatchableNode {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar + xOffset;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar - yOffset;
 
-		//Stop the failedToSwap tween if we start falling
-		if (this.matchable.yMomentum != 0) {
-			this.sprite.game.tweens.removeFrom(this.sprite);
-		}
-
 		if (this.overlay) {
 			if (this.matchable.transformTo) {
 				this.overlay.alpha = this.matchable.disappearingPercent;
@@ -74,7 +69,7 @@ class MatchableNode {
 			this.replacementSprite.position.y = this.sprite.position.y;
 		}
 	}
-	
+
 	updatePositionForSwap(swap: Swap) {
 		let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
 
@@ -83,29 +78,6 @@ class MatchableNode {
 
 		this.sprite.position.x += diffX * swap.percent * MatchableNode.PositionScalar;
 		this.sprite.position.y -= diffY * swap.percent * MatchableNode.PositionScalar;
-	}
-
-	private static easingFunction(p: number): number {
-		return Math.sin(p * Math.PI * 2) * (1 - p * p);
-	}
-
-	failedToSwap(direction: { x: number, y: number }) {
-
-		//Any of these mean there is something more important happening than showing this animation
-		if (this.matchable.isDisappearing || this.matchable.beingSwapped || this.matchable.yMomentum != 0) {
-			return;
-		}
-
-		//Wobble back and forwards a bit
-		let startX = this.sprite.x;
-		let startY = this.sprite.y;
-
-		this.sprite.bringToTop();
-
-		this.sprite.game.add.tween(this.sprite).to({
-			x: startX + direction.x * 0.5 * MatchableNode.PositionScalar,
-			y: startY - direction.y * 0.5 * MatchableNode.PositionScalar
-		}, 300, MatchableNode.easingFunction, true);
 	}
 
 	updateForTransforming() {
