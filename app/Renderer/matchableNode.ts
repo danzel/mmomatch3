@@ -29,6 +29,12 @@ class MatchableNode {
 				.to({ x: 1.1, y: 1.1 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
 				.start();
 		}
+		
+		if (matchable.type == Type.VerticalClearWhenMatched || matchable.type == Type.HorizontalClearWhenMatched || matchable.type == Type.AreaClear3x3WhenMatched) {
+			this.addOverlay(matchable.type);
+		} else if (matchable.transformTo) {
+			this.addOverlay(matchable.transformTo);
+		}
 
 		this.updatePosition();
 	}
@@ -85,11 +91,15 @@ class MatchableNode {
 			this.replacementSprite = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', 'balls/colorclear.png');
 			this.replacementSprite.anchor.set(0.5, 0.5);
 			this.sprite.parent.addChild(this.replacementSprite);
-			return;
+		} else {
+			this.addOverlay(this.matchable.transformTo);
 		}
+	}
+
+	private addOverlay(type: Type) {
 
 		let frame: string;
-		switch (this.matchable.transformTo) {
+		switch (type) {
 			case Type.VerticalClearWhenMatched:
 				frame = 'balloverlays/vertical.png';
 				break;
