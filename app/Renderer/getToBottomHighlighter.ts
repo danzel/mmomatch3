@@ -22,9 +22,11 @@ class GetToBottomHighlighter {
 
 		let time = 3000;
 		parentGroup.game.add.tween(hi.scale)
-			.to({ x: 9, y: 9 }, time, null, true, 0, -1);
+			.to({ x: 9, y: 9 }, time, null, true, 0, -1)
+			.repeatDelay(1000);
 		parentGroup.game.add.tween(hi)
-			.to({ alpha: 0 }, time, null, true, 0, -1);
+			.to({ alpha: 0 }, time, null, true, 0, -1)
+			.repeatDelay(1000);
 		this.highlighter = hi;
 
 		this.update(0);
