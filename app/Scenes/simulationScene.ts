@@ -94,10 +94,12 @@ class SimulationScene {
 		if (this.config.inChargeOfSimulation && this.levelDetailsOverlay.closed) {
 			this.simulation.update();
 		}
-		this.renderer.update(this.group.game.time.physicsElapsed);
 		this.playersOnSimulation.update();
 	}
-
+	
+	preRender(): void {
+		this.renderer.update(this.group.game.time.physicsElapsed);
+	}
 
 	createLevelNumberDisplay() {
 		this.group.game.add.text(5, 5, "Level " + this.level.levelNumber, {

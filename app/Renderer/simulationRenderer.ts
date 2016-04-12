@@ -150,19 +150,29 @@ class SimulationRenderer {
 		if (this.getToBottomHighlighter) {
 			this.getToBottomHighlighter.update(dt);
 		}
-		
+
+		//Optimised version of the commented out bit below
+		let cells = this.simulation.grid.cells;
+		for (let x = 0; x < cells.length; x++) {
+			let col = cells[x];
+			for (let y = 0; y < col.length; y++) {
+				let m = col[y];
+				this.matchableNodes[m.id].updatePosition();
+			}
+		}
+		/*
 		for (let key in this.matchableNodes) {
 			var node = this.matchableNodes[key];
-
 			node.updatePosition();
-		}
+		}*/
+
 
 		var swaps = this.simulation.swapHandler.swaps;
 		for (let i = 0; i < swaps.length; i++) {
 			var swap = swaps[i];
 
-			this.matchableNodes[swap.left.id].updatePosition(swap);
-			this.matchableNodes[swap.right.id].updatePosition(swap);
+			this.matchableNodes[swap.left.id].updatePositionForSwap(swap);
+			this.matchableNodes[swap.right.id].updatePositionForSwap(swap);
 		}
 	}
 

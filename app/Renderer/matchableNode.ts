@@ -44,7 +44,7 @@ class MatchableNode {
 		return 'balls/' + (color + 1) + ".png";
 	}
 
-	updatePosition(swap?: Swap) {
+	updatePosition() {
 		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar + xOffset;
 		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar - yOffset;
 
@@ -70,23 +70,19 @@ class MatchableNode {
 
 		if (this.replacementSprite) {
 			this.replacementSprite.alpha = 1 - this.sprite.alpha;
-			this.replacementSprite.x = this.sprite.x;
-			this.replacementSprite.y = this.sprite.y;
+			this.replacementSprite.position.x = this.sprite.position.x;
+			this.replacementSprite.position.y = this.sprite.position.y;
 		}
+	}
+	
+	updatePositionForSwap(swap: Swap) {
+		let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
 
-		if (swap) {
-			let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
+		var diffX = otherMatchable.x - this.matchable.x;
+		var diffY = otherMatchable.y - this.matchable.y;
 
-			var diffX = otherMatchable.x - this.matchable.x;
-			var diffY = otherMatchable.y - this.matchable.y;
-
-			this.sprite.x += diffX * swap.percent * MatchableNode.PositionScalar;
-			this.sprite.y -= diffY * swap.percent * MatchableNode.PositionScalar;
-		}
-		
-		if (this.overlay) {
-			this.overlay.position.set(this.sprite.position.x, this.sprite.position.y);
-		}
+		this.sprite.position.x += diffX * swap.percent * MatchableNode.PositionScalar;
+		this.sprite.position.y -= diffY * swap.percent * MatchableNode.PositionScalar;
 	}
 
 	private static easingFunction(p: number): number {
@@ -138,6 +134,7 @@ class MatchableNode {
 		let child = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', frame);
 		child.anchor.set(0.5, 0.5);
 		this.sprite.parent.addChild(child);
+		child.position = this.sprite.position; //HACK - we always want these to be in the same place
 		this.overlay = child;
 
 		child.game.add.tween(child.scale)

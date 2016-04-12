@@ -50,6 +50,9 @@ class AppEntry {
 	update() {
 		this.scene.update();
 	}
+	preRender() {
+		this.scene.preRender();
+	}
 
 	private createSimulationScene(levelNumber: number) {
 		let loaded = this.levelAndSimulationProvider.loadLevel(levelNumber);

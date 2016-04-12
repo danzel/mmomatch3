@@ -79,6 +79,12 @@ class AppEntry {
 			this.scene.update();
 		}
 	}
+	
+	preRender() {
+		if (this.scene) {
+			this.scene.preRender();
+		}
+	}
 }
 
 if (GoodBrowser) {
