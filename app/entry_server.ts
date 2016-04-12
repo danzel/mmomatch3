@@ -4,9 +4,11 @@ import BetterInterval = require('./Server/betterInterval');
 import DatadogStats = require('./Server/datadogStats');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
+import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
 import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
 import ServerConfig = require('./Server/serverConfig');
+import ServerLogger = require('./Server/serverLogger');
 import SocketServer = require('./Server/socketServer');
 
 class AppEntry {
@@ -16,8 +18,10 @@ class AppEntry {
 	fps = 60;
 
 	constructor(config: ServerConfig) {
-		this.server = new Server(new SocketServer(new Serializer(), config), new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug()), this.framesPerTick);
+		let levelDefFactory = new LevelDefFactoryDynamic1();
+		this.server = new Server(new SocketServer(new Serializer(), config), new DefaultLevelAndSimulationProvider(levelDefFactory), this.framesPerTick);
 		new DatadogStats(this.server);
+		new ServerLogger(this.server);
 
 		this.server.loadLevel(1);
 	}

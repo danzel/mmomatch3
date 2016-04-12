@@ -3,6 +3,7 @@ import GridFactory = require('../Simulation/Levels/gridFactory');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDefFactory = require('../Simulation/Levels/levelDefFactory');
+import LevelDefFactoryDynamic = require('../Simulation/Levels/levelDefFactoryDynamic');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import RandomGenerator = require('../Simulation/randomGenerator');
 import RequireMatch = require('../Simulation/requireMatch');
@@ -16,7 +17,12 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 
 	}
 
-	loadLevel(levelNumber: number): { level: LevelDef, simulation: Simulation } {
+	loadLevel(levelNumber: number, playerCount?: number): { level: LevelDef, simulation: Simulation } {
+		
+		if (playerCount && this.levelDefFactory instanceof LevelDefFactoryDynamic) {
+			(<LevelDefFactoryDynamic>this.levelDefFactory).playerCount = playerCount;
+		}
+		
 		let level = this.levelDefFactory.getLevel(levelNumber);
 		let grid = GridFactory.createGrid(level);
 		let matchableFactory = new MatchableFactory();

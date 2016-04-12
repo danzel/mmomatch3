@@ -1,10 +1,10 @@
 import FailureType = require('./failureType');
 import LevelDef = require('./levelDef');
-import LevelDefFactory = require('./levelDefFactory');
+import LevelDefFactoryDynamic = require('./levelDefFactoryDynamic');
 import RandomGenerator = require('../randomGenerator');
 import VictoryType = require('./victoryType');
 
-class LevelDefFactoryDynamic1 implements LevelDefFactory {
+class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	playerCount = 10;
 
 	private debugPrintLevel(level: LevelDef) {
@@ -20,6 +20,8 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 
 	private generateLevel(levelNumber: number): LevelDef {
 		let gen = new RandomGenerator(levelNumber);
+		
+		let extraData = <any>{ playerCount: this.playerCount };
 
 		//Do these first as they don't use variable random numbers
 		let victoryType = <VictoryType>gen.intExclusive(0, VictoryType.Count);
@@ -29,9 +31,11 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 
 		let holes = this.generateHoles(levelNumber, size, victoryType, gen);
 		let failureValue = this.generateFailureValue(levelNumber, failureType, gen);
-		let victoryValue = this.generateVictoryValue(levelNumber, victoryType, failureType, failureValue, colorCount, size, holes, gen);
+		let victoryValue = this.generateVictoryValue(levelNumber, victoryType, failureType, failureValue, colorCount, size, holes, gen, extraData);
 
-		return new LevelDef(levelNumber, size.width, size.height, holes, colorCount, failureType, victoryType, failureValue, victoryValue);
+		let level = new LevelDef(levelNumber, size.width, size.height, holes, colorCount, failureType, victoryType, failureValue, victoryValue);
+		level.extraData = extraData;
+		return level;
 	}
 
 	private generateSize(levelNumber: number, victoryType: VictoryType, failureType: FailureType, gen: RandomGenerator): { width: number, height: number } {
@@ -154,7 +158,7 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 		return res;
 	}
 	
-	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, failureType: FailureType, failureValue: any, colorCount: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator): any {
+	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, failureType: FailureType, failureValue: any, colorCount: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator, extraData: any): any {
 
 		let colorCountScale = this.difficultyForColorCount(colorCount);
 		let failureScale: number;
@@ -169,6 +173,9 @@ class LevelDefFactoryDynamic1 implements LevelDefFactory {
 		let randomDifficultyScale = gen.intExclusive(80, 150) / 100;
 		let specificDifficultyScale = this.specificDifficultyScale(victoryType, failureType, colorCount, size);
 		let scale = colorCountScale * failureScale * randomDifficultyScale * specificDifficultyScale;
+		
+		extraData.difficulty = randomDifficultyScale;
+		extraData.scale = scale;
 
 		switch (victoryType) {
 			case VictoryType.GetThingToBottom:

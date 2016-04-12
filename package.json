@@ -15,6 +15,7 @@
     "node-dogstatsd": "0.0.6",
     "phaser": "^2.4.4",
     "primus": "^4.0.4",
+    "winston": "^2.2.0",
     "ws": "^1.0.0"
   },
   "devDependencies": {

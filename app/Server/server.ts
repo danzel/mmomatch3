@@ -47,7 +47,7 @@ class Server {
 	getPlayerCount(): number { return Object.keys(this.clients).length; }
 
 	loadLevel(levelNumber: number) {
-		let level = this.levelAndSimulationProvider.loadLevel(levelNumber);
+		let level = this.levelAndSimulationProvider.loadLevel(levelNumber, this.getPlayerCount());
 		this.level = level.level;
 		this.simulation = level.simulation;
 
