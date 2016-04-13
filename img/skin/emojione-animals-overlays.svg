@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
@@ -15,7 +16,7 @@
    id="svg6097"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="drawing.svg">
+   sodipodi:docname="emojione-animals-overlays.svg">
   <defs
      id="defs6099" />
   <sodipodi:namedview
@@ -26,15 +27,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="172.6945"
-     inkscape:cy="541.80818"
+     inkscape:cx="322.16379"
+     inkscape:cy="287.06305"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1264"
-     inkscape:window-height="1401"
-     inkscape:window-x="4160"
-     inkscape:window-y="0"
+     inkscape:window-height="1041"
+     inkscape:window-x="2335"
+     inkscape:window-y="91"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata6102">
@@ -44,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -318,5 +319,102 @@
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cccc" />
     </g>
+    <rect
+       style="opacity:1;fill:#6c1ab5;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6817"
+       width="172.81296"
+       height="161.05412"
+       x="291.76822"
+       y="582.54944" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:0.13690479;stroke:#ffffff;stroke-width:2.13431978;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path6815"
+       cx="374.6293"
+       cy="677.8407"
+       r="48.932842"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\gettobottom_highlight.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\gettobottom_repeat.png"
+       style="opacity:1;fill:#c28fef;fill-opacity:0;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6829"
+       width="54"
+       height="270"
+       x="526.78571"
+       y="541.64795" />
+    <image
+       y="649.64795"
+       x="526.78571"
+       id="image6827"
+       xlink:href="data:image/png;base64,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 LtNl+hDS/wfZi989udRDHwAAAABJRU5ErkJggg== "
+       preserveAspectRatio="none"
+       height="54"
+       width="54"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\gettobottom_repeat.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       y="640.32568"
+       x="186.00003"
+       height="90.159988"
+       width="6"
+       id="rect5094"
+       style="opacity:1;fill:#979797;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       style="opacity:1;fill:#979797;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5096"
+       width="6"
+       height="90.159988"
+       x="158.00003"
+       y="640.32568" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       y="640.32568"
+       x="130"
+       height="90.159988"
+       width="6"
+       id="rect5098"
+       style="opacity:1;fill:#979797;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       style="opacity:1;fill:#979797;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5100"
+       width="6"
+       height="90.159988"
+       x="214.00003"
+       y="640.32568" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       y="636.2193"
+       x="125.99999"
+       height="16"
+       width="98"
+       id="rect5102"
+       style="opacity:1;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\dave\Code\mmomatch3\img\skin\emojione-animals\requirematch.png"
+       style="opacity:1;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5104"
+       width="98"
+       height="16"
+       x="125.99999"
+       y="718.2193" />
   </g>
 </svg>
