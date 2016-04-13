@@ -12,7 +12,7 @@ import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
-import ServerConfig = require('./serverConfig');
+import SocketServerConfig = require('./config/socketServerConfig');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 
@@ -25,7 +25,7 @@ class SocketServer extends ServerComms {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer, config: ServerConfig) {
+	constructor(private serializer: Serializer, config: SocketServerConfig) {
 		super();
 		this.app = express();
 		this.app.use(express.static('dist'));

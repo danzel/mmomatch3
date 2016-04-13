@@ -1,3 +1,9 @@
 {
-	"httpPort": 8091
+	"server": {
+		"fps": 60,
+		"framesPerTick": 3
+	},
+	"socketServer": {
+		"httpPort": 8091
+	}
 }

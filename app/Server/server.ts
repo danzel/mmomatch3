@@ -15,6 +15,7 @@ import PlayerProvider = require('../Simulation/Scoring/playerProvider');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
+import ServerConfig = require('./config/serverConfig');
 import Simulation = require('../Simulation/simulation');
 import SpawnData = require('../DataPackets/spawnData');
 import Swap = require('../Simulation/swap');
@@ -37,8 +38,7 @@ class Server {
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
 
-	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private framesPerTick: number) {
-		//TOOD: Event listeners
+	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig) {
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
@@ -52,7 +52,7 @@ class Server {
 		this.simulation = level.simulation;
 
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
-		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.framesPerTick);
+		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.config.framesPerTick);
 		//new DebugLogger(this.simulation);
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
