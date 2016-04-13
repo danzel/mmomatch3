@@ -4,7 +4,7 @@ class TimePeriod {
 	startTime: number;
 	endTime: number;
 
-	constructor(public startDateJSON: string, endDateJSON: string) {
+	constructor(public startDateJSON: string, public endDateJSON: string) {
 		this.startTime = new Date(startDateJSON).getTime();
 		this.endTime = new Date(endDateJSON).getTime();
 	}
@@ -44,6 +44,17 @@ class AvailabilityManager {
 		for (let i = 0; i < this.schedule.length; i++) {
 			if (this.schedule[i].startTime > dateTime) {
 				return this.schedule[i].startDateJSON;
+			}
+		}
+
+		return null;
+	}
+
+	currentAvailableEndJSON(date: Date): string {
+		let dateTime = date.getTime();
+		for (let i = 0; i < this.schedule.length; i++) {
+			if (this.schedule[i].contains(dateTime)) {
+				return this.schedule[i].endDateJSON;
 			}
 		}
 

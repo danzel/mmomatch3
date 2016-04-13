@@ -11,7 +11,8 @@ class BootData {
 		public grid: GridData,
 		public swapHandler: SwapHandlerData,
 		public simulationData: SimulationData,
-		public requireMatchData: RequireMatchData) {
+		public requireMatchData: RequireMatchData,
+		public endAvailabilityDate: string) {
 	}
 }
 

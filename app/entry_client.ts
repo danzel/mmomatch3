@@ -55,7 +55,7 @@ class AppEntry {
 		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }) {
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }) {
 		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
@@ -63,7 +63,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId, data.endAvailabilityDate);
 		//new DebugLogger(data.simulation);
 	}
 

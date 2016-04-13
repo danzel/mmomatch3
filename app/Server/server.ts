@@ -71,7 +71,7 @@ class Server {
 		//new DebugLogger(this.simulation);
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
-		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
+		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
 		for (let i in this.clients) {
 			bootData.playerId = this.clients[i].id;
 			this.serverComms.sendBoot(bootData, i);
@@ -154,7 +154,7 @@ class Server {
 		this.serverComms.sendTick(tickData, Object.keys(this.clients));
 
 		if (this.clientsRequiringBoot.length > 0) {
-			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation);
+			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
 			this.clientsRequiringBoot.forEach((id) => {
 				var player = this.playerProvider.createPlayer();
 				bootData.playerId = player.id;

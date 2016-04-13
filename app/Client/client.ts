@@ -14,7 +14,7 @@ import UnavailableData = require('../DataPackets/unavailableData');
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 
-	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
@@ -35,7 +35,8 @@ class Client {
 				level: level,
 				simulation: simulation,
 				gameEndDetector: new GameEndDetector(level, simulation),
-				playerId: bootData.playerId
+				playerId: bootData.playerId,
+				endAvailabilityDate: bootData.endAvailabilityDate ? new Date(bootData.endAvailabilityDate) : null
 			});
 		} else if (packet.packetType == PacketType.Tick) {
 			this.tickReceived.trigger(<TickData>packet.data);
