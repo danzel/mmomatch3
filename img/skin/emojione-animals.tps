@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -210,6 +210,8 @@
             <key type="filename">emojione-animals/balls/9.png</key>
             <key type="filename">emojione-animals/balls/colorclear.png</key>
             <key type="filename">emojione-animals/balls/gettobottom.png</key>
+            <key type="filename">emojione-animals/circle.png</key>
+            <key type="filename">emojione-animals/gettobottom_repeat.png</key>
             <key type="filename">emojione-animals/player.png</key>
             <key type="filename">emojione-animals/requirematch.png</key>
             <struct type="IndividualSpriteSettings">
