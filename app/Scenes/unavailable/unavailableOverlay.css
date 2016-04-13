@@ -1,0 +1,35 @@
+.unavailable-overlay {
+	width: 480px;
+}
+.unavailable-overlay .header {
+	font-size: 36px;
+	stroke-width: 8px;
+}
+
+.unavailable-overlay .middle {
+	font-size: 28px;
+	stroke-width: 6px;
+}
+
+.unavailable-overlay .small {
+	font-size: 18px;
+	stroke-width: 4px;
+}
+
+.unavailable-overlay .feedback {
+	font-size: 28px;
+	text-decoration: underline;
+	stroke-width: 6px;
+}
+
+svg.feedback {
+	transform: scale(1);
+	animation: pulsate 2s ease-in-out;
+	animation-iteration-count: infinite; 
+}
+
+@keyframes pulsate {
+	0% { transform: scale(1); }
+	50% { transform: translate(0, 8px) scale(1.5); }
+	100% { transform: scale(1); }
+}

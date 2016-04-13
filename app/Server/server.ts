@@ -86,6 +86,7 @@ class Server {
 
 	private connectionReceived(id: string) {
 		if (!this.currentlyAvailable) {
+			//TODO: We should sorta be able to push people straight in to this.clients if we aren't available, this would mean they'd boot faster
 			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
 		}
 		this.clientsRequiringBoot.push(id);

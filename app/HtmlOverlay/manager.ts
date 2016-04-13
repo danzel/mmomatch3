@@ -38,6 +38,11 @@ class Manager {
 
 		this.render();
 	}
+	
+	hideOverlay() {
+		this.uiState.customOverlayVisible = false;
+		this.render();
+	}
 
 	render() {
 		this.element.innerHTML = template(this.uiState);

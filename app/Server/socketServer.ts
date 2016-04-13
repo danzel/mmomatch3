@@ -116,7 +116,7 @@ class SocketServer extends ServerComms {
 		if (id) {
 			this.clients[id].write(serialized);
 		} else {
-			for (var id in this.clients) {
+			for (let id in this.clients) {
 				this.clients[id].write(serialized);
 			}
 		}

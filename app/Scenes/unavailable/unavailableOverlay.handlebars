@@ -1,0 +1,16 @@
+<p><svg><text class="header">Currently Offline</text></svg></p>
+{{#if hasNext}}
+<p>
+	<svg><text class="middle">Next game is {{next}}</text></svg>
+	<svg><text class="small">The game will load automatically at this time</text></svg>
+</p>
+{{else}}
+	<p><svg><text class="middle">Not sure when we'll return...</text></svg></p>
+{{/if}}
+
+{{#if gameRecently}}
+<p><a href="https://docs.google.com/forms/d/1Oe6QG2DLKTS8yg25mxoMzNIHKozqy8HQ8Dpv15uvd_8/viewform" target="_blank">
+	<svg><text class="middle ib">If you just played, please fill in our</text></svg>
+	<svg class="feedback"><text class="feedback">feedback form!</text></svg>
+</a></p>
+{{/if}}

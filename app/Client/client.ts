@@ -9,12 +9,14 @@ import Serializer = require('../Serializer/serializer')
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
+import UnavailableData = require('../DataPackets/unavailableData');
 
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }>();
 	tickReceived = new LiteEvent<TickData>();
+	unavailableReceived = new LiteEvent<UnavailableData>();
 
 	constructor(private clientComms: ClientComms) {
 		clientComms.dataReceived.on(data => this.dataReceived(data))
@@ -37,6 +39,8 @@ class Client {
 			});
 		} else if (packet.packetType == PacketType.Tick) {
 			this.tickReceived.trigger(<TickData>packet.data);
+		} else if (packet.packetType == PacketType.Unavailable) {
+			this.unavailableReceived.trigger(<UnavailableData>packet.data);
 		} else {
 			console.warn('Received unexpected packet ', packet);
 		}

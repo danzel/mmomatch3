@@ -11,9 +11,12 @@ import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
 import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
+import UnavailableData = require('./DataPackets/unavailableData');
+import UnavailableOverlay = require('./Scenes/unavailable/unavailableOverlay');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
+	unavailableOverlay: UnavailableOverlay;
 	client: Client;
 	game: Phaser.Game;
 	simulationHandler: ClientSimulationHandler;
@@ -23,6 +26,8 @@ class AppEntry {
 
 	constructor() {
 		this.htmlOverlayManager = new HtmlOverlayManager();
+		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
+		
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -47,9 +52,11 @@ class AppEntry {
 		this.client = new Client(socket);
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
+		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
 	}
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number }) {
+		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
 		}
@@ -66,6 +73,17 @@ class AppEntry {
 		if (tickData.playerCount) {
 			this.scene.playerCount = tickData.playerCount;
 		}
+	}
+	
+	unavailableReceived(data: UnavailableData) {
+		if (this.sceneGroup) {
+			this.sceneGroup.destroy();
+			this.sceneGroup = null;
+		}
+		this.simulationHandler = null;
+		this.scene = null;
+		
+		this.unavailableOverlay.show(data.nextAvailableDate);
 	}
 
 	update() {
