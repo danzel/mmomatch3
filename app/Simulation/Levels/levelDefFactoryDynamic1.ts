@@ -24,7 +24,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let extraData = <any>{ playerCount: this.playerCount };
 
 		//Do these first as they don't use variable random numbers
-		let victoryType = <VictoryType>gen.intExclusive(0, VictoryType.Count);
+		let victoryType = <VictoryType>(levelNumber % VictoryType.Count);//gen.intExclusive(0, VictoryType.Count);
 		let failureType = <FailureType>gen.intExclusive(0, FailureType.Count);
 		let size = this.generateSize(levelNumber, victoryType, failureType, gen);
 		let colorCount: number = this.generateColorCount(levelNumber, size, gen);
@@ -46,7 +46,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		}
 		if (victoryType == VictoryType.RequireMatch) {
 			//Don't be too big so players can find the things
-			return { width: gen.intExclusive(10, 50), height: gen.intExclusive(10, 50) };
+			return { width: gen.intExclusive(10, 80), height: gen.intExclusive(10, 80) };
 		}
 
 		return { width: gen.intExclusive(10, 250), height: gen.intExclusive(10, 80) };
