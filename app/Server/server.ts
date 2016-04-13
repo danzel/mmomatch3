@@ -1,3 +1,4 @@
+import AvailabilityManager = require('./availabilityManager');
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import DebugLogger = require('../debugLogger');
@@ -23,13 +24,18 @@ import SwapClientData = require('../DataPackets/swapClientData');
 import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
 import TickDataFactory = require('./tickDataFactory');
+import UnavailableData = require('../DataPackets/unavailableData');
+
 
 class Server {
 	levelStarted = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
 
+	private availabilityManager: AvailabilityManager;
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
 	private tickDataFactory: TickDataFactory;
+
+	private currentlyAvailable: boolean;
 
 	private level: LevelDef;
 	private simulation: Simulation;
@@ -39,6 +45,9 @@ class Server {
 	private clients: { [id: string]: Player } = {};
 
 	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig) {
+		this.availabilityManager = new AvailabilityManager(config);
+		this.currentlyAvailable = this.availabilityManager.availableAt(new Date())
+
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
@@ -46,7 +55,13 @@ class Server {
 
 	getPlayerCount(): number { return Object.keys(this.clients).length; }
 
-	loadLevel(levelNumber: number) {
+	public start() {
+		if (this.currentlyAvailable) {
+			this.loadLevel(this.config.initialLevel);
+		}
+	}
+
+	private loadLevel(levelNumber: number) {
 		let level = this.levelAndSimulationProvider.loadLevel(levelNumber, this.getPlayerCount());
 		this.level = level.level;
 		this.simulation = level.simulation;
@@ -70,6 +85,9 @@ class Server {
 	}
 
 	private connectionReceived(id: string) {
+		if (!this.currentlyAvailable) {
+			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
+		}
 		this.clientsRequiringBoot.push(id);
 	}
 
@@ -107,6 +125,21 @@ class Server {
 	}
 
 	update() {
+		let nowAvailable = this.availabilityManager.availableAt(new Date());
+		if (!this.currentlyAvailable && !nowAvailable) {
+			return;
+		}
+		if (!this.currentlyAvailable && nowAvailable) {
+			this.currentlyAvailable = true;
+			this.start();
+			return;
+		}
+		if (this.currentlyAvailable && !nowAvailable) {
+			this.currentlyAvailable = false;
+			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())));
+			return;
+		}
+		
 
 		this.simulation.update();
 

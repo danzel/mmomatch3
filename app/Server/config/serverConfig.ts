@@ -7,6 +7,7 @@ interface AvailabilityRange {
 interface ServerConfig {
 	fps: number;
 	framesPerTick: number;
+	initialLevel: number;
 	availability?: Array<AvailabilityRange>;
 }
 

@@ -20,7 +20,7 @@ class AppEntry {
 		new DatadogStats(this.server);
 		new ServerLogger(this.server);
 
-		this.server.loadLevel(1);
+		this.server.start();
 	}
 
 	run() {

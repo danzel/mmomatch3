@@ -1,7 +1,8 @@
 {
 	"server": {
 		"fps": 60,
-		"framesPerTick": 3
+		"framesPerTick": 3,
+		"initialLevel": 1
 	},
 	"socketServer": {
 		"httpPort": 8091
