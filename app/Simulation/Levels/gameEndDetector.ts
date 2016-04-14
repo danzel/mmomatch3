@@ -7,6 +7,7 @@ import VictoryType = require('./victoryType');
 
 import GetThingToBottomDetector = require('./Detectors/getThingToBottomDetector');
 import MatchesDetector = require('./Detectors/matchesDetector');
+import MatchXOfColorDetector = require('./Detectors/matchXOfColorDetector');
 import RequireMatchDetector = require('./Detectors/requireMatchDetector');
 import ScoreDetector = require('./Detectors/scoreDetector');
 import SwapsDetector = require('./Detectors/swapsDetector');
@@ -54,8 +55,10 @@ class GameEndDetector {
 				return new SwapsDetector(this.simulation, this.gameEndConditions.failureValue);
 			case FailureType.Time:
 				return new TimeDetector(this.simulation, this.gameEndConditions.failureValue);
+			case FailureType.MatchXOfColor:
+				return new MatchXOfColorDetector(this.simulation, false, this.gameEndConditions.failureValue);
 			default:
-				throw new Error("Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[this.gameEndConditions.failureType])
+				throw new Error("CFD Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[this.gameEndConditions.failureType])
 		}
 	}
 
@@ -69,8 +72,10 @@ class GameEndDetector {
 				return new RequireMatchDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.GetThingToBottom:
 				return new GetThingToBottomDetector(this.simulation);
+			case VictoryType.MatchXOfColor:
+				return new MatchXOfColorDetector(this.simulation, true, this.gameEndConditions.victoryValue);
 			default:
-				throw new Error("Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
+				throw new Error("CVD Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
 		}
 	}
 }

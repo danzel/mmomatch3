@@ -2,11 +2,17 @@
 	<svg><text class="header">Level {{levelNumber}}</text></svg><br/>
 	<svg><text class="size">Size: {{width}} x {{height}}</text></svg>
 </p>
+{{#if pigsvspugs}}
+<p><svg><text class="header">Pigs VS Pugs</text></svg></p>
+<p><svg><text class="mid-text">You are on team {{yours}}</text></svg></p>
+<p><svg><text class="mid-text">Match {{yours}}, but don't match {{notyours}}</text></svg>
+</p>
+{{else}}
 <p>
 	<svg><text class="mid-text">{{victoryText}}</text></svg>
 	<svg><text class="mid-text">{{failureText}}</text></svg>
 </p>
-
+{{/if}}
 <p>
 	<svg><text class="start">Click to start</text></svg>
 </p>

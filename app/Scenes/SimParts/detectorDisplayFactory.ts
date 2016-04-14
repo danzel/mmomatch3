@@ -4,6 +4,7 @@ import Detectors = require('../../Simulation/Levels/Detectors/allDetectors');
 
 import GetThingToBottomDisplay = require('./DetectorDisplays/getThingToBottomDisplay');
 import MatchesDisplay = require('./DetectorDisplays/matchesDisplay');
+import MatchXOfColorDisplay = require('./DetectorDisplays/matchXOfColorDisplay');
 import RequireMatchDisplay = require('./DetectorDisplays/requireMatchDisplay')
 import ScoreDisplay = require('./DetectorDisplays/scoreDisplay');
 import SwapsDisplay = require('./DetectorDisplays/swapsDisplay');
@@ -25,6 +26,8 @@ var DetectorDisplayFactory = {
 			return new RequireMatchDisplay(group, detector);
 		} else if (detector instanceof Detectors.GetThingToBottom) {
 			return new GetThingToBottomDisplay(group, detector);
+		} else if (detector instanceof Detectors.MatchXOfColor) {
+			return new MatchXOfColorDisplay(group, detector);
 		} else {
 			throw new Error("Don't know about detector " + detector);
 		}

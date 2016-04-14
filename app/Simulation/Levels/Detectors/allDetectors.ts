@@ -1,5 +1,6 @@
 import GetThingToBottom = require('./getThingToBottomDetector');
 import Matches = require('./matchesDetector');
+import MatchXOfColor = require('./matchXOfColorDetector');
 import RequireMatch = require('./requireMatchDetector');
 import Score = require('./scoreDetector');
 import Swaps = require('./swapsDetector');
@@ -14,7 +15,10 @@ var AllDetectors = {
 	
 	//Failure
 	Swaps: Swaps,
-	Time: Time
+	Time: Time,
+	
+	//Both
+	MatchXOfColor: MatchXOfColor
 };
 
 export = AllDetectors;

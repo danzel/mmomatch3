@@ -66,7 +66,7 @@ class ServerLogger {
 			case FailureType.Time:
 				return <number>failureValue;
 			default:
-				throw new Error("Don't know about failureType " + failureType);
+				throw new Error("EFV Don't know about failureType " + failureType);
 		}
 	}
 	

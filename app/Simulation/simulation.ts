@@ -11,6 +11,7 @@ import Physics = require('./physics');
 import QuietColumnDetector = require('./quietColumnDetector');
 import RequireMatchInCellTracker = require('./requireMatchInCellTracker');
 import ScoreTracker = require('./Scoring/scoreTracker');
+import SimulationStats = require('./simulationStats');
 import SpawnManager = require('./spawnManager');
 import SpecialMatchPerformer = require('./specialMatchPerformer');
 import SwapHandler = require('./swapHandler');
@@ -32,6 +33,7 @@ class Simulation {
 	comboOwnership: ComboOwnership;
 	scoreTracker: ScoreTracker;
 	requireMatchInCellTracker: RequireMatchInCellTracker;
+	simulationStats: SimulationStats;
 
 	private dt: number;
 	framesElapsed: number = 0;
@@ -56,6 +58,8 @@ class Simulation {
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
 		this.scoreTracker = new ScoreTracker(this.comboOwnership);
 		this.requireMatchInCellTracker = new RequireMatchInCellTracker(this.matchPerformer);
+		
+		this.simulationStats = new SimulationStats(this.matchPerformer);
 
 		this.dt = 1 / tickRate;
 	}
