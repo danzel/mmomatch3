@@ -65,6 +65,8 @@ class ServerLogger {
 			case FailureType.Swaps:
 			case FailureType.Time:
 				return <number>failureValue;
+			case FailureType.MatchXOfColor:
+				return failureValue; //Small JSON object
 			default:
 				throw new Error("EFV Don't know about failureType " + failureType);
 		}
@@ -79,8 +81,10 @@ class ServerLogger {
 				return <number>victoryValue;
 			case VictoryType.RequireMatch:
 				return (<[]>victoryValue).length;
+			case VictoryType.MatchXOfColor:
+				return victoryValue; //Small JSON object
 			default:
-				throw new Error("Don't know about victoryType " + victoryType);
+				throw new Error("EVV Don't know about victoryType " + victoryType);
 		}
 	}
 }
