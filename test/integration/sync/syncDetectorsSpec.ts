@@ -11,6 +11,7 @@ import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 
 import GetThingToBottomDetector = require('../../../app/Simulation/Levels/Detectors/getThingToBottomDetector');
 import MatchesDetector = require('../../../app/Simulation/Levels/Detectors/matchesDetector');
+import MatchXOfColorDetector = require('../../../app/Simulation/Levels/Detectors/matchXOfColorDetector');
 import RequireMatchDetector = require('../../../app/Simulation/Levels/Detectors/requireMatchDetector');
 import ScoreDetector = require('../../../app/Simulation/Levels/Detectors/scoreDetector');
 import SwapsDetector = require('../../../app/Simulation/Levels/Detectors/swapsDetector');
@@ -211,7 +212,44 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<GetThingToBottomDetector>g.victoryDetector).hasTriggered).toBe(true);
 			expect(g.gameHasEnded).toBe(true);
+		}
+	});
+	it('correctly syncs MatchXOfColorDetector', () => {
+		let serverComms = new FakeServerComms(1);
+		let simulation = TestUtil.prepareForTest([
+			"96165",
+			"79511",
+			"86185",
+			"11837"
+		]);
+		let level = new LevelDef(1, 5, 4, [], 10, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, {color: 2, amount: 99}, {color: 1, amount: 6});
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
+		server.start();
+		serverComms.server = server;
 
+		serverComms.addClient();
+		serverComms.update();
+		serverComms.update();
+
+		//Swap and do a combo that makes some disappear
+		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
+		for (let i = 0; i < 5; i++) {
+			serverComms.addClient();
+			serverComms.update();
+			serverComms.update();
+		}
+		serverComms.flushClients();
+
+		serverComms.getAllSimulations().forEach((sim) => {
+			TestUtil.expectGridQuiet(sim);
+			TestUtil.expectGridSize(sim.grid, [3, 3, 2, 3, 3]);
+		});
+
+		let gameEndDetectors = serverComms.getAllGameEndDetectors();
+		for (let i = 0; i < gameEndDetectors.length; i++) {
+			let g = gameEndDetectors[i];
+			expect((<MatchXOfColorDetector>g.victoryDetector).matchesRemaining).toBe(0);
+			expect(g.gameHasEnded).toBe(true);
 		}
 	});
 });
