@@ -9,6 +9,7 @@ import ServerComms = require('../../app/Server/serverComms');
 import Simulation = require('../../app/Simulation/simulation');
 import SwapClientData = require('../../app/DataPackets/swapClientData');
 import TickData = require('../../app/DataPackets/tickData');
+import UnavailableData = require('../../app/DataPackets/unavailableData');
 
 class FakeClientComms extends ClientComms {
 	simulationHandler: ClientSimulationHandler;
@@ -59,6 +60,16 @@ class FakeServerComms extends ServerComms {
 		client.dataReceived.trigger({ packetType: PacketType.Boot, data: bootData });
 	}
 
+	sendUnavailable(unavailableData: UnavailableData, id?: string) {
+		if (id) {
+			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData});
+		} else {
+			for (let i in this.clientsLookup) {
+				this.clientsLookup[i].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData});
+			}
+		}
+	}
+	
 	addClient() {
 		this.idCounter++;
 		let id = '' + this.idCounter;
@@ -73,7 +84,7 @@ class FakeServerComms extends ServerComms {
 	}
 
 	update() {
-		this.server.update(this.tickRate);
+		this.server.update();
 
 		Object.keys(this.clientsLookup).forEach(key => {
 			this.clientsLookup[key].update();
