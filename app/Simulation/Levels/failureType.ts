@@ -2,11 +2,13 @@ enum FailureType {
 	Time,
 	Swaps,
 	
-	/** Value is { color: Color, amount: number } */
-	MatchXOfColor,
-	
 	/** Not a real FailureType, just for random gen */
-	Count
+	Count,
+	
+	//The following should never be randomly generated
+	
+	/** Value is { color: Color, amount: number } */
+	MatchXOfColor
 }
 
 export = FailureType;

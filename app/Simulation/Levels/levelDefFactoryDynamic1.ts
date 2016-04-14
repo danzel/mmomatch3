@@ -28,10 +28,20 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let failureType = <FailureType>gen.intExclusive(0, FailureType.Count);
 		let size = this.generateSize(levelNumber, victoryType, failureType, gen);
 		let colorCount: number = this.generateColorCount(levelNumber, size, gen);
+		
+		//Pigs Vs Pugs!
+		if (victoryType == VictoryType.MatchXOfColor) {
+			failureType = FailureType.MatchXOfColor;
+		}
 
 		let holes = this.generateHoles(levelNumber, size, victoryType, gen);
 		let failureValue = this.generateFailureValue(levelNumber, failureType, gen);
 		let victoryValue = this.generateVictoryValue(levelNumber, victoryType, failureType, failureValue, colorCount, size, holes, gen, extraData);
+
+		//HACK: This changes the height, so redo the holes
+		if (victoryType == VictoryType.GetThingToBottom) {
+			holes = this.generateHoles(levelNumber, size, victoryType, gen);
+		}
 
 		let level = new LevelDef(levelNumber, size.width, size.height, holes, colorCount, failureType, victoryType, failureValue, victoryValue);
 		level.extraData = extraData;
@@ -188,6 +198,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return this.generateRequireMatchVictoryValue(levelNumber, size, holes, gen, Math.floor(scale / 7));
 			case VictoryType.Score:
 				return Math.floor(scale * 300);
+			case VictoryType.MatchXOfColor:
+				return { color: 3, amount: failureValue.amount };
 		}
 	}
 
@@ -216,6 +228,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return 10 * gen.intExclusive(5, 51); //50 - 500
 			case FailureType.Time:
 				return gen.intExclusive(1, 5) * 30; //30 - 120
+			case FailureType.MatchXOfColor:
+				return { color: 5, amount: 10 + this.playerCount * gen.intExclusive(10, 50) }; //players * (10 - 50)
+			default:
+				throw new Error("GFV Don't know FailureType " + failureType);
 		}
 	}
 }
