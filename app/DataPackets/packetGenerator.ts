@@ -86,7 +86,8 @@ class PacketGenerator {
 			simulation.matchPerformer.totalMatchablesMatched,
 			simulation.scoreTracker.points,
 			simulation.scoreTracker.playerComboSize,
-			this.generateComboOwners(simulation)
+			this.generateComboOwners(simulation),
+			simulation.simulationStats.matchesByColor.slice()
 		);
 	}
 
@@ -145,6 +146,10 @@ class PacketGenerator {
 		bootData.simulationData.comboOwners.forEach(owner => {
 			simulation.comboOwnership.addComboOwner(owner.x, owner.y, owner.playerId);
 		});
+		//Matches by Color
+		for (let i = 0; i < bootData.simulationData.matchesByColor.length; i++) {
+			simulation.simulationStats.matchesByColor[i] = bootData.simulationData.matchesByColor[i];
+		}
 
 		//Swap handler
 		let matchableById = this.deserializeGrid(simulation.grid, bootData.grid);
@@ -160,7 +165,7 @@ class PacketGenerator {
 				simulation.quietColumnDetector.columnDisappearingCount[matchable.x]++;
 			}
 		}));
-		
+
 		bootData.requireMatchData.data.forEach(req => {
 			simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
 		})
