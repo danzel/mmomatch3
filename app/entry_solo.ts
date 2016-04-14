@@ -10,6 +10,7 @@ import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
+import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
 import MatchableFactory = require('./Simulation/matchableFactory');
 import RandomGenerator = require('./Simulation/randomGenerator');
 import RequireMatch = require('./Simulation/requireMatch');
@@ -29,6 +30,7 @@ class AppEntry {
 	constructor() {
 		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());
+		//this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDynamic1());
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
