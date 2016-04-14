@@ -229,7 +229,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			case FailureType.Time:
 				return gen.intExclusive(1, 5) * 30; //30 - 120
 			case FailureType.MatchXOfColor:
-				return { color: 5, amount: 10 + this.playerCount * gen.intExclusive(10, 50) }; //players * (10 - 50)
+				return { color: 5, amount: 50 + this.playerCount * gen.intExclusive(3, 10) }; //50 + players * (3 - 10)
 			default:
 				throw new Error("GFV Don't know FailureType " + failureType);
 		}
