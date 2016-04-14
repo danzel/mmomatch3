@@ -1,6 +1,7 @@
 import BootData = require('../DataPackets/bootData');
 import ClientComms = require('./clientComms');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
+import FailureType = require('../Simulation/Levels/failureType');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
@@ -10,6 +11,7 @@ import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 import UnavailableData = require('../DataPackets/unavailableData');
+import VictoryType = require('../Simulation/Levels/victoryType');
 
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
@@ -29,6 +31,14 @@ class Client {
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
 		if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
+			
+			//SEMI-HACK. If Pigs vs Pugs, randomly swap them
+			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && Math.random() < 0.5) {
+				let temp = bootData.level.failureValue;
+				bootData.level.failureValue = bootData.level.victoryValue;
+				bootData.level.victoryValue = temp;
+			}
+
 			let level = this.packetGenerator.recreateLevelDefData(bootData.level)
 			let simulation = this.packetGenerator.recreateSimulation(bootData);
 			this.simulationReceived.trigger({
