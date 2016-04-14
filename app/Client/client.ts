@@ -1,6 +1,6 @@
 import BootData = require('../DataPackets/bootData');
 import ClientComms = require('./clientComms');
-import GameEndDetector = require('../Simulation/Levels/GameEndDetector');
+import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
