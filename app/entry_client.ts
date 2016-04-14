@@ -56,6 +56,7 @@ class AppEntry {
 	}
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }) {
+		this.unavailableOverlay.hasPlayed = true;
 		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();

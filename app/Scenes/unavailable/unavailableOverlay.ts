@@ -7,6 +7,7 @@ var template = <(data: {}) => string>require('./unavailableOverlay.handlebars');
 require('./unavailableOverlay.css');
 
 class UnavailableOverlay {
+	hasPlayed = false;
 	private visible = false;
 
 	constructor(private overlayManager: HtmlOverlayManager) {
@@ -17,7 +18,7 @@ class UnavailableOverlay {
 		this.overlayManager.showOverlay('unavailable-overlay', template({
 			hasNext: !!dateString,
 			next: dateformat(new Date(dateString), 'dddd dS mmmm h:MM TT'),
-			gameRecently: true
+			gameRecently: this.hasPlayed
 		}), () => { this.show(dateString); });
 	}
 
