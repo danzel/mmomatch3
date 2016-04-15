@@ -1,9 +1,10 @@
 import Color = require('./color');
 import Grid = require('./grid');
-import RandomGenerator = require('./randomGenerator');
-import SpawnManager = require('./spawnManager');
 import Matchable = require('./matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
+import RandomGenerator = require('./randomGenerator');
+import SpawnManager = require('./spawnManager');
+import Type = require('./type');
 
 class SpawningSpawnManager extends SpawnManager {
 	private isInitialSpawn = true;
@@ -29,7 +30,7 @@ class SpawningSpawnManager extends SpawnManager {
 			while (column.length < max) {
 				let y = this.findYForColumn(column);
 
-				let matchable = this.matchableFactory.create(x, y, this.randomGenerator.intExclusive(0, this.maxColor));
+				let matchable = this.matchableFactory.create(x, y, this.randomGenerator.intExclusive(0, this.maxColor), Type.Normal);
 
 				column.push(matchable);
 				this.matchableSpawned.trigger(matchable);
@@ -46,7 +47,7 @@ class SpawningSpawnManager extends SpawnManager {
 					continue;
 				}
 
-				let matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height));
+				let matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height), Type.Normal);
 
 				column.push(matchable);
 				this.matchableSpawned.trigger(matchable);

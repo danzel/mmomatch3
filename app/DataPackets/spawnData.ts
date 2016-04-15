@@ -1,10 +1,5 @@
 class SpawnData {
-	x: number;
-	color: number;
-	
-	constructor(x: number, color: number) {
-		this.x = x;
-		this.color = color;
+	constructor(public x: number, public color: number, public type: number) {
 	}
 }
 

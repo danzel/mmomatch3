@@ -25,7 +25,7 @@ class TickDataFactory {
 	}
 
 	onMatchableSpawned(matchable: Matchable) {
-		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color));
+		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color, matchable.type));
 	}
 
 	private ensureFrameData(): FrameData {

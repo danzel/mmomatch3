@@ -11,9 +11,7 @@ class MatchableFactory {
 		this.nextId = initialId;
 	}
 
-	create(x: number, y: number, color: Color): Matchable {
-
-		let type = Type.Normal;
+	create(x: number, y: number, color: Color, type: Type): Matchable {
 		if (this.forceSpawn && this.forceSpawn.x == x && this.forceSpawn.y == y) {
 			color = this.forceSpawn.color;
 			type = this.forceSpawn.type;
