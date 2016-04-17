@@ -139,8 +139,8 @@ class Manager {
 	private fixSvg(svg: SVGElement): void {
 		let bbox = (<SVGLocatable><any>svg).getBBox();
 
-		svg.setAttribute("width", Math.ceil(4 + bbox.width) + "px");
-		svg.setAttribute("height", Math.ceil(2 + bbox.height) + "px");
+		svg.setAttribute("width", Math.ceil(10 + bbox.width) + "px");
+		svg.setAttribute("height", Math.ceil(4 + bbox.height) + "px");
 	}
 }
 
