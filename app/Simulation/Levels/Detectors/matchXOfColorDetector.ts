@@ -5,7 +5,7 @@ import Simulation = require('../../simulation');
 class MatchXOfColorDetector extends Detector {
 	
 	matchesRemaining: number;
-	constructor(private simulation: Simulation, private isVictory: boolean, public config: { color: Color, amount: number }) {
+	constructor(private simulation: Simulation, public isVictory: boolean, public config: { color: Color, amount: number }) {
 		super();
 		this.matchesRemaining = config.amount;
 		
