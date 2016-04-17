@@ -97,11 +97,13 @@ class SimulationRenderer {
 	}
 
 	private keepOnScreen() {
-		this.group.x = Math.min(this.group.game.width - 100, this.group.x);
-		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + 100)
+		let maxOffscreenX = this.group.game.width / 2;
+		let maxOffscreenY = this.group.game.height / 2;
+		this.group.x = Math.min(this.group.game.width - maxOffscreenX, this.group.x);
+		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + maxOffscreenX)
 
-		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - 100, this.group.y);
-		this.group.y = Math.max(100, this.group.y);
+		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - maxOffscreenY, this.group.y);
+		this.group.y = Math.max(maxOffscreenY, this.group.y);
 	}
 
 	getPosition(): XY {
