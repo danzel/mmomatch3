@@ -16,10 +16,7 @@ import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
 
 interface SimulationSceneConfiguration {
-	/** If true we update the simulation, otherwise it is controlled externally */
-	inChargeOfSimulation?: boolean;
-
-	/** If set  game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
+	/** If set game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
 	gameOverCountdown?: number;
 }
 
@@ -90,10 +87,6 @@ class SimulationScene {
 		}
 		if (this.gameOverOverlay) {
 			this.gameOverOverlay.update();
-		}
-
-		if (this.config.inChargeOfSimulation && this.levelDetailsOverlay.closed) {
-			this.simulation.update();
 		}
 		this.playersOnSimulation.update();
 	}

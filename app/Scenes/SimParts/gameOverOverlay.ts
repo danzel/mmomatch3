@@ -9,10 +9,10 @@ require('./gameOverOverlay.css');
 class GameOverOverlay {
 	countdownText: string;
 	private rank: number;
-	clicked = new  LiteEvent<void>();
-	
+	clicked = new LiteEvent<void>();
+
 	constructor(private htmlOverlayManager: HtmlOverlayManager, private time: Phaser.Time, private victory: boolean, private countdown: number, scoreTracker: ScoreTracker, playerId: number, private playerCount: number) {
-		
+
 		this.rank = this.calculateRank(playerId, scoreTracker);
 
 		if (countdown) {
@@ -28,11 +28,11 @@ class GameOverOverlay {
 		if (this.countdown) {
 			this.countdown = Math.max(0, this.countdown - this.time.physicsElapsed);
 			this.countdownText = "Next Level in " + this.countdown.toFixed(1) + " seconds";
-			
+
 			this.render();
 		}
 	}
-	
+
 	private render() {
 		this.htmlOverlayManager.showOverlay('game-over-overlay', template({
 			header: this.victory ? "You won yay!" : "Failure :(",
@@ -41,19 +41,19 @@ class GameOverOverlay {
 			bottomText: this.countdownText
 		}), () => {
 			this.clicked.trigger();
-		 });
+		});
 	}
-	
+
 	private calculateRank(playerId: number, scoreTracker: ScoreTracker): number {
 		let score = scoreTracker.points[playerId] || 0;
-		
+
 		let rank = 1;
 		for (let i in scoreTracker.points) {
 			if (parseInt(i) != playerId && scoreTracker.points[i] > score) {
 				rank++;
 			}
 		}
-		
+
 		return rank;
 	}
 }

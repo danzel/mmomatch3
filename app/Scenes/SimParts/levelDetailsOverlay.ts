@@ -10,8 +10,6 @@ var template = <(data: {}) => string>require('./levelDetailsOverlay.handlebars')
 require('./levelDetailsOverlay.css');
 
 class LevelDetailsOverlay {
-	closed = false;
-
 	becameClosed = new LiteEvent<void>();
 
 	constructor(private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private victoryDetector: Detector, private failureDetector: Detector) {
@@ -31,7 +29,6 @@ class LevelDetailsOverlay {
 		}
 		
 		htmlOverlayManager.showOverlay('level-details-overlay', template(details), () => {
-			this.closed = true;
 			this.becameClosed.trigger()
 		});
 	}

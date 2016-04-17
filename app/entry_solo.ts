@@ -50,6 +50,9 @@ class AppEntry {
 	}
 
 	update() {
+		if (this.simulation) {
+			this.simulation.update();
+		}
 		this.scene.update();
 	}
 	preRender() {
@@ -60,12 +63,12 @@ class AppEntry {
 		let loaded = this.levelAndSimulationProvider.loadLevel(levelNumber);
 
 		let level = loaded.level;
-		let simulation = loaded.simulation;
+		this.simulation = loaded.simulation;
 
-		let gameEndDetector = new GameEndDetector(level, simulation);
-		let inputApplier = new SinglePlayerInputApplier(simulation.swapHandler, simulation.inputVerifier, simulation.grid);
+		let gameEndDetector = new GameEndDetector(level, this.simulation);
+		let inputApplier = new SinglePlayerInputApplier(this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, simulation, inputApplier, gameEndDetector, { inChargeOfSimulation: true }, 0, null);
+		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, { }, 0, null);
 
 		gameEndDetector.gameEnded.on((victory: boolean) => {
 			this.scene.gameOverOverlay.clicked.on(() => {
