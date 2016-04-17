@@ -148,7 +148,42 @@ class SimulationRenderer {
 		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableNode.PositionScalar, -this.simulation.grid.height * MatchableNode.PositionScalar);
 	}
 
+	private left = [Phaser.Keyboard.LEFT, Phaser.Keyboard.A];
+	private right = [Phaser.Keyboard.RIGHT, Phaser.Keyboard.D];
+	private up = [Phaser.Keyboard.UP, Phaser.Keyboard.W];
+	private down = [Phaser.Keyboard.DOWN, Phaser.Keyboard.S];
+
+	private updateKeyboard(dt: number) {
+		let keyboard = this.group.game.input.keyboard;
+		let moveAmount = 1000 * dt;
+		let anyKeyDown = false;
+		
+		if (this.left.some(k => keyboard.isDown(k))) {
+			this.group.x += moveAmount;
+			anyKeyDown = true;
+		}
+		if (this.right.some(k => keyboard.isDown(k))) {
+			this.group.x -= moveAmount;
+			anyKeyDown = true;
+		}
+		if (this.up.some(k => keyboard.isDown(k))) {
+			this.group.y += moveAmount;
+			anyKeyDown = true;
+		}
+		if (this.down.some(k => keyboard.isDown(k))) {
+			this.group.y -= moveAmount;
+			anyKeyDown = true;
+		}
+		
+		if (anyKeyDown) {
+			this.keepOnScreen();
+		}
+	}
+
 	update(dt: number) {
+
+		this.updateKeyboard(dt);
+
 		if (this.getToBottomHighlighter) {
 			this.getToBottomHighlighter.update(dt);
 		}
