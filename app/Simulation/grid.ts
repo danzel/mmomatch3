@@ -81,6 +81,10 @@ class Grid {
 	}
 
 	isHole(x: number, y: number): boolean {
+		if (y >= this.height) {
+			console.warn("y >= this.height", y, this.height);
+			return false;
+		}
 		return this.holes.get(this.indexFromXY(x, y));
 	}
 
