@@ -53,7 +53,7 @@ class Server {
 		serverComms.dataReceived.on(data => this.dataReceived(data));
 	}
 
-	getPlayerCount(): number { return Object.keys(this.clients).length; }
+	getPlayerCount(): number { return Object.keys(this.clients).length + this.clientsRequiringBoot.length; }
 
 	public start() {
 		if (this.currentlyAvailable) {
