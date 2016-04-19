@@ -310,7 +310,7 @@ declare module "winston" {
     start?: number;
     from?: Date;
     until?: Date;
-    //HACK order?: "asc" | "desc";
+    order?: "asc" | "desc";
     fields: any;
   }
 
