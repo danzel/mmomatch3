@@ -20,7 +20,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateLevel(levelNumber: number): LevelDef {
 		let gen = new RandomGenerator(levelNumber);
-		
+
 		let extraData = <any>{ playerCount: this.playerCount };
 
 		//Do these first as they don't use variable random numbers
@@ -28,7 +28,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let failureType = <FailureType>gen.intExclusive(0, FailureType.Count);
 		let size = this.generateSize(levelNumber, victoryType, failureType, gen);
 		let colorCount: number = this.generateColorCount(levelNumber, size, gen);
-		
+
 		//Pigs Vs Pugs!
 		if (victoryType == VictoryType.MatchXOfColor) {
 			failureType = FailureType.MatchXOfColor;
@@ -153,10 +153,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return 1;
 		}
 	}
-	
+
 	private specificDifficultyScale(victoryType: VictoryType, failureType: FailureType, colorCount: number, size: { width: number, height: number }): number {
 		let res = 1;
-		
+
 		if (victoryType == VictoryType.Matches || victoryType == VictoryType.Score) {
 			res *= this.difficultyForColorCount(colorCount) * this.difficultyForColorCount(colorCount);
 			res *= size.height / 30;
@@ -164,10 +164,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		if (victoryType == VictoryType.RequireMatch) {
 			res *= this.difficultyForColorCount(colorCount);
 		}
-		
+
 		return res;
 	}
-	
+
 	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, failureType: FailureType, failureValue: any, colorCount: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator, extraData: any): any {
 
 		let colorCountScale = this.difficultyForColorCount(colorCount);
@@ -183,7 +183,6 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let randomDifficultyScale = gen.intExclusive(80, 150) / 100;
 		let specificDifficultyScale = this.specificDifficultyScale(victoryType, failureType, colorCount, size);
 		let scale = colorCountScale * failureScale * randomDifficultyScale * specificDifficultyScale;
-		
 		extraData.difficulty = randomDifficultyScale;
 		extraData.scale = scale;
 
@@ -192,6 +191,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				//TODO: We may need to recalculate the height based on what the failure is
 				size.height = Math.floor(scale / 8);
 				return Math.floor(size.width / 2);
+			case VictoryType.GetThingsToBottom:
+				return this.generateGetThingsToBottomVictoryValue(size.width, scale, gen);
 			case VictoryType.Matches:
 				return Math.floor(1.2 * scale);
 			case VictoryType.RequireMatch:
@@ -212,6 +213,29 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 			if (!this.contains(res, x, y) && !this.contains(holes, x, y)) {
 				res.push({ x: x, y: y, amount: 1 });
+			}
+		}
+
+		return res;
+	}
+
+	private generateGetThingsToBottomVictoryValue(width: number, scale: number, gen: RandomGenerator): Array<number> {
+		let res = new Array<number>();
+
+		let approxAmount = scale * 0.005;
+		let approxSpacing = width / approxAmount;
+
+		let increment = Math.round(width / (approxAmount + 1));
+		let mode = gen.intExclusive(0, 2);
+
+		if (mode == 1 && increment > 1) { //random wobble mode
+			let halfIncrement = Math.round(increment / 2);
+			for (let x = -1; x < width; x += increment + gen.intExclusive(-halfIncrement, halfIncrement + 1)) {
+				res.push(x);
+			}
+		} else { //Evenly spaced mode
+			for (let x = -1; x < width; x += increment) {
+				res.push(x);
 			}
 		}
 

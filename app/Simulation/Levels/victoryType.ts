@@ -8,14 +8,16 @@ enum VictoryType {
 	/** LevelDef.VictoryValue is a [{x, y, amount}] */
 	RequireMatch,
 
-	/** LevelDef.VictoryValue is the column index to start the thing at the top of */
-	GetThingToBottom,
-	
 	/** LevelDef.VictoryValue is an array of column indexes to start the thing at the top of */
 	GetThingsToBottom,
 
 	/** Not a real VictoryType, just for random gen */
-	Count
+	Count,
+
+	// Anything below here is out of the level rotation	
+	
+	/** LevelDef.VictoryValue is the column index to start the thing at the top of */
+	GetThingToBottom,
 }
 
 export = VictoryType;
