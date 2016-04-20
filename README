@@ -18,3 +18,15 @@ one time:
 sudo npm run-script install-service
 npm install --only=prod
 service mmomatch start
+
+
+
+Creating a new Victory/Failure Type.
+
+Add to the enum.
+Create a detector in Simulation/Levels/Detectors
+ Add to allDetectors.ts
+ Add to gameEndDetector.ts
+Create a display in Scenes/SimParts/DetectorDisplays
+ Add to detectorDisplayFactory.ts
+Add any special code to defaultLevelAndSimulationProvider
