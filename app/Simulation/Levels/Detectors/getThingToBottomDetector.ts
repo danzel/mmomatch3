@@ -24,17 +24,15 @@ class GetThingToBottomDetector extends Detector {
 	update() {
 		for (let x = 0; x < this.simulation.grid.width; x++) {
 			let col = this.simulation.grid.cells[x];
-			for (let i = 0; i < col.length; i++) {
-				let m = col[i];
-				if (m.yMomentum == 0) {
-					this.matchableLanded(m);
-				}
+			let m = col[0];
+			if (m && m.yMomentum == 0) {
+				this.matchableLanded(m);
 			}
 		}
 	}
 
 	getDetailsText(): string {
-		return "Get the robot to the bottom";
+		return "Get the Robot to the bottom";
 	}
 }
 
