@@ -51,7 +51,9 @@ class SpawningSpawnManager extends SpawnManager {
 				}
 
 				let matchable: Matchable = null;
-				matchable = this.spawnOverride.spawnMaybe(x, y + this.grid.height);
+				if (this.spawnOverride) {
+					matchable = this.spawnOverride.spawnMaybe(x, y + this.grid.height);
+				}
 				if (!matchable) {
 					matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height), Type.Normal);
 				}
