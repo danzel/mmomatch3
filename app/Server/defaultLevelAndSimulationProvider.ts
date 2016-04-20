@@ -19,11 +19,11 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 	}
 
 	loadLevel(levelNumber: number, playerCount?: number): { level: LevelDef, simulation: Simulation } {
-		
+
 		if (playerCount && this.levelDefFactory instanceof LevelDefFactoryDynamic) {
 			(<LevelDefFactoryDynamic>this.levelDefFactory).playerCount = playerCount;
 		}
-		
+
 		let level = this.levelDefFactory.getLevel(levelNumber);
 		let grid = GridFactory.createGrid(level);
 		let matchableFactory = new MatchableFactory();
@@ -40,6 +40,14 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			//grid height is double because initial spawn is off the screen
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
 			spawnManager.spawnOverride.addSpawn(<number>level.victoryValue, grid.height + grid.height - 1, Color.None, Type.GetToBottom);
+		}
+		if (level.victoryType == VictoryType.GetThingsToBottom) {
+			//grid height is double because initial spawn is off the screen
+			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
+			let spawns = <Array<number>>level.victoryValue;
+			for (let i = 0; i < spawns.length; i++) {
+				spawnManager.spawnOverride.addSpawn(spawns[i], grid.height + grid.height - 1, Color.None, Type.GetToBottom);
+			}
 		}
 
 		return { level: level, simulation: simulation };

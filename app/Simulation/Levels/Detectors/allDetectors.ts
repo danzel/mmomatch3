@@ -1,4 +1,5 @@
 import GetThingToBottom = require('./getThingToBottomDetector');
+import GetThingsToBottom = require('./getThingsToBottomDetector');
 import Matches = require('./matchesDetector');
 import MatchXOfColor = require('./matchXOfColorDetector');
 import RequireMatch = require('./requireMatchDetector');
@@ -12,6 +13,7 @@ var AllDetectors = {
 	Score: Score,
 	RequireMatch: RequireMatch,
 	GetThingToBottom: GetThingToBottom,
+	GetThingsToBottom: GetThingsToBottom,
 	
 	//Failure
 	Swaps: Swaps,

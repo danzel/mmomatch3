@@ -13,7 +13,7 @@ interface XY {
 
 class SimulationRenderer {
 	private matchablesGroup: Phaser.Group;
-	private getToBottomHighlighter: GetToBottomHighlighter;
+	private getToBottomHighlighters = new Array<GetToBottomHighlighter>();
 	private failedToSwapAnimator = new FailedToSwapAnimator();
 
 	private matchableNodes: { [id: number]: MatchableNode }
@@ -126,7 +126,7 @@ class SimulationRenderer {
 		this.matchableNodes[matchable.id] = new MatchableNode(matchable, this.matchablesGroup);
 
 		if (matchable.type == Type.GetToBottom) {
-			this.getToBottomHighlighter = new GetToBottomHighlighter(this.group, matchable);
+			this.getToBottomHighlighters.push(new GetToBottomHighlighter(this.group, matchable));
 		}
 	}
 
@@ -186,8 +186,8 @@ class SimulationRenderer {
 
 		this.updateKeyboard(dt);
 
-		if (this.getToBottomHighlighter) {
-			this.getToBottomHighlighter.update(dt);
+		for (let i = 0; i < this.getToBottomHighlighters.length; i++) {
+			this.getToBottomHighlighters[i].update(dt);
 		}
 
 		//Optimised version of the commented out bit below
