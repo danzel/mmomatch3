@@ -62,13 +62,8 @@ class ServerLogger {
 	
 	private encodeFailureValue(failureType: FailureType, failureValue: any): any {
 		switch (failureType) {
-			case FailureType.Swaps:
-			case FailureType.Time:
-				return <number>failureValue;
-			case FailureType.MatchXOfColor:
-				return failureValue; //Small JSON object
 			default:
-				throw new Error("EFV Don't know about failureType " + failureType);
+				return failureValue;
 		}
 	}
 	
@@ -76,15 +71,10 @@ class ServerLogger {
 		switch (victoryType) {
 			case VictoryType.GetThingToBottom:
 				return '';
-			case VictoryType.Matches:
-			case VictoryType.Score:
-				return <number>victoryValue;
 			case VictoryType.RequireMatch:
 				return (<[]>victoryValue).length;
-			case VictoryType.MatchXOfColor:
-				return victoryValue; //Small JSON object
 			default:
-				throw new Error("EVV Don't know about victoryType " + victoryType);
+				return victoryValue;
 		}
 	}
 }
