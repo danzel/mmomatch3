@@ -5,6 +5,8 @@ class GetToBottomHighlighter {
 
 	private highlighter: Phaser.Sprite;
 	private tile: Phaser.TileSprite;
+	private tween1: Phaser.Tween;
+	private tween2: Phaser.Tween;
 	
 	private width = 54;
 
@@ -21,10 +23,10 @@ class GetToBottomHighlighter {
 		hi.scale.set(0);
 
 		let time = 3000;
-		parentGroup.game.add.tween(hi.scale)
+		this.tween1 = parentGroup.game.add.tween(hi.scale)
 			.to({ x: 9, y: 9 }, time, null, true, 0, -1)
 			.repeatDelay(1000);
-		parentGroup.game.add.tween(hi)
+		this.tween2 = parentGroup.game.add.tween(hi)
 			.to({ alpha: 0 }, time, null, true, 0, -1)
 			.repeatDelay(1000);
 		this.highlighter = hi;
@@ -41,6 +43,11 @@ class GetToBottomHighlighter {
 		this.tile.height = h;
 
 		this.highlighter.position.set(MatchableNode.PositionScalar * this.matchable.x + (MatchableNode.PositionScalar) / 2, -h)
+		
+		if (this.matchable.y == 0) {
+			this.tween1.repeat(0);
+			this.tween2.repeat(0);
+		}
 	}
 }
 
