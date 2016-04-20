@@ -4,9 +4,12 @@ import Matchable = require('./matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import RandomGenerator = require('./randomGenerator');
 import SpawnManager = require('./spawnManager');
+import SpawnOverride = require('./spawnOverride');
 import Type = require('./type');
 
 class SpawningSpawnManager extends SpawnManager {
+	spawnOverride: SpawnOverride;
+
 	private isInitialSpawn = true;
 
 	constructor(grid: Grid, matchableFactory: MatchableFactory, private randomGenerator: RandomGenerator, private maxColor: number) {
@@ -47,7 +50,11 @@ class SpawningSpawnManager extends SpawnManager {
 					continue;
 				}
 
-				let matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height), Type.Normal);
+				let matchable: Matchable = null;
+				matchable = this.spawnOverride.spawnMaybe(x, y + this.grid.height);
+				if (!matchable) {
+					matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height), Type.Normal);
+				}
 
 				column.push(matchable);
 				this.matchableSpawned.trigger(matchable);

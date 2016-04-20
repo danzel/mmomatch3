@@ -8,6 +8,7 @@ import MatchableFactory = require('../Simulation/matchableFactory');
 import RandomGenerator = require('../Simulation/randomGenerator');
 import RequireMatch = require('../Simulation/requireMatch');
 import Simulation = require('../Simulation/simulation');
+import SpawnOverride = require('../Simulation/spawnOverride');
 import SpawningSpawnManager = require('../Simulation/spawningSpawnManager');
 import Type = require('../Simulation/type');
 import VictoryType = require('../Simulation/Levels/victoryType');
@@ -37,7 +38,8 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		}
 		if (level.victoryType == VictoryType.GetThingToBottom) {
 			//grid height is double because initial spawn is off the screen
-			matchableFactory.forceSpawn = { x: <number>level.victoryValue, y: grid.height + grid.height - 1, color: Color.None, type: Type.GetToBottom };
+			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
+			spawnManager.spawnOverride.addSpawn(<number>level.victoryValue, grid.height + grid.height - 1, Color.None, Type.GetToBottom);
 		}
 
 		return { level: level, simulation: simulation };
