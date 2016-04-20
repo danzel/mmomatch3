@@ -133,6 +133,9 @@ class MatchableNode {
 
 	disappear() {
 		this.sprite.destroy();
+		if (this.overlay) {
+			this.overlay.destroy();
+		}
 	}
 }
 
