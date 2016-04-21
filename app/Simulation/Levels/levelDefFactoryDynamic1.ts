@@ -241,16 +241,19 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let approxAmount = scale * 0.005;
 		let approxSpacing = width / approxAmount;
 
-		let increment = Math.round(width / (approxAmount + 1));
+		let increment = Math.round(width / (Math.round(approxAmount) + 1));
 		let mode = gen.intExclusive(0, 2);
 
 		if (mode == 1 && increment > 1) { //random wobble mode
 			let halfIncrement = Math.round(increment / 2);
 			for (let x = -1; x < width; x += increment + gen.intExclusive(-halfIncrement, halfIncrement + 1)) {
-				res.push(x);
+				
+				if (x >= 0) {
+					res.push(x);
+				}
 			}
 		} else { //Evenly spaced mode
-			for (let x = -1; x < width; x += increment) {
+			for (let x = increment; x < width; x += increment) {
 				res.push(x);
 			}
 		}
