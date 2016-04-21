@@ -11,6 +11,10 @@ class RandomGenerator {
 	intExclusive(min: number, maxExcluded: number): number {
 		return min + Math.floor((maxExcluded - min) * this.generator.random());
 	}
+
+	intInclusive(min: number, max: number): number {
+		return this.intExclusive(min, max + 1);
+	}
 }
 
 export = RandomGenerator;

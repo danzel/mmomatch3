@@ -19,7 +19,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	}
 
 	private generateLevel(levelNumber: number): LevelDef {
-		let gen = new RandomGenerator(levelNumber);
+		let gen = new RandomGenerator(100 + levelNumber);
 
 		let extraData = <any>{ playerCount: this.playerCount };
 
@@ -170,6 +170,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateVictoryValue(levelNumber: number, victoryType: VictoryType, failureType: FailureType, failureValue: any, colorCount: number, size: { width: number, height: number }, holes: Array<{ x: number, y: number }>, gen: RandomGenerator, extraData: any): any {
 
+		//Bigger scale = easier
 		let colorCountScale = this.difficultyForColorCount(colorCount);
 		let failureScale: number;
 		switch (failureType) {
@@ -185,6 +186,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let scale = colorCountScale * failureScale * randomDifficultyScale * specificDifficultyScale;
 		extraData.difficulty = randomDifficultyScale;
 		extraData.scale = scale;
+
+		//console.log(colorCountScale, failureScale, randomDifficultyScale, specificDifficultyScale, scale);
 
 		switch (victoryType) {
 			case VictoryType.GetThingToBottom:
@@ -211,12 +214,25 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			let x = gen.intExclusive(0, size.width);
 			let y = gen.intExclusive(0, size.height);
 
-			if (!this.contains(res, x, y) && !this.contains(holes, x, y)) {
+			if (!this.contains(res, x, y) && !this.contains(holes, x, y) && !this.isBadPositionForRequireMatch(x, y, size)) {
 				res.push({ x: x, y: y, amount: 1 });
 			}
 		}
 
 		return res;
+	}
+
+	private isBadPositionForRequireMatch(x: number, y: number, size: { width: number, height: number }): boolean {
+		//Top row
+		if (y == size.height - 1) {
+			return true;
+		}
+		//Bottom corners
+		if (y == 0 && (x == 0 || x == size.width - 1)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private generateGetThingsToBottomVictoryValue(width: number, scale: number, gen: RandomGenerator): Array<number> {
@@ -249,11 +265,11 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	private generateFailureValue(levelNumber: number, failureType: FailureType, gen: RandomGenerator): any {
 		switch (failureType) {
 			case FailureType.Swaps:
-				return 10 * gen.intExclusive(5, 51); //50 - 500
+				return 20 + this.playerCount * gen.intInclusive(10, 30); //20 + players * (10 - 30)
 			case FailureType.Time:
-				return gen.intExclusive(1, 5) * 30; //30 - 120
+				return gen.intInclusive(1, 4) * 30; //30 - 120
 			case FailureType.MatchXOfColor:
-				return { color: 5, amount: 50 + this.playerCount * gen.intExclusive(3, 10) }; //50 + players * (3 - 10)
+				return { color: 5, amount: 50 + this.playerCount * gen.intInclusive(3, 10) }; //50 + players * (3 - 10)
 			default:
 				throw new Error("GFV Don't know FailureType " + failureType);
 		}
