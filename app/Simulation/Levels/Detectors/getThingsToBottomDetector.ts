@@ -1,6 +1,7 @@
 import Detector = require('../detector');
 import Matchable = require('../../matchable');
 import Simulation = require('../../simulation');
+import Swap = require('../../swap');
 import Type = require('../../type');
 
 class GetThingsToBottomDetector extends Detector {
@@ -10,10 +11,11 @@ class GetThingsToBottomDetector extends Detector {
 		super();
 		this.amount = totalAmount;
 
-		simulation.physics.matchableLanded.on(matchable => this.matchableLanded(matchable));
+		simulation.physics.matchableLanded.on(matchable => this.checkMatchable(matchable));
+		simulation.swapHandler.swapOccurred.on(swap => this.swapOccurred(swap));
 	}
 
-	matchableLanded(matchable: Matchable) {
+	private checkMatchable(matchable: Matchable) {
 		if (matchable.type == Type.GetToBottom && matchable.y == 0) {
 			this.amount--;
 			this.valueChanged.trigger();
@@ -23,6 +25,11 @@ class GetThingsToBottomDetector extends Detector {
 		}
 	}
 
+	private swapOccurred(swap: Swap) {
+		this.checkMatchable(swap.left);
+		this.checkMatchable(swap.right);
+	}
+
 	update() {
 		this.amount = this.totalAmount;
 
@@ -30,7 +37,7 @@ class GetThingsToBottomDetector extends Detector {
 			let col = this.simulation.grid.cells[x];
 			let m = col[0];
 			if (m && m.yMomentum == 0) {
-				this.matchableLanded(m);
+				this.checkMatchable(m);
 			}
 		}
 	}
