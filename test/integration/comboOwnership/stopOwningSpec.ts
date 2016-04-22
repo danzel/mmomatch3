@@ -21,14 +21,14 @@ describe('ComboOwnership.stopOwning', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
 		for (let i = 0; i < 3; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 		//At this stage everything should have stopped moving, so ownership from the first match should be cleared
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		simulation.update(1);
+		simulation.update();
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId2]);
@@ -47,14 +47,14 @@ describe('ComboOwnership.stopOwning', () => {
 
 		let ownershipChecker = new OwnershipMatchChecker(simulation.comboOwnership);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]); //1
 		for (let i = 0; i < 3; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][1], simulation.grid.cells[3][1]); //2
 		for (let i = 0; i < 3; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);

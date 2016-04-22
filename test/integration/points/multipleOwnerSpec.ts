@@ -13,11 +13,11 @@ describe('Points.multipleOwner', () => {
 			"113233"
 		]);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[3][2], simulation.grid.cells[3][3]);
 		for (let i = 0; i < 3; i++)
-			simulation.update(1);
+			simulation.update();
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +

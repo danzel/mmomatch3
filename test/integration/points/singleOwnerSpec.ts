@@ -10,10 +10,10 @@ describe('Points.singleOwner', () => {
 			"1122"
 		]);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		for (let i = 0; i < 4; i++)
-			simulation.update(1);
+			simulation.update();
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
@@ -29,13 +29,13 @@ describe('Points.singleOwner', () => {
 			"11228"
 		]);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		for (let i = 0; i < 3; i++)
-			simulation.update(1);
+			simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[4][0], simulation.grid.cells[4][1]);
 		for (let i = 0; i < 3; i++)
-			simulation.update(1);
+			simulation.update();
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
@@ -51,11 +51,11 @@ describe('Points.singleOwner', () => {
 			"1199822"
 		]);
 
-		simulation.update(1);
+		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[4][0], simulation.grid.cells[4][1]);
 		for (let i = 0; i < 3; i++)
-			simulation.update(1);
+			simulation.update();
 
 		let points =
 			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
