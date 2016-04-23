@@ -24,10 +24,10 @@ class GetToBottomHighlighter {
 
 		let time = 3000;
 		this.tween1 = parentGroup.game.add.tween(hi.scale)
-			.to({ x: 9, y: 9 }, time, null, true, 0, -1)
+			.to({ x: 9, y: 9 }, time, Phaser.Easing.Cubic.Out, true, 0, -1)
 			.repeatDelay(1000);
 		this.tween2 = parentGroup.game.add.tween(hi)
-			.to({ alpha: 0 }, time, null, true, 0, -1)
+			.to({ alpha: 0 }, time, Phaser.Easing.Sinusoidal.In, true, 0, -1)
 			.repeatDelay(1000);
 		this.highlighter = hi;
 
