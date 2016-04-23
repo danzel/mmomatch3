@@ -85,7 +85,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 		//Calculate victory value
 		let victoryValue = new Array<number>();
-		for (var i = 0; i < amount; i++) {
+		for (var i = 1; i <= amount; i++) {
 			victoryValue.push(Math.round(i * size.width / (amount + 1)));
 		}
 
