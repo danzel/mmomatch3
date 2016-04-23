@@ -12,7 +12,7 @@ import SimulationScene = require('./Scenes/simulationScene');
 import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
 import UnavailableData = require('./DataPackets/unavailableData');
-import UnavailableOverlay = require('./Scenes/unavailable/unavailableOverlay');
+import UnavailableOverlay = require('./Scenes/Unavailable/unavailableOverlay');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
