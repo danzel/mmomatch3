@@ -4,21 +4,13 @@ import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimu
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
-import Grid = require('./Simulation/grid');
-import GridFactory = require('./Simulation/Levels/gridFactory');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
-import InputVerifier = require('./Simulation/inputVerifier');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
 import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
-import MatchableFactory = require('./Simulation/matchableFactory');
-import RandomGenerator = require('./Simulation/randomGenerator');
-import RequireMatch = require('./Simulation/requireMatch');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
 import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
-import SpawningSpawnManager = require('./Simulation/spawningSpawnManager');
-import TouchCatchAll = require('./Renderer/Components/touchCatchAll');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
