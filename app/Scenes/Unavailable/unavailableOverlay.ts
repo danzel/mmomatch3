@@ -19,7 +19,7 @@ class UnavailableOverlay {
 			hasNext: !!dateString,
 			next: dateformat(new Date(dateString), 'dddd dS mmmm h:MM TT'),
 			gameRecently: this.hasPlayed
-		}), () => { this.show(dateString); });
+		}), { closeOnBackgroundClick: false });
 	}
 
 	hide(): void {

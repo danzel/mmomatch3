@@ -39,9 +39,7 @@ class GameOverOverlay {
 			rank: this.rank,
 			playerCount: this.playerCount,
 			bottomText: this.countdownText
-		}), () => {
-			this.clicked.trigger();
-		});
+		}), { closeOnBackgroundClick: true, closedCallback: () => this.clicked.trigger() });
 	}
 
 	private calculateRank(playerId: number, scoreTracker: ScoreTracker): number {

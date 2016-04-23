@@ -21,16 +21,14 @@ class LevelDetailsOverlay {
 			victoryText: this.victoryDetector.getDetailsText(),
 			failureText: this.failureDetector.getDetailsText()
 		};
-		
+
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {
 			(<any>details).pigsvspugs = true;
 			(<any>details).yours = victoryDetector.getColorText();
 			(<any>details).notyours = failureDetector.getColorText()
 		}
-		
-		htmlOverlayManager.showOverlay('level-details-overlay', template(details), () => {
-			this.becameClosed.trigger()
-		});
+
+		htmlOverlayManager.showOverlay('level-details-overlay', template(details), { closeOnBackgroundClick: true, closedCallback: () => this.becameClosed.trigger() });
 	}
 }
 

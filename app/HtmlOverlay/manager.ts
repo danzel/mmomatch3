@@ -3,6 +3,11 @@ var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
 
+interface OverlayOptions {
+	closeOnBackgroundClick: boolean;
+	closedCallback?: () => void;
+}
+
 class UIState {
 	get overlayVisible() {
 		return this.helpVisible || this.customOverlayVisible;
@@ -13,7 +18,7 @@ class UIState {
 	customOverlayVisible = false;
 	customOverlayClass: string;
 	customOverlayContent: string;
-	customOverlayClosedCallback: () => void;
+	customOverlayOptions: OverlayOptions;
 }
 
 class Manager {
@@ -30,15 +35,15 @@ class Manager {
 		this.render();
 	}
 
-	showOverlay(overlayClass: string, overlayContent: string, closedCallback: () => void) {
+	showOverlay(overlayClass: string, overlayContent: string, overlayOptions: OverlayOptions) {
 		this.uiState.customOverlayVisible = true;
 		this.uiState.customOverlayClass = overlayClass;
 		this.uiState.customOverlayContent = overlayContent;
-		this.uiState.customOverlayClosedCallback = closedCallback;
+		this.uiState.customOverlayOptions = overlayOptions;
 
 		this.render();
 	}
-	
+
 	hideOverlay() {
 		this.uiState.customOverlayVisible = false;
 		this.render();
@@ -47,12 +52,12 @@ class Manager {
 	render() {
 		this.element.innerHTML = template(this.uiState);
 		this.fixSvgs(this.element);
-		
+
 		if (this.feedbackVisible != this.uiState.feedbackVisible) {
 			this.feedbackVisible = this.uiState.feedbackVisible;
 			this.feedbackElement.innerHTML = feedbackTemplate(this.uiState);
 			this.fixSvgs(this.feedbackElement);
-			
+
 			this.addEventHandlers(this.feedbackElement);
 		}
 
@@ -66,18 +71,18 @@ class Manager {
 		});
 		this.addEventHandlers(this.element);
 	}
-	
+
 	private addEventHandlers(element: HTMLElement) {
 
 		let overlay = element.getElementsByClassName("overlay-background")[0];
-		if (overlay) {
+		if (overlay && this.uiState.customOverlayOptions.closeOnBackgroundClick) {
 			overlay.addEventListener('click', () => this.closeOverlays());
 		}
 		let closeButton = element.getElementsByClassName("close-button")[0];
 		if (closeButton) {
 			closeButton.addEventListener('click', () => this.closeOverlays());
 		}
-		
+
 	}
 
 	private closeOverlays() {
@@ -87,7 +92,9 @@ class Manager {
 			this.uiState.helpVisible = false;
 		} else if (this.uiState.customOverlayVisible) {
 			this.uiState.customOverlayVisible = false;
-			this.uiState.customOverlayClosedCallback();
+			if (this.uiState.customOverlayOptions.closedCallback) {
+				this.uiState.customOverlayOptions.closedCallback();
+			}
 		}
 		this.render();
 	}
