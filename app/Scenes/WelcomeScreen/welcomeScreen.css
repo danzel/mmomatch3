@@ -1,0 +1,68 @@
+.welcome-screen {
+	width: 360px;
+}
+
+.welcome-screen .logo {
+	font-size: 70px;
+	stroke-width: 10px;
+}
+
+.welcome-screen .subtitle {
+	font-size: 24px;
+	stroke-width: 6px;
+}
+
+.welcome-screen .login-area {
+	font-family: 'Chewy';
+	font-size: 20px;
+
+	width: 100%;
+	text-align: left;
+}
+
+.welcome-screen input[type="text"] {
+	font-family: 'Chewy';
+	font-size: 20px;
+	padding: 0 2px;
+	
+	border: 1px solid grey;
+	border-radius: 8px;
+	
+	width: 60%;
+	margin-right: 10%;
+}
+
+.welcome-screen input[type="button"] {
+	font-family: 'Chewy';
+	font-size: 20px;
+
+	border: 1px solid grey;
+	border-radius: 8px;
+	
+	width: 30%;
+}
+
+
+
+.welcome-screen .heading {
+	font-size: 36px;
+	stroke-width: 6px;
+}
+
+.welcome-screen .details {
+	font-size: 18px;
+	stroke-width: 4px;
+}
+
+
+.welcome-screen .placeholder {
+	background-color: white;
+	border: 1px solid black;
+	width: 300px;
+	height: 250px;
+	
+	margin-left: auto;
+	margin-right: auto;
+	
+	margin-bottom: 20px;
+}
