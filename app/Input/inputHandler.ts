@@ -21,6 +21,9 @@ class InputHandler {
 	constructor(private group: Phaser.Group, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
 		this.touchCatchAll = new TouchCatchAll(group.game);
 		group.add(this.touchCatchAll.sprite);
+		
+		group.game.input.mouse.capture = true;
+		document.body.oncontextmenu = function() { return false; };
 
 		this.touchCatchAll.pointerDown.on((data) => this.pointerDown(data));
 		this.touchCatchAll.pointerMove.on((data) => this.pointerMove(data));
@@ -58,7 +61,7 @@ class InputHandler {
 	}
 
 	private pointerMove(pointer: Phaser.Pointer) {
-		if (pointer.middleButton.isDown) {
+		if (pointer.middleButton.isDown || pointer.rightButton.isDown) {
 			this.renderer.translate(pointer.rawMovementX, pointer.rawMovementY);
 		} else {
 			if (this.touchBecameMulti) {
