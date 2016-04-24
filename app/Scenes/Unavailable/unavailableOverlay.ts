@@ -15,7 +15,7 @@ class UnavailableOverlay {
 
 	show(dateString?: string): void {
 		this.visible = true;
-		this.overlayManager.showOverlay('unavailable-overlay', template({
+		this.overlayManager.showOverlay('frame unavailable-overlay', template({
 			hasNext: !!dateString,
 			next: dateformat(new Date(dateString), 'dddd dS mmmm h:MM TT'),
 			gameRecently: this.hasPlayed

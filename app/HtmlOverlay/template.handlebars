@@ -11,7 +11,7 @@
 {{/if}}
 
 {{#if helpVisible}}
-<div class="overlay help-overlay">
+<div class="overlay frame help-overlay">
 	<p><svg><text class="heading">Controls</text></svg></p>
 	<p>
 		<svg><text class="details">
@@ -84,7 +84,7 @@
 {{/if}}
 
 {{#if customOverlayVisible}}
-<div class="overlay {{customOverlayClass}}">
+<div id="overlay" class="overlay {{customOverlayClass}}">
 	{{{customOverlayContent}}}
 </div>
 {{/if}}

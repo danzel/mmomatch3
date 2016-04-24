@@ -1,5 +1,14 @@
-.welcome-screen {
-	width: 360px;
+.overlay.welcome-screen {
+	background-color: transparent;
+	border: none;
+}
+
+.welcome-screen .frame  {
+	display: inline-block;
+	width: 370px;
+}
+.welcome-screen .frame.side {
+	width: 240px;
 }
 
 .welcome-screen .logo {
@@ -26,22 +35,25 @@
 	padding: 0 2px;
 	
 	border: 1px solid grey;
-	border-radius: 8px;
+	border-radius: 4px;
 	
-	width: 60%;
-	margin-right: 10%;
+	width: 65%;
+	margin-right: 5%;
 }
 
 .welcome-screen input[type="button"] {
 	font-family: 'Chewy';
 	font-size: 20px;
 
+	background-color: lightgrey;
 	border: 1px solid grey;
-	border-radius: 8px;
+	border-radius: 4px;
 	
 	width: 30%;
 }
-
+.welcome-screen input[type="button"]:active {
+	background-color: grey;
+}
 
 
 .welcome-screen .heading {

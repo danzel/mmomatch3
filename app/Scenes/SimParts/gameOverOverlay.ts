@@ -34,7 +34,7 @@ class GameOverOverlay {
 	}
 
 	private render() {
-		this.htmlOverlayManager.showOverlay('game-over-overlay', template({
+		this.htmlOverlayManager.showOverlay('frame game-over-overlay', template({
 			header: this.victory ? "You won yay!" : "Failure :(",
 			rank: this.rank,
 			playerCount: this.playerCount,

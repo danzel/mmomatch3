@@ -6,6 +6,7 @@ require('./template.css');
 interface OverlayOptions {
 	closeOnBackgroundClick: boolean;
 	closedCallback?: () => void;
+	postRenderCallback?: (element: HTMLElement) => void;
 }
 
 class UIState {
@@ -59,6 +60,9 @@ class Manager {
 			this.fixSvgs(this.feedbackElement);
 
 			this.addEventHandlers(this.feedbackElement);
+		}
+		if (this.uiState.customOverlayVisible && this.uiState.customOverlayOptions.postRenderCallback) {
+			this.uiState.customOverlayOptions.postRenderCallback(document.getElementById('overlay'));
 		}
 
 		this.element.getElementsByClassName("help-button")[0].addEventListener('click', () => {

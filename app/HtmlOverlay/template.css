@@ -32,13 +32,16 @@ text {
 	margin: 0 auto;
 
 	text-align: center;
-
-	background-color: #8FB863;
-	border: 5px #6382B8 solid;
-	border-radius: 10px;
-	
-	padding: 0 20px;
 }
+
+.frame {
+	vertical-align: top;
+    background-color: #8FB863;
+    border: 5px #6382B8 solid;
+    border-radius: 10px;
+    padding: 0 20px;
+}
+
 
 .close-button {
 	position: absolute;
