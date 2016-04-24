@@ -32,7 +32,6 @@ class Bot {
 			default:
 				this.behaviour = new DefaultBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
 				break;
-
 		}
 	}
 
