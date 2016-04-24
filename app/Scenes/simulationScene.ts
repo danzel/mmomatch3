@@ -76,12 +76,20 @@ class SimulationScene {
 	}
 
 	private zoomToRandomLocation() {
-		let posX = this.group.game.width * Math.random();
-		let posY = this.group.game.height * Math.random();
+		//Assume the SimulationRenderer just fit to screen (which it will have)
+		//Calculate where the grid is
+		let width = this.renderer.getScale() * this.simulation.grid.width * MatchableNode.PositionScalar;
+		let height = this.renderer.getScale() * this.simulation.grid.height * MatchableNode.PositionScalar;
+
+		let minX = (this.group.game.width - width) / 2;
+		let minY = (this.group.game.height - height) / 2;
+
+		let posX = minX + width * Math.random();
+		let posY = minY + height * Math.random();
 
 		//Track if player changes the scale, cancel if they do
 		let currentScale = this.renderer.getScale();
-		
+
 		this.initialZoomIn = () => {
 			if (this.renderer.getScale() > 0.4 || currentScale != this.renderer.getScale()) {
 				this.initialZoomIn = null;
