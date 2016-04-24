@@ -21,9 +21,9 @@ class InputHandler {
 	constructor(private group: Phaser.Group, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
 		this.touchCatchAll = new TouchCatchAll(group.game);
 		group.add(this.touchCatchAll.sprite);
-		
+
 		group.game.input.mouse.capture = true;
-		document.body.oncontextmenu = function() { return false; };
+		document.body.oncontextmenu = function () { return false; };
 
 		this.touchCatchAll.pointerDown.on((data) => this.pointerDown(data));
 		this.touchCatchAll.pointerMove.on((data) => this.pointerMove(data));
@@ -36,10 +36,6 @@ class InputHandler {
 		inputApplier.failedToSwap.on((data) => {
 			this.renderer.failedToSwap(data.matchable, data.direction);
 		})
-	}
-
-	update(dt: number) {
-
 	}
 
 	private mouseWheel(event: MouseEvent) {
@@ -87,17 +83,17 @@ class InputHandler {
 		if (this.activeTouches == 2 && (pointer.movementX || pointer.movementY)) {
 			let previousCenter = this.calculatePreviousCenter(this.group.game.input.pointer1, this.group.game.input.pointer2);
 			let center = this.calculateCenter(this.group.game.input.pointer1, this.group.game.input.pointer2);
-			
+
 			//Translate
 			this.renderer.translate(center.x - previousCenter.x, center.y - previousCenter.y);
-			
+
 			//Scale
 			var previousDist = this.previousDistanceBetween(this.group.game.input.pointer1, this.group.game.input.pointer2)
 			var newDist = this.distanceBetween(this.group.game.input.pointer1, this.group.game.input.pointer2);
 
 			var scaleChange = newDist / previousDist;
 			this.renderer.zoomAt(center.x, center.y, scaleChange);
-			
+
 			this.group.game.input.pointer1.resetMovement();
 			this.group.game.input.pointer2.resetMovement();
 		}
