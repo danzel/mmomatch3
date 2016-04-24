@@ -13,6 +13,7 @@ import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
 import UnavailableData = require('./DataPackets/unavailableData');
 import UnavailableOverlay = require('./Scenes/Unavailable/unavailableOverlay');
+import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
@@ -27,7 +28,7 @@ class AppEntry {
 	constructor() {
 		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
-		
+
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -41,6 +42,14 @@ class AppEntry {
 	}
 
 	create() {
+		let welcome = new WelcomeScreen(this.htmlOverlayManager);
+		welcome.onLogin = (nickname) => {
+			this.connect();
+		};
+		welcome.show();
+	}
+
+	connect() {
 		console.log('create');
 
 		let socket: SocketClient;
@@ -75,7 +84,7 @@ class AppEntry {
 			this.scene.playerCount = tickData.playerCount;
 		}
 	}
-	
+
 	unavailableReceived(data: UnavailableData) {
 		if (this.sceneGroup) {
 			this.sceneGroup.destroy();
@@ -83,7 +92,7 @@ class AppEntry {
 		}
 		this.simulationHandler = null;
 		this.scene = null;
-		
+
 		this.unavailableOverlay.show(data.nextAvailableDate);
 	}
 
@@ -98,7 +107,7 @@ class AppEntry {
 			this.scene.update();
 		}
 	}
-	
+
 	preRender() {
 		if (this.scene) {
 			this.scene.preRender();
@@ -117,10 +126,10 @@ if (GoodBrowser) {
 		},
 		classes: false,
 
-		active: function() {
+		active: function () {
 			new AppEntry();
 		},
-		inactive: function() {
+		inactive: function () {
 			new AppEntry();
 		}
 	});

@@ -5,9 +5,11 @@ var template = <(data: {}) => string>require('./welcomeScreen.handlebars');
 require('./welcomeScreen.css');
 
 class WelcomeScreen {
-	private nickname: Element;
-	private button: Element;
-	private hidenames: Element;
+	private nickname: HTMLInputElement;
+	private button: HTMLInputElement;
+	private hidenames: HTMLInputElement;
+	
+	onLogin: (nickname: string, hideNames: boolean) => void;
 	
 	constructor(private htmlOverlayManager: HtmlOverlayManager) {
 
@@ -21,12 +23,13 @@ class WelcomeScreen {
 	}
 
 	private addEventListeners(element: HTMLElement) {
-		this.nickname = element.getElementsByClassName('nickname')[0];
-		this.button = element.getElementsByClassName('button')[0];
-		this.hidenames = element.getElementsByClassName('hidenames')[0];
+		this.nickname = <HTMLInputElement>element.getElementsByClassName('nickname')[0];
+		this.button = <HTMLInputElement>element.getElementsByClassName('button')[0];
+		this.hidenames = <HTMLInputElement>element.getElementsByClassName('hidenames')[0];
 
 		this.button.addEventListener('click', () => {
-			console.log('click');
+			this.htmlOverlayManager.hideOverlay();
+			this.onLogin(this.nickname.value, this.hidenames.checked);
 		})
 	}
 }
