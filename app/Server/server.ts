@@ -83,7 +83,7 @@ class Server {
 		this.bots.length = 0;
 		let desiredBots = this.config.botsLeaveForPlayers ? (this.config.botCount - this.getRealPlayerCount()) : this.config.botCount;
 		for (var i = 0; i < desiredBots; i++) {
-			this.bots.push(new Bot(this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid), { moveRange: 5, secondsBetweenMoves: 3 }));
+			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid)));
 		}
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
