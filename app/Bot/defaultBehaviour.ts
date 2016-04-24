@@ -16,27 +16,27 @@ class DefaultBehaviour extends Behaviour {
 
 		noMoveDelay: 5
 	}
-	
+
 	secondsToNextMove: number;
 	setIndex = 0;
-	
+
 	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
 		super(helper, simulation, inputApplier);
 
 		this.chooseStartingLocation();
 		this.secondsToNextMove = this.calculateVariedTime(this.config.startingDelay, this.config.startingVariation);
 	}
-	
+
 	protected calculateVariedTime(amount: number, variation: number): number {
 		return (amount * (1 - variation)) + (Math.random() * amount * variation * 2);
 	}
-	
+
 	update(dt: number) {
 		this.secondsToNextMove -= dt;
 		if (this.secondsToNextMove > 0) {
 			return;
 		}
-		
+
 		let set = this.config.delays[this.setIndex];
 
 		let moves = this.helper.findAllMovesInRange(this.lastPos.x, this.lastPos.y, set.range);
@@ -44,12 +44,12 @@ class DefaultBehaviour extends Behaviour {
 		if (moves.length > 0) {
 			let m = moves[Math.floor(Math.random() * moves.length)];
 			this.performMove(m);
-			
+
 			this.setIndex = 0;
 			this.secondsToNextMove = this.calculateVariedTime(this.config.delays[0].seconds, this.config.delays[0].variation);
 		} else {
 			this.setIndex++;
-			
+
 			if (this.setIndex == this.config.delays.length) {
 				//Failed to make a move, reset
 				this.chooseStartingLocation();
@@ -60,7 +60,7 @@ class DefaultBehaviour extends Behaviour {
 			}
 		}
 	}
-	
+
 	protected chooseStartingLocation(): void {
 		this.lastPos.x = Math.floor(Math.random() * this.simulation.grid.width);
 		this.lastPos.y = Math.floor(Math.random() * this.simulation.grid.height);

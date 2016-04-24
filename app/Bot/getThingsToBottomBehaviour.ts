@@ -4,7 +4,7 @@ import Type = require('../Simulation/type');
 class GetThingsToBottomBehaviour extends DefaultBehaviour {
 	chooseStartingLocation(): void {
 		//Find a position under a robot
-		
+
 		let positions = new Array<{ x: number, y: number }>();
 
 		for (var x = 0; x < this.simulation.grid.width; x++) {
@@ -15,15 +15,15 @@ class GetThingsToBottomBehaviour extends DefaultBehaviour {
 				}
 			}
 		}
-		
+
 		if (positions.length == 0) {
 			super.chooseStartingLocation();
 			return;
 		}
-		
+
 		let i = Math.floor(Math.random() * positions.length);
 		let pos = positions[i];
-		
+
 		this.lastPos.x = pos.x;
 		this.lastPos.y = Math.floor(Math.random() * pos.y);
 	}
