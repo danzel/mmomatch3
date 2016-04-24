@@ -64,7 +64,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		//Clamp to 2 - this.playerCount
 		amount = Math.min(this.playerCount, amount = Math.max(2, amount));
 
-		let size = { width: amount * gen.intInclusive(6, 11), height: gen.intInclusive(30, 50) };
+		let size = { width: Math.min(250, amount * gen.intInclusive(6, 11)), height: gen.intInclusive(30, 50) };
 		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
 
 		//Calculate failure value
@@ -161,7 +161,14 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 
 	private randomSize(gen: RandomGenerator): { width: number, height: number } {
-		return { width: gen.intExclusive(10, 250), height: gen.intExclusive(10, 80) };
+		
+		let minWidth = Math.min(40, 10 + this.playerCount * 2);
+		let maxWidth = Math.min(250, 10 + this.playerCount * 10);
+		
+		let minHeight = Math.min(40, 10 + this.playerCount * 2);
+		let maxHeight = Math.min(80, 10 + this.playerCount * 4)
+		
+		return { width: gen.intExclusive(minWidth, maxWidth), height: gen.intExclusive(minHeight, maxHeight) };
 	}
 
 	private randomColorCount(gen: RandomGenerator, defaultCount?: number): number {
