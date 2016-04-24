@@ -157,6 +157,10 @@ class Server {
 			return;
 		}
 
+		if (this.getRealPlayerCount() == 0) {
+			return;
+		}
+
 
 		this.simulation.update();
 
