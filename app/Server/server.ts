@@ -1,7 +1,9 @@
 import AvailabilityManager = require('./availabilityManager');
+import Bot = require('../Bot/bot');
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import DebugLogger = require('../debugLogger');
+import DirectInputApplier = require('../Simulation/SinglePlayer/directInputApplier');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import InputVerifier = require('../Simulation/inputVerifier');
@@ -44,6 +46,9 @@ class Server {
 	private clientsRequiringBoot: Array<string> = [];
 	private clients: { [id: string]: Player } = {};
 
+	private bots = new Array<Bot>();
+	private botPlayers = new Array<Player>();
+
 	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig) {
 		this.availabilityManager = new AvailabilityManager(config);
 		this.currentlyAvailable = this.availabilityManager.availableAt(new Date())
@@ -51,9 +56,14 @@ class Server {
 		serverComms.connected.on(id => this.connectionReceived(id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
+
+		for (var i = 0; i < this.config.botCount; i++) {
+			this.botPlayers.push(this.playerProvider.createPlayer())
+		};
 	}
 
-	getPlayerCount(): number { return Object.keys(this.clients).length + this.clientsRequiringBoot.length; }
+	getRealPlayerCount(): number { return Object.keys(this.clients).length + this.clientsRequiringBoot.length; }
+	getPlayerCount(): number { return this.getRealPlayerCount() + this.bots.length; }
 
 	public start() {
 		if (this.currentlyAvailable) {
@@ -69,6 +79,12 @@ class Server {
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.config.framesPerTick);
 		//new DebugLogger(this.simulation);
+
+		this.bots.length = 0;
+		let desiredBots = this.config.botsLeaveForPlayers ? (this.config.botCount - this.getRealPlayerCount()) : this.config.botCount;
+		for (var i = 0 ; i < desiredBots; i++) {
+			this.bots.push(new Bot(this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid), { moveRange: 5, secondsBetweenMoves: 3 }));
+		}
 
 		//TODO: Should we split boot and levels? boot has playerid in it which sucks
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
@@ -140,11 +156,11 @@ class Server {
 			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())));
 			return;
 		}
-		
+
 
 		this.simulation.update();
 
-		var tickData = this.tickDataFactory.getTickIfReady(Object.keys(this.clients).length + this.clientsRequiringBoot.length);
+		var tickData = this.tickDataFactory.getTickIfReady(this.getPlayerCount());
 
 		if (!tickData) {
 			return;
@@ -164,6 +180,8 @@ class Server {
 			});
 			this.clientsRequiringBoot.length = 0;
 		}
+		
+		this.bots.forEach(b => b.update(1 / this.config.fps));
 	}
 }
 
