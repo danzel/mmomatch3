@@ -15,19 +15,36 @@ class GetThingsToBottomDetector extends Detector {
 		simulation.swapHandler.swapOccurred.on(swap => this.swapOccurred(swap));
 	}
 
-	private checkMatchable(matchable: Matchable) {
+	private checkMatchable(matchable: Matchable): boolean {
 		if (matchable.type == Type.GetToBottom && matchable.y == 0) {
-			this.amount--;
+			this.checkBottom();
+			return true;
+		}
+		return false;
+	}
+
+	private swapOccurred(swap: Swap) {
+		if (!this.checkMatchable(swap.left)) {
+			this.checkMatchable(swap.right);
+		}
+	}
+
+	checkBottom(): void {
+		let newAmount = this.totalAmount;
+		for (var x = 0; x < this.simulation.grid.width; x++) {
+			let bottom = this.simulation.grid.cells[x][0];
+			if (bottom && bottom.type == Type.GetToBottom && bottom.y == 0 && !bottom.beingSwapped) {
+				newAmount--;
+			}
+		}
+
+		if (this.amount != newAmount) {
+			this.amount = newAmount;
 			this.valueChanged.trigger();
 			if (this.amount == 0) {
 				this.detected.trigger();
 			}
 		}
-	}
-
-	private swapOccurred(swap: Swap) {
-		this.checkMatchable(swap.left);
-		this.checkMatchable(swap.right);
 	}
 
 	update() {
