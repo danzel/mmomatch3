@@ -50,7 +50,7 @@ class DefaultBehaviour extends Behaviour {
 		} else {
 			this.setIndex++;
 			
-			if (this.setIndex > this.config.delays.length) {
+			if (this.setIndex == this.config.delays.length) {
 				//Failed to make a move, reset
 				this.chooseStartingLocation();
 				this.setIndex = 0;
