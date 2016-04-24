@@ -31,12 +31,16 @@ class DefaultBehaviour extends Behaviour {
 		return (amount * (1 - variation)) + (Math.random() * amount * variation * 2);
 	}
 
-	update(dt: number) {
+	update(dt: number): void {
 		this.secondsToNextMove -= dt;
 		if (this.secondsToNextMove > 0) {
 			return;
 		}
 
+		this.tryDoMove();
+	}
+
+	tryDoMove(): void {
 		let set = this.config.delays[this.setIndex];
 
 		let moves = this.helper.findAllMovesInRange(this.lastPos.x, this.lastPos.y, set.range);

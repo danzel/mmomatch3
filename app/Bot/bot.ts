@@ -7,7 +7,7 @@ import VictoryType = require('../simulation/Levels/victoryType');
 import Behaviour = require('./behaviour');
 import GetThingsToBottomBehaviour = require('./getThingsToBottomBehaviour');
 import DefaultBehaviour = require('./defaultBehaviour');
-//import RequireMatchBehaviour = require('./requireMatchBehaviour');
+import RequireMatchBehaviour = require('./requireMatchBehaviour');
 
 class Bot {
 	private secondsToNextMove: number;
@@ -23,9 +23,9 @@ class Bot {
 		this.secondsToNextMove = (Math.random() + 0.5) * this.config.secondsBeforeFirstMove;
 
 		switch (level.victoryType) {
-			/*case VictoryType.RequireMatch:
-				this.behaviour = new RequireMatchBehaviour(this);
-				break;*/
+			case VictoryType.RequireMatch:
+				this.behaviour = new RequireMatchBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
+				break;
 			case VictoryType.GetThingsToBottom:
 				this.behaviour = new GetThingsToBottomBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
 				break;

@@ -1,7 +1,19 @@
+import BotHelper = require('./botHelper');
 import DefaultBehaviour = require('./defaultBehaviour');
+import InputApplier = require('../Simulation/inputApplier');
+import Simulation = require('../Simulation/simulation');
 import Type = require('../Simulation/type');
 
 class GetThingsToBottomBehaviour extends DefaultBehaviour {
+	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
+		super(helper, simulation, inputApplier);
+
+		this.config.delays = [
+			{ seconds: 1, range: 2, variation: 0.2 },
+			{ seconds: 1, range: 3, variation: 0.2 }
+		];
+	}
+
 	chooseStartingLocation(): void {
 		//Find a position under a robot
 
