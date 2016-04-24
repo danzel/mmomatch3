@@ -6,8 +6,7 @@ import Type = require('../Simulation/type');
 
 class GetThingsToBottomBehaviour extends DefaultBehaviour {
 	private moveCount = 0;
-	
-	
+
 	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
 		super(helper, simulation, inputApplier);
 
@@ -18,14 +17,14 @@ class GetThingsToBottomBehaviour extends DefaultBehaviour {
 	}
 
 	tryDoMove(): void {
-		
+
 		//Periodically look under robots againm otherwise we'll start matching above them
 		this.moveCount++;
 		if (this.moveCount == 5) {
 			this.moveCount = 0;
 			this.chooseStartingLocation();
 		}
-		
+
 		super.tryDoMove();
 	}
 	chooseStartingLocation(): void {
