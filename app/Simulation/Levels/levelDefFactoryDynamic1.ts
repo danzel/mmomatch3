@@ -74,7 +74,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let failureValue: number;
 		switch (failureType) {
 			case FailureType.Swaps:
-				failureValue = Math.round(size.height * amount * difficulty * 1.4 / 10) * 10;
+				failureValue = Math.round(size.height * amount * (1 / difficulty) * 1.4 / 10) * 10;
 				break;
 			case FailureType.Time:
 				failureValue = Math.round(size.height * amount * 3 / this.playerCount / 10) * 10;
