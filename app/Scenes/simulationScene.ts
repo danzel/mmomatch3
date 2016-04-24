@@ -85,6 +85,7 @@ class SimulationScene {
 		this.initialZoomIn = () => {
 			if (this.renderer.getScale() > 0.4 || currentScale != this.renderer.getScale()) {
 				this.initialZoomIn = null;
+				return;
 			}
 			this.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / this.renderer.getScale())))));
 			currentScale = this.renderer.getScale();
