@@ -1,8 +1,8 @@
 import BotHelper = require('./botHelper');
 import InputApplier = require('../Simulation/inputApplier');
-import LevelDef = require('../simulation/Levels/levelDef');
-import Simulation = require('../simulation/Simulation');
-import VictoryType = require('../simulation/Levels/victoryType');
+import LevelDef = require('../Simulation/Levels/levelDef');
+import Simulation = require('../Simulation/simulation');
+import VictoryType = require('../Simulation/Levels/victoryType');
 
 import Behaviour = require('./behaviour');
 import GetThingsToBottomBehaviour = require('./getThingsToBottomBehaviour');
