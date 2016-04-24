@@ -8,6 +8,7 @@ import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
+import MatchableNode = require('../Renderer/matchableNode');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
 import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
 import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
@@ -29,6 +30,8 @@ class SimulationScene {
 	private haveFitRenderer = false;
 	private playerCountValue = 1;
 
+	private initialZoomIn: () => void;
+
 	scoreRenderer: ScoreRenderer;
 	playerCountRenderer: PlayerCountRenderer;
 
@@ -36,6 +39,7 @@ class SimulationScene {
 	gameOverOverlay: GameOverOverlay;
 
 	detectorDisplays = new Array<DetectorDisplay>();
+
 
 	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, endAvailabilityDate: Date) {
 		let simulationGroup = new Phaser.Group(group.game, group);
@@ -55,6 +59,8 @@ class SimulationScene {
 			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
 			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group), endAvailabilityDate);
 			this.playerCountRenderer.updateData(this.playerCountValue);
+
+			this.zoomToRandomLocation();
 		});
 
 
@@ -68,7 +74,23 @@ class SimulationScene {
 			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, victory, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
 		});
 	}
-	
+
+	private zoomToRandomLocation() {
+		let posX = this.group.game.width * Math.random();
+		let posY = this.group.game.height * Math.random();
+
+		//Track if player changes the scale, cancel if they do
+		let currentScale = this.renderer.getScale();
+		
+		this.initialZoomIn = () => {
+			if (this.renderer.getScale() > 0.4 || currentScale != this.renderer.getScale()) {
+				this.initialZoomIn = null;
+			}
+			this.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / this.renderer.getScale())))));
+			currentScale = this.renderer.getScale();
+		};
+	}
+
 	set playerCount(playerCount: number) {
 		this.playerCountValue = playerCount;
 		if (this.playerCountRenderer) {
@@ -81,6 +103,9 @@ class SimulationScene {
 			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
 			this.haveFitRenderer = true;
 		}
+		if (this.initialZoomIn) {
+			this.initialZoomIn();
+		}
 
 		if (this.scoreRenderer) {
 			this.scoreRenderer.updateData()
@@ -90,7 +115,7 @@ class SimulationScene {
 		}
 		this.playersOnSimulation.update();
 	}
-	
+
 	preRender(): void {
 		this.renderer.update(this.group.game.time.physicsElapsed);
 	}
