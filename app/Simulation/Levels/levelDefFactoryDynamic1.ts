@@ -223,7 +223,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		if (colorCount == defaultCount - 1) {
 			return 1.5;
 		}
-		if (colorCount == defaultCount + 2) {
+		if (colorCount == defaultCount - 2) {
 			return 2;
 		}
 		throw new Error("ColorDifficult out of range " + colorCount + ", " + defaultCount);
