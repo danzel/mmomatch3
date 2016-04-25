@@ -6,15 +6,20 @@ npm install -g webpack webpack-dev-server
 
 Linux server install:
 wget https://deb.nodesource.com/setup_5.x
-sudo bash setup_5.x
-sudo apt-get install nodejs unzip
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8091
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8092
+sudo -s
+bash setup_5.x
+apt-get install nodejs unzip
 DD_API_KEY=1e144774a558ef746b8b21acaf935aa1 bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
 mkdir a
+echo "#! /bin/sh" > /etc/network/if-up.d/nodefirewall
+echo "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8091" > /etc/network/if-up.d/nodefirewall
+echo "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8092" > /etc/network/if-up.d/nodefirewall
+chmod 755 /etc/network/if-up.d/nodefirewall
+sh /etc/network/if-up.d/nodefirewall
+exit
 
 
-one time:
+After putting the code on the server, run this one time:
 sudo npm run-script install-service
 npm install --only=prod
 service mmomatch start
