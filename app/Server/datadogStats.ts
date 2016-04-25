@@ -38,7 +38,7 @@ class DatadogStats {
 	}
 	
 	private logPeriodicStats() {
-		this.statsd.gauge('mmomatch.players', this.server.getPlayerCount());
+		this.statsd.gauge('mmomatch.players', this.server.getRealPlayerCount());
 	}
 };
 
