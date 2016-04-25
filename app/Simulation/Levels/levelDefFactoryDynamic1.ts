@@ -184,8 +184,6 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return defaultCount - 1;
 			case 3:
 				return defaultCount + 1;
-			case 4:
-				return defaultCount + 2;
 			default:
 				return defaultCount;
 		}
@@ -215,12 +213,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		return 1 + (height - 10) / 10;
 	}
 
+	/** Returns > 1 for easier, < 1 for harder */
 	private calculateColorDifficulty(colorCount: number, defaultCount?: number): number {
 		defaultCount = defaultCount || defaultColorCount;
 
-		if (colorCount == defaultCount + 2) {
-			return 0.5;
-		}
 		if (colorCount == defaultCount + 1) {
 			return 0.75;
 		}
