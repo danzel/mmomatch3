@@ -14,7 +14,6 @@ module.exports = {
     },
 	module: {
 		loaders: [
-			{ test: /\.json$/, loader: 'json' },
 			{ test: /\.tsx?$/, loader: 'ts-loader' },
 			{ test: /\.handlebars$/, loader: 'handlebars-loader' },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("css-loader") }

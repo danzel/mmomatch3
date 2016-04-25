@@ -32,7 +32,7 @@ class AppEntry {
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		this.game.stage.backgroundColor = 0x273348;
 
-		GraphicsLoader.loadBalls(this.game, 'emojione-animals', 11);
+		GraphicsLoader.load(this.game);
 	}
 
 	create() {
@@ -58,7 +58,7 @@ class AppEntry {
 		this.simulation = loaded.simulation;
 
 		let gameEndDetector = new GameEndDetector(level, this.simulation);
-		let inputApplier = new SinglePlayerInputApplier(this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid);
+		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid);
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, { }, 0, null);
 

@@ -1,7 +1,8 @@
-declare function require(filename: string): (data: {}) => string;
+declare function require(filename: string): string | ((data: {}) => string);
 var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
+var closeSvg = require('file?name=close.svg?[hash:6]!../../img/ui/close.svg');
 
 interface OverlayOptions {
 	closeOnBackgroundClick: boolean;
@@ -15,6 +16,8 @@ class UIState {
 	}
 	helpVisible = false;
 	feedbackVisible = false;
+	
+	closeSrc = closeSvg;
 
 	customOverlayVisible = false;
 	customOverlayClass: string;

@@ -38,7 +38,7 @@ class AppEntry {
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		this.game.stage.backgroundColor = 0x273348;
 
-		GraphicsLoader.loadBalls(this.game, 'emojione-animals', 11);
+		GraphicsLoader.load(this.game);
 	}
 
 	create() {

@@ -1,6 +1,10 @@
+declare function require(filename: string): string;
+var json = require('file?name=atlas.json?[hash:6]!../../img/skin/emojione-animals.json');
+var png = require('file?name=atlas.png?[hash:6]!../../img/skin/emojione-animals.png');
+
 class GraphicsLoader {
-	static loadBalls(game: Phaser.Game, spriteSet: string, count: number) {
-		game.load.atlasJSONHash('atlas', 'img/skin/' + spriteSet + '.png', 'img/skin/' + spriteSet + '.json');
+	static load(game: Phaser.Game) {
+		game.load.atlasJSONHash('atlas', png, json);
 	}
 }
 

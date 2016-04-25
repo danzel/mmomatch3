@@ -29,7 +29,7 @@ var gulpSSHusw = new GulpSSH({
 })
 
 
-gulp.task("default", ["webpack", 'uglify-primus', 'copy-img', 'server']);
+gulp.task("default", ["webpack", 'uglify-primus', 'server']);
 
 
 gulp.task('webpack', function(callback) {
@@ -53,10 +53,6 @@ gulp.task('uglify-primus', function() {
 		.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
-
-gulp.task('copy-img', function() {
-	gulp.src(['img/**/*']).pipe(gulp.dest('dist/img'));
-})
 
 gulp.task('server', function() {
 	return gulp.src(['typings/**/*.d.ts', 'app/**/*.ts'])
