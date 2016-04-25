@@ -124,12 +124,11 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 		//Now calculate the victoryValue based on our random stuffs.
 		let difficulty =
-			this.calculateHeightDifficulty(size.height) *
 			this.calculateFailureDifficulty(failureType, failureValue) *
 			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
-
-		var amount = Math.round(difficulty * 0.08 / 10) * 10;
+		
+		var amount = Math.round(difficulty * 0.15);
 
 		let victoryValue = new Array<{ x: number, y: number, amount: number }>();
 		for (var i = 0; i < amount; i++) {
