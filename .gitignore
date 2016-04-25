@@ -7,3 +7,9 @@ z_id_rsa
 archive.zip
 dist/index.html
 serverconfig.json
+dist/atlas.json
+dist/atlas.png
+dist/close.svg
+img/skin/emojione-animals.json
+img/skin/emojione-animals.png
+serverlogs.log
