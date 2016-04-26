@@ -32,8 +32,8 @@ class Client {
 		if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 			
-			//SEMI-HACK. If Pigs vs Pugs, randomly swap them
-			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && Math.random() < 0.5) {
+			//SEMI-HACK. If Pigs vs Pugs, maybe swap failure/victory based on playerId
+			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && (bootData.playerId % 2 == 1)) {
 				let temp = bootData.level.failureValue;
 				bootData.level.failureValue = bootData.level.victoryValue;
 				bootData.level.victoryValue = temp;
