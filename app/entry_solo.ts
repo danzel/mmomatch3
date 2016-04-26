@@ -10,7 +10,7 @@ import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug'
 import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
-import SinglePlayerInputApplier = require('./Simulation/SinglePlayer/singlePlayerInputApplier');
+import DirectInputApplier = require('./Simulation/SinglePlayer/directInputApplier');
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
