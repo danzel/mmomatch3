@@ -46,11 +46,6 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 				simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
 			})
 		}
-		if (level.victoryType == VictoryType.GetThingToBottom) {
-			//grid height is double because initial spawn is off the screen
-			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
-			spawnManager.spawnOverride.addSpawn(<number>level.victoryValue, grid.height + grid.height - 1, Color.None, Type.GetToBottom);
-		}
 		if (level.victoryType == VictoryType.GetThingsToBottom) {
 			//grid height is double because initial spawn is off the screen
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);

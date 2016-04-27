@@ -69,8 +69,6 @@ class ServerLogger {
 	
 	private encodeVictoryValue(victoryType: VictoryType, victoryValue: any): any {
 		switch (victoryType) {
-			case VictoryType.GetThingToBottom:
-				return '';
 			case VictoryType.RequireMatch:
 				return (<[]>victoryValue).length;
 			default:

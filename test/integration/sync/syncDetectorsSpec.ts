@@ -9,7 +9,6 @@ import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
 import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 
-import GetThingToBottomDetector = require('../../../app/Simulation/Levels/Detectors/getThingToBottomDetector');
 import GetThingsToBottomDetector = require('../../../app/Simulation/Levels/Detectors/getThingsToBottomDetector');
 import MatchesDetector = require('../../../app/Simulation/Levels/Detectors/matchesDetector');
 import MatchXOfColorDetector = require('../../../app/Simulation/Levels/Detectors/matchXOfColorDetector');
@@ -173,45 +172,6 @@ describe('SyncDetectors', () => {
 		for (let i = 0; i < gameEndDetectors.length; i++) {
 			let g = gameEndDetectors[i];
 			expect((<RequireMatchDetector>g.victoryDetector).requireMatches).toBe(0);
-			expect(g.gameHasEnded).toBe(true);
-		}
-	});
-	it('correctly syncs GetThingToBottomDetector', () => {
-		let serverComms = new FakeServerComms(1);
-		let simulation = TestUtil.prepareForTest([
-			"87B89",
-			"86199",
-			"87189",
-			"21232"
-		]);
-		let level = new LevelDef(1, 5, 4, [], 10, FailureType.Swaps, VictoryType.GetThingToBottom, 999999, 2);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
-		server.start();
-		serverComms.server = server;
-
-		serverComms.addClient();
-		serverComms.update();
-		serverComms.update();
-
-		//Swap and do a combo that makes some disappear
-		serverComms.clients[0].sendSwap(simulation.grid.cells[1][0].id, simulation.grid.cells[2][0].id);
-		for (let i = 0; i < 5; i++) {
-			serverComms.addClient();
-			serverComms.update();
-			serverComms.update();
-		}
-		serverComms.flushClients();
-
-		serverComms.getAllSimulations().forEach((sim) => {
-			TestUtil.expectGridQuiet(sim);
-			TestUtil.expectGridSize(sim.grid, [4, 4, 1, 4, 4]);
-			expect(sim.grid.cells[2][0].type).toBe(Type.GetToBottom);
-		});
-
-		let gameEndDetectors = serverComms.getAllGameEndDetectors();
-		for (let i = 0; i < gameEndDetectors.length; i++) {
-			let g = gameEndDetectors[i];
-			expect((<GetThingToBottomDetector>g.victoryDetector).hasTriggered).toBe(true);
 			expect(g.gameHasEnded).toBe(true);
 		}
 	});

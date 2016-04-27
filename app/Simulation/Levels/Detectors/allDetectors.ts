@@ -1,4 +1,3 @@
-import GetThingToBottom = require('./getThingToBottomDetector');
 import GetThingsToBottom = require('./getThingsToBottomDetector');
 import Matches = require('./matchesDetector');
 import MatchXOfColor = require('./matchXOfColorDetector');
@@ -12,7 +11,6 @@ var AllDetectors = {
 	Matches: Matches,
 	Score: Score,
 	RequireMatch: RequireMatch,
-	GetThingToBottom: GetThingToBottom,
 	GetThingsToBottom: GetThingsToBottom,
 	
 	//Failure

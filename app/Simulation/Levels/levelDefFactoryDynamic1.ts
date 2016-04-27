@@ -44,8 +44,6 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		switch (victoryType) {
 			case VictoryType.GetThingsToBottom:
 				return this.generateLevelGetThingsToBottom(levelNumber, failureType, gen);
-			case VictoryType.GetThingToBottom:
-				break; ///TODO
 			case VictoryType.Matches:
 				return this.generateLevelMatches(levelNumber, failureType, gen);
 			case VictoryType.MatchXOfColor:

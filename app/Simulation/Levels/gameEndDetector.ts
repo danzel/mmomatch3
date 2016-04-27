@@ -5,7 +5,6 @@ import LiteEvent = require('../../liteEvent');
 import Simulation = require('../simulation');
 import VictoryType = require('./victoryType');
 
-import GetThingToBottomDetector = require('./Detectors/getThingToBottomDetector');
 import GetThingsToBottomDetector = require('./Detectors/getThingsToBottomDetector');
 import MatchesDetector = require('./Detectors/matchesDetector');
 import MatchXOfColorDetector = require('./Detectors/matchXOfColorDetector');
@@ -71,8 +70,6 @@ class GameEndDetector {
 				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.RequireMatch:
 				return new RequireMatchDetector(this.simulation, this.gameEndConditions.victoryValue);
-			case VictoryType.GetThingToBottom:
-				return new GetThingToBottomDetector(this.simulation);
 			case VictoryType.GetThingsToBottom:
 				return new GetThingsToBottomDetector(this.simulation, this.gameEndConditions.victoryValue.length);
 			case VictoryType.MatchXOfColor:

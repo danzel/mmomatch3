@@ -1,23 +1,20 @@
 enum VictoryType {
-	Matches,
-	Score,
-
-	/** Value is { color: Color, amount: number } */
-	MatchXOfColor,
 
 	/** LevelDef.VictoryValue is a [{x, y, amount}] */
 	RequireMatch,
 
+	/** Value is { color: Color, amount: number } */
+	MatchXOfColor,
+
+	Score,
+
 	/** LevelDef.VictoryValue is an array of column indexes to start the thing at the top of */
 	GetThingsToBottom,
 
-	/** Not a real VictoryType, just for random gen */
-	Count,
+	Matches,
 
-	// Anything below here is out of the level rotation	
-	
-	/** LevelDef.VictoryValue is the column index to start the thing at the top of */
-	GetThingToBottom,
+	/** Not a real VictoryType, just for random gen. Anything below here is out of the level rotation */
+	Count, 
 }
 
 export = VictoryType;
