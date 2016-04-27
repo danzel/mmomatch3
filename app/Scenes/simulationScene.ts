@@ -11,6 +11,7 @@ import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
 import MatchableNode = require('../Renderer/matchableNode');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
 import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
+import PointsEarnedDisplay = require('./SimParts/pointsEarnedDisplay');
 import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
@@ -34,6 +35,7 @@ class SimulationScene {
 
 	scoreRenderer: ScoreRenderer;
 	playerCountRenderer: PlayerCountRenderer;
+	pointsEarnedDisplay: PointsEarnedDisplay;
 
 	levelDetailsOverlay: LevelDetailsOverlay;
 	gameOverOverlay: GameOverOverlay;
@@ -59,6 +61,8 @@ class SimulationScene {
 			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
 			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group), endAvailabilityDate);
 			this.playerCountRenderer.updateData(this.playerCountValue);
+			
+			this.pointsEarnedDisplay = new PointsEarnedDisplay(new Phaser.Group(group.game, group), simulation.scoreTracker, playerId);
 
 			this.zoomToRandomLocation();
 		});
@@ -118,6 +122,9 @@ class SimulationScene {
 
 		if (this.scoreRenderer) {
 			this.scoreRenderer.updateData()
+		}
+		if (this.pointsEarnedDisplay) {
+			this.pointsEarnedDisplay.updatePosition();
 		}
 		if (this.gameOverOverlay) {
 			this.gameOverOverlay.update();
