@@ -56,8 +56,8 @@ class Simulation {
 		this.inputVerifier = new InputVerifier(this.grid, this.matchChecker, true);
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer);
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
-		this.scoreTracker = new ScoreTracker(this.comboOwnership);
-		this.requireMatchInCellTracker = new RequireMatchInCellTracker(this.matchPerformer);
+		this.scoreTracker = null;
+		this.requireMatchInCellTracker = new RequireMatchInCellTracker(this.comboOwnership);
 		
 		this.simulationStats = new SimulationStats(this.matchPerformer);
 

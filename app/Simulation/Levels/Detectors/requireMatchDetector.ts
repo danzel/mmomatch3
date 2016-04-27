@@ -12,10 +12,10 @@ class RequireMatchDetector extends Detector {
 
 		this.totalRequireMatches = requireMatches.length;
 		
-		simulation.requireMatchInCellTracker.requirementMet.on((req) => this.requirementMet(req));
+		simulation.requireMatchInCellTracker.requirementMet.on(() => this.requirementMet());
 	}
 	
-	private requirementMet(req: RequireMatch) {
+	private requirementMet() {
 		this.update();
 	}
 	

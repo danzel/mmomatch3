@@ -1,18 +1,18 @@
-import Match = require('./match');
-import MatchPerformer = require('./matchPerformer');
+import ComboOwnership = require('./Scoring/comboOwnership');
 import LiteEvent = require('../liteEvent');
+import OwnedMatch = require('./Scoring/ownedMatch');
 import RequireMatch = require('./requireMatch');
 
 class RequireMatchInCellTracker {
 	requirements = new Array<RequireMatch>();
-	requirementMet = new LiteEvent<RequireMatch>();
+	requirementMet = new LiteEvent<{ requirement: RequireMatch, players: Array<number> }>();
 	requirementPartiallyMet = new LiteEvent<RequireMatch>();
 
-	constructor(matchPerformer: MatchPerformer) {
-		matchPerformer.matchPerformed.on((match) => this.matchPerformed(match));
+	constructor(comboOwnership: ComboOwnership) {
+		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
 	}
 
-	private matchPerformed(match: Match) {
+	private ownedMatchPerformed(match: OwnedMatch) {
 		for (let i = 0; i < match.matchables.length; i++) {
 			let m = match.matchables[i];
 
@@ -24,7 +24,7 @@ class RequireMatchInCellTracker {
 
 					if (r.amount == 0) {
 						this.requirements.splice(j, 1);
-						this.requirementMet.trigger(r);
+						this.requirementMet.trigger({ requirement: r, players: match.players });
 						j--;
 					} else {
 						this.requirementPartiallyMet.trigger(r);

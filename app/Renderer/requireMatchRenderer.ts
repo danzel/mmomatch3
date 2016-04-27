@@ -29,10 +29,10 @@ class RequireMatchRenderer {
 		//TODO
 		throw new Error("RequireMatchRenderer for amount > 1 isn't implemented")
 	}
-	private requirementMet(req: RequireMatch) {
+	private requirementMet(data: { requirement: RequireMatch }) {
 		for (let i = 0; i < this.requireSprites.length; i++) {
 			let spr = this.requireSprites[i];
-			if (spr.req == req) {
+			if (spr.req == data.requirement) {
 				spr.sprite.destroy();
 				this.requireSprites.splice(i, 1);
 				break;

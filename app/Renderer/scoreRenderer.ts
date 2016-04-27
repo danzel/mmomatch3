@@ -31,7 +31,7 @@ class ScoreRenderer {
 
 	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number) {
 
-		this.title = new Phaser.Text(this.group.game, 2, 2, "Scores", this.headerTextStyle);
+		this.title = new Phaser.Text(this.group.game, 2, 2, scoreTracker.headingText, this.headerTextStyle);
 		this.group.add(this.title);
 
 		this.scoreGroup = new Phaser.Group(group.game, group);
