@@ -1,5 +1,6 @@
 ///<reference path="../../typings/jasmine/jasmine.d.ts"/>
-import ScoreTracker = require('../../app/Simulation/Scoring/scoreTracker');
+import PointsScoreTracker = require('../../app/Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
+import Simulation = require('../../app/Simulation/simulation');
 
 interface Score {
 	playerId: number;
@@ -9,8 +10,8 @@ interface Score {
 class ScoreEarnedChecker {
 	scores = new Array<Score>();
 	
-	constructor(scoreTracker: ScoreTracker) {
-		scoreTracker.playerEarnedPoints.on(score => this.scores.push(score));
+	constructor(simulation: Simulation) {
+		new PointsScoreTracker(simulation.comboOwnership).playerEarnedPoints.on(score => this.scores.push(score));
 	}
 	
 	expectScore(points: number, playerId?: number) {

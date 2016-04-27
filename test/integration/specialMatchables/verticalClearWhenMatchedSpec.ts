@@ -18,7 +18,7 @@ describe('SpecialMatchables.VerticalClearWhenMatched', () => {
 		let transformCount = 0;
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
 		new OwnershipMatchChecker(simulation.comboOwnership);
-		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
+		let scoreEarnedChecker = new ScoreEarnedChecker(simulation);
 
 		//Swap to form it in the bottom row
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[1][0], simulation.grid.cells[1][1]);

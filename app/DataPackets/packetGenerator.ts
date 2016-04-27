@@ -19,6 +19,8 @@ import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
 
+import PointsScoreTracker = require('../Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
+
 class PacketGenerator {
 	generateBootData(level: LevelDef, simulation: Simulation, endAvailabilityDate: string): BootData {
 		return new BootData(
@@ -79,13 +81,15 @@ class PacketGenerator {
 	}
 
 	private generateSimulationData(simulation: Simulation): SimulationData {
+		let scoreTracker = simulation.scoreTracker;
+		
 		return new SimulationData(
 			simulation.matchableFactory.idForSerializing,
 			simulation.framesElapsed,
 			simulation.tickRate,
 			simulation.matchPerformer.totalMatchablesMatched,
 			simulation.scoreTracker.points,
-			simulation.scoreTracker.playerComboSize,
+			(scoreTracker instanceof PointsScoreTracker) ? scoreTracker.playerComboSize : null,
 			this.generateComboOwners(simulation),
 			simulation.simulationStats.matchesByColor.slice()
 		);
@@ -128,7 +132,7 @@ class PacketGenerator {
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, bootData.simulationData.tickRate);
-
+		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
 		//Points
 		Object.keys(bootData.simulationData.pointsData).forEach(key => {
 			let playerId = parseInt(key, 10);
@@ -137,11 +141,13 @@ class PacketGenerator {
 			simulation.scoreTracker.totalPoints += points;
 		});
 		//Combo Size
-		Object.keys(bootData.simulationData.comboSize).forEach(key => {
-			let playerId = parseInt(key, 10);
-			let size = bootData.simulationData.comboSize[playerId];
-			simulation.scoreTracker.playerComboSize[playerId] = size;
-		})
+		if (bootData.simulationData.comboSize) {
+			Object.keys(bootData.simulationData.comboSize).forEach(key => {
+				let playerId = parseInt(key, 10);
+				let size = bootData.simulationData.comboSize[playerId];
+				(<PointsScoreTracker>(simulation.scoreTracker)).playerComboSize[playerId] = size;
+			})
+		}
 		//Combo owners
 		bootData.simulationData.comboOwners.forEach(owner => {
 			simulation.comboOwnership.addComboOwner(owner.x, owner.y, owner.playerId);

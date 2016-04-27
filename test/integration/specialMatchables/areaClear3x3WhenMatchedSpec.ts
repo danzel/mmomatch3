@@ -21,7 +21,7 @@ describe('SpecialMatchables.AreaClear3x3WhenMatched', () => {
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
 
 		new OwnershipMatchChecker(simulation.comboOwnership);
-		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
+		let scoreEarnedChecker = new ScoreEarnedChecker(simulation);
 
 		//Swap to form it
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][1], simulation.grid.cells[3][1]);

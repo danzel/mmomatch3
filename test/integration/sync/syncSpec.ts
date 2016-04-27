@@ -2,10 +2,12 @@
 import FakeServerComms = require('../../util/fakeServerComms');
 import LevelAndSimulationProvider = require('../../../app/Server/levelAndSimulationProvider');
 import LevelDef = require('../../../app/Simulation/Levels/levelDef');
+import PointsScoreTracker = require('../../../app/Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 import Server = require('../../../app/Server/server');
 import Simulation = require('../../../app/Simulation/simulation');
 import TestLASProvider = require('../../util/testLASProvider');
 import TestUtil = require('../../util/util');
+import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 
 describe('Sync', () => {
     it('correctly syncs the current scores, ownership, quiet state of columns for combos', () => {
@@ -14,7 +16,7 @@ describe('Sync', () => {
 			"82189",
 			"11222"
 		]);
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1 });
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2, VictoryType.Score), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1 });
 		server.start();
 		serverComms.server = server;
 
@@ -39,8 +41,8 @@ describe('Sync', () => {
 		serverComms.flushClients();
 
 		let points =
-			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
-			2 * simulation.scoreTracker.pointsPerMatchable * 4;
+			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
+			2 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 4;
 
 		let simulations = serverComms.getAllSimulations();
 		expect(simulations.length).toBe(76); //server + 1 + 74

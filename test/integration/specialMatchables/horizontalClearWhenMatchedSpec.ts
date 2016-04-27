@@ -18,12 +18,12 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		let transformCount = 0;
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
 		new OwnershipMatchChecker(simulation.comboOwnership);
-		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
+		let scoreEarnedChecker = new ScoreEarnedChecker(simulation);
 		
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 
 		expect(transformCount).toBe(1);
@@ -41,7 +41,7 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		//Now swap to match the HorizontalClearWhenMatched
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		for (let i = 0; i < 4; i++) {
-			simulation.update(1);
+			simulation.update();
 		}
 		
 		//Check the grid, one is cleared in the last column that doesn't match

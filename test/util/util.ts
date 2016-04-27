@@ -116,8 +116,8 @@ class TestUtil {
 		expect(actualSizes).toEqual(columnSizes);
 	}
 	
-	static createNeverEndingLevel(width: number, height: number): LevelDef {
-		return new LevelDef(1, width, height, [], 8, FailureType.Time, VictoryType.Matches, 9999999, 9999999);
+	static createNeverEndingLevel(width: number, height: number, victoryType?: VictoryType): LevelDef {
+		return new LevelDef(1, width, height, [], 8, FailureType.Time, victoryType || VictoryType.Matches, 9999999, 9999999);
 	}
 }
 

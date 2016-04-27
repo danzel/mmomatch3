@@ -38,7 +38,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, 60);
 
-		simulation.scoreTracker = this.createScoreTracker(level, simulation);
+		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
 
 		if (level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>level.victoryValue;
@@ -63,7 +63,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		return { level: level, simulation: simulation };
 	}
 
-	createScoreTracker(level: LevelDef, simulation: Simulation): ScoreTracker {
+	static createScoreTracker(level: LevelDef, simulation: Simulation): ScoreTracker {
 		switch (level.victoryType) {
 			case VictoryType.GetThingsToBottom:
 				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler);

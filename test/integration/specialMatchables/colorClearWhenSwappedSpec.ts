@@ -23,7 +23,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		simulation.disappearer.matchableTransformed.on(() => transformCount++);
 
 		new OwnershipMatchChecker(simulation.comboOwnership);
-		let scoreEarnedChecker = new ScoreEarnedChecker(simulation.scoreTracker);
+		let scoreEarnedChecker = new ScoreEarnedChecker(simulation);
 
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][2], simulation.grid.cells[1][2]);

@@ -1,4 +1,5 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
+import PointsScoreTracker = require('../../../app/Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 import TestUtil = require('../../util/util');
 
 let playerId1 = 99;
@@ -9,6 +10,7 @@ describe('Points.singleOwner', () => {
 			"8218",
 			"1122"
 		]);
+		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
@@ -16,8 +18,8 @@ describe('Points.singleOwner', () => {
 			simulation.update();
 
 		let points =
-			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
-			2 * simulation.scoreTracker.pointsPerMatchable * 3;
+			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
+			2 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
 		TestUtil.expectGridQuiet(simulation);
@@ -28,6 +30,7 @@ describe('Points.singleOwner', () => {
 			"88182",
 			"11228"
 		]);
+		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
@@ -38,8 +41,8 @@ describe('Points.singleOwner', () => {
 			simulation.update();
 
 		let points =
-			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
-			1 * simulation.scoreTracker.pointsPerMatchable * 3;
+			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
+			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
 		TestUtil.expectGridQuiet(simulation);
@@ -50,6 +53,7 @@ describe('Points.singleOwner', () => {
 			"8819298",
 			"1199822"
 		]);
+		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
@@ -58,8 +62,8 @@ describe('Points.singleOwner', () => {
 			simulation.update();
 
 		let points =
-			1 * simulation.scoreTracker.pointsPerMatchable * 3 +
-			2 * simulation.scoreTracker.pointsPerMatchable * 3;
+			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
+			2 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3;
 
 		expect(simulation.scoreTracker.points[playerId1]).toBe(points);
 		TestUtil.expectGridQuiet(simulation);

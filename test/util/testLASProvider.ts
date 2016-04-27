@@ -1,3 +1,4 @@
+import DefaultLevelAndSimulationProvider = require('../../app/Server/defaultLevelAndSimulationProvider');
 import LevelAndSimulationProvider = require('../../app/Server/levelAndSimulationProvider');
 import LevelDef = require('../../app/Simulation/Levels/levelDef');
 import RequireMatch = require('../../app/Simulation/requireMatch');
@@ -9,6 +10,7 @@ class TestLASProvider implements LevelAndSimulationProvider {
 	}
 
 	loadLevel(levelNumber: number): { level: LevelDef, simulation: Simulation } {
+		this.simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(this.level, this.simulation);
 
 		if (this.level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>this.level.victoryValue;
