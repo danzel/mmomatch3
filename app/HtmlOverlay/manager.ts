@@ -122,6 +122,7 @@ class Manager {
 
 	private fixSvgs(parent: HTMLElement) {
 
+		let ie = false;
 		let texts = parent.getElementsByTagName("text");
 		for (let i = 0; i < texts.length; i++) {
 			let t = texts[i];
@@ -133,6 +134,8 @@ class Manager {
 			//If you are on a crappy browser (IE11) that doesn't support paint-order, fix it
 			//ref http://radar.oreilly.com/2015/11/elegant-outlines-with-svg-paint-order.html
 			if ((<any>t).style["paint-order"] === undefined) {
+				ie = true;
+
 				t.id = t.id || ("z" + (this.idCounter++));
 				var g1 = document.createElementNS(this.NS.svg, "g");    //<5>
 				g1.setAttribute("class", t.getAttribute("class"));
@@ -153,15 +156,18 @@ class Manager {
 
 		let svgs = parent.getElementsByTagName("svg")
 		for (let i = 0; i < svgs.length; i++) {
-			this.fixSvg(svgs[i]);
+			this.fixSvg(svgs[i], ie);
 		}
 	}
 
-	private fixSvg(svg: SVGElement): void {
+	private fixSvg(svg: SVGElement, ie: boolean): void {
 		let bbox = (<SVGLocatable><any>svg).getBBox();
 
-		svg.setAttribute("width", Math.ceil(10 + bbox.width) + "px");
-		svg.setAttribute("height", Math.ceil(4 + bbox.height) + "px");
+		let padWidth = ie ? 0 : 10;
+		let padHeight = ie ? -6 : 4;
+
+		svg.setAttribute("width", Math.ceil(padWidth + bbox.width) + "px");
+		svg.setAttribute("height", Math.ceil(padHeight + bbox.height) + "px");
 	}
 }
 
