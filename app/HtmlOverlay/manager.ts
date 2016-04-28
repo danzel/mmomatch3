@@ -62,7 +62,7 @@ class Manager {
 			this.feedbackElement.innerHTML = feedbackTemplate(this.uiState);
 			this.fixSvgs(this.feedbackElement);
 
-			this.addEventHandlers(this.feedbackElement);
+			this.addEventHandlers(this.feedbackElement, false);
 		}
 		if (this.uiState.customOverlayVisible && this.uiState.customOverlayOptions.postRenderCallback) {
 			this.uiState.customOverlayOptions.postRenderCallback(document.getElementById('overlay'));
@@ -76,13 +76,13 @@ class Manager {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
-		this.addEventHandlers(this.element);
+		this.addEventHandlers(this.element, this.uiState.helpVisible || (this.uiState.customOverlayOptions && this.uiState.customOverlayOptions.closeOnBackgroundClick));
 	}
 
-	private addEventHandlers(element: HTMLElement) {
+	private addEventHandlers(element: HTMLElement, closeOnBackgroundClick: boolean) {
 
-		let overlay = element.getElementsByClassName("overlay-background")[0];
-		if (overlay && this.uiState.customOverlayOptions.closeOnBackgroundClick) {
+		if (closeOnBackgroundClick) {
+			let overlay = element.getElementsByClassName("overlay-background")[0];
 			overlay.addEventListener('click', () => this.closeOverlays());
 		}
 		let closeButton = element.getElementsByClassName("close-button")[0];
@@ -102,6 +102,7 @@ class Manager {
 			if (this.uiState.customOverlayOptions.closedCallback) {
 				this.uiState.customOverlayOptions.closedCallback();
 			}
+			this.uiState.customOverlayOptions = null;
 		}
 		this.render();
 	}
