@@ -16,7 +16,8 @@ class UIState {
 	}
 	helpVisible = false;
 	feedbackVisible = false;
-	
+	connectionErrorVisible = false;
+
 	closeSrc = closeSvg;
 
 	customOverlayVisible = false;
@@ -50,6 +51,11 @@ class Manager {
 
 	hideOverlay() {
 		this.uiState.customOverlayVisible = false;
+		this.render();
+	}
+
+	setConnectionError(showError: boolean) {
+		this.uiState.connectionErrorVisible = showError;
 		this.render();
 	}
 

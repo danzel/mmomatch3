@@ -62,6 +62,11 @@ class AppEntry {
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
 		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
+
+
+		this.htmlOverlayManager.setConnectionError(true);
+		socket.connected.on(() => this.htmlOverlayManager.setConnectionError(false));
+		socket.disconnected.on(() => this.htmlOverlayManager.setConnectionError(true));
 	}
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }) {

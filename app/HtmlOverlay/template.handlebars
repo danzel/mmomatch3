@@ -83,6 +83,13 @@
 </div>
 {{/if}}
 
+{{#if connectionErrorVisible}}
+<div id="connection-error">
+	<svg><text class="details">Connecting...</text></svg><br/>
+	<svg><text class="details">If this continues, try refreshing the page</text></svg>
+</div>
+{{/if}}
+
 {{#if customOverlayVisible}}
 <div id="overlay" class="overlay {{customOverlayClass}}">
 	{{{customOverlayContent}}}

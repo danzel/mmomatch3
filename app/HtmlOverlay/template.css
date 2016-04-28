@@ -36,10 +36,10 @@ text {
 
 .frame {
 	vertical-align: top;
-    background-color: #8FB863;
-    border: 5px #6382B8 solid;
-    border-radius: 10px;
-    padding: 0 20px;
+	background-color: #8FB863;
+	border: 5px #6382B8 solid;
+	border-radius: 10px;
+	padding: 0 20px;
 }
 
 
@@ -79,6 +79,7 @@ text {
 	position: relative;
 }
 
+
 .help-overlay {
 	width: 460px;
 }
@@ -95,6 +96,30 @@ text {
 
 .help-overlay .emojione {
 	stroke-width: 4px;	
+}
+
+
+#connection-error {
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+
+	width: 380px;
+
+	text-align: center;
+	
+	background-color: #8FB863;
+	border: 5px #6382B8 solid;
+	border-radius: 10px;
+	padding: 10px;
+
+}
+
+#connection-error .details {
+	font-size: 22px;
+	stroke-width: 6px;
 }
 
 
