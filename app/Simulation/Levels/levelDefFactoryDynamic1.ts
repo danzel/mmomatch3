@@ -151,7 +151,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
-		let victoryValue = difficulty * 250;
+		let victoryValue = Math.round(difficulty * 250);
 
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.Score, failureValue, victoryValue);
 	}
