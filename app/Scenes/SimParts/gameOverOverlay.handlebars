@@ -1,4 +1,10 @@
-<p><svg><text class="header">{{#if victory}}Level Complete!{{else}}Level Failed{{/if}}</text></svg></p>
+<p><svg><text class="header">
+	{{#if isTeam}}
+		{{#if victory}}You Win!{{else}}Defeated{{/if}}
+	{{else}}
+		{{#if victory}}Level Complete!{{else}}Level Failed{{/if}}
+	{{/if}}
+</text></svg></p>
 <p><svg><text class="middle">You came #{{rank}} of {{playerCount}} players</text></svg></p>
 
 <p><svg><text class="bottom">{{bottomText}}</text></svg></p>

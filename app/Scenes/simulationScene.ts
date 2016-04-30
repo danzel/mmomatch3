@@ -16,6 +16,7 @@ import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
+import VictoryType = require('../Simulation/Levels/victoryType')
 
 interface SimulationSceneConfiguration {
 	/** If set game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
@@ -74,8 +75,9 @@ class SimulationScene {
 				this.detectorDisplays[i].disabled = true;
 			}
 
-			//TODO: How do we get the timer / click events out of here
-			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, victory, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
+			let isTeam = (level.victoryType == VictoryType.MatchXOfColor);
+			
+			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, isTeam, victory, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
 		});
 	}
 
