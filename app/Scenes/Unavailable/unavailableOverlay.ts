@@ -15,11 +15,15 @@ class UnavailableOverlay {
 
 	show(dateString?: string): void {
 		this.visible = true;
-		this.overlayManager.showOverlay('frame unavailable-overlay', template({
-			hasNext: !!dateString,
-			next: dateformat(new Date(dateString), 'dddd dS mmmm h:MM TT'),
-			gameRecently: this.hasPlayed
-		}), { closeOnBackgroundClick: false });
+		this.overlayManager.showOverlay({
+			className: 'frame unavailable-overlay',
+			content: template({
+				hasNext: !!dateString,
+				next: dateformat(new Date(dateString), 'dddd dS mmmm h:MM TT'),
+				gameRecently: this.hasPlayed
+			}),
+			closeOnBackgroundClick: false
+		});
 	}
 
 	hide(): void {

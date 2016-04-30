@@ -5,6 +5,8 @@ require('./template.css');
 var closeSvg = require('file?name=close.svg?[hash:6]!../../img/ui/close.svg');
 
 interface OverlayOptions {
+	className: string;
+	content: string;
 	closeOnBackgroundClick: boolean;
 	closedCallback?: () => void;
 	postRenderCallback?: (element: HTMLElement) => void;
@@ -12,7 +14,7 @@ interface OverlayOptions {
 
 class UIState {
 	get overlayVisible() {
-		return this.helpVisible || this.customOverlayVisible;
+		return this.helpVisible || this.customOverlay;
 	}
 	helpVisible = false;
 	feedbackVisible = false;
@@ -20,10 +22,7 @@ class UIState {
 
 	closeSrc = closeSvg;
 
-	customOverlayVisible = false;
-	customOverlayClass: string;
-	customOverlayContent: string;
-	customOverlayOptions: OverlayOptions;
+	customOverlay: OverlayOptions;
 }
 
 class Manager {
@@ -40,17 +39,14 @@ class Manager {
 		this.render();
 	}
 
-	showOverlay(overlayClass: string, overlayContent: string, overlayOptions: OverlayOptions) {
-		this.uiState.customOverlayVisible = true;
-		this.uiState.customOverlayClass = overlayClass;
-		this.uiState.customOverlayContent = overlayContent;
-		this.uiState.customOverlayOptions = overlayOptions;
+	showOverlay(overlayOptions: OverlayOptions) {
+		this.uiState.customOverlay = overlayOptions;
 
 		this.render();
 	}
 
 	hideOverlay() {
-		this.uiState.customOverlayVisible = false;
+		this.uiState.customOverlay = null;
 		this.render();
 	}
 
@@ -70,8 +66,8 @@ class Manager {
 
 			this.addEventHandlers(this.feedbackElement, false);
 		}
-		if (this.uiState.customOverlayVisible && this.uiState.customOverlayOptions.postRenderCallback) {
-			this.uiState.customOverlayOptions.postRenderCallback(document.getElementById('overlay'));
+		if (this.uiState.customOverlay && this.uiState.customOverlay.postRenderCallback) {
+			this.uiState.customOverlay.postRenderCallback(document.getElementById('overlay'));
 		}
 
 		this.element.getElementsByClassName("help-button")[0].addEventListener('click', () => {
@@ -82,7 +78,7 @@ class Manager {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
-		this.addEventHandlers(this.element, this.uiState.helpVisible || (this.uiState.customOverlayOptions && this.uiState.customOverlayOptions.closeOnBackgroundClick));
+		this.addEventHandlers(this.element, this.uiState.helpVisible || (this.uiState.customOverlay && this.uiState.customOverlay.closeOnBackgroundClick));
 	}
 
 	private addEventHandlers(element: HTMLElement, closeOnBackgroundClick: boolean) {
@@ -103,12 +99,12 @@ class Manager {
 			this.uiState.feedbackVisible = false;
 		} else if (this.uiState.helpVisible) {
 			this.uiState.helpVisible = false;
-		} else if (this.uiState.customOverlayVisible) {
-			this.uiState.customOverlayVisible = false;
-			if (this.uiState.customOverlayOptions.closedCallback) {
-				this.uiState.customOverlayOptions.closedCallback();
+		} else if (this.uiState.customOverlay) {
+			let closedCallback = this.uiState.customOverlay.closedCallback;
+			this.uiState.customOverlay = null;
+			if (closedCallback) {
+				closedCallback();
 			}
-			this.uiState.customOverlayOptions = null;
 		}
 		this.render();
 	}

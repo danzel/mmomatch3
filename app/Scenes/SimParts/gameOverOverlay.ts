@@ -1,4 +1,3 @@
-import GameOverType = require('../gameOverType');
 import HtmlOverlayManager = require('../../HtmlOverlay/manager')
 import LiteEvent = require('../../liteEvent')
 import ScoreTracker = require('../../Simulation/Scoring/scoreTracker');
@@ -35,13 +34,18 @@ class GameOverOverlay {
 	}
 
 	private render() {
-		this.htmlOverlayManager.showOverlay('frame game-over-overlay', template({
-			isTeam: this.isTeam,
-			victory: this.victory,
-			rank: this.rank,
-			playerCount: this.playerCount,
-			bottomText: this.countdownText
-		}), { closeOnBackgroundClick: true, closedCallback: () => this.clicked.trigger() });
+		this.htmlOverlayManager.showOverlay({
+			className: 'frame game-over-overlay',
+			content: template({
+				isTeam: this.isTeam,
+				victory: this.victory,
+				rank: this.rank,
+				playerCount: this.playerCount,
+				bottomText: this.countdownText
+			}),
+			closeOnBackgroundClick: true,
+			closedCallback: () => this.clicked.trigger()
+		});
 	}
 
 	private calculateRank(playerId: number, scoreTracker: ScoreTracker): number {

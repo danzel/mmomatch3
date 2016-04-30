@@ -8,15 +8,17 @@ class WelcomeScreen {
 	private nickname: HTMLInputElement;
 	private button: HTMLInputElement;
 	private hidenames: HTMLInputElement;
-	
+
 	onLogin: (nickname: string, hideNames: boolean) => void;
-	
+
 	constructor(private htmlOverlayManager: HtmlOverlayManager) {
 
 	}
 
 	show() {
-		this.htmlOverlayManager.showOverlay('welcome-screen', template({}), {
+		this.htmlOverlayManager.showOverlay({
+			className: 'welcome-screen',
+			content: template({}),
 			closeOnBackgroundClick: false,
 			postRenderCallback: (element) => this.addEventListeners(element)
 		});

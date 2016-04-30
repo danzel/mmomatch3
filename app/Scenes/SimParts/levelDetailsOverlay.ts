@@ -28,7 +28,12 @@ class LevelDetailsOverlay {
 			(<any>details).notyours = failureDetector.getColorText()
 		}
 
-		htmlOverlayManager.showOverlay('frame level-details-overlay', template(details), { closeOnBackgroundClick: true, closedCallback: () => this.becameClosed.trigger() });
+		htmlOverlayManager.showOverlay({
+			className: 'frame level-details-overlay',
+			content: template(details),
+			closeOnBackgroundClick: true,
+			closedCallback: () => this.becameClosed.trigger()
+		});
 	}
 }
 
