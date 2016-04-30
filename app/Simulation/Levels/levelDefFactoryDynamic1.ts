@@ -102,7 +102,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
-		let victoryValue = Math.round(difficulty * 0.2) * 10;
+		let victoryValue = Math.round(difficulty * 0.35) * 10;
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.Matches, failureValue, victoryValue);
 	}
 
@@ -151,7 +151,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
-		let victoryValue = Math.round(difficulty * 250);
+		let victoryValue = Math.round(difficulty * 150);
 
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.Score, failureValue, victoryValue);
 	}
@@ -201,7 +201,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			case FailureType.Swaps:
 				return <number>failureValue;
 			case FailureType.Time:
-				return <number>failureValue * (this.playerCount / 3);
+				return <number>failureValue * (this.playerCount / 5.5);
 		}
 		throw new Error("Cannot calculate failure difficulty for " + failureType + " " + FailureType[failureType]);
 	}
