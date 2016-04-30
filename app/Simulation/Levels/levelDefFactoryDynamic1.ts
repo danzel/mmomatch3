@@ -58,7 +58,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	}
 
 	private generateLevelGetThingsToBottom(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
-		let amount = 2 + (this.playerCount / 2);
+		let amount = Math.floor(2 + (this.playerCount / 2));
 		//Clamp to 2 - this.playerCount
 		amount = Math.min(this.playerCount, amount = Math.max(2, amount));
 
