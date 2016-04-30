@@ -8,6 +8,7 @@ import SwapData = require('./BootParts/swapData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
 
 import ClientSpawnManager = require('../Client/clientSpawnManager');
+import DefaultLevelAndSimulationProvider = require('../Server/defaultLevelAndSimulationProvider');
 import Grid = require('../Simulation/grid');
 import GridFactory = require('../Simulation/Levels/gridFactory');
 import LevelDef = require('../Simulation/Levels/levelDef');
@@ -127,12 +128,13 @@ class PacketGenerator {
 		return <LevelDef>level;
 	}
 
-	recreateSimulation(bootData: BootData): Simulation {
+	recreateSimulation(bootData: BootData, level: LevelDef): Simulation {
 		let matchableFactory = new MatchableFactory(bootData.simulationData.matchableIdCounter);
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, bootData.simulationData.tickRate);
-		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
+		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation)
+
 		//Points
 		Object.keys(bootData.simulationData.pointsData).forEach(key => {
 			let playerId = parseInt(key, 10);

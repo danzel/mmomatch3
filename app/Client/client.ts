@@ -40,7 +40,7 @@ class Client {
 			}
 
 			let level = this.packetGenerator.recreateLevelDefData(bootData.level)
-			let simulation = this.packetGenerator.recreateSimulation(bootData);
+			let simulation = this.packetGenerator.recreateSimulation(bootData, level);
 			this.simulationReceived.trigger({
 				level: level,
 				simulation: simulation,
