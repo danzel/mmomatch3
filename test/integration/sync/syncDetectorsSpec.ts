@@ -25,9 +25,9 @@ describe('SyncDetectors', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
-			"11222"
+			"11225"
 		]);
-		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 7);
+		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 6);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
 		server.start();
 		serverComms.server = server;
@@ -56,9 +56,9 @@ describe('SyncDetectors', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
-			"11222"
+			"11225"
 		]);
-		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 999999, 70);
+		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 999999, 90);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
 		server.start();
 		serverComms.server = server;
@@ -87,7 +87,7 @@ describe('SyncDetectors', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
-			"11222"
+			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 1, 999999);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
@@ -118,7 +118,7 @@ describe('SyncDetectors', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
-			"11222"
+			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Time, VictoryType.Score, 12, 999999);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
@@ -149,7 +149,7 @@ describe('SyncDetectors', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
-			"11222"
+			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.RequireMatch, 999999, [{ x: 0, y: 0, amount: 1 }]);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
