@@ -8,6 +8,7 @@ import VictoryType = require('./victoryType');
 import GetThingsToBottomDetector = require('./Detectors/getThingsToBottomDetector');
 import MatchesDetector = require('./Detectors/matchesDetector');
 import MatchXOfColorDetector = require('./Detectors/matchXOfColorDetector');
+import NoMovesDetector = require('./Detectors/noMovesDetector');
 import RequireMatchDetector = require('./Detectors/requireMatchDetector');
 import ScoreDetector = require('./Detectors/scoreDetector');
 import SwapsDetector = require('./Detectors/swapsDetector');
@@ -21,6 +22,7 @@ class GameEndDetector {
 
 	failureDetector: Detector;
 	victoryDetector: Detector;
+	noMovesDetector: Detector;
 
 	gameHasEnded = false;
 	gameEndedInVictory: boolean;
@@ -28,12 +30,15 @@ class GameEndDetector {
 	constructor(private gameEndConditions: GameEndConditions, private simulation: Simulation) {
 		this.failureDetector = this.createFailureDetector();
 		this.victoryDetector = this.createVictoryDetector();
+		this.noMovesDetector = new NoMovesDetector(simulation);
 
 		this.failureDetector.detected.on(() => this.checkForGameEnd(false));
 		this.victoryDetector.detected.on(() => this.checkForGameEnd(true));
+		this.noMovesDetector.detected.on(() => this.checkForGameEnd(false));
 
 		this.failureDetector.update();
 		this.victoryDetector.update();
+		this.noMovesDetector.update();
 	}
 
 	private checkForGameEnd(victory: boolean) {

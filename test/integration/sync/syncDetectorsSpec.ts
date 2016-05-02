@@ -12,6 +12,7 @@ import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 import GetThingsToBottomDetector = require('../../../app/Simulation/Levels/Detectors/getThingsToBottomDetector');
 import MatchesDetector = require('../../../app/Simulation/Levels/Detectors/matchesDetector');
 import MatchXOfColorDetector = require('../../../app/Simulation/Levels/Detectors/matchXOfColorDetector');
+import NoMovesDetector = require('../../../app/Simulation/Levels/Detectors/noMovesDetector');
 import RequireMatchDetector = require('../../../app/Simulation/Levels/Detectors/requireMatchDetector');
 import ScoreDetector = require('../../../app/Simulation/Levels/Detectors/scoreDetector');
 import SwapsDetector = require('../../../app/Simulation/Levels/Detectors/swapsDetector');
@@ -257,6 +258,39 @@ describe('SyncDetectors', () => {
 		for (let i = 0; i < gameEndDetectors.length; i++) {
 			let g = gameEndDetectors[i];
 			expect((<GetThingsToBottomDetector>g.victoryDetector).amount).toBe(0);
+			expect(g.gameHasEnded).toBe(true);
+		}
+	});
+	
+		it('correctly syncs NoMovesDetector', () => {
+		let serverComms = new FakeServerComms(1);
+		let simulation = TestUtil.prepareForTest([
+			"82189",
+			"11225"
+		]);
+		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 999999);
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
+		server.start();
+		serverComms.server = server;
+
+		serverComms.addClient();
+		serverComms.update();
+		serverComms.update();
+
+		//Swap and do a combo that makes some disappear
+		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
+		for (let i = 0; i < 5; i++) {
+			serverComms.addClient();
+			serverComms.update();
+			serverComms.update();
+		}
+		serverComms.flushClients();
+
+		let gameEndDetectors = serverComms.getAllGameEndDetectors();
+		for (let i = 0; i < gameEndDetectors.length; i++) {
+			let g = gameEndDetectors[i];
+			//g.noMovesDetector.update();
+			//expect((<NoMovesDetector>g.noMovesDetector).matchesRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
 		}
 	});
