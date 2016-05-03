@@ -115,7 +115,7 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<SwapsDetector>g.failureDetector).swapsRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
-			expect(g.gameEndType).toBe(GameEndType.LevelFailure + 999);
+			expect(g.gameEndType).toBe(GameEndType.LevelFailure);
 		}
 	});
 	it('correctly syncs TimeDetector', () => {
