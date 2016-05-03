@@ -66,12 +66,29 @@ gulp.task('server', function() {
 		.pipe(gulp.dest('built_server'));
 });
 
-gulp.task('package', ['default'], function() {
+gulp.task('sentry-release', ['webpack'], function() {
+	['https://usw.mmomatch.localhost.geek.nz', 'https://oce.mmomatch.localhost.geek.nz'].forEach(function (domain) {
+		var opt = {
+			DOMAIN: domain,
+			API_URL: 'https://app.getsentry.com/api/0/projects/ironshod/massivematch-client/',
+			API_KEY: '0b971a8f7c21469781db28468a3251ae',
+			debug: true,
+			versionPrefix: '', // Append before the version number in package.json 
+		}
+		var sentryRelease = require('gulp-sentry-release')('./package.json', opt);
+
+		gulp.src('./dist/bundle.js.map', { base: './dist/' })
+			.pipe(sentryRelease.release(fs.readFileSync('./hash.txt')));
+	});
+});
+
+gulp.task('package', ['sentry-release', 'default'], function() {
 	return gulp.src([
 		'./built_server/**/*',
 		'./dist/**/*',
 		'./package.json',
-		'./upstart-mmomatch.conf'
+		'./upstart-mmomatch.conf',
+		'!./**/*.map'
 	], { base: '.' })
 		.pipe(zip('archive.zip'))
 		.pipe(gulp.dest(''));

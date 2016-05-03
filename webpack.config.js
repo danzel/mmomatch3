@@ -1,6 +1,7 @@
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HashPlugin = require('hash-webpack-plugin');
 
 module.exports = {
 	context: __dirname + path.sep + 'app',
@@ -27,6 +28,7 @@ module.exports = {
 			template: '../dist/index.template.html',
 			hash: true,
 			inject: false
-		})
+		}),
+		new HashPlugin({ path: './', fileName: 'hash.txt' })
 	]
 };

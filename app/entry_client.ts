@@ -126,7 +126,18 @@ class AppEntry {
 }
 
 if (runningOnLive) {
-	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603').install();
+	//Find our release
+	let scripts = document.getElementsByTagName("script");
+	let release = '';
+	for (var i = 0; i < scripts.length; i++) {
+		let index = scripts[i].src.indexOf('bundle.js?');
+		if (index >= 0) {
+			release = scripts[i].src.substr(index + 10); 
+		}
+	}
+	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
+		release
+	}).install();
 }
 if (GoodBrowser) {
 	WebFont.load({
