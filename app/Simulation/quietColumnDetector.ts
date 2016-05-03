@@ -16,6 +16,7 @@ class QuietColumnDetector {
 
 	columnIsQuiet = new Array<boolean>();
 	columnBecameQuiet = new LiteEvent<number>();
+	gridIsQuiet = true;
 	gridBecameQuiet = new LiteEvent<void>();
 
 	constructor(private grid: Grid, physics: Physics, swapHandler: SwapHandler, matchPerformer: MatchPerformer, disappearer: Disappearer) {
@@ -48,6 +49,7 @@ class QuietColumnDetector {
 	onSwapStarted(swap: Swap) {
 		this.columnIsQuiet[swap.left.x] = false;
 		this.columnIsQuiet[swap.right.x] = false;
+		this.gridIsQuiet = false;
 		this.columnSwapsInProgressCount[swap.left.x]++;
 		this.columnSwapsInProgressCount[swap.right.x]++;
 	}
@@ -69,6 +71,7 @@ class QuietColumnDetector {
 
 		for (let i = 0; i < matchables.length; i++) {
 			this.columnIsQuiet[matchables[i].x] = false;
+			this.gridIsQuiet = false;
 			this.columnDisappearingCount[matchables[i].x]++;
 		}
 	}
@@ -99,6 +102,7 @@ class QuietColumnDetector {
 			let allQuiet = this.columnIsQuiet.every(x => x);
 
 			if (allQuiet) {
+				this.gridIsQuiet = true;
 				this.gridBecameQuiet.trigger();
 			}
 		}

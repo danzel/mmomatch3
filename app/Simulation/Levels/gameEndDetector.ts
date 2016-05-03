@@ -1,6 +1,7 @@
 import Detector = require('./detector');
 import FailureType = require('./failureType');
 import GameEndConditions = require('./gameEndConditions');
+import GameEndType = require('./gameEndType');
 import LiteEvent = require('../../liteEvent');
 import Simulation = require('../simulation');
 import VictoryType = require('./victoryType');
@@ -18,40 +19,40 @@ import TimeDetector = require('./Detectors/timeDetector');
 class GameEndDetector {
 
 	/** Passes true if the game was won */
-	gameEnded = new LiteEvent<boolean>();
+	gameEnded = new LiteEvent<GameEndType>();
 
 	failureDetector: Detector;
 	victoryDetector: Detector;
 	noMovesDetector: Detector;
 
 	gameHasEnded = false;
-	gameEndedInVictory: boolean;
+	gameEndType: GameEndType = null;
 
 	constructor(private gameEndConditions: GameEndConditions, private simulation: Simulation) {
 		this.failureDetector = this.createFailureDetector();
 		this.victoryDetector = this.createVictoryDetector();
 		this.noMovesDetector = new NoMovesDetector(simulation);
 
-		this.failureDetector.detected.on(() => this.checkForGameEnd(false));
-		this.victoryDetector.detected.on(() => this.checkForGameEnd(true));
-		this.noMovesDetector.detected.on(() => this.checkForGameEnd(false));
+		this.failureDetector.detected.on(() => this.checkForGameEnd(this.failureDetector.gameEndType));
+		this.victoryDetector.detected.on(() => this.checkForGameEnd(this.victoryDetector.gameEndType));
+		this.noMovesDetector.detected.on(() => this.checkForGameEnd(GameEndType.NoMovesFailure));
 
 		this.failureDetector.update();
 		this.victoryDetector.update();
 		this.noMovesDetector.update();
 	}
 
-	private checkForGameEnd(victory: boolean) {
+	private checkForGameEnd(gameEndType: GameEndType) {
 		if (this.gameHasEnded) {
 			return;
 		}
 
 		this.gameHasEnded = true;
-		this.gameEndedInVictory = victory;
+		this.gameEndType = gameEndType;
 
 		this.simulation.inputVerifier.inputDisabled = true;
 
-		this.gameEnded.trigger(victory);
+		this.gameEnded.trigger(gameEndType);
 	}
 
 	private createFailureDetector(): Detector {

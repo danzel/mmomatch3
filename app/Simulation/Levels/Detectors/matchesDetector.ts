@@ -1,4 +1,5 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Simulation = require('../../simulation');
 
 class MatchesDetector extends Detector {
@@ -6,7 +7,7 @@ class MatchesDetector extends Detector {
 	matchesRemaining: number;
 
 	constructor(private simulation: Simulation, public totalMatchesRequired: number) {
-		super();
+		super(GameEndType.LevelVictory);
 
 		this.matchesRemaining = totalMatchesRequired;
 

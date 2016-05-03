@@ -1,5 +1,7 @@
 <p><svg><text class="header">
-	{{#if isTeam}}
+	{{#if isOutOfMoves}}
+		Out of Moves!
+	{{else if isTeam}}
 		{{#if victory}}You Win!{{else}}Defeated{{/if}}
 	{{else}}
 		{{#if victory}}Level Complete!{{else}}Level Failed{{/if}}

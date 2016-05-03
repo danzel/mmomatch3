@@ -165,12 +165,21 @@ class PacketGenerator {
 
 		//QuietColumnDetector
 		simulation.swapHandler.swaps.forEach(swap => {
+			simulation.quietColumnDetector.columnIsQuiet[swap.left.x] = false;
+			simulation.quietColumnDetector.columnIsQuiet[swap.right.x] = false;
 			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.left.x]++;
 			simulation.quietColumnDetector.columnSwapsInProgressCount[swap.right.x]++;
+			simulation.quietColumnDetector.gridIsQuiet = false;
 		});
 		simulation.grid.cells.forEach(col => col.forEach(matchable => {
 			if (matchable.isDisappearing) {
+				simulation.quietColumnDetector.columnIsQuiet[matchable.x] = false;
 				simulation.quietColumnDetector.columnDisappearingCount[matchable.x]++;
+				simulation.quietColumnDetector.gridIsQuiet = false;
+			}
+			if (matchable.isMoving) {
+				simulation.quietColumnDetector.columnIsQuiet[matchable.x] = false;
+				simulation.quietColumnDetector.gridIsQuiet = false;
 			}
 		}));
 

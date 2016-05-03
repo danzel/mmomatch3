@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import FailureType = require('../../../app/Simulation/Levels/failureType');
 import FakeServerComms = require('../../util/fakeServerComms');
+import GameEndType = require('../../../app/Simulation/Levels/gameEndType');
 import LevelDef = require('../../../app/Simulation/Levels/levelDef');
 import Server = require('../../../app/Server/server');
 import Simulation = require('../../../app/Simulation/simulation');
@@ -50,6 +51,7 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<MatchesDetector>g.victoryDetector).matchesRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelVictory);
 		}
 	});
 	it('correctly syncs ScoreDetector', () => {
@@ -81,6 +83,7 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<ScoreDetector>g.victoryDetector).scoreRequiredRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelVictory);
 		}
 	});
 	it('correctly syncs SwapsDetector', () => {
@@ -112,15 +115,16 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<SwapsDetector>g.failureDetector).swapsRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelFailure + 999);
 		}
 	});
 	it('correctly syncs TimeDetector', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
-			"82189",
-			"11225"
+			"82189675",
+			"11223393"
 		]);
-		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Time, VictoryType.Score, 12, 999999);
+		let level = new LevelDef(1, 8, 2, [], 10, FailureType.Time, VictoryType.Score, 12, 999999);
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
 		server.start();
 		serverComms.server = server;
@@ -143,6 +147,7 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<TimeDetector>g.failureDetector).timeRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelFailure);
 		}
 	});
 	it('correctly syncs RequireMatchDetector', () => {
@@ -174,6 +179,7 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<RequireMatchDetector>g.victoryDetector).requireMatches).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelVictory);
 		}
 	});
 	it('correctly syncs MatchXOfColorDetector', () => {
@@ -184,7 +190,7 @@ describe('SyncDetectors', () => {
 			"86185",
 			"11837"
 		]);
-		let level = new LevelDef(1, 5, 4, [], 10, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, {color: 2, amount: 99}, {color: 1, amount: 6});
+		let level = new LevelDef(1, 5, 4, [], 10, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, { color: 2, amount: 99 }, { color: 1, amount: 6 });
 		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
 		server.start();
 		serverComms.server = server;
@@ -213,6 +219,7 @@ describe('SyncDetectors', () => {
 			//Hack in Client randomises which is which, so this doesn't work.
 			//expect((<MatchXOfColorDetector>g.victoryDetector).matchesRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect([GameEndType.TeamDefeat, GameEndType.TeamVictory]).toContain(g.gameEndType);
 		}
 	});
 	it('correctly syncs GetThingsToBottomDetector', () => {
@@ -259,10 +266,11 @@ describe('SyncDetectors', () => {
 			let g = gameEndDetectors[i];
 			expect((<GetThingsToBottomDetector>g.victoryDetector).amount).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelVictory);
 		}
 	});
-	
-		it('correctly syncs NoMovesDetector', () => {
+
+	it('correctly syncs NoMovesDetector', () => {
 		let serverComms = new FakeServerComms(1);
 		let simulation = TestUtil.prepareForTest([
 			"82189",
@@ -292,6 +300,7 @@ describe('SyncDetectors', () => {
 			//g.noMovesDetector.update();
 			//expect((<NoMovesDetector>g.noMovesDetector).matchesRemaining).toBe(0);
 			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.NoMovesFailure);
 		}
 	});
 });

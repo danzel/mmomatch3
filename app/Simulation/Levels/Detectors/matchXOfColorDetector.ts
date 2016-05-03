@@ -1,12 +1,13 @@
 import Color = require('../../color');
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Simulation = require('../../simulation');
 
 class MatchXOfColorDetector extends Detector {
 	
 	matchesRemaining: number;
 	constructor(private simulation: Simulation, public isVictory: boolean, public config: { color: Color, amount: number }) {
-		super();
+		super(isVictory ? GameEndType.TeamVictory : GameEndType.TeamDefeat);
 		this.matchesRemaining = config.amount;
 		
 		simulation.simulationStats.matchesByColorUpdated.on(() => this.update());

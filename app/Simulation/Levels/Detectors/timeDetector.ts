@@ -1,4 +1,5 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Simulation = require('../../simulation');
 
 class TimeDetector extends Detector {
@@ -6,7 +7,7 @@ class TimeDetector extends Detector {
 	timeRemaining: number;
 
 	constructor(private simulation: Simulation, public totalTime: number) {
-		super();
+		super(GameEndType.LevelFailure);
 
 		this.timeRemaining = totalTime;
 

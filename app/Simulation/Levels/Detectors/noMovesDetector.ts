@@ -1,22 +1,34 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Simulation = require('../../simulation');
 
 class NoMovesDetector extends Detector {
+	hasTriggered = false;
+
 	constructor(private simulation: Simulation) {
-		super();
-		simulation.quietColumnDetector.gridBecameQuiet.on(() => this.update());
+		super(GameEndType.NoMovesFailure);
+
+		simulation.frameCompleted.on(() => {
+			this.update();
+		});
 	}
 
 	update() {
-		if (!this.gridHasValidMove()) {
-			this.detected.trigger();
+		if (this.hasTriggered) {
+			return;
+		}
+		if (this.simulation.quietColumnDetector.gridIsQuiet) {
+			if (!this.gridHasValidMove()) {
+				this.hasTriggered = true;
+				this.detected.trigger();
+			}
 		}
 	}
 
 	private gridHasValidMove(): boolean {
 		//Don't trigger on an empty grid (aka just before we spawn everything)
 		let gridIsEmpty = true;
-		
+
 		for (var x = 0; x < this.simulation.grid.width; x++) {
 			let col = this.simulation.grid.cells[x];
 			for (var y = 0; y < col.length; y++) {
@@ -43,6 +55,7 @@ class NoMovesDetector extends Detector {
 		if (gridIsEmpty) {
 			return true;
 		}
+
 		return false;
 	}
 

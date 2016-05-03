@@ -1,4 +1,5 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Simulation = require('../../simulation');
 
 class SwapsDetector extends Detector {
@@ -9,7 +10,7 @@ class SwapsDetector extends Detector {
 	swapsRemaining: number;
 
 	constructor(private simulation: Simulation, public totalSwaps: number) {
-		super();
+		super(GameEndType.LevelFailure);
 
 		this.swapsRemaining = totalSwaps;
 

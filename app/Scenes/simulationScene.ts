@@ -2,6 +2,7 @@ import Detector = require('../Simulation/Levels/detector');
 import DetectorDisplay = require('./SimParts/detectorDisplay');
 import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
+import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
 import HtmlOverlayManager = require('../HtmlOverlay/manager')
 import InputHandler = require('../Input/inputHandler');
@@ -70,14 +71,12 @@ class SimulationScene {
 
 
 		//Disable the displays (stop them updating) when the game ends
-		gameEndDetector.gameEnded.on((victory: boolean) => {
+		gameEndDetector.gameEnded.on((gameEndType: GameEndType) => {
 			for (let i = 0; i < this.detectorDisplays.length; i++) {
 				this.detectorDisplays[i].disabled = true;
 			}
 
-			let isTeam = (level.victoryType == VictoryType.MatchXOfColor);
-			
-			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, isTeam, victory, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
+			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, gameEndType, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
 		});
 	}
 

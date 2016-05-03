@@ -1,4 +1,5 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import RequireMatch = require('../../requireMatch');
 import Simulation = require('../../simulation');
 
@@ -8,7 +9,7 @@ class RequireMatchDetector extends Detector {
 	totalRequireMatches: number;
 	
 	constructor(private simulation: Simulation, requireMatches: Array<any>) {
-		super();
+		super(GameEndType.LevelVictory);
 
 		this.totalRequireMatches = requireMatches.length;
 		

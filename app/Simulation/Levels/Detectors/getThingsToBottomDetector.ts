@@ -1,4 +1,5 @@
 import Detector = require('../detector');
+import GameEndType = require('../gameEndType');
 import Matchable = require('../../matchable');
 import Simulation = require('../../simulation');
 import Swap = require('../../swap');
@@ -8,7 +9,7 @@ class GetThingsToBottomDetector extends Detector {
 	amount: number;
 
 	constructor(private simulation: Simulation, private totalAmount: number) {
-		super();
+		super(GameEndType.LevelVictory);
 		this.amount = totalAmount;
 
 		simulation.physics.matchableLanded.on(matchable => this.checkMatchable(matchable));
