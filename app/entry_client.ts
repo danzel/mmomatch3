@@ -1,3 +1,6 @@
+/// <reference path="../typings/raven-js/raven-js.d.ts" />
+import Raven = require('raven-js');
+
 import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
 import DebugLogger = require('./debugLogger');
@@ -14,6 +17,8 @@ import TickData = require('./DataPackets/tickData');
 import UnavailableData = require('./DataPackets/unavailableData');
 import UnavailableOverlay = require('./Scenes/Unavailable/unavailableOverlay');
 import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
+
+let runningOnLive = (window.location.host == window.location.hostname); //Checks we are on standard port (no :8080)
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
@@ -53,9 +58,9 @@ class AppEntry {
 		console.log('create');
 
 		let socket: SocketClient;
-		if (window.location.host == window.location.hostname) { //Standard port
+		if (runningOnLive) { //Standard port
 			socket = new SocketClient(window.location.origin, new Serializer());
-		} else { //Non-standard port
+		} else { //Non-standard port, assume dev and hack for it
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
 		this.client = new Client(socket);
@@ -120,6 +125,9 @@ class AppEntry {
 	}
 }
 
+if (runningOnLive) {
+	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603').install();
+}
 if (GoodBrowser) {
 	WebFont.load({
 		/*custom: {
