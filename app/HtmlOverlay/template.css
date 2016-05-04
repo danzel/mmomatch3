@@ -126,6 +126,7 @@ text {
 .feedback-overlay {
 	width: 400px;
 	padding: 0;
+	top: 10px;
 }
 
 .feedback-overlay .loading {
