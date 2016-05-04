@@ -5,6 +5,7 @@ import Match = require('./match');
 import Matchable = require('./matchable');
 import MatchPerformer = require('./matchPerformer');
 import Physics = require('./physics');
+import SpawnManager = require('./spawnManager');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
 
@@ -19,7 +20,7 @@ class QuietColumnDetector {
 	gridIsQuiet = true;
 	gridBecameQuiet = new LiteEvent<void>();
 
-	constructor(private grid: Grid, physics: Physics, swapHandler: SwapHandler, matchPerformer: MatchPerformer, disappearer: Disappearer) {
+	constructor(private grid: Grid, physics: Physics, swapHandler: SwapHandler, matchPerformer: MatchPerformer, disappearer: Disappearer, spawnManager: SpawnManager) {
 
 		for (let i = 0; i < grid.width; i++) {
 			this.columnSwapsInProgressCount.push(0);
@@ -33,6 +34,7 @@ class QuietColumnDetector {
 		swapHandler.swapOccurred.on((swap) => this.onSwapOccurred(swap));
 
 		matchPerformer.matchPerformed.on((match) => this.onMatchPerformed(match));
+		spawnManager.matchableSpawned.on((matchable) => this.onMatchableSpawned(matchable));
 		disappearer.matchableDisappeared.on((matchable) => this.onMatchableDisappeared(matchable));
 		disappearer.matchableTransformed.on((matchable) => this.onMatchableDisappeared(matchable));
 	}
@@ -76,6 +78,11 @@ class QuietColumnDetector {
 		}
 	}
 
+	onMatchableSpawned(matchable: Matchable): void {
+		this.columnIsQuiet[matchable.x] = false;
+		this.gridIsQuiet = false;
+	}
+
 	onMatchableDisappeared(matchable: Matchable) {
 		this.columnDisappearingCount[matchable.x]--;
 
@@ -96,7 +103,7 @@ class QuietColumnDetector {
 			}
 		}
 		this.columnsNeedingCheck.length = 0;
-		
+
 		//Check if there are now no columns busy
 		if (oneBecameQuiet) {
 			let allQuiet = this.columnIsQuiet.every(x => x);
