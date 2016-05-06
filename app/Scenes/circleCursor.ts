@@ -27,7 +27,6 @@ class CircleCursor {
 		ctx.lineWidth = strokeWidth;
 		ctx.strokeStyle = 'black'
         ctx.fillStyle = '#' + colorStr;
-		console.log('fill', ctx.fillStyle)
 		
 		ctx.beginPath();
 		ctx.arc(size / 2, size / 2, (size - strokeWidth) / 2, 0, Math.PI * 2);
