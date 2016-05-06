@@ -9,8 +9,8 @@ class PlayerProvider {
 		this.idCounter = 1;
 	}
 	
-	createPlayer(): Player {
-		var player = new Player(this.idCounter);
+	createPlayer(commsId: string, name: string): Player {
+		var player = new Player(this.idCounter, commsId, name);
 		this.players[player.id] = player;
 		
 		this.idCounter++;

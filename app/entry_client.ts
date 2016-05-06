@@ -50,12 +50,12 @@ class AppEntry {
 	create() {
 		let welcome = new WelcomeScreen(this.htmlOverlayManager);
 		welcome.onLogin = (nickname) => {
-			this.connect();
+			this.connect(nickname);
 		};
 		welcome.show();
 	}
 
-	connect() {
+	connect(nickname: string) {
 		console.log('create');
 
 		let socket: SocketClient;
@@ -64,7 +64,7 @@ class AppEntry {
 		} else { //Non-standard port, assume dev and hack for it
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
-		this.client = new Client(socket);
+		this.client = new Client(socket, nickname);
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
 		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
@@ -134,7 +134,7 @@ if (runningOnLive) {
 	for (var i = 0; i < scripts.length; i++) {
 		let index = scripts[i].src.indexOf('bundle.js?');
 		if (index >= 0) {
-			release = scripts[i].src.substr(index + 10); 
+			release = scripts[i].src.substr(index + 10);
 		}
 	}
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {

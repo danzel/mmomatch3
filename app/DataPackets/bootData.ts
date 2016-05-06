@@ -5,7 +5,6 @@ import SimulationData = require('./BootParts/simulationData');
 import SwapHandlerData = require('./BootParts/swapHandlerData');
 
 class BootData {
-	playerId: number;
 	constructor(
 		public level: LevelDefData,
 		public grid: GridData,

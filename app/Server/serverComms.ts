@@ -1,4 +1,5 @@
 import BootData = require('../DataPackets/bootData');
+import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
 import PacketType = require('../DataPackets/packetType');
 import SwapClientData = require('../DataPackets/swapClientData');
@@ -10,8 +11,9 @@ abstract class ServerComms {
 	disconnected = new LiteEvent<string>();
 	dataReceived = new LiteEvent<{ id: string, packet: { packetType: PacketType, data: any }}>();
 
+	abstract sendInit(initData: InitData, id: string): void;
+	abstract sendBoot(bootData: BootData, ids: Array<string>): void;
 	abstract sendTick(tickData: TickData, ids: Array<string>): void;
-	abstract sendBoot(bootData: BootData, id: string): void;
 	abstract sendUnavailable(unavailableData: UnavailableData, id?: string): void;
 }
 

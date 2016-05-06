@@ -1,9 +1,7 @@
 class Player {
-	id: number;
 	matchablesMatched: number;
 	
-	constructor(id: number) {
-		this.id = id;
+	constructor(public id: number, public commsId: string, public name: string) {
 		this.matchablesMatched = 0;
 	}
 }

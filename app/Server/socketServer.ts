@@ -7,6 +7,7 @@ import https = require('https');
 import LEX = require('letsencrypt-express');
 
 import BootData = require('../DataPackets/bootData');
+import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
 import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
@@ -41,7 +42,7 @@ class SocketServer extends ServerComms {
 
 			var lex = LEX.create({
 				configDir: './letsencrypt/etc',
-				approveRegistration: function(hostname, cb) {
+				approveRegistration: function (hostname, cb) {
 					if (hostname == config.domain) {
 						cb(null, { domains: [hostname], email: config.email, agreeTos: true });
 					}
@@ -73,7 +74,7 @@ class SocketServer extends ServerComms {
 		console.log("connection", spark.id);
 
 		let callback = this.sparkDataReceivedBound;
-		spark.on('data', function(data: any) {
+		spark.on('data', function (data: any) {
 			callback(spark, data);
 		});
 
@@ -101,16 +102,21 @@ class SocketServer extends ServerComms {
 		}
 	}
 
+	sendInit(initData: InitData, id: string) {
+		this.clients[id].write(this.serializer.serializeInit(initData));
+	}
+
+	sendBoot(bootData: BootData, ids: Array<string>) {
+		var data = this.serializer.serializeBoot(bootData);
+		this.send(data, ids);
+	}
+
 	sendTick(tickData: TickData, ids: Array<string>) {
 		var data = this.serializer.serializeTick(tickData);
 
 		this.send(data, ids);
 	}
 
-	sendBoot(bootData: BootData, id: string) {
-		this.clients[id].write(this.serializer.serializeBoot(bootData));
-	}
-	
 	sendUnavailable(unavailableData: UnavailableData, id?: string) {
 		let serialized = this.serializer.serializeUnavailable(unavailableData);
 		if (id) {

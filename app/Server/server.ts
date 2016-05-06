@@ -6,7 +6,9 @@ import DebugLogger = require('../debugLogger');
 import DirectInputApplier = require('../Simulation/SinglePlayer/directInputApplier');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
+import InitData = require('../DataPackets/initData');
 import InputVerifier = require('../Simulation/inputVerifier');
+import JoinData = require('../DataPackets/joinData');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LiteEvent = require('../liteEvent');
@@ -43,7 +45,8 @@ class Server {
 	private simulation: Simulation;
 	private gameEndDetector: GameEndDetector;
 
-	private clientsRequiringBoot: Array<string> = [];
+	private clientsRequiringJoin: Array<string> = [];
+	private clientsRequiringBoot: Array<Player> = [];
 	private clients: { [id: string]: Player } = {};
 
 	private bots = new Array<Bot>();
@@ -58,7 +61,7 @@ class Server {
 		serverComms.dataReceived.on(data => this.dataReceived(data));
 
 		for (var i = 0; i < this.config.botCount; i++) {
-			this.botPlayers.push(this.playerProvider.createPlayer())
+			this.botPlayers.push(this.playerProvider.createPlayer(null, null));
 		};
 	}
 
@@ -86,12 +89,8 @@ class Server {
 			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid)));
 		}
 
-		//TODO: Should we split boot and levels? boot has playerid in it which sucks
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
-		for (let i in this.clients) {
-			bootData.playerId = this.clients[i].id;
-			this.serverComms.sendBoot(bootData, i);
-		}
+		this.serverComms.sendBoot(bootData, Object.keys(this.clients));
 
 		this.gameEndDetector.gameEnded.on((victory) => {
 			setTimeout(() => this.loadLevel(levelNumber + 1), 5000);
@@ -105,7 +104,7 @@ class Server {
 			//TODO: We should sorta be able to push people straight in to this.clients if we aren't available, this would mean they'd boot faster
 			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
 		}
-		this.clientsRequiringBoot.push(id);
+		this.clientsRequiringJoin.push(id);
 	}
 
 	private connectionDisconnected(id: string) {
@@ -113,17 +112,37 @@ class Server {
 		if (this.clients[id]) {
 			delete this.clients[id];
 		} else {
-			this.clientsRequiringBoot.splice(this.clientsRequiringBoot.indexOf(id), 1);
+			for (let i = 0; i < this.clientsRequiringBoot.length; i++){
+				if (this.clientsRequiringBoot[i].commsId == id) {
+					this.clientsRequiringBoot.splice(i, 1);
+					break;
+				}
+			}
+			let index = this.clientsRequiringJoin.indexOf(id);
+			if (index >= 0) {
+				this.clientsRequiringJoin.splice(index, 1);
+			}
 		}
 	}
 
 	private dataReceived(data: { id: string, packet: { packetType: PacketType, data: any } }) {
-		if (data.packet.packetType == PacketType.SwapClient) {
+		if (data.packet.packetType == PacketType.Join) {
+			this.joinReceived(data.id, <JoinData>data.packet.data);
+		} else if (data.packet.packetType == PacketType.SwapClient) {
 			this.swapReceived(data.id, <SwapClientData>data.packet.data);
 		} else {
 			console.warn('Received unexpected packet ', data.packet);
 		}
 
+	}
+
+	private joinReceived(id: string, join: JoinData) {
+		var player = this.playerProvider.createPlayer(id, join.playerName);
+
+		this.serverComms.sendInit(new InitData(player.id), id);
+		
+		this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
+		this.clientsRequiringBoot.push(player);
 	}
 
 	private swapReceived(id: string, swap: SwapClientData) {
@@ -175,13 +194,12 @@ class Server {
 
 		if (this.clientsRequiringBoot.length > 0) {
 			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
-			this.clientsRequiringBoot.forEach((id) => {
-				var player = this.playerProvider.createPlayer();
-				bootData.playerId = player.id;
-				this.serverComms.sendBoot(bootData, id);
-
-				this.clients[id] = player;
+			var toBoot = new Array<string>();
+			this.clientsRequiringBoot.forEach((player) => {
+				toBoot.push(player.commsId);
+				this.clients[player.commsId] = player;
 			});
+			this.serverComms.sendBoot(bootData, toBoot);
 			this.clientsRequiringBoot.length = 0;
 		}
 

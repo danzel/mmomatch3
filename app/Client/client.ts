@@ -2,6 +2,8 @@ import BootData = require('../DataPackets/bootData');
 import ClientComms = require('./clientComms');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import FailureType = require('../Simulation/Levels/failureType');
+import InitData = require('../DataPackets/initData');
+import JoinData = require('../DataPackets/joinData');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
@@ -16,11 +18,14 @@ import VictoryType = require('../Simulation/Levels/victoryType');
 class Client {
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 
+	private playerId: number;
+
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
-	constructor(private clientComms: ClientComms) {
+	constructor(private clientComms: ClientComms, private nickname?: string) {
+		clientComms.connected.on(() => this.connected())
 		clientComms.dataReceived.on(data => this.dataReceived(data))
 	}
 
@@ -28,12 +33,19 @@ class Client {
 		this.clientComms.sendSwap(new SwapClientData(leftId, rightId));
 	}
 
+	private connected() {
+		this.clientComms.sendJoin(new JoinData(this.nickname || null));
+	}
+
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
-		if (packet.packetType == PacketType.Boot) {
+		if (packet.packetType == PacketType.Init) {
+			let initData = <InitData>packet.data;
+			this.playerId = initData.playerId;
+		} else if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
-			
+
 			//SEMI-HACK. If Pigs vs Pugs, maybe swap failure/victory based on playerId
-			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && (bootData.playerId % 2 == 1)) {
+			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && (this.playerId % 2 == 1)) {
 				let temp = bootData.level.failureValue;
 				bootData.level.failureValue = bootData.level.victoryValue;
 				bootData.level.victoryValue = temp;
@@ -45,7 +57,7 @@ class Client {
 				level: level,
 				simulation: simulation,
 				gameEndDetector: new GameEndDetector(level, simulation),
-				playerId: bootData.playerId,
+				playerId: this.playerId,
 				endAvailabilityDate: bootData.endAvailabilityDate ? new Date(bootData.endAvailabilityDate) : null
 			});
 		} else if (packet.packetType == PacketType.Tick) {

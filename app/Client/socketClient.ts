@@ -1,14 +1,12 @@
 /// <reference path="../../typings/primus/primusClient.d.ts" />
 import ClientComms = require('./clientComms');
+import JoinData = require('../DataPackets/joinData');
 import LiteEvent = require('../liteEvent');
 import Serializer = require('../Serializer/serializer')
 import SwapClientData = require('../DataPackets/swapClientData');
 
 class SocketClient extends ClientComms {
 	private primus: Primus;
-
-	connected = new LiteEvent();
-	disconnected = new LiteEvent();
 
 	constructor(url: string, private serializer: Serializer) {
 		super();
@@ -31,6 +29,10 @@ class SocketClient extends ClientComms {
 		let packet = this.serializer.deserialize(data);
 
 		this.dataReceived.trigger(packet);
+	}
+
+	sendJoin(joinData: JoinData) {
+		this.primus.write(this.serializer.serializeJoin(joinData));
 	}
 
 	sendSwap(swapClientData: SwapClientData) {
