@@ -1,6 +1,7 @@
 /// <reference path="../typings/raven-js/raven-js.d.ts" />
 import Raven = require('raven-js');
 
+import CircleCursor = require('./Scenes/circleCursor');
 import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
 import DebugLogger = require('./debugLogger');
@@ -75,6 +76,7 @@ class AppEntry {
 	}
 
 	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }) {
+		CircleCursor.setCursor(this.game, data.playerId);
 		this.unavailableOverlay.hasPlayed = true;
 		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {

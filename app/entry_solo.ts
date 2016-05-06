@@ -1,5 +1,6 @@
 /// <reference path="../typings/webfontloader/webfontloader.d.ts" />
 
+import CircleCursor = require('./Scenes/circleCursor');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
@@ -31,6 +32,7 @@ class AppEntry {
 		//this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		this.game.stage.backgroundColor = 0x273348;
+		CircleCursor.setCursor(this.game, Math.floor(Math.random() * 100));
 
 		GraphicsLoader.load(this.game);
 	}
