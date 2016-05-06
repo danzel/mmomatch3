@@ -1,6 +1,7 @@
 /// <reference path="../../typings/mersenne-twister/mersenne-twister.d.ts" />
 import MersenneTwister = require('mersenne-twister');
 
+import HslToRgb = require('../Util/hslToRgb');
 import MatchableNode = require('./matchableNode');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
@@ -13,16 +14,8 @@ class PlayerSprite {
 		this.sprite = parentGroup.game.add.sprite(x, y, 'atlas', 'player.png', parentGroup);
 		this.sprite.anchor.set(0.5);
 
-		//Semi bad random color generator.
-		let mask = 0x55;
-		let tint = 0;
-		let maskNeg = (0xff - mask);
 		let rand = new MersenneTwister(playerId);
-		for (let i = 0; i < 3; i++) {
-			tint <<= 8;
-			tint += (mask + rand.random() * maskNeg) | 0;
-		}
-		this.sprite.tint = tint;
+		this.sprite.tint = HslToRgb(rand.random_excl() * 360, 1, 0.5);
 
 		this.lastUpdate = this.sprite.game.time.now;
 	}
