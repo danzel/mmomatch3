@@ -62,7 +62,7 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(level, this.simulation);
 		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, { }, 0, null);
+		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, {}, 0, {}, null);
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {
@@ -85,10 +85,10 @@ if (GoodBrowser) {
 		},*/
 		classes: false,
 
-		active: function() {
+		active: function () {
 			new AppEntry();
 		},
-		inactive: function() {
+		inactive: function () {
 			new AppEntry();
 		}
 	});

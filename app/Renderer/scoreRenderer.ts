@@ -29,7 +29,7 @@ class ScoreRenderer {
 
 	height: number;
 
-	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number) {
+	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number, private playerNames: {[id: number]: string}) {
 
 		this.title = new Phaser.Text(this.group.game, 2, 2, scoreTracker.headingText, this.headerTextStyle);
 		this.group.add(this.title);
@@ -77,7 +77,7 @@ class ScoreRenderer {
 			let text = this.scoreText[i];
 			let style = (this.playerId == val.playerId) ? this.myScoreTextStyle : this.textStyle;
 			text.setStyle(style)
-			text.text = "Player " + val.playerId + ": " + val.points; //TODO: Player Name
+			text.text = (this.playerNames[val.playerId] || ("Player " + val.playerId))  + ": " + val.points;
 			
 			if (!isInFirst6 && i == 4) {
 				text.text = "...";

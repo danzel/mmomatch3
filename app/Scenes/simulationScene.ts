@@ -45,7 +45,7 @@ class SimulationScene {
 	detectorDisplays = new Array<DetectorDisplay>();
 
 
-	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, endAvailabilityDate: Date) {
+	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: {[id: number]: string}, endAvailabilityDate: Date) {
 		let simulationGroup = new Phaser.Group(group.game, group);
 		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
@@ -60,7 +60,7 @@ class SimulationScene {
 			this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
 			this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 
-			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId);
+			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId, playerNames);
 			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group), endAvailabilityDate);
 			this.playerCountRenderer.updateData(this.playerCountValue);
 			

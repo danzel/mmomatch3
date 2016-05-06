@@ -32,6 +32,8 @@ class AppEntry {
 	scene: SimulationScene;
 	sceneGroup: Phaser.Group;
 
+	playerNames: { [id: number]: string } = {};
+
 	constructor() {
 		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
@@ -68,6 +70,9 @@ class AppEntry {
 		this.client = new Client(socket, nickname);
 		this.client.playerIdReceived.on(playerId => {
 			this.playerId = playerId;
+			if (nickname) {
+				this.playerNames[playerId] = nickname;
+			}
 			CircleCursor.setCursor(this.game, playerId);
 		})
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
@@ -89,7 +94,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, this.playerId, data.endAvailabilityDate);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, this.playerId, this.playerNames, data.endAvailabilityDate);
 		//new DebugLogger(data.simulation);
 	}
 
