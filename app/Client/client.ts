@@ -20,11 +20,12 @@ class Client {
 
 	private playerId: number;
 
-	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }>();
+	playerIdReceived = new LiteEvent<number>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
-	constructor(private clientComms: ClientComms, private nickname?: string) {
+	constructor(private clientComms: ClientComms, public nickname?: string) {
 		clientComms.connected.on(() => this.connected())
 		clientComms.dataReceived.on(data => this.dataReceived(data))
 	}
@@ -40,7 +41,9 @@ class Client {
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
 		if (packet.packetType == PacketType.Init) {
 			let initData = <InitData>packet.data;
+
 			this.playerId = initData.playerId;
+			this.playerIdReceived.trigger(initData.playerId);
 		} else if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 
@@ -57,7 +60,6 @@ class Client {
 				level: level,
 				simulation: simulation,
 				gameEndDetector: new GameEndDetector(level, simulation),
-				playerId: this.playerId,
 				endAvailabilityDate: bootData.endAvailabilityDate ? new Date(bootData.endAvailabilityDate) : null
 			});
 		} else if (packet.packetType == PacketType.Tick) {

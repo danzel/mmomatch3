@@ -26,6 +26,7 @@ class AppEntry {
 	unavailableOverlay: UnavailableOverlay;
 	client: Client;
 	game: Phaser.Game;
+	playerId: number;
 	simulationHandler: ClientSimulationHandler;
 
 	scene: SimulationScene;
@@ -65,6 +66,10 @@ class AppEntry {
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
 		this.client = new Client(socket, nickname);
+		this.client.playerIdReceived.on(playerId => {
+			this.playerId = playerId;
+			CircleCursor.setCursor(this.game, playerId);
+		})
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
 		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
@@ -75,8 +80,7 @@ class AppEntry {
 		socket.disconnected.on(() => this.htmlOverlayManager.setConnectionError(true));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, endAvailabilityDate: Date }) {
-		CircleCursor.setCursor(this.game, data.playerId);
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }) {
 		this.unavailableOverlay.hasPlayed = true;
 		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {
@@ -85,7 +89,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, data.playerId, data.endAvailabilityDate);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 5 }, this.playerId, data.endAvailabilityDate);
 		//new DebugLogger(data.simulation);
 	}
 
