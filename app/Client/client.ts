@@ -20,7 +20,7 @@ class Client {
 
 	private playerId: number;
 
-	playerIdReceived = new LiteEvent<number>();
+	initReceived = new LiteEvent<InitData>();
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
@@ -43,7 +43,7 @@ class Client {
 			let initData = <InitData>packet.data;
 
 			this.playerId = initData.playerId;
-			this.playerIdReceived.trigger(initData.playerId);
+			this.initReceived.trigger(initData);
 		} else if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 

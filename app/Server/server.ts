@@ -112,7 +112,7 @@ class Server {
 		if (this.clients[id]) {
 			delete this.clients[id];
 		} else {
-			for (let i = 0; i < this.clientsRequiringBoot.length; i++){
+			for (let i = 0; i < this.clientsRequiringBoot.length; i++) {
 				if (this.clientsRequiringBoot[i].commsId == id) {
 					this.clientsRequiringBoot.splice(i, 1);
 					break;
@@ -139,8 +139,22 @@ class Server {
 	private joinReceived(id: string, join: JoinData) {
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 
-		this.serverComms.sendInit(new InitData(player.id), id);
-		
+		//TODO: I think this means two players joining in the same tick won't get each others names?
+		let names: { [id: number]: string } = {};
+		for (var key in this.clients) {
+			var p = this.clients[key];
+			if (p.name) {
+				names[p.id] = p.name;
+			}
+		}
+
+		this.serverComms.sendInit(new InitData(player.id, names), id);
+
+		//TODO: Maybe instead of immediately sending names, wait till they get their first points?
+		if (join.playerName) {
+			this.tickDataFactory.notifyNewPlayer(player.id, join.playerName);
+		}
+
 		this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
 		this.clientsRequiringBoot.push(player);
 	}

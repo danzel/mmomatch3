@@ -68,12 +68,16 @@ class AppEntry {
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
 		this.client = new Client(socket, nickname);
-		this.client.playerIdReceived.on(playerId => {
-			this.playerId = playerId;
+		this.client.initReceived.on(data => {
+			this.playerId = data.playerId;
+			this.playerNames = {};
 			if (nickname) {
-				this.playerNames[playerId] = nickname;
+				this.playerNames[data.playerId] = nickname;
 			}
-			CircleCursor.setCursor(this.game, playerId);
+			for (var key in data.names) {
+				this.playerNames[key] = data.names[key];
+			}
+			CircleCursor.setCursor(this.game, data.playerId);
 		})
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
@@ -101,6 +105,11 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 
+		if (tickData.names) {
+			for (var key in tickData.names) {
+				this.playerNames[key] = tickData.names[key];
+			}
+		}
 		if (tickData.playerCount) {
 			this.scene.playerCount = tickData.playerCount;
 		}

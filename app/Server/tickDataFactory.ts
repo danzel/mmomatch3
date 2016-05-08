@@ -13,6 +13,7 @@ class TickDataFactory {
 	private lastSentFramesElapsed: number = 0;
 	private lastSentPointsFramesElapsed: number = 0;
 	private frameData: { [frame: number]: FrameData } = {};
+	private newPlayerNames: { [id: number]: string };
 
 	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker, private framesPerTick: number) {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
@@ -26,6 +27,13 @@ class TickDataFactory {
 
 	onMatchableSpawned(matchable: Matchable) {
 		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color, matchable.type));
+	}
+	
+	notifyNewPlayer(id: number, name: string) {
+		if (!this.newPlayerNames) {
+			this.newPlayerNames = {};
+		}
+		this.newPlayerNames[id] = name;
 	}
 
 	private ensureFrameData(): FrameData {
@@ -45,6 +53,11 @@ class TickDataFactory {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 		let res = new TickData(elapsed, this.frameData);
 		this.frameData = {};
+		
+		if (this.newPlayerNames) {
+			res.names = this.newPlayerNames;
+			this.newPlayerNames = null;
+		}
 
 		//Send player count every 2 seconds
 		if (this.simulation.framesElapsed - this.lastSentPointsFramesElapsed > 2 * 60) {

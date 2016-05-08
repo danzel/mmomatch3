@@ -3,14 +3,11 @@ import TickPoints = require('./tickPoints');
 
 
 class TickData {
-	framesElapsed: number;
-	frameData: { [frame: number]: FrameData }
-
 	playerCount: number;
+	/** Names of all players that joined during this tick */
+	names: { [id: number]: string }
 
-	constructor(framesElapsed: number, frames: { [frame: number]: FrameData }) {
-		this.framesElapsed = framesElapsed;
-		this.frameData = frames;
+	constructor(public framesElapsed: number, public frameData: { [frame: number]: FrameData }) {
 	}
 }
 
