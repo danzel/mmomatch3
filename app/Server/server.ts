@@ -144,6 +144,10 @@ class Server {
 	}
 
 	private joinReceived(id: string, join: JoinData) {
+		if (join.playerName && join.playerName.length > 16) {
+			join.playerName = join.playerName.substr(0, 16);
+		}
+		
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 
 		let names: { [id: number]: string } = {};

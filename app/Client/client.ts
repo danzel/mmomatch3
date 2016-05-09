@@ -27,6 +27,10 @@ class Client {
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
 	constructor(private clientComms: ClientComms, public nickname?: string) {
+		if (this.nickname && this.nickname.length > 16) {
+			this.nickname = this.nickname.substr(0, 16);
+		}
+
 		clientComms.connected.on(() => this.connected())
 		clientComms.dataReceived.on(data => this.dataReceived(data))
 	}
