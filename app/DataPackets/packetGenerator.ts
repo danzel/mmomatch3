@@ -14,6 +14,7 @@ import GridFactory = require('../Simulation/Levels/gridFactory');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import Matchable = require('../Simulation/matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
+import NewNameCollection = require('../Server/newNameCollection');
 import RequireMatch = require('../Simulation/requireMatch');
 import RequireMatchInCellTracker = require('../Simulation/requireMatchInCellTracker');
 import Simulation = require('../Simulation/simulation');
@@ -23,13 +24,14 @@ import SwapHandler = require('../Simulation/swapHandler');
 import PointsScoreTracker = require('../Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 
 class PacketGenerator {
-	generateBootData(level: LevelDef, simulation: Simulation, endAvailabilityDate: string): BootData {
+	generateBootData(level: LevelDef, simulation: Simulation, newNameCollection: NewNameCollection, endAvailabilityDate: string): BootData {
 		return new BootData(
 			this.generateLevelDefData(level),
 			this.generateGridData(simulation.grid),
 			this.generateSwapHandlerData(simulation.swapHandler),
 			this.generateSimulationData(simulation),
 			this.generateRequireMatchData(simulation.requireMatchInCellTracker),
+			this.generateNewNameCollectionData(newNameCollection),
 			endAvailabilityDate
 		);
 	}
@@ -83,7 +85,7 @@ class PacketGenerator {
 
 	private generateSimulationData(simulation: Simulation): SimulationData {
 		let scoreTracker = simulation.scoreTracker;
-		
+
 		return new SimulationData(
 			simulation.matchableFactory.idForSerializing,
 			simulation.framesElapsed,
@@ -121,6 +123,16 @@ class PacketGenerator {
 			res.data.push({ x: r.x, y: r.y, amount: r.amount });
 		}
 
+		return res;
+	}
+
+	private generateNewNameCollectionData(newNameCollection: NewNameCollection): { [id: number]: string } {
+		if (newNameCollection.newNames.length == 0) {
+			return null;
+		}
+		
+		var res: { [id: number]: string } = {};
+		newNameCollection.newNames.forEach(p => res[p.id] = p.name);
 		return res;
 	}
 

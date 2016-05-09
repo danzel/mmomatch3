@@ -74,11 +74,15 @@ class AppEntry {
 			if (nickname) {
 				this.playerNames[data.playerId] = nickname;
 			}
-			for (var key in data.names) {
-				this.playerNames[key] = data.names[key];
-			}
 			CircleCursor.setCursor(this.game, data.playerId);
 		})
+		this.client.newNamesReceived.on(names => {
+			if (names) {
+				for (var key in names) {
+					this.playerNames[key] = names[key];
+				}
+			}
+		});
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
 		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
@@ -105,11 +109,6 @@ class AppEntry {
 	tickReceived(tickData: TickData) {
 		this.simulationHandler.tickReceived(tickData);
 
-		if (tickData.names) {
-			for (var key in tickData.names) {
-				this.playerNames[key] = tickData.names[key];
-			}
-		}
 		if (tickData.playerCount) {
 			this.scene.playerCount = tickData.playerCount;
 		}

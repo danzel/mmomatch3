@@ -13,6 +13,7 @@ import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LiteEvent = require('../liteEvent');
 import Matchable = require('../Simulation/matchable');
+import NewNameCollection = require('./newNameCollection');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
 import Player = require('../Simulation/Scoring/player');
@@ -37,6 +38,7 @@ class Server {
 	private availabilityManager: AvailabilityManager;
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
+	private newNameCollection = new NewNameCollection();
 	private tickDataFactory: TickDataFactory;
 
 	private currentlyAvailable: boolean;
@@ -45,9 +47,10 @@ class Server {
 	private simulation: Simulation;
 	private gameEndDetector: GameEndDetector;
 
-	private clientsRequiringJoin: Array<string> = [];
-	private clientsRequiringBoot: Array<Player> = [];
+	private clientsRequiringJoin = new Array<string>();
+	private clientsRequiringBoot = new Array<Player>();
 	private clients: { [id: string]: Player } = {};
+	private clientsWhoLeftThisLevel = new Array<Player>();
 
 	private bots = new Array<Bot>();
 	private botPlayers = new Array<Player>();
@@ -80,7 +83,7 @@ class Server {
 		this.simulation = level.simulation;
 
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
-		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.config.framesPerTick);
+		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.newNameCollection, this.config.framesPerTick);
 		//new DebugLogger(this.simulation);
 
 		this.bots.length = 0;
@@ -89,7 +92,10 @@ class Server {
 			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid)));
 		}
 
-		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
+		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection, this.availabilityManager.currentAvailableEndJSON(new Date()));
+
+		this.newNameCollection.clear();
+		this.clientsWhoLeftThisLevel.length = 0;
 		this.serverComms.sendBoot(bootData, Object.keys(this.clients));
 
 		this.gameEndDetector.gameEnded.on((victory) => {
@@ -110,6 +116,7 @@ class Server {
 	private connectionDisconnected(id: string) {
 		console.log('disconnection', id);
 		if (this.clients[id]) {
+			this.clientsWhoLeftThisLevel.push(this.clients[id]);
 			delete this.clients[id];
 		} else {
 			for (let i = 0; i < this.clientsRequiringBoot.length; i++) {
@@ -139,7 +146,6 @@ class Server {
 	private joinReceived(id: string, join: JoinData) {
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 
-		//TODO: I think this means two players joining in the same tick won't get each others names?
 		let names: { [id: number]: string } = {};
 		for (var key in this.clients) {
 			var p = this.clients[key];
@@ -147,12 +153,17 @@ class Server {
 				names[p.id] = p.name;
 			}
 		}
+		this.clientsWhoLeftThisLevel.forEach(p => {
+			if (p.name) {
+				names[p.id] = p.name;
+			}
+		});
 
 		this.serverComms.sendInit(new InitData(player.id, names), id);
 
 		//TODO: Maybe instead of immediately sending names, wait till they get their first points?
 		if (join.playerName) {
-			this.tickDataFactory.notifyNewPlayer(player.id, join.playerName);
+			this.newNameCollection.notifyNewPlayer(player);
 		}
 
 		this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
@@ -207,7 +218,7 @@ class Server {
 		this.serverComms.sendTick(tickData, Object.keys(this.clients));
 
 		if (this.clientsRequiringBoot.length > 0) {
-			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.availabilityManager.currentAvailableEndJSON(new Date()));
+			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection, this.availabilityManager.currentAvailableEndJSON(new Date()));
 			var toBoot = new Array<string>();
 			this.clientsRequiringBoot.forEach((player) => {
 				toBoot.push(player.commsId);
@@ -217,6 +228,7 @@ class Server {
 			this.clientsRequiringBoot.length = 0;
 		}
 
+		this.newNameCollection.clear();
 		this.bots.forEach(b => b.update(1 / this.config.fps));
 	}
 }

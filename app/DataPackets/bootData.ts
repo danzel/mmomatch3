@@ -11,6 +11,7 @@ class BootData {
 		public swapHandler: SwapHandlerData,
 		public simulationData: SimulationData,
 		public requireMatchData: RequireMatchData,
+		public names: { [id: number]: string },
 		public endAvailabilityDate: string) {
 	}
 }

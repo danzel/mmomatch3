@@ -1,5 +1,6 @@
 import FrameData = require('../DataPackets/frameData');
 import Matchable = require('../Simulation/matchable');
+import NewNameCollection = require('./newNameCollection');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Simulation = require('../Simulation/simulation');
 import SpawnData = require('../DataPackets/spawnData');
@@ -13,9 +14,8 @@ class TickDataFactory {
 	private lastSentFramesElapsed: number = 0;
 	private lastSentPointsFramesElapsed: number = 0;
 	private frameData: { [frame: number]: FrameData } = {};
-	private newPlayerNames: { [id: number]: string };
 
-	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker, private framesPerTick: number) {
+	constructor(private simulation: Simulation, private scoreTracker: ScoreTracker, private newNameCollection: NewNameCollection, private framesPerTick: number) {
 		this.lastSentFramesElapsed = this.simulation.framesElapsed;
 
 		simulation.swapHandler.swapStarted.on(this.onSwapStarted.bind(this))
@@ -27,13 +27,6 @@ class TickDataFactory {
 
 	onMatchableSpawned(matchable: Matchable) {
 		this.ensureFrameData().spawnData.push(new SpawnData(matchable.x, matchable.color, matchable.type));
-	}
-	
-	notifyNewPlayer(id: number, name: string) {
-		if (!this.newPlayerNames) {
-			this.newPlayerNames = {};
-		}
-		this.newPlayerNames[id] = name;
 	}
 
 	private ensureFrameData(): FrameData {
@@ -54,9 +47,9 @@ class TickDataFactory {
 		let res = new TickData(elapsed, this.frameData);
 		this.frameData = {};
 		
-		if (this.newPlayerNames) {
-			res.names = this.newPlayerNames;
-			this.newPlayerNames = null;
+		if (this.newNameCollection.newNames.length > 0) {
+			res.names = {};
+			this.newNameCollection.newNames.forEach(p => res.names[p.id] = p.name);
 		}
 
 		//Send player count every 2 seconds

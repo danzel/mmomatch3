@@ -21,6 +21,7 @@ class Client {
 	private playerId: number;
 
 	initReceived = new LiteEvent<InitData>();
+	newNamesReceived = new LiteEvent<{ [id: number]: string }>();
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
@@ -44,6 +45,7 @@ class Client {
 
 			this.playerId = initData.playerId;
 			this.initReceived.trigger(initData);
+			this.newNamesReceived.trigger(initData.names);
 		} else if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 
@@ -54,6 +56,8 @@ class Client {
 				bootData.level.victoryValue = temp;
 			}
 
+			this.newNamesReceived.trigger(bootData.names);
+
 			let level = this.packetGenerator.recreateLevelDefData(bootData.level)
 			let simulation = this.packetGenerator.recreateSimulation(bootData, level);
 			this.simulationReceived.trigger({
@@ -63,7 +67,9 @@ class Client {
 				endAvailabilityDate: bootData.endAvailabilityDate ? new Date(bootData.endAvailabilityDate) : null
 			});
 		} else if (packet.packetType == PacketType.Tick) {
-			this.tickReceived.trigger(<TickData>packet.data);
+			let tickData = <TickData>packet.data;
+			this.newNamesReceived.trigger(tickData.names);
+			this.tickReceived.trigger(tickData);
 		} else if (packet.packetType == PacketType.Unavailable) {
 			this.unavailableReceived.trigger(<UnavailableData>packet.data);
 		} else {
