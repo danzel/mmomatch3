@@ -43,13 +43,11 @@ class SocketServer extends ServerComms {
 			var lex = LEX.create({
 				configDir: './letsencrypt/etc',
 				approveRegistration: function (hostname, cb) {
-					if (hostname == config.domain) {
-						cb(null, { domains: [hostname], email: config.email, agreeTos: true });
-					}
+					cb(null, { domains: [config.domain], email: config.email, agreeTos: true });
 				}
 			});
 			http.createServer(LEX.createAcmeResponder(lex, function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
-				res.setHeader('Location', 'https://' + config.domain + req.url);
+				res.setHeader('Location', 'https://' + req.headers.host + req.url);
 				res.statusCode = 302;
 				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
 			})).listen(config.httpPort);
