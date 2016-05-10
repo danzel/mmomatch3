@@ -1,6 +1,7 @@
 .overlay.welcome-screen {
 	background-color: transparent;
 	border: none;
+	height: 100%;
 }
 
 .welcome-screen .frame  {
@@ -67,14 +68,18 @@
 }
 
 
-.welcome-screen .placeholder {
-	background-color: white;
-	border: 1px solid black;
-	width: 300px;
-	height: 250px;
-	
+.frame .adsbygoogle {
 	margin-left: auto;
 	margin-right: auto;
 	
 	margin-bottom: 20px;
+	
+	pointer-events: all;
+}
+
+.adsbygoogle.bottom {
+	position: absolute;
+	left: 50%;
+	bottom: 60px; /* Make up for the margin-top on the overlay */
+	margin-left: -368px; /* Half the ad width */
 }
