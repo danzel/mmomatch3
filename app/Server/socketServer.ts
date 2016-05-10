@@ -1,7 +1,9 @@
 /// <reference path="../../typings/express/express.d.ts" />
+/// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
+import compression = require('compression');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
@@ -30,7 +32,10 @@ class SocketServer extends ServerComms {
 	constructor(private serializer: Serializer, config: SocketServerConfig) {
 		super();
 		this.app = express();
-		this.app.use(express.static('dist'));
+		//Could consider this https://github.com/isaacs/st
+		this.app.use(compression());
+		let oneDay = 86400000;
+		this.app.use(express.static('dist', { maxAge: oneDay }));
 
 		if (config.httpsPort && config.domain && config.email) {
 			console.log('starting https');
