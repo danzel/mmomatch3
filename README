@@ -22,6 +22,8 @@ exit
 After putting the code on the server, run this one time:
 sudo npm run-script install-service
 npm install --only=prod
+touch dist/bundle.css.map
+touch dist/bundle.js.map
 service mmomatch start
 
 
