@@ -17,6 +17,15 @@
 		]
 	},
 	"socketServer": {
-		"httpPort": 8091
+		"httpPort": 8091,
+		
+		"httpsPort": 8092,
+		"domain": "???.massivematch.io",
+		"email": "danzel@localhost.geek.nz",
+		
+		"allowedOrigins": [
+			"https://oce1.massivematch.io",
+			"https://massivematch.io"
+		]
 	}
 }

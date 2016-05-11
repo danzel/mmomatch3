@@ -7,6 +7,8 @@ interface SocketServerConfig {
 	domain?: string;
 	/** for letsencrypt registration */
 	email?: string;
+	/** domains for checking if websocket is allowed */
+	allowedOrigins: Array<string>;
 }
 
 export = SocketServerConfig;

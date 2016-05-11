@@ -66,7 +66,14 @@ class SocketServer extends ServerComms {
 		}
 
 		this.primus = new Primus(this.httpServer, {
-			pathname: '/sock'
+			pathname: '/sock',
+			authorization: (req: http.IncomingMessage, done: (res?: any) => void) => {
+				if (config.allowedOrigins.indexOf(req.headers.origin) >= 0) {
+					done();
+				} else {
+					done({ statuscode: 403, message: 'Origin not allowed' });
+				}
+			}
 		});
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
