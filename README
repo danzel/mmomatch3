@@ -3,6 +3,11 @@ Install instructions:
 npm install
 npm install -g webpack webpack-dev-server
 
+Offline dev:
+Replace online script tags with:
+<script type="text/javascript" src="node_modules/phaser/build/custom/phaser-arcade-physics.js"></script>
+<script type="text/javascript" src="node_modules/webfontloader/webfontloader.js"></script>
+
 
 Linux server install:
 wget https://deb.nodesource.com/setup_5.x
