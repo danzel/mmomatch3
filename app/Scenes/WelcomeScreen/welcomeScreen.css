@@ -1,28 +1,28 @@
-.overlay.welcome-screen {
+#welcome {
 	background-color: transparent;
 	border: none;
 	height: 100%;
 }
 
-.welcome-screen .frame  {
+#welcome .frame  {
 	display: inline-block;
 	width: 370px;
 }
-.welcome-screen .frame.side {
+#welcome .frame.side {
 	width: 240px;
 }
 
-.welcome-screen .logo {
+#welcome .logo {
 	font-size: 60px;
 	stroke-width: 10px;
 }
 
-.welcome-screen .subtitle {
+#welcome .subtitle {
 	font-size: 24px;
 	stroke-width: 6px;
 }
 
-.welcome-screen .login-area {
+#welcome .login-area {
 	font-family: 'Chewy';
 	font-size: 20px;
 
@@ -30,7 +30,7 @@
 	text-align: left;
 }
 
-.welcome-screen input[type="text"] {
+#welcome input[type="text"] {
 	font-family: 'Chewy';
 	font-size: 20px;
 	padding: 0 2px;
@@ -42,7 +42,7 @@
 	margin-right: 5%;
 }
 
-.welcome-screen input[type="button"] {
+#welcome input[type="button"] {
 	font-family: 'Chewy';
 	font-size: 20px;
 
@@ -52,17 +52,17 @@
 	
 	width: 30%;
 }
-.welcome-screen input[type="button"]:active {
+#welcome input[type="button"]:active {
 	background-color: grey;
 }
 
 
-.welcome-screen .heading {
+#welcome .heading {
 	font-size: 36px;
 	stroke-width: 6px;
 }
 
-.welcome-screen .details {
+#welcome .details {
 	font-size: 18px;
 	stroke-width: 4px;
 }

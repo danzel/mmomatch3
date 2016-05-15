@@ -21,6 +21,7 @@ class AppEntry {
 	scene: SimulationScene;
 
 	constructor() {
+		document.getElementById('welcome').style.display = 'none';
 		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());
 		//this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDynamic1());

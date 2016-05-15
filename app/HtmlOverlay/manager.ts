@@ -57,12 +57,12 @@ class Manager {
 
 	render() {
 		this.element.innerHTML = template(this.uiState);
-		this.fixSvgs(this.element);
+		Manager.fixSvgs(this.element);
 
 		if (this.feedbackVisible != this.uiState.feedbackVisible) {
 			this.feedbackVisible = this.uiState.feedbackVisible;
 			this.feedbackElement.innerHTML = feedbackTemplate(this.uiState);
-			this.fixSvgs(this.feedbackElement);
+			Manager.fixSvgs(this.feedbackElement);
 
 			this.addEventHandlers(this.feedbackElement, false);
 		}
@@ -109,14 +109,14 @@ class Manager {
 		this.render();
 	}
 
-	private NS = {
+	private static NS = {
 		svg: "http://www.w3.org/2000/svg",
 		xlink: "http://www.w3.org/1999/xlink"
 	};
 
-	private idCounter = 0;
+	private static idCounter = 0;
 
-	private fixSvgs(parent: HTMLElement) {
+	static fixSvgs(parent: HTMLElement) {
 
 		let ie = false;
 		let texts = parent.getElementsByTagName("text");
@@ -156,7 +156,7 @@ class Manager {
 		}
 	}
 
-	private fixSvg(svg: SVGElement, ie: boolean): void {
+	private static fixSvg(svg: SVGElement, ie: boolean): void {
 		let bbox = (<SVGLocatable><any>svg).getBBox();
 
 		let padWidth = ie ? 0 : 10;

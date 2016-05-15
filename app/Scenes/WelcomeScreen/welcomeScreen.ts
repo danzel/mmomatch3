@@ -1,10 +1,10 @@
 import HtmlOverlayManager = require('../../HtmlOverlay/manager');
 
 declare function require(filename: string): (data: {}) => string;
-var template = <(data: {}) => string>require('./welcomeScreen.handlebars');
 require('./welcomeScreen.css');
 
 class WelcomeScreen {
+	private element: HTMLElement;
 	private nickname: HTMLInputElement;
 	private button: HTMLInputElement;
 	private hidenames: HTMLInputElement;
@@ -12,25 +12,21 @@ class WelcomeScreen {
 	onLogin: (nickname: string, hideNames: boolean) => void;
 
 	constructor(private htmlOverlayManager: HtmlOverlayManager) {
-
+		this.element = document.getElementById('welcome');
 	}
 
 	show() {
-		this.htmlOverlayManager.showOverlay({
-			className: 'welcome-screen',
-			content: template({}),
-			closeOnBackgroundClick: false,
-			postRenderCallback: (element) => this.addEventListeners(element)
-		});
+		HtmlOverlayManager.fixSvgs(this.element);
+		this.addEventListeners();
 	}
 
-	private addEventListeners(element: HTMLElement) {
-		this.nickname = <HTMLInputElement>element.getElementsByClassName('nickname')[0];
-		this.button = <HTMLInputElement>element.getElementsByClassName('button')[0];
-		this.hidenames = <HTMLInputElement>element.getElementsByClassName('hidenames')[0];
+	private addEventListeners() {
+		this.nickname = <HTMLInputElement>this.element.getElementsByClassName('nickname')[0];
+		this.button = <HTMLInputElement>this.element.getElementsByClassName('button')[0];
+		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
 
 		this.button.addEventListener('click', () => {
-			this.htmlOverlayManager.hideOverlay();
+			this.element.style.display = 'none';
 			this.onLogin(this.nickname.value, this.hidenames.checked);
 		})
 	}
