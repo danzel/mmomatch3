@@ -83,3 +83,23 @@
 	bottom: 60px; /* Make up for the margin-top on the overlay */
 	margin-left: -368px; /* Half the ad width */
 }
+
+#welcome .corner-buttons {
+	position: absolute;
+	left: 0;
+	bottom: 56px;
+}
+
+#welcome .corner-buttons a {
+    display: inline-block;
+    cursor: pointer;
+    background-color: rgba(200,200,200,0.5);
+    padding: 4px;
+    border-radius: 10px 10px 0 0;
+    margin-left: 4px;
+}
+
+#welcome .corner-buttons .text {
+    font-size: 18px;
+    stroke-width: 4px;
+}
