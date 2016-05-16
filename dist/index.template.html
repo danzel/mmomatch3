@@ -14,11 +14,11 @@
 		<link href='https://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.4.4/custom/phaser-arcade-physics.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
-		<script type="text/javascript" src="primus.js?4.0.4"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.4.4/custom/phaser-arcade-physics.min.js" defer></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js" defer></script>
+		<script type="text/javascript" src="primus.js?4.0.4" defer></script>
 		<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
-		<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+		<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer></script>
 		<% } %>
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -30,8 +30,9 @@
 		  ga('send', 'pageview');
 
 		</script>
-		<script type="text/javascript" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6" async="async"></script>
-		<script type="text/javascript" src="https://platform.twitter.com/widgets.js" async="async"></script>
+		<script type="text/javascript" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6" async></script>
+		<script type="text/javascript" src="https://platform.twitter.com/widgets.js" async></script>
+		<script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script>
 		<div id="overlay"></div>
 		<div id="welcome" class="overlay">
 			<div class="frame side" style="visibility: hidden">
@@ -44,7 +45,7 @@
 				</p>
 
 				<div class="login-area">
-					<input class="nickname" type="text" placeholder="Nickname" maxlength="16" title="Not Implemented yet" /><input class="button" type="button" value="Play" />
+					<input class="nickname" type="text" placeholder="Nickname" maxlength="16" title="Not Implemented yet" /><input id="play-button" class="button" type="button" value="Loading..." />
 					<label title="Hide other players names, recommended for young players"><input class="hidenames" type="checkbox" /><svg width="91px" height="27px" style="vertical-align: middle"><text class="details" x="50%" y="50%" dy="0.3em">Hide Names</text></svg></label></br>
 				</div>
 				<p>
@@ -66,7 +67,6 @@
 					</text></svg>
 				</p>
 
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 				<!-- massivematch-largerect -->
 				<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-4749031612968477" data-ad-slot="6224879543"></ins>
 				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
