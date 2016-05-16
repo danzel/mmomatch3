@@ -142,3 +142,17 @@ text {
 	font-size: 30px;
 	stroke-width: 6px;
 }
+
+
+#social-buttons {
+	position: absolute;
+	top: 4;
+	left: 0;
+	right: 0;
+	text-align: center;
+	pointer-events: none;
+}
+
+#social-buttons > * {
+	pointer-events: all;
+}
