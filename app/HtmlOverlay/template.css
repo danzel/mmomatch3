@@ -1,3 +1,9 @@
+body {
+	margin: 0;
+	overflow: hidden;
+	background-color: #273348;
+}
+
 svg {
 	margin: -2px 0;
 }
