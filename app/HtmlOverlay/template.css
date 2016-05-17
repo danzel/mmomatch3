@@ -63,6 +63,7 @@ text {
 	position: absolute;
 	right: 0px;
 	bottom: -4px;
+	z-index: 1;
 }
 
 .bottom-corner-buttons div {
@@ -81,7 +82,6 @@ text {
 }
 
 .feedback-button {
-	z-index: 1;
 	position: relative;
 }
 
