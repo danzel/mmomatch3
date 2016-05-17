@@ -18,7 +18,7 @@ class AppEntry {
 	constructor(private config: ConfigFile) {
 		let levelDefFactory = new LevelDefFactoryDynamic1();
 		let statePersister = new StatePersister();
-		statePersister.apply(config);
+		statePersister.apply(config, levelDefFactory);
 
 		this.server = new Server(new SocketServer(new Serializer(), config.socketServer), new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
 
