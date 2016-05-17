@@ -10,15 +10,21 @@ import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
 import ServerLogger = require('./Server/serverLogger');
 import SocketServer = require('./Server/socketServer');
+import StatePersister = require('./Server/statePersister');
 
 class AppEntry {
 	server: Server;
 
 	constructor(private config: ConfigFile) {
 		let levelDefFactory = new LevelDefFactoryDynamic1();
+		let statePersister = new StatePersister();
+		statePersister.apply(config);
+
 		this.server = new Server(new SocketServer(new Serializer(), config.socketServer), new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
+
 		new DatadogStats(this.server);
 		new ServerLogger(this.server);
+		statePersister.listen(this.server);
 
 		this.server.start();
 	}
