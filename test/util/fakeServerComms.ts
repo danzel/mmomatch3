@@ -3,6 +3,8 @@ import Client = require('../../app/Client/client');
 import ClientComms = require('../../app/Client/clientComms');
 import ClientSimulationHandler = require('../../app/Client/clientSimulationHandler');
 import GameEndDetector = require('../../app/Simulation/Levels/gameEndDetector');
+import InitData = require('../../app/DataPackets/initData');
+import JoinData = require('../../app/DataPackets/joinData');
 import PacketType = require('../../app/DataPackets/packetType');
 import Server = require('../../app/Server/server');
 import ServerComms = require('../../app/Server/serverComms');
@@ -17,6 +19,11 @@ class FakeClientComms extends ClientComms {
 	constructor(private id: string, private server: FakeServerComms) {
 		super();
 	}
+
+	sendJoin(joinData: JoinData): void {
+		this.server.dataReceived.trigger({ id: this.id, packet: { packetType: PacketType.Join, data: joinData } });
+	}
+
 	sendSwap(swapClientData: SwapClientData) {
 		this.server.dataReceived.trigger({ id: this.id, packet: { packetType: PacketType.SwapClient, data: swapClientData } });
 	}
@@ -47,29 +54,34 @@ class FakeServerComms extends ServerComms {
 		super();
 	}
 
-	sendTick(tickData: TickData, ids: Array<string>) {
-		for (let i = 0; i < ids.length; i++) {
-			let id = ids[i];
-
-			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Tick, data: tickData });
-		}
+	sendInit(initData: InitData, id: string): void {
+		let client = this.clientsLookup[id];
+		client.dataReceived.trigger({ packetType: PacketType.Init, data: initData });
 	}
 
-	sendBoot(bootData: BootData, id: string) {
-		let client = this.clientsLookup[id];
-		client.dataReceived.trigger({ packetType: PacketType.Boot, data: bootData });
+	sendBoot(bootData: BootData, ids: Array<string>) {
+		ids.forEach(id => {
+			let client = this.clientsLookup[id];
+			client.dataReceived.trigger({ packetType: PacketType.Boot, data: bootData });
+		});
+	}
+
+	sendTick(tickData: TickData, ids: Array<string>) {
+		ids.forEach(id => {
+			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Tick, data: tickData });
+		});
 	}
 
 	sendUnavailable(unavailableData: UnavailableData, id?: string) {
 		if (id) {
-			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData});
+			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData });
 		} else {
 			for (let i in this.clientsLookup) {
-				this.clientsLookup[i].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData});
+				this.clientsLookup[i].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData });
 			}
 		}
 	}
-	
+
 	addClient() {
 		this.idCounter++;
 		let id = '' + this.idCounter;
@@ -81,6 +93,7 @@ class FakeServerComms extends ServerComms {
 		this.clientsLookup[id] = comms;
 
 		this.connected.trigger(id);
+		comms.connected.trigger();
 	}
 
 	update() {
