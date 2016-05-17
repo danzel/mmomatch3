@@ -27,6 +27,15 @@ var gulpSSHusw = new GulpSSH({
 		privateKey: fs.readFileSync('./z_id_rsa')
 	}
 })
+var gulpSSHeu = new GulpSSH({
+	ignoreErrors: false,
+	sshConfig: {
+		host: 'eu1.massivematch.io',
+		port: 22,
+		username: 'azureuser',
+		privateKey: fs.readFileSync('./z_id_rsa')
+	}
+})
 
 
 gulp.task("default", ["webpack", 'uglify-primus', 'server']);
@@ -102,6 +111,10 @@ gulp.task('copy-usw', ['package'], function() {
 	return gulp.src('archive.zip')
 		.pipe(gulpSSHusw.sftp('write', '/home/azureuser/archive.zip'));
 });
+gulp.task('copy-eu', ['package'], function() {
+	return gulp.src('archive.zip')
+		.pipe(gulpSSHeu.sftp('write', '/home/azureuser/archive.zip'));
+});
 
 gulp.task('deploy-oce', ['copy-oce'], function() {
 	return gulpSSHoce
@@ -124,10 +137,23 @@ gulp.task('deploy-usw', ['copy-usw'], function() {
 			'unzip -o ../archive.zip',
 			'chmod 700 built_server -R',
 			'sudo service mmomatch restart'
-		], { filePath: 'shell-oce.log' })
+		], { filePath: 'shell-usw.log' })
 		.on('ssh2Data', function(data) {
 			process.stdout.write(data.toString());
 		});
-})
+});
+gulp.task('deploy-eu', ['copy-eu'], function() {
+	return gulpSSHeu
+		.shell([
+			'cd /home/azureuser/a',
+			'rm -rf built_server dist package.json',
+			'unzip -o ../archive.zip',
+			'chmod 700 built_server -R',
+			'sudo service mmomatch restart'
+		], { filePath: 'shell-eu.log' })
+		.on('ssh2Data', function(data) {
+			process.stdout.write(data.toString());
+		});
+});
 
-gulp.task('deploy', ['deploy-oce', 'deploy-usw']);
+gulp.task('deploy', ['deploy-oce', 'deploy-usw', 'deploy-eu']);
