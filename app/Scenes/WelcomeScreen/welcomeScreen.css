@@ -2,16 +2,41 @@
 	background-color: transparent;
 	border: none;
 	height: 100%;
+	top: 0;
+	
+	font-size: 18px;
 }
 
-#welcome .frame  {
+#welcome .top {
+	width: 100%;
+	padding-top: 24px;
+	padding-bottom: 20px;
+	background-color: #8FB863;
+	border-bottom: 5px solid #6382B8;
+}
+#welcome .top .wrap {
+	width: 400px;
+	margin: 0 auto;
+}
+#welcome .mid {
+	width: 500px;
+	margin: 6px auto;
+}
+#welcome .bottom {
+	width: 100%;
+	height: 100%;
+}
+#welcome .left, #welcome .right  {
 	display: inline-block;
-	width: 370px;
+	width: 500px;
+	height: 100%;
+	vertical-align: top;
+	padding-top: 12px;
 }
-#welcome .frame.side {
-	width: 240px;
+#welcome .news, #welcome p {
+	width: 440px;
+	margin: 10px auto;
 }
-
 #welcome .logo {
 	font-size: 60px;
 	stroke-width: 10px;
@@ -40,6 +65,9 @@
 	
 	width: 65%;
 	margin-right: 5%;
+
+	margin-top: 4px;
+	margin-bottom: 4px;
 }
 
 #welcome input[type="button"] {
@@ -87,19 +115,16 @@
 #welcome .corner-buttons {
 	position: absolute;
 	left: 0;
-	bottom: 56px;
+	bottom: 0;
+
+    font-size: 18px;
 }
 
 #welcome .corner-buttons a {
     display: inline-block;
     cursor: pointer;
     background-color: rgba(200,200,200,0.5);
-    padding: 4px;
+    padding: 4px 8px;
     border-radius: 10px 10px 0 0;
     margin-left: 4px;
-}
-
-#welcome .corner-buttons .text {
-    font-size: 18px;
-    stroke-width: 4px;
 }
