@@ -24,7 +24,7 @@ class PlayerCountRenderer {
 			yOffset = 26;
 		}
 
-		this.text = new Phaser.Text(this.group.game, -4, 4 + yOffset, "Players: ?", this.textStyle);
+		this.text = new Phaser.Text(this.group.game, -64, 4 + yOffset, "Players: ?", this.textStyle);
 		this.text.setTextBounds(0, 0, 0, 0);
 		this.group.add(this.text);
 		

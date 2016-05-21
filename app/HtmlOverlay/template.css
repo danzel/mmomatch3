@@ -187,3 +187,14 @@ a {
 #social-buttons > * {
 	pointer-events: all;
 }
+
+#beta {
+    position: absolute;
+    right: -42px;
+    top: -10px;
+    padding: 22px 40px 6px 40px;
+
+    transform: rotateZ(45deg);
+    background-color: orangered;
+	font-size: 20px;
+}
