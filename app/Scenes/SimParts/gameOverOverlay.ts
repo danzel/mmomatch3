@@ -42,7 +42,7 @@ class GameOverOverlay {
 				victory: (this.gameEndType == GameEndType.LevelVictory || this.gameEndType == GameEndType.TeamVictory),
 				isOutOfMoves: (this.gameEndType == GameEndType.NoMovesFailure),
 				rank: this.rank,
-				playerCount: this.playerCount,
+				playerCount: Math.max(this.rank, this.playerCount), //Hack around you getting a worse rank than current amount of players 
 				bottomText: this.countdownText
 			}),
 			closeOnBackgroundClick: true,
