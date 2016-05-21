@@ -186,15 +186,17 @@ a {
 
 #social-buttons > * {
 	pointer-events: all;
+	vertical-align: top;
+	display: inline-block;
 }
 
 #beta {
     position: absolute;
     right: -42px;
     top: -10px;
-    padding: 22px 40px 6px 40px;
+    padding: 22px 37px 6px 40px;
 
     transform: rotateZ(45deg);
-    background-color: orangered;
+    background-color: rgba(200,200,200,0.5);
 	font-size: 20px;
 }
