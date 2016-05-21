@@ -1,9 +1,11 @@
 /// <reference path="../../typings/express/express.d.ts" />
 /// <reference path="../../typings/compression/compression.d.ts" />
+/// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
 import compression = require('compression');
+import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
@@ -34,6 +36,8 @@ class SocketServer extends ServerComms {
 		this.app = express();
 		//Could consider this https://github.com/isaacs/st
 		this.app.use(compression());
+		this.app.use(helmet.frameguard({ action: 'deny' }));
+		this.app.use(helmet.hidePoweredBy());
 		let oneDay = 86400000;
 		this.app.use(express.static('dist', { maxAge: oneDay }));
 
