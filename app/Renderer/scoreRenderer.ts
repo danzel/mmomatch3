@@ -37,12 +37,12 @@ class ScoreRenderer {
 		this.scoreGroup = new Phaser.Group(group.game, group);
 
 		for (let i = 0; i < 6; i++) {
-			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 10 + this.fontSize * (i + 1), "", this.textStyle);
+			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 10 + (this.fontSize + 2) * (i + 1), "", this.textStyle);
 			this.scoreGroup.add(text);
 			this.scoreText.push(text);
 		}
 
-		this.height = 5 + this.fontSize * (6 + 1 + 1);
+		this.height = 2 + (this.fontSize + 2) * (6 + 1 + 1);
 	}
 
 	updateData() {
@@ -61,11 +61,13 @@ class ScoreRenderer {
 		
 		//If player is not in the first 6, change 5 to "..." and make 6 the player
 		let isInFirst6 = true;
+		let playerPosition = -1;
 		if (array.length > 6) {
 			isInFirst6 = false;
-			for (let i = 0; i < 6; i++) {
+			for (let i = 0; i < array.length; i++) {
 				if (array[i].playerId == this.playerId) {
-					isInFirst6 = true;
+					playerPosition = i;
+					isInFirst6 = i < 6;
 					break;
 				}
 			}
@@ -77,7 +79,8 @@ class ScoreRenderer {
 			let text = this.scoreText[i];
 			let style = (this.playerId == val.playerId) ? this.myScoreTextStyle : this.textStyle;
 			text.setStyle(style)
-			text.text = (this.playerNames[val.playerId] || ("Player " + val.playerId))  + ": " + val.points;
+			var spaces = i == 0 ? ".  " : ". ";
+			text.text = (i + 1) + spaces + this.nameOf(val.playerId)  + ": " + val.points;
 			
 			if (!isInFirst6 && i == 4) {
 				text.text = "...";
@@ -85,9 +88,20 @@ class ScoreRenderer {
 			if (!isInFirst6 && i == 5) {
 				text.setStyle(this.myScoreTextStyle);
 				
-				text.text = "Player " + this.playerId + ": " + (this.scoreTracker.points[this.playerId] || 0);
+				text.text = (playerPosition + 1) + ". " + this.nameOf(this.playerId) + ": " + (this.scoreTracker.points[this.playerId] || 0);
 			}
 		}
+	}
+	
+	private nameOf(playerId: number) {
+		if (this.playerNames[playerId]) {
+			return this.playerNames[playerId];
+		}
+		//return "Player " + playerId;
+		if (playerId == this.playerId) {
+			return "You";
+		}
+		return "Anonymous"
 	}
 }
 
