@@ -38,27 +38,6 @@ class SocketServer extends ServerComms {
 		this.app.use(compression());
 		this.app.use(helmet.frameguard({ action: 'deny' }));
 		this.app.use(helmet.hidePoweredBy());
-		this.app.use(helmet.contentSecurityPolicy({
-			directives: {
-				scriptSrc: [
-					'\'self\'',
-					'https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js',
-					'https://cdnjs.cloudflare.com/ajax/libs/phaser/2.4.4/custom/phaser-arcade-physics.min.js',
-					'https://connect.facebook.net/en_GB/sdk.js',
-					'https://platform.twitter.com/',
-					'http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-					'\'sha256-L9NtTqBLxf1z3sIza7z/JTtm01m91a8xVl07p4WTMYw=\'' //Google ads
-				],
-				styleSrc: [
-					'\'self\'',
-					'https://fonts.googleapis.com',
-					'\'sha256-TFifUAwiO5hvlNreN05UhaJtT18035UnWKtNonOx4Wg=\'' //Facebook SDK
-				]
-			},
-			setAllHeaders: false,
-			browserSniff: false
-		}))
-
 		let oneDay = 86400000;
 		this.app.use(express.static('dist', { maxAge: oneDay }));
 
