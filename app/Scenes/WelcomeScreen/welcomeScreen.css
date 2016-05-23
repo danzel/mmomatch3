@@ -27,13 +27,13 @@
 }
 #welcome .left, #welcome .right  {
 	display: inline-block;
-	width: 500px;
-	height: 100%;
+	width: 50%;
+	max-width: 500px;
 	vertical-align: top;
 	padding-top: 12px;
 }
 #welcome .news, #welcome p {
-	width: 440px;
+	max-width: 440px;
 	margin: 10px auto;
 }
 #welcome .logo {
