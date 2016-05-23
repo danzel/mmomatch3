@@ -11,14 +11,17 @@ class DefaultBehaviour extends Behaviour {
 			{ seconds: 3, range: 10, variation: 0.3 }
 		],
 
-		startingDelay: 4,
-		startingVariation: 1,
+		startingDelay: 3,
+		startingVariation: 2,
 
-		noMoveDelay: 5
+		noMoveDelay: 5,
+
+		moveFailsToForceMove: 2
 	}
 
 	secondsToNextMove: number;
 	setIndex = 0;
+	setsFailedToMoveCount = 0;
 
 	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
 		super(helper, simulation, inputApplier);
@@ -27,6 +30,7 @@ class DefaultBehaviour extends Behaviour {
 		this.secondsToNextMove = this.calculateVariedTime(this.config.startingDelay, this.config.startingVariation);
 	}
 
+	/** (amount - variation) to (amount + variation) */
 	protected calculateVariedTime(amount: number, variation: number): number {
 		return (amount * (1 - variation)) + (Math.random() * amount * variation * 2);
 	}
@@ -43,13 +47,14 @@ class DefaultBehaviour extends Behaviour {
 	tryDoMove(): void {
 		let set = this.config.delays[this.setIndex];
 
-		let moves = this.helper.findAllMovesInRange(this.lastPos.x, this.lastPos.y, set.range);
+		let moves = this.helper.findAllMovesInRange(this.lastPos.x, this.lastPos.y, set.range, set.range);
 
 		if (moves.length > 0) {
 			let m = moves[Math.floor(Math.random() * moves.length)];
 			this.performMove(m);
 
 			this.setIndex = 0;
+			this.setsFailedToMoveCount = 0;
 			this.secondsToNextMove = this.calculateVariedTime(this.config.delays[0].seconds, this.config.delays[0].variation);
 		} else {
 			this.setIndex++;
@@ -59,8 +64,26 @@ class DefaultBehaviour extends Behaviour {
 				this.chooseStartingLocation();
 				this.setIndex = 0;
 				this.secondsToNextMove = this.config.noMoveDelay;
+
+				this.setsFailedToMoveCount++;
+				if (this.setsFailedToMoveCount == this.config.moveFailsToForceMove) {
+					this.forceMove();
+					this.setsFailedToMoveCount = 0;
+				}
 			} else {
 				this.secondsToNextMove = this.calculateVariedTime(this.config.delays[this.setIndex].seconds, this.config.delays[this.setIndex].variation);
+			}
+		}
+	}
+
+	forceMove(): void {
+		for (var y = 1; y < this.simulation.grid.height; y += 3) {
+			let moves = this.helper.findAllMovesInRange(0, y, this.simulation.grid.width, 1);
+
+			if (moves.length > 0) {
+				let m = moves[Math.floor(Math.random() * moves.length)];
+				this.performMove(m);
+				return;
 			}
 		}
 	}

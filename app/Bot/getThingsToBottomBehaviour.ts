@@ -18,7 +18,7 @@ class GetThingsToBottomBehaviour extends DefaultBehaviour {
 
 	tryDoMove(): void {
 
-		//Periodically look under robots againm otherwise we'll start matching above them
+		//Periodically look under robots again, otherwise we'll start matching above them
 		this.moveCount++;
 		if (this.moveCount == 5) {
 			this.moveCount = 0;
