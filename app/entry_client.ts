@@ -32,6 +32,7 @@ class AppEntry {
 	scene: SimulationScene;
 	sceneGroup: Phaser.Group;
 
+	hideNames: boolean;
 	playerNames: { [id: number]: string } = {};
 
 	constructor() {
@@ -52,7 +53,8 @@ class AppEntry {
 
 	create() {
 		let welcome = new WelcomeScreen(this.htmlOverlayManager);
-		welcome.onLogin = (nickname) => {
+		welcome.onLogin = (nickname, hideNames) => {
+			this.hideNames = hideNames;
 			this.connect(nickname);
 		};
 		welcome.show();
@@ -77,7 +79,7 @@ class AppEntry {
 			CircleCursor.setCursor(this.game, data.playerId);
 		})
 		this.client.newNamesReceived.on(names => {
-			if (names) {
+			if (names && !this.hideNames) {
 				for (var key in names) {
 					this.playerNames[key] = names[key];
 				}
