@@ -107,7 +107,7 @@
 .adsbygoogle.bottom {
 	position: absolute;
 	left: 50%;
-	bottom: 60px; /* Make up for the margin-top on the overlay */
+	bottom: 0;
 	margin-left: -368px; /* Half the ad width */
 }
 
