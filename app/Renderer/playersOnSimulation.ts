@@ -22,8 +22,10 @@ class PlayerSprite {
 
 	notifyPosition(x: number, y: number) {
 		this.lastUpdate = this.sprite.game.time.now;
+		let randX = (Math.random() - 0.5) * 20;
+		let randY = (Math.random() - 0.5) * 20;
 		this.sprite.game.add.tween(this.sprite)
-			.to({ x: x, y: y }, 100, Phaser.Easing.Cubic.In)
+			.to({ x: x + randX, y: y + randY }, 100, Phaser.Easing.Cubic.In)
 			.start();
 	}
 
