@@ -118,23 +118,48 @@ a {
 
 
 .help-overlay {
-	width: 460px;
+	width: 420px;
+	top: 30px;
 }
 
 .help-overlay .heading {
 	font-size: 50px;
 	stroke-width: 8px;
 }
+.help-overlay .sub-heading {
+	font-size: 40px;
+	stroke-width: 8px;
+}
 
 .help-overlay .details {
-	font-size: 22px;
-	stroke-width: 6px;
+	font-size: 18px;
+	stroke-width: 4px;
 }
 
 .help-overlay .emojione {
 	stroke-width: 4px;	
 }
 
+
+.matchable-container {
+	background-color: #273348;
+	border-radius: 4px;
+	padding: 10px;
+	font-size: 30px
+}
+.matchable {
+	height: 36px;
+	vertical-align: bottom;
+}
+div.matchable {
+	width: 36px;
+	background-size: contain;
+	display: inline-block
+}
+.help-overlay p {
+	margin-top: 2px;
+	margin-bottom: 8px;
+}
 
 #connection-error {
 	position: absolute;

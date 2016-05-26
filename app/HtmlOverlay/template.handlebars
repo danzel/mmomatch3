@@ -18,7 +18,7 @@
 		Click and drag animals to match them.
 		</text></svg> 
 		<svg><text class="details">
-		You can only drag ones that will make a match.
+		You can only drag ones that will make a 3 in a row match.
 		</text></svg>
 	</p>
 	<p>
@@ -26,52 +26,67 @@
 		Zoom in and out using the mouse wheel.
 		</text></svg> 
 		<svg><text class="details">
-		Drag with the right mouse button to move around.
+		Move around by dragging with the right mouse button.
 		</text></svg>
 	</p>
 	<p>
 		<svg><text class="details">
 		You can also use the keyboard to look around 
-		</text></svg>
+		</text></svg><br/>
 		<svg><text class="details">
 		(Arrow Keys or WASD)
 		</text></svg>
 	</p>
 
 
-	<p><svg><text class="heading">Special Tiles</text></svg></p>
+	<p><svg><text class="sub-heading">Special Matches</text></svg></p>
+	<div class="matchable-container b5">
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		=&gt;
+		<div class="matchable" style="background-image: url('{{matchable1Src}}');">
+			<img class="matchable" src="{{verticalSrc}}" />
+		</div>
+	</div>		
+
 	<p>
 		<svg><text class="details">
-		Match 4 in a row to form a line clearer
-		</text></svg> 
-		<svg><text class="details">
-		These have small arrows on them
-		</text></svg>
-		<svg><text class="details">
-		When matched they clear animals for a large distance
+		When matched, clears animals in a line
 		</text></svg>
 	</p>
+	
+	<div class="matchable-container b5">
+		<div style="text-align: left; display: inline-block">
+			<img class="matchable" src="{{matchable1Src}}" /><img class="matchable" src="{{matchable1Src}}" /><img class="matchable" src="{{matchable1Src}}" /><br/>
+			<img class="matchable" src="{{matchable1Src}}" style="margin-left: 40px" /> &nbsp; =&gt; &nbsp; <div class="matchable" style="background-image: url('{{matchable1Src}}');">
+			<img class="matchable" src="{{areaclearSrc}}" />
+		</div><br/>
+			<img class="matchable" src="{{matchable1Src}}" style="margin-left: 40px" />
+			
+		</div>
+	</div>		
+
 	<p>
 		<svg><text class="details">
-		Match 5 in a T or L shape to form a small area clearer
-		</text></svg> 
-		<svg><text class="details">
-		These have arrows in the corners
-		</text></svg>
-		<svg><text class="details">
-		When matched they clear a small area
+		When matched, clears a small area
 		</text></svg>
 	</p>
+
+	<div class="matchable-container b5">
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		<img class="matchable" src="{{matchable1Src}}" />
+		=&gt;
+		<img class="matchable" src="{{colorClearSrc}}" />
+	</div>		
 	<p>
 		<svg><text class="details">
-		Match 5 in a row to create footprints
+		When swapped with an animal, clears that animal
 		</text></svg> 
-		<svg><text class="details">
-		When the footprints are swapped with an animal
-		</text></svg>
-		<svg><text class="details">
-		all of that animal is cleared in a large area
-		</text></svg>
 	</p>
 	
 	
