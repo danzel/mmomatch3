@@ -46,7 +46,8 @@ class GameOverOverlay {
 				bottomText: this.countdownText
 			}),
 			closeOnBackgroundClick: true,
-			closedCallback: () => this.clicked.trigger()
+			closedCallback: () => this.clicked.trigger(),
+			showBannerAd: true
 		});
 	}
 

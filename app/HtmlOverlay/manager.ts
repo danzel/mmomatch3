@@ -10,6 +10,7 @@ interface OverlayOptions {
 	closeOnBackgroundClick: boolean;
 	closedCallback?: () => void;
 	postRenderCallback?: (element: HTMLElement) => void;
+	showBannerAd?: boolean
 }
 
 class UIState {
@@ -19,7 +20,7 @@ class UIState {
 	helpVisible = false;
 	feedbackVisible = false;
 	connectionErrorVisible = false;
-
+	bottomAdVisible = false;
 	closeSrc = closeSvg;
 
 	customOverlay: OverlayOptions;
@@ -28,6 +29,7 @@ class UIState {
 class Manager {
 	element: HTMLElement;
 	feedbackElement: HTMLElement;
+	bottomAdElement: HTMLElement;
 	uiState = new UIState();
 
 	private feedbackVisible = false;
@@ -35,7 +37,8 @@ class Manager {
 	constructor() {
 		this.element = document.getElementById('overlay');
 		this.feedbackElement = document.getElementById('feedback-overlay');
-
+		this.bottomAdElement = document.getElementById('bottom-ad');
+		
 		this.render();
 	}
 
@@ -65,6 +68,18 @@ class Manager {
 			Manager.fixSvgs(this.feedbackElement);
 
 			this.addEventHandlers(this.feedbackElement, false);
+		}
+		if (this.uiState.bottomAdVisible != (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false)) {
+			this.uiState.bottomAdVisible = (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false);
+			if (this.uiState.bottomAdVisible) {
+				//Cludge to make it not get hidden/shown when the game initially loads
+				if (this.bottomAdElement.innerHTML == '') {
+					this.bottomAdElement.innerHTML = '<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4749031612968477" data-ad-slot="9178345940"></ins>';
+					((<any>window).adsbygoogle || []).push({});
+				}
+			} else {
+				this.bottomAdElement.innerHTML = '';
+			}
 		}
 		if (this.uiState.customOverlay && this.uiState.customOverlay.postRenderCallback) {
 			this.uiState.customOverlay.postRenderCallback(document.getElementById('overlay'));

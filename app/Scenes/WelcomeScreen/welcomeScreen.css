@@ -107,17 +107,12 @@
 	pointer-events: all;
 }
 
-.adsbygoogle.bottom {
-	position: absolute;
-	left: 50%;
-	bottom: 0;
-	margin-left: -368px; /* Half the ad width */
-}
-
 #welcome .corner-buttons {
 	position: absolute;
 	left: 0;
 	bottom: 0;
+	
+	z-index: 1; /* Appear on top of ad */
 
     font-size: 18px;
 }

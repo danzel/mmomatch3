@@ -32,7 +32,8 @@ class LevelDetailsOverlay {
 			className: 'frame level-details-overlay',
 			content: template(details),
 			closeOnBackgroundClick: true,
-			closedCallback: () => this.becameClosed.trigger()
+			closedCallback: () => this.becameClosed.trigger(),
+			showBannerAd: true
 		});
 	}
 }
