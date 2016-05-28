@@ -26,10 +26,12 @@ class ServerLogger {
 				})
 			]
 		});
-		
+
 		this.logger.info("Server Started");
 
 		server.levelStarted.on(data => this.levelStarted(data));
+
+		server.warning.on(data => this.logger.log('warn', "Server: " + data.str, data.data));
 	}
 
 	private levelStarted(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {
@@ -39,16 +41,16 @@ class ServerLogger {
 			height: data.level.height,
 			colorCount: data.level.colorCount,
 			holes: data.level.holes.length,
-			
+
 			failureType: FailureType[data.level.failureType],
 			failureValue: this.encodeFailureValue(data.level.failureType, data.level.failureValue),
 			victoryType: VictoryType[data.level.victoryType],
 			victoryValue: this.encodeVictoryValue(data.level.victoryType, data.level.victoryValue),
-			
+
 			playerCount: this.server.getPlayerCount(),
 			extra: data.level.extraData
 		});
-		
+
 		data.gameEndDetector.gameEnded.on(victory => {
 			this.logger.log('info', "Game Over", {
 				levelNumber: data.level.levelNumber,
@@ -59,14 +61,14 @@ class ServerLogger {
 			});
 		})
 	}
-	
+
 	private encodeFailureValue(failureType: FailureType, failureValue: any): any {
 		switch (failureType) {
 			default:
 				return failureValue;
 		}
 	}
-	
+
 	private encodeVictoryValue(victoryType: VictoryType, victoryValue: any): any {
 		switch (victoryType) {
 			case VictoryType.RequireMatch:

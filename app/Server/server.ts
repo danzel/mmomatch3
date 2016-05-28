@@ -13,6 +13,7 @@ import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LiteEvent = require('../liteEvent');
 import Matchable = require('../Simulation/matchable');
+import MoveRateLimiter = require('./moveRateLimiter');
 import NewNameCollection = require('./newNameCollection');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
@@ -35,6 +36,7 @@ import UnavailableData = require('../DataPackets/unavailableData');
 
 class Server {
 	levelStarted = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
+	warning = new LiteEvent<{ str: string, data?: any }>();
 
 	private availabilityManager: AvailabilityManager;
 	private packetGenerator: PacketGenerator = new PacketGenerator();
@@ -47,6 +49,7 @@ class Server {
 	private level: LevelDef;
 	private simulation: Simulation;
 	private gameEndDetector: GameEndDetector;
+	private moveRateLimiter: MoveRateLimiter;
 
 	private clientsRequiringJoin = new Array<string>();
 	private clientsRequiringBoot = new Array<Player>();
@@ -84,6 +87,7 @@ class Server {
 		this.simulation = level.simulation;
 
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
+		this.moveRateLimiter = new MoveRateLimiter(3);
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.newNameCollection, this.config.framesPerTick);
 		//new DebugLogger(this.simulation);
 
@@ -139,7 +143,7 @@ class Server {
 		} else if (data.packet.packetType == PacketType.SwapClient) {
 			this.swapReceived(data.id, <SwapClientData>data.packet.data);
 		} else {
-			console.warn('Received unexpected packet ', data.packet);
+			this.warning.trigger({ str: 'Received unexpected packet', data: data.packet });
 		}
 
 	}
@@ -186,7 +190,7 @@ class Server {
 	private swapReceived(id: string, swap: SwapClientData) {
 		var player = this.clients[id];
 		if (!player) {
-			console.log("ignoring received data from client before booted");
+			this.warning.trigger({ str: 'ignoring received data from client before booted' });
 			return;
 		}
 
@@ -194,7 +198,11 @@ class Server {
 		let left = this.simulation.grid.findMatchableById(swap.leftId);
 		let right = this.simulation.grid.findMatchableById(swap.rightId);
 		if (this.simulation.inputVerifier.swapIsValid(left, right)) {
-			this.simulation.swapHandler.swap(player.id, left, right);
+			if (this.moveRateLimiter.limitCheck(player.id, this.simulation.timeRunning)) {
+				this.simulation.swapHandler.swap(player.id, left, right);
+			} else {
+				this.warning.trigger({ str: 'player hit moveRateLimit', data: id });
+			}
 		}
 	}
 

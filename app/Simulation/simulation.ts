@@ -79,6 +79,7 @@ class Simulation {
 		this.frameCompleted.trigger();
 	}
 
+	/** In seconds */
 	get timeRunning(): number { return this.framesElapsed * this.dt; }
 }
 
