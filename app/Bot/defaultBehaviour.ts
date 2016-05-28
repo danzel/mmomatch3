@@ -77,15 +77,14 @@ class DefaultBehaviour extends Behaviour {
 	}
 
 	forceMove(): void {
-		for (var y = 1; y < this.simulation.grid.height; y += 3) {
-			let moves = this.helper.findAllMovesInRange(0, y, this.simulation.grid.width, 1);
+		let moves = this.helper.findAllMovesInRange(0, 0, this.simulation.grid.width, this.simulation.grid.height);
 
-			if (moves.length > 0) {
-				let m = moves[Math.floor(Math.random() * moves.length)];
-				this.performMove(m);
-				return;
-			}
+		if (moves.length > 0) {
+			let m = moves[Math.floor(Math.random() * moves.length)];
+			this.performMove(m);
+			return;
 		}
+		console.warn("bot failed to forceMove")
 	}
 
 	protected chooseStartingLocation(): void {
