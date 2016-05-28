@@ -12,6 +12,8 @@ abstract class ServerComms {
 	disconnected = new LiteEvent<string>();
 	dataReceived = new LiteEvent<{ id: string, packet: { packetType: PacketType, data: any } }>();
 
+	warning = new LiteEvent<{ str: string, data?: any }>();
+
 	abstract sendReject(rejectData: RejectData, id: string): void;
 	abstract disconnect(id: string): void;
 

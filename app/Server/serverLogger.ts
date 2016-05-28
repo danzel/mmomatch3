@@ -5,13 +5,14 @@ import FailureType = require('../Simulation/Levels/failureType');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import Server = require('./server');
+import ServerComms = require('./serverComms');
 import Simulation = require('../Simulation/simulation');
 import VictoryType = require('../Simulation/Levels/victoryType');
 
 class ServerLogger {
 	logger: winston.LoggerInstance;
 
-	constructor(private server: Server) {
+	constructor(private server: Server, serverComms: ServerComms) {
 
 		this.logger = new winston.Logger({
 			transports: [
@@ -32,6 +33,7 @@ class ServerLogger {
 		server.levelStarted.on(data => this.levelStarted(data));
 
 		server.warning.on(data => this.logger.log('warn', "Server: " + data.str, data.data));
+		serverComms.warning.on(data => this.logger.log('warn', "ServerComms: " + data.str, data.data));
 	}
 
 	private levelStarted(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {

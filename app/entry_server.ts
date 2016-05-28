@@ -20,10 +20,11 @@ class AppEntry {
 		let statePersister = new StatePersister();
 		statePersister.apply(config, levelDefFactory);
 
-		this.server = new Server(new SocketServer(new Serializer(), config.socketServer), new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
+		let serverComms = new SocketServer(new Serializer(), config.socketServer);
+		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
 
 		new DatadogStats(this.server);
-		new ServerLogger(this.server);
+		new ServerLogger(this.server, serverComms);
 		statePersister.listen(this.server);
 
 		this.server.start();

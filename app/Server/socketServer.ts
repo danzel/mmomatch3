@@ -76,6 +76,7 @@ class SocketServer extends ServerComms {
 				if (config.allowedOrigins.indexOf(req.headers.origin) >= 0) {
 					done();
 				} else {
+					this.warning.trigger({ str: 'Websocket from bad origin: ' + req.headers.origin });
 					done({ statuscode: 403, message: 'Origin not allowed' });
 				}
 			}
