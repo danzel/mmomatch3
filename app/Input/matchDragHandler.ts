@@ -7,17 +7,9 @@ import SimulationRenderer = require('../Renderer/simulationRenderer');
 import XY = require('./xy');
 
 class MatchDragHandler {
-	private renderer: SimulationRenderer;
-	private grid: Grid;
-	private inputApplier: InputApplier;
-
 	private startDragMatchable: Array<XY>;
 
-	constructor(renderer: SimulationRenderer, grid: Grid, inputApplier: InputApplier) {
-		this.renderer = renderer;
-		this.grid = grid;
-		this.inputApplier = inputApplier;
-
+	constructor(private renderer: SimulationRenderer, private grid: Grid, private inputApplier: InputApplier) {
 		this.startDragMatchable = [null, null];
 	}
 
