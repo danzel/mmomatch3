@@ -10,6 +10,7 @@ import Server = require('../../app/Server/server');
 import ServerComms = require('../../app/Server/serverComms');
 import Simulation = require('../../app/Simulation/simulation');
 import SwapClientData = require('../../app/DataPackets/swapClientData');
+import RejectData = require('../../app/DataPackets/rejectData');
 import TickData = require('../../app/DataPackets/tickData');
 import UnavailableData = require('../../app/DataPackets/unavailableData');
 
@@ -54,6 +55,13 @@ class FakeServerComms extends ServerComms {
 		super();
 	}
 
+	sendReject(rejectData: RejectData, id: string): void {
+		throw new Error("FakeServerComms doesnt know how to send reject");
+	}
+	disconnect(id: string): void {
+		throw new Error("FakeServerComms doesnt know how to disconnect");
+	}
+
 	sendInit(initData: InitData, id: string): void {
 		let client = this.clientsLookup[id];
 		client.dataReceived.trigger({ packetType: PacketType.Init, data: initData });
@@ -86,7 +94,7 @@ class FakeServerComms extends ServerComms {
 		this.idCounter++;
 		let id = '' + this.idCounter;
 		let comms = new FakeClientComms(id, this);
-		let client = new Client(comms);
+		let client = new Client(comms, '');
 		comms.setClient(client);
 
 		this.clients.push(client);

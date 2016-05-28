@@ -15,6 +15,7 @@ import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
 import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
+import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
 import SocketServerConfig = require('./config/socketServerConfig');
@@ -114,6 +115,14 @@ class SocketServer extends ServerComms {
 		for (let i = 0; i < ids.length; i++) {
 			this.clients[ids[i]].write(data);
 		}
+	}
+
+	sendReject(rejectData: RejectData, id: string): void {
+		this.serializer.serializeReject(rejectData);
+		this.clients[id].write(rejectData);
+	}
+	disconnect(id: string): void {
+		this.clients[id].end();
 	}
 
 	sendInit(initData: InitData, id: string) {

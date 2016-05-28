@@ -43,7 +43,8 @@ class AppEntry {
 	}
 }
 
-let config = JSON.parse(fs.readFileSync('./serverconfig.json', 'utf8'));
+let config = <ConfigFile>JSON.parse(fs.readFileSync('./serverconfig.json', 'utf8'));
+config.server.version = fs.readFileSync('./hash.txt', 'utf8'); 
 AppEntry.main(config);
 
 //import LogAnalyser = require('./Server/logAnalyser');

@@ -4,7 +4,7 @@ declare module "primus" {
 	import * as http from "http";
 	import * as https from "https";
 	import * as stream from "stream";
-	
+
 	interface PrimusOptions {
 		authorization?: any;
 		pathname?: string;
@@ -21,7 +21,7 @@ declare module "primus" {
 		headers?: boolean;
 		exposed?: boolean;
 	}
-	
+
 	interface ReconnectOptions {
 		max?: number;
 		min?: number;
@@ -35,23 +35,23 @@ declare module "primus" {
 		 * Server constructor
 		 */
 		constructor(server: http.Server | https.Server, options?: PrimusOptions);
-		
-		static createServer(options: any) : Primus;
-		static createServer(onConnection: Function, options: any) : Primus;
-		
+
+		static createServer(options: any): Primus;
+		static createServer(onConnection: Function, options: any): Primus;
+
 		/**
 		 * Interate over the connections.
 		 * @param fn The function that is called every iteration.
  		 */
 		forEach(fn: (spark: Primus.Spark, id: string, connections: Array<Primus.Spark>) => void): void;
-		
+
 		/**
 		 * Broadcast the message to all connections.
 		 *
 		 * @param data The data you want to send.
 		 * @returns this
 		 */
-		write(data: any) : Primus;
+		write(data: any): Primus;
 
 		/**
 		 * Save the client-side library to the given path
@@ -63,27 +63,35 @@ declare module "primus" {
 		 */
 		library(): string;
 	}
-	
+
 	module Primus {
 		/**
 		 * Not a real class, just providing typing for the Spark type. Maybe this should be an interface?
 		 */
 		class Spark extends stream.Stream {
-			
+
 			/**
 			 * Unique id for this socket
 			 */
 			id: string;
-			
+
 			/**
 			 * Send a new message
 			 *
 			 * @param data The data that needs to be written.
 			 * @returns Always returns true as we don't support back pressure.
 			 */
-			write(data: any) : boolean;
+			write(data: any): boolean;
+
+			/**
+			 * Close this connection
+			 * 
+			 * @param data Final data to be sent
+			 * @param options Options to tell the client to reconnect (default is no)
+			 */
+			end(data?: any, options?: { reconnect: boolean }): void;
 		}
 	}
-	
+
 	export = Primus;
 }

@@ -96,6 +96,7 @@ gulp.task('package', ['sentry-release', 'default'], function() {
 		'./built_server/**/*',
 		'./dist/**/*',
 		'./package.json',
+		'./hash.txt',
 		'./upstart-mmomatch.conf',
 		'!./**/*.map'
 	], { base: '.' })

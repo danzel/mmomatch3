@@ -2,6 +2,7 @@ import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
 import JoinData = require('../DataPackets/joinData');
 import PacketType = require('../DataPackets/packetType');
+import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('./serializer');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
@@ -17,6 +18,11 @@ interface SerializedBoot {
 
 //TODO: This class will need to do some data validation, can't trust the client!
 class SimpleSerializer implements Serializer {
+	serializeReject(rejectData: RejectData): any {
+		(<any>rejectData).packetType = PacketType.Reject;
+		return rejectData;
+	}
+
 	serializeInit(initData: InitData): any {
 		(<any>initData).packetType = PacketType.Init;
 		return initData;

@@ -1,5 +1,8 @@
 enum PacketType {
 
+	/** Clients connection was refused, currently only because of version mismatch */
+	Reject,
+
 	/** Client sends to server initially to register their name */
 	Join,
 

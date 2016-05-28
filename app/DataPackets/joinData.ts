@@ -1,5 +1,5 @@
 class JoinData {
-	constructor(public playerName: string) {
+	constructor(public version: string, public playerName: string) {
 	}
 }
 

@@ -18,6 +18,7 @@ import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
 import Player = require('../Simulation/Scoring/player');
 import PlayerProvider = require('../Simulation/Scoring/playerProvider');
+import RejectData = require('../DataPackets/rejectData');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 import Serializer = require('../Serializer/serializer');
 import ServerComms = require('./serverComms');
@@ -144,10 +145,18 @@ class Server {
 	}
 
 	private joinReceived(id: string, join: JoinData) {
+		//Version mismatch: Kick them
+		if (this.config.version && this.config.version != join.version) {
+			this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
+			this.serverComms.sendReject(new RejectData('version'), id);
+			this.serverComms.disconnect(id);
+			return;
+		}
+
 		if (join.playerName && join.playerName.length > 16) {
 			join.playerName = join.playerName.substr(0, 16);
 		}
-		
+
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 
 		let names: { [id: number]: string } = {};

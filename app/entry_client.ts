@@ -10,6 +10,7 @@ import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import LevelDef = require('./Simulation/Levels/levelDef');
+import NewVersion = require('./HtmlOverlay/Overlays/newVersion');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
@@ -20,6 +21,7 @@ import UnavailableOverlay = require('./Scenes/Unavailable/unavailableOverlay');
 import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
 
 let runningOnLive = (window.location.host == window.location.hostname); //Checks we are on standard port (no :8080)
+let release = '';
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
@@ -69,7 +71,11 @@ class AppEntry {
 		} else { //Non-standard port, assume dev and hack for it
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
-		this.client = new Client(socket, nickname);
+		this.client = new Client(socket, release, nickname);
+		this.client.connectionRejected.on(rejectData => {
+			//One day... rejectData.reason
+			NewVersion.show(this.htmlOverlayManager);
+		})
 		this.client.initReceived.on(data => {
 			this.playerId = data.playerId;
 			this.playerNames = {};
@@ -146,16 +152,15 @@ class AppEntry {
 	}
 }
 
-if (runningOnLive) {
-	//Find our release
-	let scripts = document.getElementsByTagName("script");
-	let release = '';
-	for (var i = 0; i < scripts.length; i++) {
-		let index = scripts[i].src.indexOf('bundle.js?');
-		if (index >= 0) {
-			release = scripts[i].src.substr(index + 10);
-		}
+//Find our release
+let scripts = document.getElementsByTagName("script");
+for (var i = 0; i < scripts.length; i++) {
+	let index = scripts[i].src.indexOf('bundle.js?');
+	if (index >= 0) {
+		release = scripts[i].src.substr(index + 10);
 	}
+}
+if (runningOnLive) {
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
 		release
 	}).install();

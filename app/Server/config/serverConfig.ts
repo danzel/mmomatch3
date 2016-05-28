@@ -8,10 +8,12 @@ interface ServerConfig {
 	fps: number;
 	framesPerTick: number;
 	initialLevel: number;
-	
+
+	version: string;
+
 	botsLeaveForPlayers?: boolean;
 	botCount?: number;
-	
+
 	availability?: Array<AvailabilityRange>;
 }
 

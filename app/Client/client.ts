@@ -8,6 +8,7 @@ import LevelDef = require('../Simulation/Levels/levelDef');
 import LiteEvent = require('../liteEvent');
 import PacketGenerator = require('../DataPackets/packetGenerator');
 import PacketType = require('../DataPackets/packetType');
+import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('../Serializer/serializer')
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
@@ -20,13 +21,15 @@ class Client {
 
 	private playerId: number;
 
+	connectionRejected = new LiteEvent<RejectData>();
 	initReceived = new LiteEvent<InitData>();
+
 	newNamesReceived = new LiteEvent<{ [id: number]: string }>();
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }>();
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
-	constructor(private clientComms: ClientComms, public nickname?: string) {
+	constructor(private clientComms: ClientComms, private version: string, public nickname?: string) {
 		if (this.nickname && this.nickname.length > 16) {
 			this.nickname = this.nickname.substr(0, 16);
 		}
@@ -40,11 +43,13 @@ class Client {
 	}
 
 	private connected() {
-		this.clientComms.sendJoin(new JoinData(this.nickname || null));
+		this.clientComms.sendJoin(new JoinData(this.version, this.nickname || null));
 	}
 
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
-		if (packet.packetType == PacketType.Init) {
+		if (packet.packetType == PacketType.Reject) {
+			this.connectionRejected.trigger(<RejectData>packet.data);
+		} else if (packet.packetType == PacketType.Init) {
 			let initData = <InitData>packet.data;
 
 			this.playerId = initData.playerId;
