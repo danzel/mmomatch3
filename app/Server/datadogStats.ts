@@ -14,7 +14,7 @@ class DatadogStats {
 
 		server.levelStarted.on((data) => this.levelStarted(data.level, data.simulation, data.gameEndDetector));
 		
-		setTimeout(() => this.logPeriodicStats(), 10000);
+		setInterval(() => this.logPeriodicStats(), 10000);
 	}
 
 	private levelStarted(level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector) {
