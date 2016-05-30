@@ -76,7 +76,7 @@ gulp.task('server', function() {
 });
 
 gulp.task('sentry-release', ['webpack'], function() {
-	['https://usw.mmomatch.localhost.geek.nz', 'https://oce.mmomatch.localhost.geek.nz'].forEach(function (domain) {
+	['https://massivematch.io'].forEach(function (domain) {
 		var opt = {
 			DOMAIN: domain,
 			API_URL: 'https://app.getsentry.com/api/0/projects/ironshod/massivematch-client/',
