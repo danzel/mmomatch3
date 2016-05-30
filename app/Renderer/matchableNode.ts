@@ -33,7 +33,7 @@ class MatchableNode {
 		if (matchable.type == Type.VerticalClearWhenMatched || matchable.type == Type.HorizontalClearWhenMatched || matchable.type == Type.AreaClear3x3WhenMatched) {
 			this.addOverlay(matchable.type);
 		} else if (matchable.transformTo) {
-			this.addOverlay(matchable.transformTo);
+			this.updateForTransforming();
 		}
 
 		this.updatePosition();
