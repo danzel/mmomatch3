@@ -37,7 +37,6 @@ class SocketServer extends ServerComms {
 		this.app = express();
 		//Could consider this https://github.com/isaacs/st
 		this.app.use(compression());
-		this.app.use(helmet.frameguard({ action: 'deny' }));
 		this.app.use(helmet.hidePoweredBy());
 		let oneDay = 86400000;
 		this.app.use(express.static('dist', { maxAge: oneDay }));
