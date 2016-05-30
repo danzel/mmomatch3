@@ -43,10 +43,12 @@ class Grid {
 	}
 
 	findMatchableAtPosition(positionX: number, positionY: number) {
-		let col = this.cells[positionX];
-		for (let i = Math.min(positionY, col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
-			if (col[i].y == positionY) {
-				return col[i];
+		if (positionX >= 0 && positionX < this.width) {
+			let col = this.cells[positionX];
+			for (let i = Math.min(positionY, col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
+				if (col[i].y == positionY) {
+					return col[i];
+				}
 			}
 		}
 	}
