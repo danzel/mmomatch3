@@ -131,8 +131,12 @@ class SimulationRenderer {
 	}
 
 	private onMatchableDisappeared(matchable: Matchable) {
-		this.matchableNodes[matchable.id].disappear();
-		delete this.matchableNodes[matchable.id];
+		//TODO UNHACK: Don't actually know why this happens, seen it on live. Let's just not crash!
+		let node = this.matchableNodes[matchable.id];
+		if (node) {
+			node.disappear();
+			delete this.matchableNodes[matchable.id];
+		}
 	}
 
 	private onMatchableTransforming(matchable: Matchable) {
