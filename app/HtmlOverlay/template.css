@@ -109,14 +109,13 @@ a {
 	cursor: pointer;
 
 	background-color: rgba(200,200,200,0.5);
-	padding: 6px;
+	padding: 6px 10px;
 	border-radius: 14px 14px 0 0;
 	margin-right: 6px;
 }
 
-.bottom-corner-buttons .text {
+.bottom-corner-buttons {
 	font-size: 26px;
-	stroke-width: 6px;
 }
 
 .feedback-button {
