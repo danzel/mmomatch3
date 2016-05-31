@@ -17,7 +17,6 @@ class WelcomeScreen {
 
 	show() {
 		(<HTMLInputElement>document.getElementById('play-button')).value = "Play";
-		HtmlOverlayManager.fixSvgs(this.element);
 		this.addEventListeners();
 	}
 
