@@ -79,11 +79,7 @@ if (GoodBrowser) {
 	WebFont.load({
 		custom: {
 			families: ['Chewy'],
-			urls: ['img/skin/emojione-animals/chewy.css']
 		},
-		/*google: {
-			families: ['Chewy']
-		},*/
 		classes: false,
 
 		active: function () {

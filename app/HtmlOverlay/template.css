@@ -1,8 +1,15 @@
+@font-face {
+  font-family: 'Chewy';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Chewy'), url(../../img/skin/emojione-animals/chewy.woff2) format('woff2'), url(../../img/skin/emojione-animals/chewy.woff) format('woff');
+}
+
 body {
 	margin: 0;
 	overflow: hidden;
 	background-color: #273348;
-	font-family: Chewy;
+	font-family: 'Chewy';
 	color: white;
 }
 
