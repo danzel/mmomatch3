@@ -1,4 +1,4 @@
-<p><svg><text class="header">
+<h1 class="header b5">
 	{{#if isOutOfMoves}}
 		Out of Moves!
 	{{else if isTeam}}
@@ -6,7 +6,7 @@
 	{{else}}
 		{{#if victory}}Level Complete!{{else}}Level Failed{{/if}}
 	{{/if}}
-</text></svg></p>
-<p><svg><text class="middle">You came #{{rank}} of {{playerCount}} players</text></svg></p>
+</h1>
+<h3 class="middle b3">You came #{{rank}} of {{playerCount}} players</h3>
 
-<p><svg><text class="bottom">{{bottomText}}</text></svg></p>
+<div class="bottom b2">{{bottomText}}</div>

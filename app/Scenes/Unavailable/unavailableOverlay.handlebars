@@ -1,17 +1,15 @@
-<p><svg><text class="header">Currently Offline</text></svg></p>
+<h1 class="header b5">Currently Offline</h1>
 
 {{#if gameRecently}}
-<p><a href="https://docs.google.com/forms/d/1Oe6QG2DLKTS8yg25mxoMzNIHKozqy8HQ8Dpv15uvd_8/viewform" target="_blank">
-	<svg><text class="middle ib">Thanks for Playing! Please fill in our</text></svg>
-	<svg class="feedback"><text class="feedback">feedback form!</text></svg>
-</a></p>
+<a href="https://docs.google.com/forms/d/1Oe6QG2DLKTS8yg25mxoMzNIHKozqy8HQ8Dpv15uvd_8/viewform" target="_blank">
+	<div class="middle ib b3">Thanks for Playing! Please fill in our</div>
+	<div class="feedback b3">feedback form!</div>
+</a>
 {{/if}}
 
 {{#if hasNext}}
-<p>
-	<svg><text class="middle">Next game is {{next}}</text></svg>
-	<svg><text class="small">The game will load automatically at this time</text></svg>
-</p>
+<div class="middle b3">Next game is {{next}}</div>
+<div class="small b2">The game will load automatically at this time</div>
 {{else}}
-	<p><svg><text class="middle">Not sure when we'll return...</text></svg></p>
+<div class="middle b3">Not sure when we'll return...</div>
 {{/if}}

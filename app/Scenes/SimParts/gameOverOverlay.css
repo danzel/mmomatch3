@@ -6,15 +6,14 @@
 
 .game-over-overlay .header {
 	font-size: 70px;
-	stroke-width: 8px;
 }
 
 .game-over-overlay .middle {
 	font-size: 28px;
-	stroke-width: 6px;
 }
 
 .game-over-overlay .bottom {
 	font-size: 22px;
-	stroke-width: 4px;
+	margin-top: 10px;
+	margin-bottom: 5px;
 }

@@ -198,12 +198,9 @@ div.matchable {
 	top: 10px;
 }
 
-.feedback-overlay .loading {
+.feedback-overlay h2 {
 	position: absolute;
-	width:100%;
-	
-	font-size: 30px;
-	stroke-width: 6px;
+	width: 100%;
 }
 
 #bottom-ad {

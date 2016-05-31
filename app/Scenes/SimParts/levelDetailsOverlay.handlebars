@@ -1,18 +1,19 @@
 <p>
-	<svg><text class="header">Level {{levelNumber}}</text></svg><br/>
-	<svg><text class="size">Size: {{width}} x {{height}}</text></svg>
+	<h1 class="b5">Level {{levelNumber}}</h1>
+	<span class="size b2">Size: {{width}} x {{height}}</span>
 </p>
 {{#if pigsvspugs}}
-<p><svg><text class="header">Pigs VS Pugs</text></svg></p>
-<p><svg><text class="mid-text">You are on team {{yours}}</text></svg></p>
-<p><svg><text class="mid-text">Match {{yours}}, but don't match {{notyours}}</text></svg>
+<h1 class="b5">Pigs VS Pugs</h1>
+<p>
+	<div class="mid-text b3">You are on team {{yours}}</div>
+	<div class="mid-text b3">Match {{yours}}, but don't match {{notyours}}</div>
 </p>
 {{else}}
 <p>
-	<svg><text class="mid-text">{{victoryText}}</text></svg>
-	<svg><text class="mid-text">{{failureText}}</text></svg>
+	<div class="mid-text b3">{{victoryText}}</div>
+	<div class="mid-text b3">{{failureText}}</div>
 </p>
 {{/if}}
 <p>
-	<svg><text class="start">Click to start</text></svg>
+	<span class="start b2">Click to start</span>
 </p>
