@@ -1,5 +1,5 @@
 import Matchable = require('../Simulation/matchable');
-import MatchableNode = require('./matchableNode');
+import MatchableRenderer = require('./matchableRenderer');
 
 class GetToBottomHighlighter {
 
@@ -37,12 +37,12 @@ class GetToBottomHighlighter {
 	update(dt: number) {
 		this.tile.tilePosition.y += dt * 300;
 
-		let h = (this.matchable.y + 0.5) * MatchableNode.PositionScalar;
+		let h = (this.matchable.y + 0.5) * MatchableRenderer.PositionScalar;
 
-		this.tile.position.set(MatchableNode.PositionScalar * this.matchable.x + (MatchableNode.PositionScalar - 54) / 2, -h)
+		this.tile.position.set(MatchableRenderer.PositionScalar * this.matchable.x + (MatchableRenderer.PositionScalar - 54) / 2, -h)
 		this.tile.height = h;
 
-		this.highlighter.position.set(MatchableNode.PositionScalar * this.matchable.x + (MatchableNode.PositionScalar) / 2, -h)
+		this.highlighter.position.set(MatchableRenderer.PositionScalar * this.matchable.x + (MatchableRenderer.PositionScalar) / 2, -h)
 		
 		if (this.matchable.y == 0) {
 			this.tween1.repeat(0);

@@ -1,5 +1,4 @@
 import InputApplier = require('../Simulation/inputApplier');
-import MatchableNode = require('../Renderer/matchableNode');
 import MatchDragHandler = require('./matchDragHandler');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
