@@ -1,9 +1,9 @@
-import FailedToSwapAnimator = require('./failedToSwapAnimator');
+//import FailedToSwapAnimator = require('./failedToSwapAnimator');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
-import MatchableNode = require('./matchableNode');
+import MatchableRenderer = require('./matchableRenderer');
 import Type = require('../Simulation/type');
 
 interface XY {
@@ -12,41 +12,27 @@ interface XY {
 }
 
 class SimulationRenderer {
-	private matchablesGroup: Phaser.Group;
+	private matchablesGroup: Phaser.SpriteBatch;
 	private getToBottomHighlighters = new Array<GetToBottomHighlighter>();
-	private failedToSwapAnimator = new FailedToSwapAnimator();
+	//private failedToSwapAnimator = new FailedToSwapAnimator();
 
-	private matchableNodes: { [id: number]: MatchableNode }
-
+	private matchableRenderer: MatchableRenderer;
+	
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
 		this.matchablesGroup = group.game.add.spriteBatch(this.group);
-		this.matchableNodes = {};
+		this.matchableRenderer = new MatchableRenderer(this.matchablesGroup);
 
 		this.scale = 0.2;
 		this.group.y = 400;
 
 		this.addDebugOverlay();
-
-		simulation.spawnManager.matchableSpawned.on(matchable => this.onMatchableSpawned(matchable));
-		simulation.disappearer.matchableDisappeared.on(matchable => this.onMatchableDisappeared(matchable));
-
-		simulation.matchableTransformer.matchableTransforming.on(matchable => this.onMatchableTransforming(matchable));
-		simulation.disappearer.matchableTransformed.on(matchable => this.onMatchableTransformed(matchable));
-
-		//Populate initial matchables from what's on the grid currently
-		for (let x = 0; x < this.simulation.grid.width; x++) {
-			var col = this.simulation.grid.cells[x];
-			for (var y = 0; y < col.length; y++) {
-				this.onMatchableSpawned(col[y]);
-			}
-		}
 	}
 
 	fitToBounds(width: number, height: number) {
-		this.scale = this.scaleClamp(Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableNode.PositionScalar);
+		this.scale = this.scaleClamp(Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableRenderer.PositionScalar);
 
-		let scaledWidth = this.scale * this.simulation.grid.width * MatchableNode.PositionScalar;
-		let scaledHeight = this.scale * this.simulation.grid.height * MatchableNode.PositionScalar;
+		let scaledWidth = this.scale * this.simulation.grid.width * MatchableRenderer.PositionScalar;
+		let scaledHeight = this.scale * this.simulation.grid.height * MatchableRenderer.PositionScalar;
 
 		this.group.x = (width - scaledWidth) / 2;
 		this.group.y = height - (height - scaledHeight) / 2;
@@ -54,7 +40,7 @@ class SimulationRenderer {
 
 	failedToSwap(matchable: Matchable, direction: XY) {
 		if (matchable) {
-			this.failedToSwapAnimator.failedToSwap(matchable, this.matchableNodes[matchable.id], direction);
+			//TODO this.failedToSwapAnimator.failedToSwap(matchable, this.matchableNodes[matchable.id], direction);
 		}
 	}
 
@@ -100,9 +86,9 @@ class SimulationRenderer {
 		let maxOffscreenX = this.group.game.width / 2;
 		let maxOffscreenY = this.group.game.height / 2;
 		this.group.x = Math.min(this.group.game.width - maxOffscreenX, this.group.x);
-		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + maxOffscreenX)
+		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableRenderer.PositionScalar * this.scale + maxOffscreenX)
 
-		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - maxOffscreenY, this.group.y);
+		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableRenderer.PositionScalar * this.scale - maxOffscreenY, this.group.y);
 		this.group.y = Math.max(maxOffscreenY, this.group.y);
 	}
 
@@ -122,36 +108,11 @@ class SimulationRenderer {
 		this.group.scale = new Phaser.Point(scale, scale);
 	}
 
-	private onMatchableSpawned(matchable: Matchable) {
-		this.matchableNodes[matchable.id] = new MatchableNode(matchable, this.matchablesGroup);
-
-		if (matchable.type == Type.GetToBottom) {
-			this.getToBottomHighlighters.push(new GetToBottomHighlighter(this.group, matchable));
-		}
-	}
-
-	private onMatchableDisappeared(matchable: Matchable) {
-		//TODO UNHACK: Don't actually know why this happens, seen it on live. Let's just not crash!
-		let node = this.matchableNodes[matchable.id];
-		if (node) {
-			node.disappear();
-			delete this.matchableNodes[matchable.id];
-		}
-	}
-
-	private onMatchableTransforming(matchable: Matchable) {
-		this.matchableNodes[matchable.id].updateForTransforming();
-	}
-
-	private onMatchableTransformed(matchable: Matchable) {
-		this.matchableNodes[matchable.id].updateForTransformed();
-	}
-
 	private addDebugOverlay() {
 		let graphics = this.group.game.add.graphics(0, 0, this.group);
 		//graphics.beginFill(0x999999);
 		graphics.lineStyle(3, 0xFFFFFF, 0.7);
-		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableNode.PositionScalar, -this.simulation.grid.height * MatchableNode.PositionScalar);
+		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableRenderer.PositionScalar, -this.simulation.grid.height * MatchableRenderer.PositionScalar);
 	}
 
 	private left = [Phaser.Keyboard.LEFT, Phaser.Keyboard.A];
@@ -193,25 +154,26 @@ class SimulationRenderer {
 		for (let i = 0; i < this.getToBottomHighlighters.length; i++) {
 			this.getToBottomHighlighters[i].update(dt);
 		}
+		
+		this.matchableRenderer.begin();
 
+		//TODO: Probably need to loop over swaps and render those ones seperately
+		
 		//Optimised version of the commented out bit below
 		let cells = this.simulation.grid.cells;
 		for (let x = 0; x < cells.length; x++) {
 			let col = cells[x];
 			for (let y = 0; y < col.length; y++) {
 				let m = col[y];
-				this.matchableNodes[m.id].updatePosition();
+				this.matchableRenderer.render(m);
 			}
 		}
-		/*
-		for (let key in this.matchableNodes) {
-			var node = this.matchableNodes[key];
-			node.updatePosition();
-		}*/
+		
+		this.matchableRenderer.end();
 
+		//TODO this.failedToSwapAnimator.update(dt);
 
-		this.failedToSwapAnimator.update(dt);
-
+		/* TODO Swapping
 		var swaps = this.simulation.swapHandler.swaps;
 		for (let i = 0; i < swaps.length; i++) {
 			var swap = swaps[i];
@@ -219,6 +181,7 @@ class SimulationRenderer {
 			this.matchableNodes[swap.left.id].updatePositionForSwap(swap);
 			this.matchableNodes[swap.right.id].updatePositionForSwap(swap);
 		}
+		*/
 	}
 
 }

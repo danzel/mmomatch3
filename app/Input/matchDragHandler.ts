@@ -1,7 +1,7 @@
 import Grid = require('../Simulation/grid');
 import InputApplier = require('../Simulation/inputApplier');
 import Matchable = require('../Simulation/matchable');
-import MatchableNode = require('../Renderer/matchableNode');
+import MatchableRenderer = require('../Renderer/matchableRenderer');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
 import XY = require('./xy');
@@ -14,7 +14,7 @@ class MatchDragHandler {
 	}
 
 	private get minDragPx() {
-		return this.renderer.getScale() * MatchableNode.PositionScalar / 4;
+		return this.renderer.getScale() * MatchableRenderer.PositionScalar / 4;
 	}
 
 	mouseDown(pointer: Phaser.Pointer) {
@@ -62,8 +62,8 @@ class MatchDragHandler {
 		let pos = this.renderer.getPosition();
 		let scale = this.renderer.getScale();
 
-		x = Math.floor((x - pos.x) / MatchableNode.PositionScalar / scale);
-		y = Math.floor(-(y - pos.y) / MatchableNode.PositionScalar / scale);
+		x = Math.floor((x - pos.x) / MatchableRenderer.PositionScalar / scale);
+		y = Math.floor(-(y - pos.y) / MatchableRenderer.PositionScalar / scale);
 		
 		//Only return valid positions
 		if (x < 0 || y < 0 || x >= this.grid.width || y >= this.grid.height) {

@@ -7,52 +7,62 @@ const positionScalar = 100;
 const xOffset = positionScalar / 2;
 const yOffset = positionScalar / 2;
 
-class MatchableNode {
+class MatchableRenderer {
 	public static PositionScalar = positionScalar;
+	
+	private sprites = new Array<Phaser.Image>();
+	private spriteIndex = 0;
 
-	matchable: Matchable;
+	constructor(private group : Phaser.SpriteBatch) {
+	}
+	
+	begin(): void {
+		this.spriteIndex = 0;
+	}
+	
+	end(): void {
+		for (let i = this.spriteIndex; i < this.sprites.length; i++) {
+			this.sprites[i].renderable = false;
+		}
+	}
+	
+	private getSprite(): Phaser.Image {
+		let sprite: Phaser.Image;
+		if (this.spriteIndex == this.sprites.length) {
+			sprite = this.group.game.add.image(0, 0, 'atlas', null, this.group);
+			
+			sprite.anchor = new Phaser.Point(0.5, 0.5);
+			this.sprites.push(sprite);
+		} else {
+			sprite = this.sprites[this.spriteIndex];
+			sprite.renderable = true;
+			this.spriteIndex++;
+		}
+		
+		return sprite;
+	}
+	
+	render(matchable: Matchable): void {
+		let sprite = this.getSprite();
+		
+		sprite.frameName = MatchableRenderer.getSpriteFrame(matchable.color, matchable.type);
+		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
+		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
 
-	sprite: Phaser.Image;
-	replacementSprite: Phaser.Image;
-	overlay: Phaser.Image;
-
-	constructor(matchable: Matchable, parent: Phaser.Group) {
-		this.matchable = matchable;
-
-		this.sprite = parent.game.add.image(0, 0, 'atlas', MatchableNode.getSpriteFrame(matchable.color, matchable.type), parent);
-
-		this.sprite.anchor = new Phaser.Point(0.5, 0.5);
-
+		//TODO: GetToBottom scaling
+		/*
 		if (matchable.type == Type.GetToBottom) {
 			this.sprite.scale.set(0.9, 0.9);
 			parent.game.add.tween(this.sprite.scale)
 				.to({ x: 1.1, y: 1.1 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
 				.start();
-		}
-		
+		}*/
+		/*
 		if (matchable.type == Type.VerticalClearWhenMatched || matchable.type == Type.HorizontalClearWhenMatched || matchable.type == Type.AreaClear3x3WhenMatched) {
 			this.addOverlay(matchable.type);
 		} else if (matchable.transformTo) {
 			this.updateForTransforming();
 		}
-
-		this.updatePosition();
-	}
-
-	static getSpriteFrame(color: Color, type: Type): string {
-		if (type == Type.GetToBottom) {
-			return "balls/gettobottom.png";
-		}
-		if (type == Type.ColorClearWhenSwapped) {
-			return 'balls/colorclear.png';
-		}
-
-		return 'balls/' + (color + 1) + ".png";
-	}
-
-	updatePosition() {
-		this.sprite.x = this.matchable.x * MatchableNode.PositionScalar + xOffset;
-		this.sprite.y = - this.matchable.y * MatchableNode.PositionScalar - yOffset;
 
 		if (this.overlay) {
 			if (this.matchable.transformTo) {
@@ -73,9 +83,20 @@ class MatchableNode {
 			this.replacementSprite.alpha = 1 - this.sprite.alpha;
 			this.replacementSprite.position.x = this.sprite.position.x;
 			this.replacementSprite.position.y = this.sprite.position.y;
-		}
+		}*/
 	}
 
+	static getSpriteFrame(color: Color, type: Type): string {
+		if (type == Type.GetToBottom) {
+			return "balls/gettobottom.png";
+		}
+		if (type == Type.ColorClearWhenSwapped) {
+			return 'balls/colorclear.png';
+		}
+
+		return 'balls/' + (color + 1) + ".png";
+	}
+/*
 	updatePositionForSwap(swap: Swap) {
 		let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
 
@@ -136,7 +157,7 @@ class MatchableNode {
 		if (this.overlay) {
 			this.overlay.destroy();
 		}
-	}
+	}*/
 }
 
-export = MatchableNode;
+export = MatchableRenderer;

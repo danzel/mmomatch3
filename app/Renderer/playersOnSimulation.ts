@@ -2,7 +2,7 @@
 import MersenneTwister = require('mersenne-twister');
 
 import HslToRgb = require('../Util/hslToRgb');
-import MatchableNode = require('./matchableNode');
+import MatchableRenderer = require('./matchableRenderer');
 import Simulation = require('../Simulation/simulation');
 import Swap = require('../Simulation/swap');
 
@@ -51,8 +51,8 @@ class PlayersOnSimulation {
 		}
 
 		//Sorta stolen from MatchableNode.updatePosition
-		let x = (swap.left.x + swap.right.x) / 2 * MatchableNode.PositionScalar + (MatchableNode.PositionScalar / 2);
-		let y = - (swap.left.y + swap.right.y) / 2 * MatchableNode.PositionScalar - (MatchableNode.PositionScalar / 2);
+		let x = (swap.left.x + swap.right.x) / 2 * MatchableRenderer.PositionScalar + (MatchableRenderer.PositionScalar / 2);
+		let y = - (swap.left.y + swap.right.y) / 2 * MatchableRenderer.PositionScalar - (MatchableRenderer.PositionScalar / 2);
 
 
 		if (this.playerSprites[swap.playerId]) {

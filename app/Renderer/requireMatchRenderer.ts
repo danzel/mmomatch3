@@ -1,11 +1,11 @@
-import MatchableNode = require('./matchableNode');
+import MatchableRenderer = require('./matchableRenderer');
 import RequireMatch = require('../Simulation/requireMatch');
 import Simulation = require('../Simulation/simulation');
 
 class RequireSprite {
 	sprite: Phaser.Sprite;
 	constructor(parentGroup: Phaser.Group, public req: RequireMatch) {
-		this.sprite = parentGroup.game.add.sprite(req.x * MatchableNode.PositionScalar, -(1 + req.y) * MatchableNode.PositionScalar, 'atlas', 'requirematch.png', parentGroup);
+		this.sprite = parentGroup.game.add.sprite(req.x * MatchableRenderer.PositionScalar, -(1 + req.y) * MatchableRenderer.PositionScalar, 'atlas', 'requirematch.png', parentGroup);
 	}
 }
 
