@@ -52,16 +52,16 @@ class MatchableRenderer {
 		
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
 		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
+		if (swap) {
+			this.updatePositionForSwap(matchable, sprite, swap);
+		}
 
-		if (matchable.transformTo) {
-			sprite.alpha = 1; //TODO: Not for the color clear
+		if (matchable.transformTo && matchable.transformTo != Type.ColorClearWhenSwapped) {
+			sprite.alpha = 1;
 		} else {
 			sprite.alpha = 1 - matchable.disappearingPercent;
 		}
 		
-		if (swap) {
-			this.updatePositionForSwap(matchable, sprite, swap);
-		}
 
 		//TODO: GetToBottom scaling
 		/*
@@ -73,30 +73,17 @@ class MatchableRenderer {
 		}*/
 		if (MatchableRenderer.typeHasOverlay(matchable.type)) {
 			this.renderOverlay(matchable, matchable.type, sprite, 1);
-		} else if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
-			this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
-		}
-/*
-		if (this.overlay) {
-			if (this.matchable.transformTo) {
-				this.overlay.alpha = this.matchable.disappearingPercent;
-			} else {
-				this.overlay.alpha = 1;
+		} else if (matchable.transformTo) {
+			if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
+				this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
+			} else 	if (matchable.transformTo == Type.ColorClearWhenSwapped) {
+				let overlay = this.getSprite();
+				overlay.frameName = 'balls/colorclear.png';
+				overlay.position.x = sprite.position.x;
+				overlay.position.y = sprite.position.y;
+				overlay.alpha = 1 - sprite.alpha;
 			}
 		}
-
-		if (!this.matchable.transformTo || this.replacementSprite) {
-			this.sprite.alpha = 1 - this.matchable.disappearingPercent;
-			if (this.overlay) {
-				this.overlay.alpha = this.sprite.alpha;
-			}
-		}
-
-		if (this.replacementSprite) {
-			this.replacementSprite.alpha = 1 - this.sprite.alpha;
-			this.replacementSprite.position.x = this.sprite.position.x;
-			this.replacementSprite.position.y = this.sprite.position.y;
-		}*/
 	}
 
 	static getSpriteFrame(color: Color, type: Type): string {
@@ -119,16 +106,6 @@ class MatchableRenderer {
 		sprite.position.x += diffX * swap.percent * MatchableRenderer.PositionScalar;
 		sprite.position.y -= diffY * swap.percent * MatchableRenderer.PositionScalar;
 	}
-/*
-	updateForTransforming() {
-		if (this.matchable.transformTo == Type.ColorClearWhenSwapped) {
-			this.replacementSprite = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', 'balls/colorclear.png');
-			this.replacementSprite.anchor.set(0.5, 0.5);
-			this.sprite.parent.addChild(this.replacementSprite);
-		} else {
-			this.addOverlay(this.matchable.transformTo);
-		}
-	}*/
 
 	private renderOverlay(matchable: Matchable, type: Type, sprite: Phaser.Image, alpha: number) {
 
@@ -157,21 +134,6 @@ class MatchableRenderer {
 		//child.game.add.tween(child.scale)
 		//	.to({ x: 0.95, y: 0.95 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
 	}
-/*
-	updateForTransformed() {
-		if (this.replacementSprite) {
-			this.sprite.destroy();
-			this.sprite = this.replacementSprite;
-			delete this.replacementSprite;
-		}
-	}
-
-	disappear() {
-		this.sprite.destroy();
-		if (this.overlay) {
-			this.overlay.destroy();
-		}
-	}*/
 }
 
 export = MatchableRenderer;
