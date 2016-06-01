@@ -76,19 +76,23 @@ class AppEntry {
 }
 
 if (GoodBrowser) {
-	WebFont.load({
-		custom: {
-			families: ['Chewy'],
-		},
-		classes: false,
+	if (WebFont) {
+		WebFont.load({
+			custom: {
+				families: ['Chewy'],
+			},
+			classes: false,
 
-		active: function () {
-			new AppEntry();
-		},
-		inactive: function () {
-			new AppEntry();
-		}
-	});
+			active: function () {
+				new AppEntry();
+			},
+			inactive: function () {
+				new AppEntry();
+			}
+		});
+	} else {
+		new AppEntry();
+	}
 } else {
 	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
 	window.location.replace('http://outdatedbrowser.com/');
