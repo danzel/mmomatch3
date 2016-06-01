@@ -198,13 +198,21 @@ div.matchable {
 	display: inline-block;
 }
 
+#beta-bg {
+	position: absolute;
+	right: 0;
+	top: 0;
+	
+	width: 0;
+	height: 0;
+	border-top: 76px solid rgba(200,200,200,0.5);
+	border-left: 76px solid transparent;
+}
 #beta {
     position: absolute;
-    right: -42px;
-    top: -10px;
-    padding: 22px 37px 6px 40px;
+    right: 0;
+    top: 10px;
 
     transform: rotateZ(45deg);
-    background-color: rgba(200,200,200,0.5);
 	font-size: 20px;
 }
