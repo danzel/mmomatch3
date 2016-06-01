@@ -42,6 +42,9 @@ class MatchableRenderer {
 		return sprite;
 	}
 	
+	private static typeHasOverlay(type: Type): boolean {
+		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear3x3WhenMatched;
+	}
 	render(matchable: Matchable, swap: Swap): void {
 		let sprite = this.getSprite();
 		
@@ -50,7 +53,11 @@ class MatchableRenderer {
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
 		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
 
-		sprite.alpha = 1 - matchable.disappearingPercent;
+		if (matchable.transformTo) {
+			sprite.alpha = 1; //TODO: Not for the color clear
+		} else {
+			sprite.alpha = 1 - matchable.disappearingPercent;
+		}
 		
 		if (swap) {
 			this.updatePositionForSwap(matchable, sprite, swap);
@@ -64,13 +71,12 @@ class MatchableRenderer {
 				.to({ x: 1.1, y: 1.1 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
 				.start();
 		}*/
-		/*
-		if (matchable.type == Type.VerticalClearWhenMatched || matchable.type == Type.HorizontalClearWhenMatched || matchable.type == Type.AreaClear3x3WhenMatched) {
-			this.addOverlay(matchable.type);
-		} else if (matchable.transformTo) {
-			this.updateForTransforming();
+		if (MatchableRenderer.typeHasOverlay(matchable.type)) {
+			this.renderOverlay(matchable, matchable.type, sprite, 1);
+		} else if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
+			this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
 		}
-
+/*
 		if (this.overlay) {
 			if (this.matchable.transformTo) {
 				this.overlay.alpha = this.matchable.disappearingPercent;
@@ -122,9 +128,9 @@ class MatchableRenderer {
 		} else {
 			this.addOverlay(this.matchable.transformTo);
 		}
-	}
+	}*/
 
-	private addOverlay(type: Type) {
+	private renderOverlay(matchable: Matchable, type: Type, sprite: Phaser.Image, alpha: number) {
 
 		let frame: string;
 		switch (type) {
@@ -138,19 +144,20 @@ class MatchableRenderer {
 				frame = 'balloverlays/areaclear.png';
 				break;
 			default:
-				throw new Error("Don't know how to update for transform to type " + Type[this.matchable.transformTo])
+				throw new Error("Don't know how to renderOverlay for type " + Type[type])
 		}
 
-		let child = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', frame);
-		child.anchor.set(0.5, 0.5);
-		this.sprite.parent.addChild(child);
-		child.position = this.sprite.position; //HACK - we always want these to be in the same place
-		this.overlay = child;
+		let overlay = this.getSprite();
+		overlay.frameName = frame;
+		overlay.position.x = sprite.position.x;
+		overlay.position.y = sprite.position.y;
+		overlay.alpha = alpha;
 
-		child.game.add.tween(child.scale)
-			.to({ x: 0.95, y: 0.95 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
+		//TODO: Scale it in
+		//child.game.add.tween(child.scale)
+		//	.to({ x: 0.95, y: 0.95 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
 	}
-
+/*
 	updateForTransformed() {
 		if (this.replacementSprite) {
 			this.sprite.destroy();
