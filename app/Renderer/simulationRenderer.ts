@@ -157,31 +157,30 @@ class SimulationRenderer {
 		
 		this.matchableRenderer.begin();
 
-		//TODO: Probably need to loop over swaps and render those ones seperately
-		
-		//Optimised version of the commented out bit below
+		//First render those not swapping, then those swapping
+		//Seperately because no good was to look up swaps in the swapHandler
 		let cells = this.simulation.grid.cells;
 		for (let x = 0; x < cells.length; x++) {
 			let col = cells[x];
 			for (let y = 0; y < col.length; y++) {
 				let m = col[y];
-				this.matchableRenderer.render(m);
+				if (!m.beingSwapped) {
+					this.matchableRenderer.render(m, null);
+				}
 			}
+		}
+		var swaps = this.simulation.swapHandler.swaps;
+		for (let i = 0; i < swaps.length; i++) {
+			var swap = swaps[i];
+
+			this.matchableRenderer.render(this.simulation.grid.findMatchableById(swap.left.id), swap);
+			this.matchableRenderer.render(this.simulation.grid.findMatchableById(swap.right.id), swap);
 		}
 		
 		this.matchableRenderer.end();
 
 		//TODO this.failedToSwapAnimator.update(dt);
 
-		/* TODO Swapping
-		var swaps = this.simulation.swapHandler.swaps;
-		for (let i = 0; i < swaps.length; i++) {
-			var swap = swaps[i];
-
-			this.matchableNodes[swap.left.id].updatePositionForSwap(swap);
-			this.matchableNodes[swap.right.id].updatePositionForSwap(swap);
-		}
-		*/
 	}
 
 }

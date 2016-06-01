@@ -42,12 +42,19 @@ class MatchableRenderer {
 		return sprite;
 	}
 	
-	render(matchable: Matchable): void {
+	render(matchable: Matchable, swap: Swap): void {
 		let sprite = this.getSprite();
 		
 		sprite.frameName = MatchableRenderer.getSpriteFrame(matchable.color, matchable.type);
+		
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
 		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
+
+		sprite.alpha = 1 - matchable.disappearingPercent;
+		
+		if (swap) {
+			this.updatePositionForSwap(matchable, sprite, swap);
+		}
 
 		//TODO: GetToBottom scaling
 		/*
@@ -96,17 +103,17 @@ class MatchableRenderer {
 
 		return 'balls/' + (color + 1) + ".png";
 	}
-/*
-	updatePositionForSwap(swap: Swap) {
-		let otherMatchable = swap.left == this.matchable ? swap.right : swap.left;
 
-		var diffX = otherMatchable.x - this.matchable.x;
-		var diffY = otherMatchable.y - this.matchable.y;
+	private updatePositionForSwap(matchable: Matchable, sprite: Phaser.Image, swap: Swap) {
+		let otherMatchable = swap.left == matchable ? swap.right : swap.left;
 
-		this.sprite.position.x += diffX * swap.percent * MatchableNode.PositionScalar;
-		this.sprite.position.y -= diffY * swap.percent * MatchableNode.PositionScalar;
+		var diffX = otherMatchable.x - matchable.x;
+		var diffY = otherMatchable.y - matchable.y;
+
+		sprite.position.x += diffX * swap.percent * MatchableRenderer.PositionScalar;
+		sprite.position.y -= diffY * swap.percent * MatchableRenderer.PositionScalar;
 	}
-
+/*
 	updateForTransforming() {
 		if (this.matchable.transformTo == Type.ColorClearWhenSwapped) {
 			this.replacementSprite = new Phaser.Image(this.sprite.game, 0, 0, 'atlas', 'balls/colorclear.png');
