@@ -36,6 +36,8 @@ class MatchableRenderer {
 		} else {
 			sprite = this.sprites[this.spriteIndex];
 			sprite.renderable = true;
+			sprite.scale.x = 1;
+			sprite.scale.y = 1;
 			this.spriteIndex++;
 		}
 		
@@ -63,14 +65,10 @@ class MatchableRenderer {
 		}
 		
 
-		//TODO: GetToBottom scaling
-		/*
 		if (matchable.type == Type.GetToBottom) {
-			this.sprite.scale.set(0.9, 0.9);
-			parent.game.add.tween(this.sprite.scale)
-				.to({ x: 1.1, y: 1.1 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
-				.start();
-		}*/
+			sprite.scale.set(0.9 + 0.2 * Phaser.Easing.Sinusoidal.InOut(this.bounce(1500)));
+		}
+		
 		if (MatchableRenderer.typeHasOverlay(matchable.type)) {
 			this.renderOverlay(matchable, matchable.type, sprite, 1);
 		} else if (matchable.transformTo) {
@@ -129,10 +127,14 @@ class MatchableRenderer {
 		overlay.position.x = sprite.position.x;
 		overlay.position.y = sprite.position.y;
 		overlay.alpha = alpha;
-
-		//TODO: Scale it in
-		//child.game.add.tween(child.scale)
-		//	.to({ x: 0.95, y: 0.95 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
+		
+		
+		overlay.scale.set(1 - 0.05 * this.bounce(2000));
+	}
+	
+	private bounce(period: number): number {
+		let now = (this.group.game.time.now / period) % 1;
+		return Phaser.Easing.Sinusoidal.InOut(now > 0.5 ? (1 - (now - 0.5) * 2) : now * 2);
 	}
 }
 
