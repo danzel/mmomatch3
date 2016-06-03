@@ -27,7 +27,9 @@ class GetToBottomHighlighter {
 				}
 
 				if (this.tiles.length == index) {
-					this.tiles.push(this.underGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', 'gettobottom_repeat.png', this.underGroup));
+					let t = this.underGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', 'gettobottom_repeat.png', this.underGroup);
+					t.alpha = 0.5;
+					this.tiles.push(t);
 					let hi = this.underGroup.game.add.sprite(0, 0, 'atlas', 'circle.png', this.overGroup);
 					hi.anchor.set(0.5);
 					this.highlighters.push(hi);
