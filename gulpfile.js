@@ -124,7 +124,9 @@ gulp.task('deploy-oce', ['copy-oce'], function() {
 			'rm -rf built_server dist package.json',
 			'unzip -o ../archive.zip',
 			'chmod 700 built_server -R',
-			'sudo service mmomatch restart'
+			'sudo iptables -I INPUT -p tcp --dport 8092 --syn -j DROP',
+			'sudo service mmomatch restart',
+			'sudo iptables -D INPUT -p tcp --dport 8092 --syn -j DROP'
 		], { filePath: 'shell-oce.log' })
 		.on('ssh2Data', function(data) {
 			process.stdout.write(data.toString());
