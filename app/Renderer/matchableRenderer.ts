@@ -1,4 +1,5 @@
 import Color = require('../Simulation/color');
+import FailedToSwapState = require('./failedToSwapState');
 import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
 import Type = require('../Simulation/type');
@@ -13,7 +14,7 @@ class MatchableRenderer {
 	private sprites = new Array<Phaser.Image>();
 	private spriteIndex = 0;
 
-	constructor(private group : Phaser.SpriteBatch) {
+	constructor(private group : Phaser.SpriteBatch, private failedToSwapState: FailedToSwapState) {
 	}
 	
 	begin(): void {
@@ -56,6 +57,12 @@ class MatchableRenderer {
 		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
 		if (swap) {
 			this.updatePositionForSwap(matchable, sprite, swap);
+		}
+		//TODO: Would be nice if these appeared on top
+		let failTransform = this.failedToSwapState.getFailTransform(matchable);
+		if (failTransform) {
+			sprite.x += failTransform.x;
+			sprite.y += failTransform.y;
 		}
 
 		if (matchable.transformTo && matchable.transformTo != Type.ColorClearWhenSwapped) {

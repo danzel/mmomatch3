@@ -1,4 +1,4 @@
-//import FailedToSwapAnimator = require('./failedToSwapAnimator');
+import FailedToSwapState = require('./failedToSwapState');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
@@ -14,7 +14,7 @@ interface XY {
 class SimulationRenderer {
 	private matchablesGroup: Phaser.SpriteBatch;
 	private getToBottomHighlighter: GetToBottomHighlighter;
-	//private failedToSwapAnimator = new FailedToSwapAnimator();
+	private failedToSwapState = new FailedToSwapState();
 
 	private matchableRenderer: MatchableRenderer;
 	
@@ -22,7 +22,7 @@ class SimulationRenderer {
 		let getToBottomUnder = group.game.add.group(group);
 		
 		this.matchablesGroup = group.game.add.spriteBatch(this.group);
-		this.matchableRenderer = new MatchableRenderer(this.matchablesGroup);
+		this.matchableRenderer = new MatchableRenderer(this.matchablesGroup, this.failedToSwapState);
 
 		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, group.game.add.group(group));
 
@@ -44,7 +44,7 @@ class SimulationRenderer {
 
 	failedToSwap(matchable: Matchable, direction: XY) {
 		if (matchable) {
-			//TODO this.failedToSwapAnimator.failedToSwap(matchable, this.matchableNodes[matchable.id], direction);
+			this.failedToSwapState.failedToSwap(matchable, direction, this.group.game.time.now);
 		}
 	}
 
@@ -184,7 +184,7 @@ class SimulationRenderer {
 		
 		this.matchableRenderer.end();
 
-		//TODO this.failedToSwapAnimator.update(dt);
+		this.failedToSwapState.update(dt);
 
 	}
 
