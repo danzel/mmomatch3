@@ -77,7 +77,7 @@ class MatchableRenderer {
 		}
 		
 		if (MatchableRenderer.typeHasOverlay(matchable.type)) {
-			this.renderOverlay(matchable, matchable.type, sprite, 1);
+			this.renderOverlay(matchable, matchable.type, sprite, sprite.alpha);
 		} else if (matchable.transformTo) {
 			if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
 				this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
