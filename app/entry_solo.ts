@@ -76,7 +76,7 @@ class AppEntry {
 }
 
 if (GoodBrowser) {
-	if (WebFont) {
+	if ((<any>window).WebFont) {
 		WebFont.load({
 			custom: {
 				families: ['Chewy'],
