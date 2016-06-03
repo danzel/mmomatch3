@@ -10,6 +10,12 @@
 <div class="overlay-background"></div>
 {{/if}}
 
+{{#if customOverlay}}
+<div id="overlay" class="overlay {{customOverlay.className}}">
+	{{{customOverlay.content}}}
+</div>
+{{/if}}
+
 {{#if helpVisible}}
 <div class="overlay frame help-overlay b2">
 	<h1 class="b5">Controls</h1>
@@ -84,11 +90,5 @@
 <div id="connection-error">
 	<div class="details b3">Connecting...</div>
 	<div class="details b3">If this continues, try refreshing the page</div>
-</div>
-{{/if}}
-
-{{#if customOverlay}}
-<div id="overlay" class="overlay {{customOverlay.className}}">
-	{{{customOverlay.content}}}
 </div>
 {{/if}}
