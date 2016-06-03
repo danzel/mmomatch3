@@ -13,14 +13,18 @@ interface XY {
 
 class SimulationRenderer {
 	private matchablesGroup: Phaser.SpriteBatch;
-	private getToBottomHighlighters = new Array<GetToBottomHighlighter>();
+	private getToBottomHighlighter: GetToBottomHighlighter;
 	//private failedToSwapAnimator = new FailedToSwapAnimator();
 
 	private matchableRenderer: MatchableRenderer;
 	
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
+		let getToBottomUnder = group.game.add.group(group);
+		
 		this.matchablesGroup = group.game.add.spriteBatch(this.group);
 		this.matchableRenderer = new MatchableRenderer(this.matchablesGroup);
+
+		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, group.game.add.group(group));
 
 		this.scale = 0.2;
 		this.group.y = 400;
@@ -151,9 +155,7 @@ class SimulationRenderer {
 
 		this.updateKeyboard(dt);
 
-		for (let i = 0; i < this.getToBottomHighlighters.length; i++) {
-			this.getToBottomHighlighters[i].update(dt);
-		}
+		this.getToBottomHighlighter.render();
 		
 		this.matchableRenderer.begin();
 
@@ -166,6 +168,9 @@ class SimulationRenderer {
 				let m = col[y];
 				if (!m.beingSwapped) {
 					this.matchableRenderer.render(m, null);
+				} else {
+					//TODO: Find the swap in here rather than below as MatchableById lookup is slow and the list of swaps should be small
+					
 				}
 			}
 		}
