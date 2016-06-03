@@ -55,26 +55,26 @@ class SwapHandler {
 
 	private checkPreSwap(swap: Swap) {
 		if (swap.left.beingSwapped)
-			throw "Left is already being swapped";
+			throw new Error("Left is already being swapped");
 		if (swap.right.beingSwapped)
-			throw "Right is already being swapped";
+			throw new Error("Right is already being swapped");
 
 		if (swap.left == swap.right)
-			throw "swapping left == right";
+			throw new Error("swapping left == right");
 
 		//Check we are at a good index
 		if (swap.left.y != (swap.left.y | 0))
-			throw "Left isn't at an integer y";
+			throw new Error("Left isn't at an integer y");
 		if (swap.right.y != (swap.right.y | 0))
-			throw "Right isn't at an integer y";
+			throw new Error("Right isn't at an integer y");
 	}
 
 	private checkSwap(swap: Swap) {
 		//Check we are at a good index
 		if (swap.left.y != (swap.left.y | 0))
-			throw "Left isn't at an integer y";
+			throw new Error("Left isn't at an integer y");
 		if (swap.right.y != (swap.right.y | 0))
-			throw "Right isn't at an integer y";
+			throw new Error("Right isn't at an integer y");
 	}
 }
 
