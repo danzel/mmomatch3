@@ -32,10 +32,14 @@ Please respect other users of the MassiveMatch.io Game and/or Site. Inappropriat
 6.	Engage in antisocial, disruptive, or destructive acts, including "flaming," "spamming," "flooding," "trolling," and "griefing" as those terms are commonly understood and used on the Internet;
 7.	Create or use any server emulators;
 8.	Delete any legal notices, disclaimers, or proprietary notices such as copyright or trademark symbols, or modify any logos that you do not own or have express permission to modify; and
-9.	Upload any names on any airplane that we deem to be offensive or that you are not authorised to use. 
+9.	Use a name that we deem to be offensive or that you are not authorised to use. 
 
 We reserve the right to remove any material, and, if we deem appropriate, to turn over to law enforcement officials, any material that is in violation of these Terms and Conditions. We also reserve the right to remove messages, or postings that do not pertain to the designated topic or theme of the service as determined by us.
 We also reserve the right to comply with any order or otherwise cooperate with law enforcement officials regarding the identification of any user alleged to be using the Site or MassiveMatch.io Game in violation of the law.
+
+- Video Monetization Policy -
+
+You have permission and rights to receive ad money or to monetize your video work on Youtube, TwitchTV or other video channels and mediums.
 
 - Availability -
 We aim to provide a stable and reliable website. However, there may be times when the Site and/or MassiveMatch.io Game are unavailable due to maintenance of the system or technical problems. We may also suspend or permanently remove the Site and/or any MassiveMatch.io Game for any reason without needing your consent or giving prior notice. Viruses -
@@ -52,12 +56,12 @@ We will not be liable for any loss, damage or upset which you suffer as a result
 All IPRs in the Site and MassiveMatch.io Game.
 You may not use any of this content for any purpose or in any manner whatsoever that is not authorised by the copyright owner.
 You may not:
-•	use the MassiveMatch icon, the words MASSIVEMATCHIO or MASSIVEMATCH, or any similar words on your website without the prior written consent of Ironshod;
-•	use the words MASSIVEMATCH, IRONSHOD, or any similar words in the domain name for your website;
-•	use the layout of MassiveMatch's website (www.MassiveMatch.io) on your website; 
-•	link to the MassiveMatch.io site or establish a link in such a way as to suggest any form of association, approval or endorsement on our part where none exists; or
-•	copy any aspect of MassiveMatch.io which includes but is not limited to the gameplay mechanics, graphics and the various themes; or
-•	otherwise infringe any IPRs in the MassiveMatch.io Game and/or the Site.
+-	use the MassiveMatch icon, the words MASSIVEMATCHIO or MASSIVEMATCH, or any similar words on your website without the prior written consent of Ironshod;
+-	use the words MASSIVEMATCH, IRONSHOD, or any similar words in the domain name for your website;
+-	use the layout of MassiveMatch's website (www.MassiveMatch.io) on your website; 
+-	link to the MassiveMatch.io site or establish a link in such a way as to suggest any form of association, approval or endorsement on our part where none exists; or
+-	copy any aspect of MassiveMatch.io which includes but is not limited to the gameplay mechanics, graphics and the various themes; or
+-	otherwise infringe any IPRs in the MassiveMatch.io Game and/or the Site.
 
 All other trademarks used in this website are owned by their respective owners. You may not use any of these trademarks for any purpose or in any manner that is not authorised by its owner. If you breach any of our IPRs, your right to use the Site will cease immediately and we reserve the right to take legal action against you 
 
@@ -73,5 +77,6 @@ YOU AGREE TO ASSUME ALL RISK RELATED TO YOUR USE OF THE SITE AND MassiveMatch.io
 
 - Jurisdiction -
 The laws of New Zealand govern this agreement, without giving effect to conflict of laws provisions. The courts of New Zealand have exclusive jurisdiction over all disputes relating to or arising from the execution or performance of this agreement unless Ironshod wishes to initiate legal proceedings in your home legal district. In all judicial actions, arbitrations, or disputes resolution methods, the parties waive any punitive damages.
+
 Contact us
 For any business or legal enquiries, please email: biz@massivematch.io or legal@massivematch.io. 
