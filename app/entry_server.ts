@@ -17,15 +17,23 @@ class AppEntry {
 
 	constructor(private config: ConfigFile) {
 		let levelDefFactory = new LevelDefFactoryDynamic1();
-		let statePersister = new StatePersister();
-		statePersister.apply(config, levelDefFactory);
+		
+		let statePersister: StatePersister;
+		if (config.server.disableStatePersister) {
+			console.log("State Persister Disabled");
+		} else {
+			statePersister = new StatePersister();
+			statePersister.apply(config, levelDefFactory);
+		}
 
 		let serverComms = new SocketServer(new Serializer(), config.socketServer);
 		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
 
 		new DatadogStats(this.server);
 		new ServerLogger(this.server, serverComms);
-		statePersister.listen(this.server);
+		if (statePersister) {
+			statePersister.listen(this.server);
+		}
 
 		this.server.start();
 	}

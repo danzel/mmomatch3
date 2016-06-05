@@ -150,7 +150,7 @@ class Server {
 
 	private joinReceived(id: string, join: JoinData) {
 		//Version mismatch: Kick them
-		if (this.config.version && this.config.version != join.version) {
+		if (!this.config.skipVersionCheck && this.config.version && this.config.version != join.version) {
 			this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
 			this.serverComms.sendReject(new RejectData('version'), id);
 			this.serverComms.disconnect(id);

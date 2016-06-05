@@ -9,11 +9,13 @@ interface ServerConfig {
 	framesPerTick: number;
 	initialLevel: number;
 
+	skipVersionCheck?: boolean;
 	version: string;
 
 	botsLeaveForPlayers?: boolean;
 	botCount?: number;
 
+	disableStatePersister?: boolean;
 	availability?: Array<AvailabilityRange>;
 }
 
