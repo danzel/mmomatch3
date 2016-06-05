@@ -11,7 +11,7 @@ class SocketClient extends ClientComms {
 	constructor(url: string, private serializer: Serializer) {
 		super();
 		console.log('connecting');
-		this.primus = Primus.connect(url, {
+		this.primus = (this.getPrimus()).connect(url, {
 			//Options?
 		});
 
@@ -22,7 +22,11 @@ class SocketClient extends ClientComms {
 		this.primus.on('close', () => {
 			this.disconnected.trigger();
 		})
-		this.primus.on('data', this.primusDataReceived, this);
+		this.primus.on('data', (data: any) => this.primusDataReceived(data));
+	}
+
+	protected getPrimus(): typeof Primus {
+		return Primus;
 	}
 
 	private primusDataReceived(data: any) {

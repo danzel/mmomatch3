@@ -9,6 +9,7 @@
 	"files": [
 		"typings/phaser/phaser.comments.d.ts",
 		"app/entry_client.ts",
+		"app/entry_headlessclient.ts",
 		"app/entry_server.ts",
 		"app/entry_solo.ts"
 	]
