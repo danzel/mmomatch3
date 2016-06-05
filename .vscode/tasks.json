@@ -4,15 +4,6 @@
 	"isShellCommand": true,
 	"showOutput": "silent",
 	"args": [
-		"app/entry_server.ts",
-		"--outDir",
-		"built_server",
-		"--module",
-		"commonjs",
-		"--target",
-		"es5",
-		"--sourceMap",
-		"--noImplicitAny"
 	],
 	"problemMatcher": "$tsc"
 }
