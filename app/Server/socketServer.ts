@@ -72,7 +72,7 @@ class SocketServer extends ServerComms {
 		this.primus = new Primus(this.httpServer, {
 			pathname: '/sock',
 			authorization: (req: http.IncomingMessage, done: (res?: any) => void) => {
-				if (config.allowedOrigins.indexOf(req.headers.origin) >= 0) {
+				if (!config.allowedOrigins || config.allowedOrigins.indexOf(req.headers.origin) >= 0) {
 					done();
 				} else {
 					this.warning.trigger({ str: 'Websocket from bad origin: ' + req.headers.origin });
