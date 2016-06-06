@@ -58,6 +58,11 @@ class Client {
 		} else if (packet.packetType == PacketType.Boot) {
 			let bootData = <BootData>packet.data;
 
+			/*let asStr = JSON.stringify(packet);
+			console.log('Received Boot, size: ', asStr.length);
+			console.log('Received Boot, first 1000: ', asStr.substr(0, 1000));
+			console.log('Received Boot, last 1000: ', asStr.substr(asStr.length - 1000));*/
+
 			//SEMI-HACK. If Pigs vs Pugs, maybe swap failure/victory based on playerId
 			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && (this.playerId % 2 == 1)) {
 				let temp = bootData.level.failureValue;
@@ -77,6 +82,14 @@ class Client {
 			});
 		} else if (packet.packetType == PacketType.Tick) {
 			let tickData = <TickData>packet.data;
+
+			/*let asStr = JSON.stringify(packet);
+			if (asStr.length > 1000) {
+				console.log('Received Tick, size: ', asStr.length);
+				console.log('Received Tick, first 1000: ', asStr.substr(0, 1000));
+				console.log('Received Tick, last 1000: ', asStr.substr(asStr.length - 1000));
+			}*/
+
 			this.newNamesReceived.trigger(tickData.names);
 			this.tickReceived.trigger(tickData);
 		} else if (packet.packetType == PacketType.Unavailable) {
