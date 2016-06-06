@@ -11,9 +11,7 @@ class SocketClient extends ClientComms {
 	constructor(url: string, private serializer: Serializer) {
 		super();
 		console.log('connecting');
-		this.primus = (this.getPrimus()).connect(url, {
-			//Options?
-		});
+		this.primus = (this.getPrimus()).connect(url, this.getOptions());
 
 		this.primus.on('open', () => {
 			console.log('open');
@@ -25,11 +23,15 @@ class SocketClient extends ClientComms {
 		this.primus.on('data', (data: any) => this.primusDataReceived(data));
 	}
 
+	protected getOptions(): PrimusClientOptions {
+		return {};
+	}
+
 	protected getPrimus(): typeof Primus {
 		return Primus;
 	}
 
-	private primusDataReceived(data: any) {
+	protected primusDataReceived(data: any) {
 		let packet = this.serializer.deserialize(data);
 
 		this.dataReceived.trigger(packet);

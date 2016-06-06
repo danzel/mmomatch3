@@ -1,3 +1,5 @@
+import fs = require('fs');
+
 import Bot = require('./Bot/bot');
 import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
@@ -10,13 +12,30 @@ import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
 import UnavailableData = require('./DataPackets/unavailableData');
 
-let release = '';
+let release = '6db9c79b77a1b4551b20';
 
+let logPackets = true; 
 class NodeSocketClient extends SocketClient {
 	protected getPrimus() {
 		return <any>require('../primus.js');
 	}
-}
+	
+	protected getOptions(): any {
+		return {
+			transport: {
+				origin: 'https://massivematch.io'
+			}
+		};
+	}
+	
+	protected primusDataReceived(data: any) {
+		if (logPackets) {
+			fs.appendFileSync('packets.log', new Date().getTime() + "\n" + JSON.stringify(data) + "\n");
+		}
+		super.primusDataReceived(data);
+	}
+};
+
 class AppEntry {
 	client: Client;
 	playerId: number;
@@ -34,7 +53,7 @@ class AppEntry {
 	connect(nickname: string) {
 		console.log('create');
 
-		let socket = new NodeSocketClient('http://127.0.0.1:8091', new Serializer());
+		let socket = new NodeSocketClient('https://massivematch.io', new Serializer());
 		this.client = new Client(socket, release, nickname);
 		this.client.connectionRejected.on(rejectData => {
 			//One day... rejectData.reason
@@ -85,4 +104,4 @@ class AppEntry {
 	}
 }
 
-new AppEntry(true, 'Bot1');
+new AppEntry(true, '');
