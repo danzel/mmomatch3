@@ -57,16 +57,14 @@ class PacketGenerator {
 	}
 
 	private serializeMatchable(matchable: Matchable): MatchableData {
-		return new MatchableData(
+		return MatchableData.create(
 			matchable.id,
-			matchable.x,
 			matchable.y,
 			matchable.color,
 			matchable.type,
 			matchable.isDisappearing,
 			matchable.disappearingTime,
 			matchable.yMomentum,
-			matchable.beingSwapped,
 			matchable.transformTo,
 			matchable.transformToColor
 		);
@@ -206,7 +204,7 @@ class PacketGenerator {
 		return simulation;
 	}
 
-	private deserializeGrid(grid: Grid, gridData: GridData): any {
+	private deserializeGrid(grid: Grid, gridData: GridData): { [id: number]: Matchable } {
 		let matchableById: { [id: number]: Matchable } = {};
 		let data = gridData.matchables;
 
@@ -218,13 +216,12 @@ class PacketGenerator {
 				let matchableData = dataCol[y];
 
 				//We aren't using the factory here, if we did the id would get out of sync
-				let matchable = new Matchable(matchableData.id, matchableData.x, matchableData.y, matchableData.color, matchableData.type);
-				matchable.isDisappearing = matchableData.isDisappearing;
-				matchable.disappearingTime = matchableData.disappearingTime;
-				matchable.yMomentum = matchableData.yMomentum;
-				matchable.beingSwapped = matchableData.beingSwapped;
-				matchable.transformTo = matchableData.transformTo;
-				matchable.transformToColor = matchableData.transformToColor;
+				let matchable = new Matchable(matchableData[MatchableData.index_id], x, matchableData[MatchableData.index_y], matchableData[MatchableData.index_color], matchableData[MatchableData.index_type]);
+				matchable.isDisappearing = !!matchableData[MatchableData.index_isDisappearing] || false;
+				matchable.disappearingTime = matchableData[MatchableData.index_disappearingTime] || 0;
+				matchable.yMomentum = matchableData[MatchableData.index_yMomentum] || 0;
+				matchable.transformTo = matchableData[MatchableData.index_transformTo] || null;
+				matchable.transformToColor = matchableData[MatchableData.index_transformToColor] || null;
 
 				col.push(matchable);
 				matchableById[matchable.id] = matchable;
@@ -234,12 +231,16 @@ class PacketGenerator {
 		return matchableById;
 	}
 
-	private deserializeSwapHandler(swapHandler: SwapHandler, swapHandlerData: SwapHandlerData, matchableById: any): any {
+	private deserializeSwapHandler(swapHandler: SwapHandler, swapHandlerData: SwapHandlerData, matchableById: { [id: number]: Matchable }): any {
 		let data = swapHandlerData.swaps;
 
 		for (let i = 0; i < data.length; i++) {
 			let s = data[i];
-			let swap = new Swap(s.playerId, matchableById[s.leftId], matchableById[s.rightId]);
+			let left = matchableById[s.leftId];
+			let right = matchableById[s.rightId];
+			left.beingSwapped = true;
+			right.beingSwapped = true;
+			let swap = new Swap(s.playerId, left, right);
 			swap.time = s.time;
 			swap.percent = s.percent;
 			swapHandler.swaps.push(swap);
