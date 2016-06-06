@@ -3,7 +3,9 @@
 	border: none;
 	height: 100%;
 	top: 0;
-	
+	display: flex;
+	flex-direction: column;
+
 	font-size: 18px;
 }
 
@@ -13,17 +15,22 @@
 	padding-bottom: 20px;
 	background-color: #8FB863;
 	border-bottom: 5px solid #6382B8;
+	flex: 0 1 auto;
 }
 #welcome .top .wrap {
 	width: 400px;
 	margin: 0 auto;
 }
 #welcome .mid {
+	overflow-y: auto;
+	flex: 1 1 auto;
+}
+#welcome .whatisit {
 	margin: 6px auto;
 }
 #welcome .bottom {
 	width: 100%;
-	height: 100%;
+	margin-bottom: 90px;
 }
 #welcome .left, #welcome .right  {
 	display: inline-block;
@@ -32,8 +39,14 @@
 	vertical-align: top;
 	padding-top: 12px;
 }
-#welcome .news, #welcome p {
+#welcome .news {
 	max-width: 440px;
+	margin: 10px auto 30px auto;
+}
+#welcome p, #welcome .news ul {
+	margin: 10px auto;
+}
+#welcome .ad {
 	margin: 10px auto;
 }
 #welcome .logo {
