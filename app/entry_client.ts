@@ -48,6 +48,13 @@ class AppEntry {
 		console.log("preload");
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		//This method doesn't shrink height when window shrinks, so replace it
+		this.game.scale.getParentBounds = function(target?: Phaser.Rectangle) {
+			target = target || new Phaser.Rectangle(0, 0, 0, 0);
+			
+			target.setTo(0, 0, document.body.clientWidth, document.body.clientHeight);
+			return target;
+		}
 		this.game.stage.backgroundColor = 0x273348;
 
 		GraphicsLoader.load(this.game);
