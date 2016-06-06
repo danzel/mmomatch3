@@ -17,10 +17,11 @@ class ClientSpawnManager extends SpawnManager {
 		for (let i = 0; i < this.spawns.length; i++) {
 			var spawn = this.spawns[i];
 			
-			let y = this.findYForColumn(this.grid.cells[spawn.x]);
-			let matchable = this.matchableFactory.create(spawn.x, y, spawn.color, spawn.type);
+			let x = spawn[SpawnData.index_x];
+			let y = this.findYForColumn(this.grid.cells[x]);
+			let matchable = this.matchableFactory.create(x, y, spawn[SpawnData.index_color], spawn[SpawnData.index_type]);
 
-			this.grid.cells[spawn.x].push(matchable);
+			this.grid.cells[x].push(matchable);
 			this.matchableSpawned.trigger(matchable);
 		}
 		
