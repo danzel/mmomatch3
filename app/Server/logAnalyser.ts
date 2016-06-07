@@ -2,6 +2,8 @@
 import fs = require('fs');
 import util = require('util');
 
+import GameEndType = require('../Simulation/Levels/gameEndType');
+
 interface LogData {
 	levelNumber: number;
 	playerCount: number;
@@ -18,7 +20,7 @@ interface LogData {
 	extra?: any;
 
 	//End only
-	victory?: boolean;
+	victory?: GameEndType;
 	swapsUsed?: number;
 	timeUsed?: number;
 }
@@ -32,7 +34,7 @@ class LogAnalyser {
 
 	analyse() {
 		let jsonBuffer = '';
-		let lines = fs.readFileSync('oce.log', 'UTF8').split(/\n+/);
+		let lines = fs.readFileSync('../../serverlogs.log', 'UTF8').split(/\n+/);
 		lines.forEach(line => {
 			if (line[0] == '2') {
 				if (jsonBuffer.length > 0) {
@@ -57,8 +59,12 @@ class LogAnalyser {
 		} else if (this.start && this.start.levelNumber == data.levelNumber) {
 			let victoryValue = this.safeValue(this.start.victoryValue);
 			let failureValue = this.safeValue(this.start.failureValue);
+			
+			if (this.start.levelNumber < 10) {
+				return;
+			}
 
-			this.result += util.format('%d,%d,%d,%d,%d,%s,%s,%s,%s,%s,%d,%d', this.start.levelNumber, this.start.playerCount, this.start.width, this.start.height, this.start.colorCount, this.start.failureType, failureValue, this.start.victoryType, victoryValue, data.victory ? "true" : "false", data.swapsUsed, data.timeUsed) + "\r\n";
+			this.result += util.format('%d,%d,%d,%d,%d,%s,%s,%s,%s,%s,%d,%d', this.start.levelNumber, this.start.playerCount, this.start.width, this.start.height, this.start.colorCount, this.start.failureType, failureValue, this.start.victoryType, victoryValue, GameEndType[data.victory], data.swapsUsed, data.timeUsed) + "\r\n";
 		}
 		//let data = <LogData>JSON.parse(json);
 		//console.log('decoded ' + data.levelNumber);
