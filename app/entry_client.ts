@@ -172,6 +172,13 @@ if (runningOnLive) {
 		release
 	}).install();
 }
+function start() {
+	if (document.readyState == 'complete') {
+		new AppEntry();
+	} else {
+		document.onreadystatechange = start;
+	}
+}
 if (GoodBrowser) {
 	if ((<any>window).WebFont) {
 		WebFont.load({
@@ -180,16 +187,12 @@ if (GoodBrowser) {
 			},
 			classes: false,
 
-			active: function () {
-				new AppEntry();
-			},
-			inactive: function () {
-				new AppEntry();
-			}
+			active: start,
+			inactive: start
 		});
 	} else {
 		console.warn('Couldnt load WebFont, this might go badly');
-		new AppEntry();
+		start();
 	}
 } else {
 	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
