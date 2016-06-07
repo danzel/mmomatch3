@@ -97,13 +97,28 @@ class SimulationRenderer {
 	}
 
 	private keepOnScreen() {
-		let maxOffscreenX = this.group.game.width / 2;
-		let maxOffscreenY = this.group.game.height / 2;
-		this.group.x = Math.min(this.group.game.width - maxOffscreenX, this.group.x);
-		this.group.x = Math.max(this.group.x, -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + maxOffscreenX)
+		let maxOffscreenX = this.group.game.width - MatchableNode.PositionScalar;
+		let maxOffscreenY = this.group.game.height - MatchableNode.PositionScalar;
 
-		this.group.y = Math.min(this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - maxOffscreenY, this.group.y);
-		this.group.y = Math.max(maxOffscreenY, this.group.y);
+		let leftX = this.group.game.width - maxOffscreenX;
+		let rightX = -this.simulation.grid.width * MatchableNode.PositionScalar * this.scale + maxOffscreenX;
+		//Simulation won't fit, just center it
+		if (rightX > leftX) {
+			this.group.x = (this.group.game.width - this.simulation.grid.width * MatchableNode.PositionScalar * this.scale) / 2;
+		} else {
+			this.group.x = Math.min(leftX, this.group.x);
+			this.group.x = Math.max(this.group.x, rightX);
+		}
+
+		let topY = this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale - maxOffscreenY
+		let bottomY = maxOffscreenY;
+		//Simulation won't fit, just center it
+		if (topY < bottomY) {
+			this.group.y = (this.group.game.height + this.simulation.grid.height * MatchableNode.PositionScalar * this.scale) / 2;
+		} else {
+			this.group.y = Math.min(topY, this.group.y);
+			this.group.y = Math.max(maxOffscreenY, this.group.y);
+		}
 	}
 
 	getPosition(): XY {
@@ -163,7 +178,7 @@ class SimulationRenderer {
 		let keyboard = this.group.game.input.keyboard;
 		let moveAmount = 1000 * dt;
 		let anyKeyDown = false;
-		
+
 		if (this.left.some(k => keyboard.isDown(k))) {
 			this.group.x += moveAmount;
 			anyKeyDown = true;
@@ -180,7 +195,7 @@ class SimulationRenderer {
 			this.group.y -= moveAmount;
 			anyKeyDown = true;
 		}
-		
+
 		if (anyKeyDown) {
 			this.keepOnScreen();
 		}
