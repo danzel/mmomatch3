@@ -12,10 +12,9 @@
 #welcome .top {
 	width: 100%;
 	padding-top: 24px;
-	padding-bottom: 20px;
 	background-color: #8FB863;
 	border-bottom: 5px solid #6382B8;
-	flex: 0 1 auto;
+	flex: 0 0 auto;
 }
 #welcome .top .wrap {
 	width: 400px;
