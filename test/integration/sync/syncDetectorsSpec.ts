@@ -19,7 +19,7 @@ import ScoreDetector = require('../../../app/Simulation/Levels/Detectors/scoreDe
 import SwapsDetector = require('../../../app/Simulation/Levels/Detectors/swapsDetector');
 import TimeDetector = require('../../../app/Simulation/Levels/Detectors/timeDetector');
 
-let serverConfig = { fps: 2, framesPerTick: 2, initialLevel: 1 };
+let serverConfig = { fps: 2, framesPerTick: 2, initialLevel: 1, version: null };
 
 describe('SyncDetectors', () => {
 	it('correctly syncs MatchesDetector', () => {
