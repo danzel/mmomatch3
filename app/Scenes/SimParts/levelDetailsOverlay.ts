@@ -13,6 +13,7 @@ var pig = require('file?name=pig.png?[hash:6]!../../../img/skin/emojione-animals
 var pug = require('file?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
 var pug = require('file?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
 var cage = require('file?name=cage.png?[hash:6]!../../../img/skin/emojione-animals/requirematch.png');
+var gettobottom = require('file?name=gettobottom.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottom.png');
 
 class LevelDetailsOverlay {
 	becameClosed = new LiteEvent<void>();
@@ -27,7 +28,8 @@ class LevelDetailsOverlay {
 			failureText: this.failureDetector.getDetailsText(),
 			pig,
 			pug,
-			cage
+			cage,
+			gettobottom
 		};
 
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {

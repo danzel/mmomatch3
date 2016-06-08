@@ -12,9 +12,18 @@
 <p>
 	<div class="mid-text b3">{{victoryText}}</div>
 	{{#if requirematch}}
-	<div class="group">
-		<img class="matchable" src="{{pig}}" />
-		<img class="matchable over" src="{{cage}}" />
+	<div class="matchable-container">
+		<div class="group">
+			<img class="matchable" src="{{pig}}" />
+			<img class="matchable over" src="{{cage}}" />
+		</div>
+	</div>
+	{{/if}}
+	{{#if getthingstobottom}}
+	<div class="matchable-container mid-text b3">
+		&#x2193;
+		<img class="matchable" src="{{gettobottom}}" />
+		&#x2193;
 	</div>
 	{{/if}}
 	<div class="mid-text b3">{{failureText}}</div>
