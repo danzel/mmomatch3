@@ -9,7 +9,9 @@ enum MatchType {
 	
 	AreaClear3x3,
 
-	ColorClear
+	ColorClear,
+	
+	GetToBottom
 }
 
 export = MatchType;

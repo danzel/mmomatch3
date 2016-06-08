@@ -14,7 +14,6 @@ class GetToBottomHighlighter {
 		let t = parentGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', 'gettobottom_repeat.png', parentGroup);
 		t.alpha = 0.5;
 		t.tilePosition.y = 20;
-		this.tile = t;
 		parentGroup.sendToBack(t);
 		this.tile = t;
 
@@ -47,6 +46,7 @@ class GetToBottomHighlighter {
 		if (this.matchable.y == 0) {
 			this.tween1.repeat(0);
 			this.tween2.repeat(0);
+			this.tile.visible = false;
 		}
 	}
 }

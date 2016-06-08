@@ -257,8 +257,7 @@ describe('SyncDetectors', () => {
 
 		serverComms.getAllSimulations().forEach((sim) => {
 			TestUtil.expectGridQuiet(sim);
-			TestUtil.expectGridSize(sim.grid, [4, 4, 1, 4, 1]);
-			expect(sim.grid.cells[2][0].type).toBe(Type.GetToBottom);
+			TestUtil.expectGridSize(sim.grid, [4, 4, 0, 4, 0]);
 		});
 
 		let gameEndDetectors = serverComms.getAllGameEndDetectors();

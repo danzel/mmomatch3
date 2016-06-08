@@ -6,7 +6,7 @@ import Type = require('./type');
 class MatchDetails {
 	horizontal: boolean;
 	vertical: boolean;
-	
+
 	constructor(horizontal: boolean, vertical: boolean) {
 		this.horizontal = horizontal;
 		this.vertical = vertical;
@@ -15,30 +15,35 @@ class MatchDetails {
 
 class MatchChecker {
 	public static MinimumSizeToMatch = 3;
-	
+
 	constructor(private grid: Grid) {
 	}
 
 	/** Returns null if there is no match */
 	testForMatch(matchable: Matchable): MatchDetails {
-		
+
 		//Horizontal Test
 		let xSame = 1;
 		this.scanLeft(matchable, () => xSame++);
 		this.scanRight(matchable, () => xSame++);
-		
+
 		//Vertical Test
 		let ySame = 1;
 		this.scanDown(matchable, () => ySame++);
 		this.scanUp(matchable, () => ySame++);
-		
+
 		if (xSame >= MatchChecker.MinimumSizeToMatch || ySame >= MatchChecker.MinimumSizeToMatch) {
 			return new MatchDetails(xSame >= MatchChecker.MinimumSizeToMatch, ySame >= MatchChecker.MinimumSizeToMatch);
 		}
-		
+
+		//Special Case: Matchable is a robot at the bottom
+		if (matchable.y == 0 && matchable.type == Type.GetToBottom) {
+			return new MatchDetails(false, false);
+		}
+
 		return null;
 	}
-	
+
 	matchableIsAbleToSwap(matchable: Matchable) {
 		if (matchable.isDisappearing)
 			return false;
@@ -48,7 +53,7 @@ class MatchChecker {
 			return false;
 		return true;
 	}
-	
+
 	/** Not moving, disappearing, being swapped */
 	matchableIsAbleToMatch(matchable: Matchable) {
 		if (!this.matchableIsAbleToSwap(matchable))
@@ -61,12 +66,12 @@ class MatchChecker {
 	private matches(a: Matchable, b: Matchable): boolean {
 		if (!a || !b)
 			return false;
-			
+
 		if (a.color == Color.None || b.color == Color.None)
 			return false;
 		if (a.color != b.color)
 			return false;
-			
+
 		if (!this.matchableIsAbleToMatch(a))
 			return false;
 		if (!this.matchableIsAbleToMatch(b))
@@ -74,7 +79,7 @@ class MatchChecker {
 
 		return true;
 	}
-	
+
 	scanLeft(matchable: Matchable, action: (matchable: Matchable) => void) {
 		for (let x = matchable.x - 1; x >= 0; x--) {
 			let other = this.grid.findMatchableAtPosition(x, matchable.y);

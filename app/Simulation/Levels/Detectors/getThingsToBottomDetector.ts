@@ -12,51 +12,42 @@ class GetThingsToBottomDetector extends Detector {
 		super(GameEndType.LevelVictory);
 		this.amount = totalAmount;
 
-		simulation.physics.matchableLanded.on(matchable => this.checkMatchable(matchable));
-		simulation.swapHandler.swapOccurred.on(swap => this.swapOccurred(swap));
+		simulation.spawnManager.matchableSpawned.on(matchable => this.matchableSpawned(matchable));
+		simulation.disappearer.matchableDisappeared.on(matchable => this.checkMatchable(matchable));
 	}
 
-	private checkMatchable(matchable: Matchable): boolean {
-		if (matchable.type == Type.GetToBottom && matchable.y == 0) {
-			this.checkBottom();
+	private matchableSpawned(matchable: Matchable) {
+		if (matchable.type == Type.GetToBottom) {
+			this.amount++;
+			this.valueChanged.trigger();
+		}
+	}
+
+	private checkMatchable(matchable: Matchable) {
+		if (matchable.type == Type.GetToBottom) {
+			this.amount--;
+			this.valueChanged.trigger();
+			if (this.amount == 0) {
+				this.detected.trigger();
+			}
 			return true;
 		}
 		return false;
 	}
 
-	private swapOccurred(swap: Swap) {
-		if (!this.checkMatchable(swap.left)) {
-			this.checkMatchable(swap.right);
-		}
-	}
-
-	checkBottom(): void {
-		let newAmount = this.totalAmount;
-		for (var x = 0; x < this.simulation.grid.width; x++) {
-			let bottom = this.simulation.grid.cells[x][0];
-			if (bottom && bottom.type == Type.GetToBottom && bottom.y == 0 && !bottom.beingSwapped) {
-				newAmount--;
-			}
-		}
-
-		if (this.amount != newAmount) {
-			this.amount = newAmount;
-			this.valueChanged.trigger();
-			if (this.amount == 0) {
-				this.detected.trigger();
-			}
-		}
-	}
-
 	update() {
-		this.amount = this.totalAmount;
+		this.amount = 0;
+		let anyOnGrid = false;
 
-		for (let x = 0; x < this.simulation.grid.width; x++) {
-			let col = this.simulation.grid.cells[x];
-			let m = col[0];
-			if (m && m.yMomentum == 0) {
-				this.checkMatchable(m);
+		this.simulation.grid.cells.forEach(col => col.forEach(m => {
+			anyOnGrid = true;
+			if (m.type == Type.GetToBottom) {
+				this.amount++;
 			}
+		}));
+		
+		if (anyOnGrid && this.amount == 0) {
+			this.detected.trigger();
 		}
 	}
 

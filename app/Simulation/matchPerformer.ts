@@ -8,6 +8,7 @@ import Physics = require('./physics');
 import SpecialMatchPerformer = require('./specialMatchPerformer');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
+import Type = require('./type');
 
 class MatchPerformer {
 	private matchChecker: MatchChecker;
@@ -73,6 +74,9 @@ class MatchPerformer {
 
 		if (horizontal && vertical) {
 			matchType = MatchType.NormalCross;
+		}
+		if (matched.length == 1 && matchable.type == Type.GetToBottom) {
+			matchType = MatchType.GetToBottom;
 		}
 
 		matchable.isDisappearing = true;
