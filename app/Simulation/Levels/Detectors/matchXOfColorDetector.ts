@@ -33,8 +33,12 @@ class MatchXOfColorDetector extends Detector {
 		return "Don't " + res;
 	}
 	
+	isPugs(): boolean {
+		return this.config.color == 3; 
+	}
+	
 	getColorText(): string {
-		return (this.config.color == 3 ? "Pugs" : "Pigs")
+		return (this.isPugs() ? "Pugs" : "Pigs")
 	}
 }
 

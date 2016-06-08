@@ -20,3 +20,17 @@
 	font-size: 22px;
 }
 
+.level-details-overlay .matchable {
+	height: 49px;
+}
+
+.level-details-overlay .group {
+	position: relative;
+	display: inline-block;
+    vertical-align: bottom;
+}
+.level-details-overlay .over {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}

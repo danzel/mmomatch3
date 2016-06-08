@@ -5,9 +5,10 @@ import LiteEvent = require('../../liteEvent');
 import MatchXOfColorDetector = require('../../Simulation/Levels/Detectors/matchXOfColorDetector');
 import TouchCatchAll = require('../../Renderer/Components/touchCatchAll');
 
-declare function require(filename: string): (data: {}) => string;
 var template = <(data: {}) => string>require('./levelDetailsOverlay.handlebars');
 require('./levelDetailsOverlay.css');
+var pig = require('file?name=pig.png?[hash:6]!../../../img/skin/emojione-animals/balls/6.png');
+var pug = require('file?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
 
 class LevelDetailsOverlay {
 	becameClosed = new LiteEvent<void>();
@@ -19,13 +20,16 @@ class LevelDetailsOverlay {
 			width: this.level.width,
 			height: this.level.height,
 			victoryText: this.victoryDetector.getDetailsText(),
-			failureText: this.failureDetector.getDetailsText()
+			failureText: this.failureDetector.getDetailsText(),
+			pig,
+			pug
 		};
 
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {
 			(<any>details).pigsvspugs = true;
-			(<any>details).yours = victoryDetector.getColorText();
-			(<any>details).notyours = failureDetector.getColorText()
+			(<any>details).yourstext = victoryDetector.getColorText();
+			(<any>details).yours = victoryDetector.isPugs() ? pug : pig;
+			(<any>details).notyours = victoryDetector.isPugs() ? pig : pug
 		}
 
 		htmlOverlayManager.showOverlay({
