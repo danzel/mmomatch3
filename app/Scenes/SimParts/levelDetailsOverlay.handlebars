@@ -11,6 +11,12 @@
 {{else}}
 <p>
 	<div class="mid-text b3">{{victoryText}}</div>
+	{{#if requirematch}}
+	<div class="group">
+		<img class="matchable" src="{{pig}}" />
+		<img class="matchable over" src="{{cage}}" />
+	</div>
+	{{/if}}
 	<div class="mid-text b3">{{failureText}}</div>
 </p>
 {{/if}}
