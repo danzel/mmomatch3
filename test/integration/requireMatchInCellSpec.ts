@@ -12,7 +12,7 @@ describe('RequireMatchInCell', () => {
 			['1121']
 		);
 
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1 });
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null });
 		server.start();
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(0, 0, 1));
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(1, 0, 1));
