@@ -5,22 +5,18 @@ import VictoryType = require('./victoryType');
 
 
 class LevelDefFactoryDebug implements LevelDefFactory {
-	debugLevel = true;
-
 	getLevel(levelNumber: number): LevelDef {
-		if (this.debugLevel) {
-			return new LevelDef(levelNumber, 100, 40, [], 8, FailureType.Time, VictoryType.RequireMatch, 10, [{ x: 4, y: 4, amount: 1 }, { x: 7, y: 4, amount: 1 }]);
-		}
-
-		if (levelNumber % 3 == 1) {
-			return new LevelDef(levelNumber, 50, 25, [], 8, FailureType.Time, VictoryType.Score, 180, 200 * 1000);
-		}
-		if (levelNumber % 3 == 2) {
-			return new LevelDef(levelNumber, 30, 30, [], 8, FailureType.Swaps, VictoryType.Score, 100, 60 * 1000);
-		}
-		if (levelNumber % 3 == 0) {
-			return new LevelDef(levelNumber, 20, 50, [], 8, FailureType.Time, VictoryType.Score, 180, 200 * 1000);
-		}
+		
+		//Pigs vs Pugs (Pigs)
+		//return new LevelDef(levelNumber, 12, 12, [], 6, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, { color: 3, amount: 3 }, { color: 5, amount: 3 });
+		//Pigs vs Pugs (Pugs)
+		//return new LevelDef(levelNumber, 12, 12, [], 6, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, { color: 5, amount: 3 }, { color: 3, amount: 3 });
+		
+		//GetThingsToBottom	
+		//return new LevelDef(levelNumber, 12, 4, [], 4, FailureType.Time, VictoryType.GetThingsToBottom, 100, [4, 5, 8, 10]);
+		
+		//Require Match
+		return new LevelDef(levelNumber, 20, 20, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{ x: 4, y: 4, amount: 1 }, { x: 7, y: 4, amount: 1 }]);
 	}
 }
 
