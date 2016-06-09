@@ -35,6 +35,7 @@ class LevelDetailsOverlay {
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {
 			(<any>details).pigsvspugs = true;
 			(<any>details).yourstext = victoryDetector.getColorText();
+			(<any>details).notyourstext = failureDetector.getColorText();
 			(<any>details).yours = victoryDetector.isPugs() ? pug : pig;
 			(<any>details).notyours = victoryDetector.isPugs() ? pig : pug
 		}
