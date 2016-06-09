@@ -22,6 +22,7 @@ import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
 
 let runningOnLive = (window.location.host == window.location.hostname); //Checks we are on standard port (no :8080)
 let release = '';
+let lastUpdateFailed = false;
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
@@ -49,9 +50,9 @@ class AppEntry {
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		//This method doesn't shrink height when window shrinks, so replace it
-		this.game.scale.getParentBounds = function(target?: Phaser.Rectangle) {
+		this.game.scale.getParentBounds = function (target?: Phaser.Rectangle) {
 			target = target || new Phaser.Rectangle(0, 0, 0, 0);
-			
+
 			target.setTo(0, 0, document.body.clientWidth, document.body.clientHeight);
 			return target;
 		}
@@ -141,15 +142,18 @@ class AppEntry {
 	}
 
 	update() {
-		if (this.simulationHandler) {
-			if (!this.simulationHandler.update()) {
-				return;
-			}
+		if (!this.simulationHandler) {
+			return;
 		}
 
-		if (this.scene) {
-			this.scene.update();
+		//Cludgy poor mans try catch without a try catch
+		lastUpdateFailed = true;
+		{
+			if (this.simulationHandler.update()) {
+				this.scene.update();
+			}
 		}
+		lastUpdateFailed = false;
 	}
 
 	preRender() {
@@ -169,7 +173,20 @@ for (var i = 0; i < scripts.length; i++) {
 }
 if (runningOnLive) {
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
-		release
+		release,
+		//Refresh the page after a simulation breaking error occurs
+		dataCallback: function (data) {
+			if (lastUpdateFailed) {
+				setTimeout(function () {
+					alert('Sorry, something broke. An error has been reported.\nRefreshing the page');
+					setTimeout(function () {
+						window.location.reload(true);
+					}, 1000);
+				}, 3000)
+			}
+
+			return data;
+		},
 	}).install();
 }
 function start() {
