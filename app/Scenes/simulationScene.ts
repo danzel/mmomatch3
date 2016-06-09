@@ -9,7 +9,7 @@ import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
-import MatchableNode = require('../Renderer/matchableNode');
+import MatchableRenderer = require('../Renderer/matchableRenderer');
 import PlayerCountRenderer = require('../Renderer/playerCountRenderer');
 import PlayersOnSimulation = require('../Renderer/playersOnSimulation');
 import PointsEarnedDisplay = require('./SimParts/pointsEarnedDisplay');
@@ -83,8 +83,8 @@ class SimulationScene {
 	private zoomToRandomLocation() {
 		//Assume the SimulationRenderer just fit to screen (which it will have)
 		//Calculate where the grid is
-		let width = this.renderer.getScale() * this.simulation.grid.width * MatchableNode.PositionScalar;
-		let height = this.renderer.getScale() * this.simulation.grid.height * MatchableNode.PositionScalar;
+		let width = this.renderer.getScale() * this.simulation.grid.width * MatchableRenderer.PositionScalar;
+		let height = this.renderer.getScale() * this.simulation.grid.height * MatchableRenderer.PositionScalar;
 
 		let minX = (this.group.game.width - width) / 2;
 		let minY = (this.group.game.height - height) / 2;
