@@ -37,6 +37,8 @@ import UnavailableData = require('../DataPackets/unavailableData');
 class Server {
 	levelStarted = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
 	warning = new LiteEvent<{ str: string, data?: any }>();
+	playerJoined = new LiteEvent<Player>();
+	playerLeft = new LiteEvent<Player>();
 
 	private availabilityManager: AvailabilityManager;
 	private packetGenerator: PacketGenerator = new PacketGenerator();
@@ -121,6 +123,7 @@ class Server {
 	private connectionDisconnected(id: string) {
 		console.log('disconnection', id);
 		if (this.clients[id]) {
+			this.playerLeft.trigger(this.clients[id]);
 			this.clientsWhoLeftThisLevel.push(this.clients[id]);
 			delete this.clients[id];
 		} else {
@@ -162,6 +165,7 @@ class Server {
 		}
 
 		var player = this.playerProvider.createPlayer(id, join.playerName);
+		this.playerJoined.trigger(player);
 
 		let names: { [id: number]: string } = {};
 		for (var key in this.clients) {
