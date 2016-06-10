@@ -192,6 +192,17 @@ if (runningOnLive) {
 function start() {
 	if (document.readyState == 'complete') {
 		new AppEntry();
+
+		[
+			'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6',
+			'https://platform.twitter.com/widgets.js',
+			'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+		].forEach(url => {
+			let ele = document.createElement('script');
+			ele.async = true;
+			ele.src = url;
+			document.body.appendChild(ele);
+		})
 	} else {
 		document.onreadystatechange = start;
 	}
