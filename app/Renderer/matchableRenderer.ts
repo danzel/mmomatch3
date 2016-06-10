@@ -27,7 +27,7 @@ class MatchableRenderer {
 		}
 	}
 	
-	private getSprite(): Phaser.Image {
+	private getSprite(frameName: string): Phaser.Image {
 		let sprite: Phaser.Image;
 		if (this.spriteIndex == this.sprites.length) {
 			sprite = this.group.game.add.image(0, 0, 'atlas', null, this.group);
@@ -35,10 +35,29 @@ class MatchableRenderer {
 			sprite.anchor = new Phaser.Point(0.5, 0.5);
 			this.sprites.push(sprite);
 		} else {
+			//Find a sprite with the same frame
+			let found = false;
+			for (let i = this.spriteIndex; i < this.sprites.length; i++) {
+				if (this.sprites[i].animations.frameName == frameName) {
+					if (i != this.spriteIndex) {
+						let temp = this.sprites[this.spriteIndex];
+						this.sprites[this.spriteIndex] = this.sprites[i];
+						this.sprites[i] = temp;
+
+						this.group.swapChildren(this.sprites[this.spriteIndex], this.sprites[i])
+					}
+					found = true;
+					break;
+				}
+			}
+
 			sprite = this.sprites[this.spriteIndex];
 			sprite.renderable = true;
 			sprite.scale.x = 1;
 			sprite.scale.y = 1;
+			if (!found) {
+				sprite.frameName = frameName;
+			}
 			this.spriteIndex++;
 		}
 		
@@ -49,9 +68,7 @@ class MatchableRenderer {
 		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear3x3WhenMatched;
 	}
 	render(matchable: Matchable, swap: Swap): void {
-		let sprite = this.getSprite();
-		
-		sprite.frameName = MatchableRenderer.getSpriteFrame(matchable.color, matchable.type);
+		let sprite = this.getSprite(MatchableRenderer.getSpriteFrame(matchable.color, matchable.type));
 		
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
 		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
@@ -82,8 +99,7 @@ class MatchableRenderer {
 			if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
 				this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
 			} else 	if (matchable.transformTo == Type.ColorClearWhenSwapped) {
-				let overlay = this.getSprite();
-				overlay.frameName = 'balls/colorclear.png';
+				let overlay = this.getSprite('balls/colorclear.png');
 				overlay.position.x = sprite.position.x;
 				overlay.position.y = sprite.position.y;
 				overlay.alpha = 1 - sprite.alpha;
@@ -129,8 +145,7 @@ class MatchableRenderer {
 				throw new Error("Don't know how to renderOverlay for type " + Type[type])
 		}
 
-		let overlay = this.getSprite();
-		overlay.frameName = frame;
+		let overlay = this.getSprite(frame);
 		overlay.position.x = sprite.position.x;
 		overlay.position.y = sprite.position.y;
 		overlay.alpha = alpha;
