@@ -16,12 +16,8 @@ class ScoreRenderer {
 		fontSize: this.fontSize,
 		strokeThickness: 6
 	};
-	myScoreTextStyle = <Phaser.PhaserTextStyle>{
-		fill: 'yellow',
-		font: 'Chewy',
-		fontSize: this.fontSize,
-		strokeThickness: 6
-	};
+	defaultFill = 'white';
+	myScoreFill = 'yellow';
 
 	scoreGroup: Phaser.Group;
 	scoreText: Array<Phaser.Text> = [];
@@ -37,7 +33,11 @@ class ScoreRenderer {
 		this.scoreGroup = new Phaser.Group(group.game, group);
 
 		for (let i = 0; i < 6; i++) {
-			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 10 + (this.fontSize + 2) * (i + 1), "", this.textStyle);
+			//Copy'ish' the object, if we had ES6 we could Object.assign
+			// http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+			let textStyle = Object.create(this.textStyle);
+
+			let text = new Phaser.Text(this.scoreGroup.game, 2, 4 + 10 + (this.fontSize + 2) * (i + 1), "", textStyle);
 			this.scoreGroup.add(text);
 			this.scoreText.push(text);
 		}
@@ -77,19 +77,18 @@ class ScoreRenderer {
 			let val = array[i];
 
 			let text = this.scoreText[i];
-			let style = (this.playerId == val.playerId) ? this.myScoreTextStyle : this.textStyle;
-			text.setStyle(style)
+			let fill = (this.playerId == val.playerId) ? this.myScoreFill : this.defaultFill;
 			var spaces = i == 0 ? ".  " : ". ";
-			text.text = (i + 1) + spaces + this.nameOf(val.playerId)  + ": " + val.points;
 			
 			if (!isInFirst6 && i == 4) {
 				text.text = "...";
-			}
-			if (!isInFirst6 && i == 5) {
-				text.setStyle(this.myScoreTextStyle);
-				
+			} else if (!isInFirst6 && i == 5) {
 				text.text = (playerPosition + 1) + ". " + this.nameOf(this.playerId) + ": " + (this.scoreTracker.points[this.playerId] || 0);
+				fill = this.myScoreFill;
+			} else {
+				text.text = (i + 1) + spaces + this.nameOf(val.playerId)  + ": " + val.points;
 			}
+			text.fill = fill;
 		}
 	}
 	
