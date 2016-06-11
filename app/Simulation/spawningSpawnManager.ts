@@ -72,8 +72,6 @@ class SpawningSpawnManager extends SpawnManager {
 			let left1 = this.grid.findMatchableAtPosition(x - 1, y);
 			let left2 = this.grid.findMatchableAtPosition(x - 2, y);
 
-			console.log(!!left1, !!left2);
-
 			if (left1 && left2 && left1.color == left2.color) {
 				bannedColors.push(left1.color);
 			}

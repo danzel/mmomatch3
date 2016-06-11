@@ -22,7 +22,7 @@ class MatchDragHandler {
 		let selected = this.findMatchableIndex(pointer.x, pointer.y)
 
 		if (selected) {
-			console.log(selected.x, selected.y);
+			//console.log(selected.x, selected.y / MagicNumbers.matchableYScale);
 
 			this.startDragMatchable[pointer.id] = selected;
 		}

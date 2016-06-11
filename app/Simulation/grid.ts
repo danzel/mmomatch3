@@ -84,6 +84,7 @@ class Grid {
 	}
 
 	isHole(x: number, y: number): boolean {
+		y /= MagicNumbers.matchableYScale;
 		if (y >= this.height) {
 			console.warn("y >= this.height", y, this.height);
 			return false;
