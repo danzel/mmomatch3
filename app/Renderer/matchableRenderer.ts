@@ -2,6 +2,7 @@ import Color = require('../Simulation/color');
 import FailedToSwapState = require('./failedToSwapState');
 import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
+import MatchableRendererSprites = require('./matchableRendererSprites');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
 import Type = require('../Simulation/type');
@@ -13,64 +14,26 @@ const yOffset = positionScalar / 2;
 class MatchableRenderer {
 	public static PositionScalar = positionScalar;
 	
-	private sprites = new Array<Phaser.Image>();
-	private spriteIndex = 0;
+	sprites: MatchableRendererSprites;
 
 	constructor(private group : Phaser.SpriteBatch, private failedToSwapState: FailedToSwapState) {
+		this.sprites = new MatchableRendererSprites(group);
 	}
 	
 	begin(): void {
-		this.spriteIndex = 0;
+		this.sprites.begin();
 	}
 	
 	end(): void {
-		for (let i = this.spriteIndex; i < this.sprites.length; i++) {
-			this.sprites[i].visible = false;
-		}
+		this.sprites.end();
 	}
 	
-	private getSprite(frameName: string): Phaser.Image {
-		let sprite: Phaser.Image;
-		if (this.spriteIndex == this.sprites.length) {
-			sprite = this.group.game.add.image(0, 0, 'atlas', null, this.group);
-			
-			sprite.anchor = new Phaser.Point(0.5, 0.5);
-			this.sprites.push(sprite);
-		} else {
-			//Find a sprite with the same frame
-			let found = false;
-			for (let i = this.spriteIndex; i < this.sprites.length; i++) {
-				if (this.sprites[i].animations.frameName == frameName) {
-					if (i != this.spriteIndex) {
-						let temp = this.sprites[this.spriteIndex];
-						this.sprites[this.spriteIndex] = this.sprites[i];
-						this.sprites[i] = temp;
-
-						this.group.swapChildren(this.sprites[this.spriteIndex], this.sprites[i])
-					}
-					found = true;
-					break;
-				}
-			}
-
-			sprite = this.sprites[this.spriteIndex];
-			sprite.visible = true;
-			sprite.scale.x = 1;
-			sprite.scale.y = 1;
-			if (!found) {
-				sprite.frameName = frameName;
-			}
-			this.spriteIndex++;
-		}
-		
-		return sprite;
-	}
 	
 	private static typeHasOverlay(type: Type): boolean {
 		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear3x3WhenMatched;
 	}
 	render(matchable: Matchable, swap: Swap): void {
-		let sprite = this.getSprite(MatchableRenderer.getSpriteFrame(matchable.color, matchable.type));
+		let sprite = this.sprites.getSprite(matchable.color, matchable.type);
 		
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
 		sprite.y = - (matchable.y / MagicNumbers.matchableYScale) * MatchableRenderer.PositionScalar - yOffset;
@@ -101,23 +64,12 @@ class MatchableRenderer {
 			if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
 				this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
 			} else 	if (matchable.transformTo == Type.ColorClearWhenSwapped) {
-				let overlay = this.getSprite('balls/colorclear.png');
+				let overlay = this.sprites.getSprite(Color.None, Type.ColorClearWhenSwapped);
 				overlay.position.x = sprite.position.x;
 				overlay.position.y = sprite.position.y;
 				overlay.alpha = 1 - sprite.alpha;
 			}
 		}
-	}
-
-	static getSpriteFrame(color: Color, type: Type): string {
-		if (type == Type.GetToBottom) {
-			return "balls/gettobottom.png";
-		}
-		if (type == Type.ColorClearWhenSwapped) {
-			return 'balls/colorclear.png';
-		}
-
-		return 'balls/' + (color + 1) + ".png";
 	}
 
 	private updatePositionForSwap(matchable: Matchable, sprite: Phaser.Image, swap: Swap) {
@@ -133,7 +85,7 @@ class MatchableRenderer {
 	}
 
 	private renderOverlay(matchable: Matchable, type: Type, sprite: Phaser.Image, alpha: number) {
-
+/*
 		let frame: string;
 		switch (type) {
 			case Type.VerticalClearWhenMatched:
@@ -155,7 +107,7 @@ class MatchableRenderer {
 		overlay.alpha = alpha;
 		
 		
-		overlay.scale.set(1 - 0.05 * this.bounce(2000));
+		overlay.scale.set(1 - 0.05 * this.bounce(2000));*/
 	}
 	
 	private bounce(period: number): number {
