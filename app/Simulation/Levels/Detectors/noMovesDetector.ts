@@ -5,6 +5,8 @@ import Simulation = require('../../simulation');
 class NoMovesDetector extends Detector {
 	hasTriggered = false;
 
+	haveRanSinceQuiet = false;
+
 	constructor(private simulation: Simulation) {
 		super(GameEndType.NoMovesFailure);
 
@@ -18,10 +20,15 @@ class NoMovesDetector extends Detector {
 			return;
 		}
 		if (this.simulation.quietColumnDetector.gridIsQuiet) {
-			if (!this.gridHasValidMove()) {
-				this.hasTriggered = true;
-				this.detected.trigger();
+			if (!this.haveRanSinceQuiet) {
+				if (!this.gridHasValidMove()) {
+					this.hasTriggered = true;
+					this.detected.trigger();
+				}
+				this.haveRanSinceQuiet = true;
 			}
+		} else {
+			this.haveRanSinceQuiet = false;
 		}
 	}
 
