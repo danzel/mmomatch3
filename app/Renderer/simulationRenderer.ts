@@ -19,7 +19,7 @@ class SimulationRenderer {
 
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
-		
+
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
 		let matchablesOverlay = group.game.add.group(this.group);
 		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
@@ -30,7 +30,7 @@ class SimulationRenderer {
 		this.group.y = 400;
 
 		this.addDebugOverlay();
-			}
+	}
 
 	fitToBounds(width: number, height: number) {
 		this.scale = this.scaleClamp(Math.min(width / this.simulation.grid.width, height / this.simulation.grid.height) / MatchableRenderer.PositionScalar);
@@ -174,6 +174,8 @@ class SimulationRenderer {
 
 		this.matchableRenderer.begin();
 
+		var swaps = this.simulation.swapHandler.swaps;
+
 		//First render those not swapping, then those swapping
 		//Seperately because no good was to look up swaps in the swapHandler
 		let cells = this.simulation.grid.cells;
@@ -184,19 +186,17 @@ class SimulationRenderer {
 				if (!m.beingSwapped) {
 					this.matchableRenderer.render(m, null);
 				} else {
-					//TODO: Find the swap in here rather than below as MatchableById lookup is slow and the list of swaps should be small
-					
+					for (let s = 0; s < swaps.length; s++) {
+						let swap = swaps[s];
+						if (swap.left == m || swap.right == m) {
+							this.matchableRenderer.render(m, swap);
+							break;
+						}
+					}
+				}
 			}
 		}
-		}
-		var swaps = this.simulation.swapHandler.swaps;
-		for (let i = 0; i < swaps.length; i++) {
-			var swap = swaps[i];
 
-			this.matchableRenderer.render(this.simulation.grid.findMatchableById(swap.left.id), swap);
-			this.matchableRenderer.render(this.simulation.grid.findMatchableById(swap.right.id), swap);
-		}
-		
 		this.matchableRenderer.end();
 
 		this.failedToSwapState.update(dt);
