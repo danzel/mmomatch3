@@ -12,7 +12,7 @@ class Disappearer {
 		this.grid = grid;
 	}
 
-	update(dt: number) {
+	update() {
 		let count = 0;
 		for (let x = 0; x < this.grid.width; x++) {
 			let col = this.grid.cells[x];

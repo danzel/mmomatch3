@@ -90,7 +90,7 @@ class QuietColumnDetector {
 		this.columnsNeedingCheck.push(matchable.x);
 	}
 
-	lateUpdate(dt: number) {
+	lateUpdate() {
 		let oneBecameQuiet = false;
 
 		for (let i = 0; i < this.columnsNeedingCheck.length; i++) {

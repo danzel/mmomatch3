@@ -66,13 +66,13 @@ class Simulation {
 
 	update() {
 		//console.log('run', dt);
-		this.physics.updateMovement(this.dt);
-		this.disappearer.update(this.dt);
-		this.swapHandler.update(this.dt);
-		this.spawnManager.update(this.dt);
-		this.physics.updateMomentum(this.dt);
+		this.physics.updateMovement();
+		this.disappearer.update();
+		this.swapHandler.update();
+		this.spawnManager.update();
+		this.physics.updateMomentum();
 
-		this.quietColumnDetector.lateUpdate(this.dt);
+		this.quietColumnDetector.lateUpdate();
 
 		this.framesElapsed++;
 

@@ -10,7 +10,7 @@ class ClientSpawnManager extends SpawnManager {
 		this.spawns = spawns;
 	}
 
-	update(dt: number) {
+	update() {
 		if (!this.spawns)
 			return;
 			

@@ -30,7 +30,7 @@ class SwapHandler {
 		this.swapStarted.trigger(swap);
 	}
 
-	update(dt: number) {
+	update() {
 		for (let i = this.swaps.length - 1; i >= 0; i--) {
 			var swap = this.swaps[i];
 

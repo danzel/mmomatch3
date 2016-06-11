@@ -17,7 +17,7 @@ class SpawningSpawnManager extends SpawnManager {
 		super(grid, matchableFactory);
 	}
 
-	update(dt: number) {
+	update() {
 		if (this.isInitialSpawn) {
 			this.doInitialSpawn();
 			this.isInitialSpawn = false;

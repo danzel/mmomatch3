@@ -14,9 +14,9 @@ class Physics {
 		this.boundSubUpdateMovement = this.subUpdateMovement.bind(this);
 	}
 
-	updateMovement(dt: number) {
+	updateMovement() {
 		this.landed.length = 0;
-		this.update(dt, this.boundSubUpdateMovement);
+		this.update(this.boundSubUpdateMovement);
 		
 		for (let i = 0; i < this.landed.length; i++) {
 			this.matchableLanded.trigger(this.landed[i]);
@@ -40,20 +40,20 @@ class Physics {
 		}
 	}
 
-	updateMomentum(dt: number) {
-		this.update(dt, this.subUpdateMomentum);
+	updateMomentum() {
+		this.update(this.subUpdateMomentum);
 	}
 
 	private subUpdateMomentum(matchable: Matchable, maxY: number, above: Matchable) {
 		matchable.yMomentum += 16;
 	}
 	
-	private update(dt: number, callback: (matchable: Matchable, maxY: number, above: Matchable) => void) {
+	private update(callback: (matchable: Matchable, maxY: number, above: Matchable) => void) {
 		for (let x = 0; x < this.grid.width; x++) {
 			var col = this.grid.cells[x];
 			let holesBelow = 0;
 			for (let y = 0; y < col.length; y++) {
-				while (this.grid.isHole(x, y + holesBelow)) {
+				while (this.grid.isHole(x, (y + holesBelow) * MagicNumbers.matchableYScale)) {
 					holesBelow++;
 				}
 

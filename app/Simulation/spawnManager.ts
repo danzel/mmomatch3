@@ -15,7 +15,7 @@ abstract class SpawnManager {
 		this.matchableFactory = matchableFactory;
 	}
 
-	abstract update(dt: number): void;
+	abstract update(): void;
 
 	protected findYForColumn(column: Array<Matchable>): number {
 		let y = this.grid.height * MagicNumbers.matchableYScale;
