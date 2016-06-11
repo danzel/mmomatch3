@@ -4,7 +4,7 @@ import Matchable = require('./matchable');
 import Swap = require('./swap');
 
 class SwapHandler {
-	public static TimeToSwap = 0.2;
+	public static TicksToSwap = 12;
 
 	swapStarted = new LiteEvent<Swap>();
 	swapOccurred = new LiteEvent<Swap>();
@@ -34,9 +34,8 @@ class SwapHandler {
 		for (let i = this.swaps.length - 1; i >= 0; i--) {
 			var swap = this.swaps[i];
 
-			swap.time += dt;
-			swap.percent = swap.time / SwapHandler.TimeToSwap
-			if (swap.percent >= 1) {
+			swap.ticks++;
+			if (swap.ticks >= SwapHandler.TicksToSwap) {
 				let left = swap.left;
 				let right = swap.right;
 

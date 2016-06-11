@@ -7,8 +7,7 @@ class Swap {
 	left: Matchable;
 	right: Matchable
 	
-	time: number;
-	percent: number;
+	ticks: number;
 	
 	constructor(playerId: number, left: Matchable, right: Matchable) {
 		this.playerId = playerId;
@@ -16,7 +15,7 @@ class Swap {
 		this.left = left;
 		this.right = right;
 
-		this.time = 0;
+		this.ticks = 0;
 	}
 }
 

@@ -6,6 +6,7 @@ import NeverSpawnManager = require('../../util/neverSpawnManager');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import OwnedMatch = require('../../../app/Simulation/Scoring/ownedMatch');
 import Simulation = require('../../../app/Simulation/simulation');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
 //TODO: We'll need to handle swaps made over a hole, meaning one drops down (and then gets matched)
@@ -23,8 +24,9 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		simulation.update();
-		simulation.update();
+		for (let i = 0; i < SwapHandler.TicksToSwap + 1; i++) {
+			simulation.update();
+		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyNoRemainingMatches();
@@ -44,7 +46,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
-		for (let i = 0; i < 3; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap * 2; i++) {
 			simulation.update();
 		}
 
@@ -64,7 +66,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 3; i++) {
 			simulation.update();
 		}
 
@@ -89,7 +91,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 3; i++) {
 			simulation.update();
 		}
 

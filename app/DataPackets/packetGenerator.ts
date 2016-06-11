@@ -76,7 +76,7 @@ class PacketGenerator {
 		for (let i = 0; i < swapHandler.swaps.length; i++) {
 			let swap = swapHandler.swaps[i];
 
-			res.push(new SwapData(swap.playerId, swap.left.id, swap.right.id, swap.time, swap.percent)); //TODO: percent (or time) can be calculated
+			res.push(new SwapData(swap.playerId, swap.left.id, swap.right.id, swap.ticks));
 		}
 		return new SwapHandlerData(res, swapHandler.totalSwapsCount);
 	}
@@ -241,8 +241,7 @@ class PacketGenerator {
 			left.beingSwapped = true;
 			right.beingSwapped = true;
 			let swap = new Swap(s.playerId, left, right);
-			swap.time = s.time;
-			swap.percent = s.percent;
+			swap.ticks = s.ticks;
 			swapHandler.swaps.push(swap);
 		}
 

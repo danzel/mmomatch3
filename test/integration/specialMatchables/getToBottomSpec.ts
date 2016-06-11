@@ -2,6 +2,7 @@
 import Color = require('../../../app/Simulation/color');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import ScoreEarnedChecker = require('../../util/scoreEarnedChecker');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
 
@@ -21,7 +22,7 @@ describe('SpecialMatchables.GetToBottom', () => {
 
 		//Swap to drop it to the bottom
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
 		}
 

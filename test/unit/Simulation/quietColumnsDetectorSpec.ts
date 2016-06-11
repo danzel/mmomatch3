@@ -1,4 +1,5 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
 
@@ -19,7 +20,9 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
 
-		simulation.update();
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
+			simulation.update();
+		}
 
 		//At this stage the swap should be done and the match started
 		expect(quietColumns).toContain(1);
@@ -54,7 +57,9 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][1]);
 
-		simulation.update();
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
+			simulation.update();
+		}
 
 		//At this stage the swap should be done and the match started
 		expect(quietColumns).toContain(1);

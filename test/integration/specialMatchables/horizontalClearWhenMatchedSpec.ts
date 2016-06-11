@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import ScoreEarnedChecker = require('../../util/scoreEarnedChecker');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
 
@@ -22,7 +23,7 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
 		}
 
@@ -40,7 +41,7 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		
 		//Now swap to match the HorizontalClearWhenMatched
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
 		}
 		

@@ -1,4 +1,5 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
 let playerId = 87;
@@ -24,7 +25,7 @@ describe('SpecialMatchables.Unclearable', () => {
 		]);
 		
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 1; i++) {
 			simulation.update();
 		}
 		

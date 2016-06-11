@@ -5,6 +5,7 @@ import GameEndType = require('../../../app/Simulation/Levels/gameEndType');
 import LevelDef = require('../../../app/Simulation/Levels/levelDef');
 import Server = require('../../../app/Server/server');
 import Simulation = require('../../../app/Simulation/simulation');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestLASProvider = require('../../util/testLASProvider');
 import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
@@ -39,9 +40,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -71,9 +71,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -103,9 +102,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 4; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -135,9 +133,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < 10; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -167,9 +164,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -201,9 +197,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 4; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -241,16 +236,14 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[1][0].id, simulation.grid.cells[2][0].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		//Swap and do a combo that makes the other stack disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[3][0].id, simulation.grid.cells[4][0].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();
@@ -286,9 +279,8 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 4; i++) {
 			serverComms.addClient();
-			serverComms.update();
 			serverComms.update();
 		}
 		serverComms.flushClients();

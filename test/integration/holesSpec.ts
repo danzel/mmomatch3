@@ -8,6 +8,7 @@ import Physics = require('../../app/Simulation/physics');
 import RandomGenerator = require('../../app/Simulation/randomGenerator');
 import Simulation = require('../../app/Simulation/simulation');
 import SpawningSpawnManager = require('../../app/Simulation/spawningSpawnManager');
+import SwapHandler = require('../../app/Simulation/swapHandler');
 import Type = require('../../app/Simulation/type');
 import TestUtil = require('../util/util');
 
@@ -146,9 +147,9 @@ describe('Holes', () => {
 		let right = simulation.grid.cells[3][1];
 		expect(inputVerifier.swapIsValid(left, right)).toBe(true);
 		simulation.swapHandler.swap(0, left, right);
-		simulation.update();
-		simulation.update();
-		simulation.update();
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
+			simulation.update();
+		}
 
 		ownershipChecker.verifyMatch(3, [0]);
 		ownershipChecker.verifyNoRemainingMatches();

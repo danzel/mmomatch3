@@ -6,6 +6,7 @@ import NeverSpawnManager = require('../../util/neverSpawnManager');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import OwnedMatch = require('../../../app/Simulation/Scoring/ownedMatch');
 import Simulation = require('../../../app/Simulation/simulation');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
 let playerId1 = 99;
@@ -23,8 +24,9 @@ describe('ComboOwnership.simpleMultipleOwner', () => {
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[5][0], simulation.grid.cells[6][0]);
-		simulation.update();
-		simulation.update();
+		for (let i = 0; i < SwapHandler.TicksToSwap * 3; i++) {
+			simulation.update();
+		}
 
 		//It is fluke that these happen in this order
 		ownershipChecker.verifyMatch(3, [playerId2]);

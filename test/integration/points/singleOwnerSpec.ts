@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import PointsScoreTracker = require('../../../app/Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
+import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
 let playerId1 = 99;
@@ -14,8 +15,9 @@ describe('Points.singleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < 4; i++)
+		for (let i = 0; i < SwapHandler.TicksToSwap + 3; i++) {
 			simulation.update();
+		}
 
 		let points =
 			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
@@ -34,11 +36,13 @@ describe('Points.singleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < 3; i++)
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
+		}
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[4][0], simulation.grid.cells[4][1]);
-		for (let i = 0; i < 3; i++)
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
+		}
 
 		let points =
 			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +
@@ -58,8 +62,9 @@ describe('Points.singleOwner', () => {
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[4][0], simulation.grid.cells[4][1]);
-		for (let i = 0; i < 3; i++)
+		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
 			simulation.update();
+		}
 
 		let points =
 			1 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 3 +

@@ -2,6 +2,7 @@ import Color = require('../Simulation/color');
 import FailedToSwapState = require('./failedToSwapState');
 import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
+import SwapHandler = require('../Simulation/swapHandler');
 import Type = require('../Simulation/type');
 
 const positionScalar = 100;
@@ -124,8 +125,9 @@ class MatchableRenderer {
 		var diffX = otherMatchable.x - matchable.x;
 		var diffY = otherMatchable.y - matchable.y;
 
-		sprite.position.x += diffX * swap.percent * MatchableRenderer.PositionScalar;
-		sprite.position.y -= diffY * swap.percent * MatchableRenderer.PositionScalar;
+		let percent = swap.ticks / SwapHandler.TicksToSwap;
+		sprite.position.x += diffX * percent * MatchableRenderer.PositionScalar;
+		sprite.position.y -= diffY * percent * MatchableRenderer.PositionScalar;
 	}
 
 	private renderOverlay(matchable: Matchable, type: Type, sprite: Phaser.Image, alpha: number) {
