@@ -25,7 +25,7 @@ class MatchableRenderer {
 	
 	end(): void {
 		for (let i = this.spriteIndex; i < this.sprites.length; i++) {
-			this.sprites[i].renderable = false;
+			this.sprites[i].visible = false;
 		}
 	}
 	
@@ -54,7 +54,7 @@ class MatchableRenderer {
 			}
 
 			sprite = this.sprites[this.spriteIndex];
-			sprite.renderable = true;
+			sprite.visible = true;
 			sprite.scale.x = 1;
 			sprite.scale.y = 1;
 			if (!found) {
