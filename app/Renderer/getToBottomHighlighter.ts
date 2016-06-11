@@ -37,9 +37,9 @@ class GetToBottomHighlighter {
 				}
 
 				let tile = this.tiles[index];
-				tile.renderable = true;
+				tile.visible = true;
 				let highlighter = this.highlighters[index];
-				highlighter.renderable = true;
+				highlighter.visible = true;
 				index++;
 
 				//Use them
@@ -55,8 +55,8 @@ class GetToBottomHighlighter {
 		}
 
 		for (; index < this.tiles.length; index++) {
-			this.tiles[index].renderable = false;
-			this.highlighters[index].renderable = false;
+			this.tiles[index].visible = false;
+			this.highlighters[index].visible = false;
 		}
 	}
 }
