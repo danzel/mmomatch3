@@ -16,8 +16,8 @@ class MatchableRenderer {
 	
 	sprites: MatchableRendererSprites;
 
-	constructor(private group : Phaser.SpriteBatch, private failedToSwapState: FailedToSwapState) {
-		this.sprites = new MatchableRendererSprites(group);
+	constructor(private group : Phaser.SpriteBatch, overlayGroup: Phaser.Group, private failedToSwapState: FailedToSwapState) {
+		this.sprites = new MatchableRendererSprites(group, overlayGroup);
 	}
 	
 	begin(): void {
@@ -32,6 +32,7 @@ class MatchableRenderer {
 	private static typeHasOverlay(type: Type): boolean {
 		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear3x3WhenMatched;
 	}
+
 	render(matchable: Matchable, swap: Swap): void {
 		let sprite = this.sprites.getSprite(matchable.color, matchable.type);
 		
@@ -85,7 +86,6 @@ class MatchableRenderer {
 	}
 
 	private renderOverlay(matchable: Matchable, type: Type, sprite: Phaser.Image, alpha: number) {
-/*
 		let frame: string;
 		switch (type) {
 			case Type.VerticalClearWhenMatched:
@@ -101,13 +101,13 @@ class MatchableRenderer {
 				throw new Error("Don't know how to renderOverlay for type " + Type[type])
 		}
 
-		let overlay = this.getSprite(frame);
+		let overlay = this.sprites.getOverlaySprite();
+		overlay.frameName = frame;
 		overlay.position.x = sprite.position.x;
 		overlay.position.y = sprite.position.y;
 		overlay.alpha = alpha;
 		
-		
-		overlay.scale.set(1 - 0.05 * this.bounce(2000));*/
+		overlay.scale.set(1 - 0.05 * this.bounce(2000));
 	}
 	
 	private bounce(period: number): number {

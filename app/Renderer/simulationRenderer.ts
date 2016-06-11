@@ -12,7 +12,6 @@ interface XY {
 }
 
 class SimulationRenderer {
-	private matchablesGroup: Phaser.SpriteBatch;
 	private getToBottomHighlighter: GetToBottomHighlighter;
 	private failedToSwapState = new FailedToSwapState();
 
@@ -21,8 +20,9 @@ class SimulationRenderer {
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
 		
-		this.matchablesGroup = group.game.add.spriteBatch(this.group);
-		this.matchableRenderer = new MatchableRenderer(this.matchablesGroup, this.failedToSwapState);
+		let matchablesGroup = group.game.add.spriteBatch(this.group);
+		let matchablesOverlay = group.game.add.group(this.group);
+		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
 
 		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, group.game.add.group(group));
 

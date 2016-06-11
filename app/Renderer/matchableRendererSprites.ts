@@ -6,7 +6,10 @@ class MatchableRendererSprites {
 	private sprites: Array<Array<Phaser.Image>> = [];
 	private spriteIndexes: Array<number> = [];
 
-	constructor(private group: Phaser.SpriteBatch) {
+	private overlayIndex = 0;
+	private overlaySprites = new Array<Phaser.Image>();
+
+	constructor(private group: Phaser.SpriteBatch, private overlayGroup: Phaser.Group) {
 		for (let i = 0; i < Color.Max; i++) {
 			this.spriteKeys.push('balls/' + (i + 1) + ".png")
 		}
@@ -20,19 +23,24 @@ class MatchableRendererSprites {
 	}
 
 	begin(): void {
-		//this.spriteIndex = 0;
-		for (var i = 0; i < this.spriteIndexes.length; i++) {
+		for (let i = 0; i < this.spriteIndexes.length; i++) {
 			this.spriteIndexes[i] = 0;
 		}
-		//this.loops = 0;
+
+		this.overlayIndex = 0;
 	}
 
 	end(): void {
-		for (var k = 0; k < this.spriteIndexes.length; k++) {
+		for (let k = 0; k < this.spriteIndexes.length; k++) {
 			let sprites = this.sprites[k];
 			for (let i = this.spriteIndexes[k]; i < sprites.length; i++) {
 				sprites[i].visible = false;
 			}
+		}
+
+		let overlaySprites = this.overlaySprites;
+		for (let i = this.overlayIndex; i < overlaySprites.length; i++) {
+			overlaySprites[i].visible = false;
 		}
 	}
 
@@ -68,6 +76,26 @@ class MatchableRendererSprites {
 			return Color.Max + 1;
 		}
 		return color;
+	}
+
+	getOverlaySprite(): Phaser.Image {
+		let sprite: Phaser.Image;
+		if (this.overlayIndex == this.overlaySprites.length) {
+			sprite = this.group.game.add.image(0, 0, 'atlas', null, this.overlayGroup);
+
+			sprite.anchor = new Phaser.Point(0.5, 0.5);
+			this.overlaySprites.push(sprite);
+		} else {
+			sprite = this.overlaySprites[this.overlayIndex];
+			this.overlayIndex++;
+
+			sprite.visible = true;
+			sprite.scale.x = 1;
+			sprite.scale.y = 1;
+		}
+
+		return sprite;
+
 	}
 };
 
