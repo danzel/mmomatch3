@@ -1,6 +1,7 @@
 ///<reference path="../../typings/jasmine/jasmine.d.ts"/>
 import Grid = require('../../app/Simulation/grid');
 import InputVerifier = require('../../app/Simulation/inputVerifier');
+import MagicNumbers = require('../../app/Simulation/magicNumbers');
 import Matchable = require('../../app/Simulation/matchable');
 import MatchableFactory = require('../../app/Simulation/matchableFactory');
 import OwnershipMatchChecker = require('../util/ownershipMatchChecker');
@@ -21,7 +22,7 @@ describe('Holes', () => {
 		grid.setHole(0, 0);
 
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 4);
-		spawnManager.update(1);
+		spawnManager.update();
 
 		expect(grid.cells[0].length).toBe(2);
 		expect(grid.cells[1].length).toBe(3);
@@ -33,13 +34,15 @@ describe('Holes', () => {
 		grid.setHole(0, 0);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 2, 0, Type.Normal);
+		let matchable = new Matchable(1, 0, 2 * MagicNumbers.matchableYScale, 0, Type.Normal);
 		grid.cells[0].push(matchable);
 
-		physics.updateMomentum(10);
-		physics.updateMovement(10);
+		for (let i = 0; i < 11; i++) {
+			physics.updateMomentum();
+			physics.updateMovement();
+		}
 
-		expect(matchable.y).toBe(1);
+		expect(matchable.y).toBe(MagicNumbers.matchableYScale);
 		expect(matchable.yMomentum).toBe(0);
 	});
 
@@ -48,11 +51,13 @@ describe('Holes', () => {
 		grid.setHole(0, 1);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 4, 0, Type.Normal);
+		let matchable = new Matchable(1, 0, 4 * MagicNumbers.matchableYScale, 0, Type.Normal);
 		grid.cells[0].push(matchable);
 
-		physics.updateMomentum(10);
-		physics.updateMovement(10);
+		for (let i = 0; i < 22; i++) {
+			physics.updateMomentum();
+			physics.updateMovement();
+		}
 
 		expect(matchable.y).toBe(0);
 		expect(matchable.yMomentum).toBe(0);
@@ -63,18 +68,20 @@ describe('Holes', () => {
 		grid.setHole(0, 1);
 
 		let physics = new Physics(grid);
-		let matchable = new Matchable(1, 0, 4, 0, Type.Normal);
+		let matchable = new Matchable(1, 0, 4 * MagicNumbers.matchableYScale, 0, Type.Normal);
 		grid.cells[0].push(matchable);
-		let matchable2 = new Matchable(2, 0, 5, 0, Type.Normal);
+		let matchable2 = new Matchable(2, 0, 5 * MagicNumbers.matchableYScale, 0, Type.Normal);
 		grid.cells[0].push(matchable2);
 
-		physics.updateMomentum(10);
-		physics.updateMovement(10);
+		for (let i = 0; i < 22; i++) {
+			physics.updateMomentum();
+			physics.updateMovement();
+		}
 
 		expect(matchable.y).toBe(0);
 		expect(matchable.yMomentum).toBe(0);
 
-		expect(matchable2.y).toBe(2);
+		expect(matchable2.y).toBe(2 * MagicNumbers.matchableYScale);
 		expect(matchable2.yMomentum).toBe(0);
 	});
 
@@ -179,7 +186,7 @@ describe('Holes', () => {
 		let grid = new Grid(1, 7);
 		grid.setHole(0, 2);
 		grid.setHole(0, 5);
-		
+
 		// 4 6
 		// X 5
 		// 3 4
@@ -187,7 +194,7 @@ describe('Holes', () => {
 		// X 2
 		// 1 1
 		// 0 0
-		
+
 		let matchableFactory = new MatchableFactory();
 		let randomGenerator = new RandomGenerator(1);
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 5);
@@ -195,15 +202,15 @@ describe('Holes', () => {
 
 		simulation.matchPerformer.matchPerformed.on(() => { throw new Error("No match should be performed") });
 
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 31; i++) {
 			simulation.update();
 		}
 
-		expect(grid.cells[0][0].y).toBe(0);
-		expect(grid.cells[0][1].y).toBe(1);
-		expect(grid.cells[0][2].y).toBe(3);
-		expect(grid.cells[0][3].y).toBe(4);
-		expect(grid.cells[0][4].y).toBe(6);
+		expect(grid.cells[0][0].y).toBe(0 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][1].y).toBe(1 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][2].y).toBe(3 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][3].y).toBe(4 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][4].y).toBe(6 * MagicNumbers.matchableYScale);
 	});
 
 	it('makes matchables fall correctly when there are multiple holes in the same column in a row', () => {
@@ -211,7 +218,7 @@ describe('Holes', () => {
 		grid.setHole(0, 2);
 		grid.setHole(0, 3);
 		grid.setHole(0, 4);
-		
+
 		// 3 6
 		// 2 5
 		// X 4
@@ -219,7 +226,7 @@ describe('Holes', () => {
 		// X 2
 		// 1 1
 		// 0 0
-		
+
 		let matchableFactory = new MatchableFactory();
 		let randomGenerator = new RandomGenerator(1);
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, randomGenerator, 5);
@@ -227,13 +234,13 @@ describe('Holes', () => {
 
 		simulation.matchPerformer.matchPerformed.on(() => { throw new Error("No match should be performed") });
 
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 31; i++) {
 			simulation.update();
 		}
 
-		expect(grid.cells[0][0].y).toBe(0);
-		expect(grid.cells[0][1].y).toBe(1);
-		expect(grid.cells[0][2].y).toBe(5);
-		expect(grid.cells[0][3].y).toBe(6);
+		expect(grid.cells[0][0].y).toBe(0 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][1].y).toBe(1 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][2].y).toBe(5 * MagicNumbers.matchableYScale);
+		expect(grid.cells[0][3].y).toBe(6 * MagicNumbers.matchableYScale);
 	});
 });

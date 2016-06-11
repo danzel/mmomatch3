@@ -25,7 +25,7 @@ describe('Sync', () => {
 		serverComms.update();
 
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < 74; i++) {
+		for (let i = 0; i < 80; i++) {
 			serverComms.addClient();
 			serverComms.update();
 
@@ -45,13 +45,13 @@ describe('Sync', () => {
 			2 * (<PointsScoreTracker>(simulation.scoreTracker)).pointsPerMatchable * 4;
 
 		let simulations = serverComms.getAllSimulations();
-		expect(simulations.length).toBe(76); //server + 1 + 74
+		expect(simulations.length).toBe(82); //server + 1 + 80
 
 		for (let i = 0; i < simulations.length; i++) {
 			let sim = simulations[i];
 			expect(sim.scoreTracker.points[1]).toBe(points);
 
-			expect(sim.framesElapsed).toBe(80);
+			expect(sim.framesElapsed).toBe(86);
 			TestUtil.expectGridSize(sim.grid, [1, 0, 1, 1, 1]);
 			TestUtil.expectGridQuiet(sim);
 			TestUtil.expectQuietDetectorIsSane(sim);

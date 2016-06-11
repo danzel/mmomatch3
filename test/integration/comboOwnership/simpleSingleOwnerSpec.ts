@@ -47,7 +47,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 19; i++) {
 			simulation.update();
 		}
 
@@ -67,7 +67,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 21; i++) {
 			simulation.update();
 		}
 
@@ -92,7 +92,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 3; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 3 + 28; i++) {
 			simulation.update();
 		}
 

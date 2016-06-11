@@ -29,7 +29,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][2], simulation.grid.cells[1][2]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 16; i++) {
 			simulation.update();
 		}
 
@@ -51,7 +51,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		//Now swap with a 2 to clear them all
 		expect(simulation.inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][0])).toBe(true);
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 16; i++) {
 			simulation.update();
 		}
 

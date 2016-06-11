@@ -25,20 +25,20 @@ describe('ComboOwnership.stopOwning', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 11; i++) {
 			simulation.update();
 		}
 
 		//At this stage everything should have stopped moving, so ownership from the first match should be cleared
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
 			simulation.update();
 		}
 
 		ownershipChecker.verifyMatch(3, [playerId1]);
 		ownershipChecker.verifyMatch(3, [playerId2]);
 
-		ownershipChecker.verifyNoRemainingMatches()
+		ownershipChecker.verifyNoRemainingMatches();
 	});
 
     it('stops ownership when half the swap doesnt match', () => {
@@ -54,7 +54,7 @@ describe('ComboOwnership.stopOwning', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]); //1
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 11; i++) {
 			simulation.update();
 		}
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][1], simulation.grid.cells[3][1]); //2

@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import InputVerifier = require('../../../app/Simulation/inputVerifier');
 import Grid = require('../../../app/Simulation/grid');
+import MagicNumbers = require('../../../app/Simulation/magicNumbers');
 import Matchable = require('../../../app/Simulation/matchable');
 import MatchChecker = require('../../../app/Simulation/matchChecker');
 import TestUtil = require('../../util/util');
@@ -25,15 +26,15 @@ describe('InputVerifier', () => {
 
     it('Can swap two vertical neighbours', () => {
 		init();
-		var up = new Matchable(1, 2, 0, 0, Type.Normal);
-		var down = new Matchable(1, 2, 1, 0, Type.Normal);
-		expectValidSwap(up, down, true);
+		var a = new Matchable(1, 2, 0, 0, Type.Normal);
+		var b = new Matchable(1, 2, MagicNumbers.matchableYScale, 0, Type.Normal);
+		expectValidSwap(a, b, true);
     });
 
     it('Cannot swap two diagonal neighbours', () => {
 		init();
 		var a = new Matchable(1, 2, 0, 0, Type.Normal);
-		var b = new Matchable(1, 3, 1, 0, Type.Normal);
+		var b = new Matchable(1, 3, MagicNumbers.matchableYScale, 0, Type.Normal);
 		expectValidSwap(a, b, false);
     });
 

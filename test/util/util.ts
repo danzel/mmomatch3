@@ -3,6 +3,7 @@ import Color = require('../../app/Simulation/color');
 import FailureType = require('../../app/Simulation/Levels/failureType');
 import Grid = require('../../app/Simulation/grid');
 import LevelDef = require('../../app/Simulation/Levels/levelDef');
+import MagicNumbers = require('../../app/Simulation/magicNumbers');
 import Matchable = require('../../app/Simulation/matchable');
 import MatchableFactory = require('../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('./neverSpawnManager');
@@ -49,7 +50,7 @@ class TestUtil {
 						specialColors = specialColors.substring(1);
 					}
 
-					grid.cells[x].push(new Matchable(idCounter, x, y, color, type));
+					grid.cells[x].push(new Matchable(idCounter, x, y * MagicNumbers.matchableYScale, color, type));
 					idCounter++;
 				}
 			}

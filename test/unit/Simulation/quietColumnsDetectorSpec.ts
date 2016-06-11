@@ -60,7 +60,7 @@ describe('QuietColumnsDetector', () => {
 
 		simulation.swapHandler.swap(99, simulation.grid.cells[0][0], simulation.grid.cells[1][1]);
 
-		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + 21; i++) {
 			simulation.update();
 		}
 

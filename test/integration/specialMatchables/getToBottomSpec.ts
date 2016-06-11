@@ -23,7 +23,7 @@ describe('SpecialMatchables.GetToBottom', () => {
 
 		//Swap to drop it to the bottom
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap+ Matchable.TicksToDisappear * 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap+ Matchable.TicksToDisappear * 2 + 18; i++) {
 			simulation.update();
 		}
 

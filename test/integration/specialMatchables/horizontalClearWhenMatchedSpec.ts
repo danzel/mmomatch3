@@ -24,7 +24,7 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][1], simulation.grid.cells[1][1]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 11; i++) {
 			simulation.update();
 		}
 
@@ -42,7 +42,7 @@ describe('SpecialMatchables.HorizontalClearWhenMatched', () => {
 		
 		//Now swap to match the HorizontalClearWhenMatched
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 11; i++) {
 			simulation.update();
 		}
 		
