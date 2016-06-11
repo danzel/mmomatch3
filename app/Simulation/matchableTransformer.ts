@@ -63,7 +63,7 @@ class MatchableTransformer {
 		//When there is 5 we should always get the one in the middle?
 
 		let closest: Matchable;
-		let closestDist: number = 9999;
+		let closestDist: number = Number.MAX_VALUE;
 
 		for (let i = 0; i < matchables.length; i++) {
 			let m = matchables[i];

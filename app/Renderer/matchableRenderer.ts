@@ -1,5 +1,6 @@
 import Color = require('../Simulation/color');
 import FailedToSwapState = require('./failedToSwapState');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
@@ -72,7 +73,7 @@ class MatchableRenderer {
 		let sprite = this.getSprite(MatchableRenderer.getSpriteFrame(matchable.color, matchable.type));
 		
 		sprite.x = matchable.x * MatchableRenderer.PositionScalar + xOffset;
-		sprite.y = - matchable.y * MatchableRenderer.PositionScalar - yOffset;
+		sprite.y = - (matchable.y / MagicNumbers.matchableYScale) * MatchableRenderer.PositionScalar - yOffset;
 		if (swap) {
 			this.updatePositionForSwap(matchable, sprite, swap);
 		}
@@ -124,6 +125,7 @@ class MatchableRenderer {
 
 		var diffX = otherMatchable.x - matchable.x;
 		var diffY = otherMatchable.y - matchable.y;
+		diffY = diffY == 0 ? 0 : diffY / Math.abs(diffY);
 
 		let percent = swap.ticks / SwapHandler.TicksToSwap;
 		sprite.position.x += diffX * percent * MatchableRenderer.PositionScalar;

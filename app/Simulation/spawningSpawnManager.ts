@@ -1,5 +1,6 @@
 import Color = require('./color');
 import Grid = require('./grid');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import RandomGenerator = require('./randomGenerator');
@@ -44,7 +45,7 @@ class SpawningSpawnManager extends SpawnManager {
 	private doInitialSpawn(): void {
 		for (let x = 0; x < this.grid.width; x++) {
 			let column = this.grid.cells[x];
-			for (let y = 0; y < this.grid.height; y++) {
+			for (let y = 0; y < this.grid.height * MagicNumbers.matchableYScale; y += MagicNumbers.matchableYScale) {
 
 				if (this.grid.isHole(x, y)) {
 					continue;
@@ -52,10 +53,10 @@ class SpawningSpawnManager extends SpawnManager {
 
 				let matchable: Matchable = null;
 				if (this.spawnOverride) {
-					matchable = this.spawnOverride.spawnMaybe(x, y + this.grid.height);
+					matchable = this.spawnOverride.spawnMaybe(x, y + this.grid.height * MagicNumbers.matchableYScale);
 				}
 				if (!matchable) {
-					matchable = this.matchableFactory.create(x, y + this.grid.height, this.getRandomColorForInitialSpawn(x, y + this.grid.height), Type.Normal);
+					matchable = this.matchableFactory.create(x, y + this.grid.height * MagicNumbers.matchableYScale, this.getRandomColorForInitialSpawn(x, y + this.grid.height * MagicNumbers.matchableYScale), Type.Normal);
 				}
 
 				column.push(matchable);
@@ -71,13 +72,15 @@ class SpawningSpawnManager extends SpawnManager {
 			let left1 = this.grid.findMatchableAtPosition(x - 1, y);
 			let left2 = this.grid.findMatchableAtPosition(x - 2, y);
 
+			console.log(!!left1, !!left2);
+
 			if (left1 && left2 && left1.color == left2.color) {
 				bannedColors.push(left1.color);
 			}
 		}
 		if (y > 1) {
-			var up1 = this.grid.findMatchableAtPosition(x, y - 1);
-			var up2 = this.grid.findMatchableAtPosition(x, y - 2);
+			var up1 = this.grid.findMatchableAtPosition(x, y - 1 * MagicNumbers.matchableYScale);
+			var up2 = this.grid.findMatchableAtPosition(x, y - 2 * MagicNumbers.matchableYScale);
 
 			if (up1 && up2 && up1.color == up2.color) {
 				bannedColors.push(up1.color);

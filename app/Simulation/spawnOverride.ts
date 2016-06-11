@@ -1,4 +1,5 @@
 import Color = require('./color');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import MatchableFactory = require('./matchableFactory');
 import Type = require('./type');
@@ -22,7 +23,7 @@ class SpawnOverride {
 
 	//Limited to 65535x65535 size probably
 	private calculateXY(x: number, y: number) {
-		return ((x | 0) << 16) | (y | 0);
+		return ((x | 0) << 16) | ((y / MagicNumbers.matchableYScale) | 0);
 	}
 
 	spawnMaybe(x: number, y: number): Matchable {

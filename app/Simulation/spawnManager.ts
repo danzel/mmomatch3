@@ -1,5 +1,6 @@
 import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import MatchableFactory = require('../Simulation/matchableFactory');
 
@@ -17,12 +18,12 @@ abstract class SpawnManager {
 	abstract update(dt: number): void;
 
 	protected findYForColumn(column: Array<Matchable>): number {
-		let y = this.grid.height;
+		let y = this.grid.height * MagicNumbers.matchableYScale;
 
 		if (column.length > 0) {
 			let last = column[column.length - 1];
 			if (last.y >= y) {
-				y = last.y + 1;
+				y = last.y + MagicNumbers.matchableYScale;
 			}
 		}
 		

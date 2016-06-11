@@ -4,6 +4,7 @@ import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDefFactory = require('../Simulation/Levels/levelDefFactory');
 import LevelDefFactoryDynamic = require('../Simulation/Levels/levelDefFactoryDynamic');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import MatchableFactory = require('../Simulation/matchableFactory');
 import RandomGenerator = require('../Simulation/randomGenerator');
 import RequireMatch = require('../Simulation/requireMatch');
@@ -51,7 +52,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
 			let spawns = <Array<number>>level.victoryValue;
 			for (let i = 0; i < spawns.length; i++) {
-				spawnManager.spawnOverride.addSpawn(spawns[i], grid.height + grid.height - 1, Color.None, Type.GetToBottom);
+				spawnManager.spawnOverride.addSpawn(spawns[i], (grid.height + grid.height - 1) * MagicNumbers.matchableYScale, Color.None, Type.GetToBottom);
 			}
 		}
 

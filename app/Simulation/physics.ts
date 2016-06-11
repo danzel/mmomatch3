@@ -1,11 +1,12 @@
 import Grid = require('./grid');
 import LiteEvent = require('../liteEvent');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 
 class Physics {
 	/** Used by updateMovement */
 	private landed = new Array<Matchable>();
-	private boundSubUpdateMovement: (matchable: Matchable, dt: number, maxY: number, above: Matchable) => void;
+	private boundSubUpdateMovement: (matchable: Matchable, maxY: number, above: Matchable) => void;
 	
 	matchableLanded = new LiteEvent<Matchable>();
 
@@ -22,13 +23,13 @@ class Physics {
 		}
 	}
 
-	private subUpdateMovement(matchable: Matchable, dt: number, maxY: number, above: Matchable) {
-		matchable.y = Math.max(maxY, matchable.y - dt * matchable.yMomentum);
+	private subUpdateMovement(matchable: Matchable, maxY: number, above: Matchable) {
+		matchable.y = Math.max(maxY, matchable.y - matchable.yMomentum);
 		
 		//Stop when we hit the one below us and follow its speed
 		if (above) {
-			if (matchable.y < above.y + 1) {
-				matchable.y = above.y + 1;
+			if (matchable.y < above.y + MagicNumbers.matchableYScale) {
+				matchable.y = above.y + MagicNumbers.matchableYScale;
 				matchable.yMomentum = above.yMomentum;
 			}
 		}
@@ -43,11 +44,11 @@ class Physics {
 		this.update(dt, this.subUpdateMomentum);
 	}
 
-	private subUpdateMomentum(matchable: Matchable, dt: number, maxY: number, above: Matchable) {
-		matchable.yMomentum += dt * 100;
+	private subUpdateMomentum(matchable: Matchable, maxY: number, above: Matchable) {
+		matchable.yMomentum += 16;
 	}
 	
-	private update(dt: number, callback: (matchable: Matchable, dt: number, maxY: number, above: Matchable) => void) {
+	private update(dt: number, callback: (matchable: Matchable, maxY: number, above: Matchable) => void) {
 		for (let x = 0; x < this.grid.width; x++) {
 			var col = this.grid.cells[x];
 			let holesBelow = 0;
@@ -56,11 +57,11 @@ class Physics {
 					holesBelow++;
 				}
 
-				let maxY = y + holesBelow;
+				let maxY = (y + holesBelow) * MagicNumbers.matchableYScale;
 				let matchable = col[y];
 				
 				if (matchable.y > maxY && !matchable.beingSwapped && !matchable.isDisappearing) {
-					callback(matchable, dt, maxY, y > 0 ? col[y - 1] : null);
+					callback(matchable, maxY, y > 0 ? col[y - 1] : null);
 				}
 			}
 		}

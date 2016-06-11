@@ -1,5 +1,6 @@
 import Color = require('./color');
 import Grid = require('./grid');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import Type = require('./type');
 
@@ -97,7 +98,7 @@ class MatchChecker {
 		}
 	}
 	scanDown(matchable: Matchable, action: (matchable: Matchable) => void) {
-		for (let y = matchable.y - 1; y >= 0; y--) {
+		for (let y = matchable.y - MagicNumbers.matchableYScale; y >= 0; y -= MagicNumbers.matchableYScale) {
 			let other = this.grid.findMatchableAtPosition(matchable.x, y);
 			if (!other || !this.matches(matchable, other))
 				break;
@@ -105,7 +106,7 @@ class MatchChecker {
 		}
 	}
 	scanUp(matchable: Matchable, action: (matchable: Matchable) => void) {
-		for (let y = matchable.y + 1; y < this.grid.height; y++) {
+		for (let y = matchable.y + MagicNumbers.matchableYScale; y < this.grid.height * MagicNumbers.matchableYScale; y += MagicNumbers.matchableYScale) {
 			let other = this.grid.findMatchableAtPosition(matchable.x, y);
 			if (!other || !this.matches(matchable, other))
 				break;

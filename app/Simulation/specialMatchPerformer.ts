@@ -1,5 +1,6 @@
 import Grid = require('./grid');
 import Match = require('./match');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
 import MatchPerformer = require('./matchPerformer');
@@ -59,7 +60,7 @@ class SpecialMatchPerformer {
 	
 	private distanceLessThanOrEqual(a: Matchable, b: Matchable, maxDistance: number): boolean {
 		let x = a.x - b.x;
-		let y = a.y - b.y;
+		let y = (a.y - b.y) / MagicNumbers.matchableYScale;
 		
 		let distSquared = x * x + y * y;
 		return distSquared <= maxDistance * maxDistance;
@@ -101,8 +102,18 @@ class SpecialMatchPerformer {
 
 	private verticalClear(source: Matchable, match: Match) {
 		let col = this.grid.cells[source.x];
-		for (let y = Math.max(0, source.y - this.lineClearRange); y < Math.min(col.length, source.y + this.lineClearRange); y++) {
+		
+		let yIndex = col.indexOf(source);
+		for (let y = Math.max(0, yIndex - this.lineClearRange); y < Math.min(col.length, yIndex + this.lineClearRange); y++) {
 			let hit = col[y];
+
+			//Skip ones that are too far away
+			if (hit.y < source.y - this.lineClearRange * MagicNumbers.matchableYScale) {
+				continue;
+			}
+			if (hit.y > source.y + this.lineClearRange * MagicNumbers.matchableYScale) {
+				continue;
+			}
 
 			if (this.matchChecker.matchableIsAbleToMatch(hit)) {
 				hit.isDisappearing = true;
@@ -115,11 +126,11 @@ class SpecialMatchPerformer {
 	private areaClear3x3(source: Matchable, match: Match) {
 		let startX = Math.max(0, source.x - 1);
 		let maxX = Math.min(this.grid.width, source.x + 2);
-		let startY = Math.max(0, source.y - 1);
-		let maxY = Math.min(this.grid.height, source.y + 2);
+		let startY = Math.max(0, source.y - MagicNumbers.matchableYScale);
+		let maxY = Math.min(this.grid.height * MagicNumbers.matchableYScale, source.y + 2 * MagicNumbers.matchableYScale);
 		
 		for (let x = startX; x < maxX; x++) {
-			for (let y = startY; y < maxY; y++) {
+			for (let y = startY; y < maxY; y += MagicNumbers.matchableYScale) {
 				let m = this.grid.findMatchableAtPosition(x, y);
 				if (m != null && this.matchChecker.matchableIsAbleToMatch(m)) {
 					m.isDisappearing = true;

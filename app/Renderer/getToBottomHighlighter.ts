@@ -1,4 +1,5 @@
 import Grid = require('../Simulation/grid');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('./matchableRenderer');
 import Type = require('../Simulation/type');
@@ -43,7 +44,7 @@ class GetToBottomHighlighter {
 
 				//Use them
 				tile.tilePosition.y = nowS * 300;
-				let h = (m.y + 0.5) * MatchableRenderer.PositionScalar;
+				let h = ((m.y / MagicNumbers.matchableYScale) + 0.5) * MatchableRenderer.PositionScalar;
 				tile.height = h;
 				tile.position.set(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar - 54) / 2, -h)
 

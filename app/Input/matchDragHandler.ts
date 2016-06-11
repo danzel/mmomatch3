@@ -1,5 +1,6 @@
 import Grid = require('../Simulation/grid');
 import InputApplier = require('../Simulation/inputApplier');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('../Renderer/matchableRenderer');
 import Simulation = require('../Simulation/simulation');
@@ -44,7 +45,7 @@ class MatchDragHandler {
 					right = this.grid.findMatchableAtPosition(start.x + (xDiff > 0 ? 1 : -1), start.y);
 				}
 				else {
-					right = this.grid.findMatchableAtPosition(start.x, start.y + (yDiff > 0 ? -1 : 1));
+					right = this.grid.findMatchableAtPosition(start.x, start.y + (yDiff > 0 ? -MagicNumbers.matchableYScale : MagicNumbers.matchableYScale));
 				}
 				let dir = { x: horizontal ? (xDiff > 0 ? 1 : -1) : 0, y: !horizontal ? (yDiff > 0 ? -1 : 1) : 0}
 				this.inputApplier.swapMatchable(left, right, dir);
@@ -70,6 +71,7 @@ class MatchDragHandler {
 			return null;
 		}
 
+		y *= MagicNumbers.matchableYScale;
 		return { x, y };
 	}
 

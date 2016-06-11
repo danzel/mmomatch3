@@ -1,6 +1,7 @@
 /// <reference path="../../typings/bit-array/bit-array.d.ts" />
 import BitArray = require('bit-array');
 
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 
 interface XY {
@@ -45,7 +46,7 @@ class Grid {
 	findMatchableAtPosition(positionX: number, positionY: number) {
 		if (positionX >= 0 && positionX < this.width) {
 			let col = this.cells[positionX];
-			for (let i = Math.min(positionY, col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
+			for (let i = Math.min(Math.ceil(positionY / MagicNumbers.matchableYScale), col.length - 1); i >= 0 && col[i].y >= positionY; i--) {
 				if (col[i].y == positionY) {
 					return col[i];
 				}

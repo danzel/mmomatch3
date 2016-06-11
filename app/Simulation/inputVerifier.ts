@@ -1,5 +1,6 @@
 import Color = require('./color');
 import Grid = require('./grid');
+import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import MatchChecker = require('./matchChecker');
 import Type = require('./type');
@@ -44,7 +45,7 @@ class InputVerifier {
 	
 	private isGoodSwapDirection(left: Matchable, right: Matchable): boolean {
 		if (left.x == right.x) { //y swap
-			if (left.y == right.y + 1 || left.y == right.y - 1)
+			if (left.y == right.y + MagicNumbers.matchableYScale || left.y == right.y - MagicNumbers.matchableYScale)
 				return true;
 		}
 		else if (left.y == right.y) { //x swap
