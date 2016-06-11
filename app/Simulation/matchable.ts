@@ -2,10 +2,10 @@ import Color = require('./color');
 import Type = require('./type');
 
 class Matchable {
-	public static TimeToDisappear = 0.4;
+	public static TicksToDisappear = 24;
 	
 	isDisappearing = false;
-	disappearingTime = 0;
+	disappearingTicks = 0;
 	transformToColor: Color;
 	transformTo: Type;
 
@@ -27,7 +27,7 @@ class Matchable {
 	}
 	
 	get disappearingPercent() : number {
-		return this.disappearingTime / Matchable.TimeToDisappear;
+		return this.disappearingTicks / Matchable.TicksToDisappear;
 	}
 }
 

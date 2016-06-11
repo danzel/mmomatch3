@@ -5,7 +5,7 @@ class MatchableData extends Array<number> {
 		color: number,
 		type: number,
 		isDisappearing: boolean,
-		disappearingTime: number,
+		disappearingTicks: number,
 		yMomentum: number,
 		transformTo: number,
 		transformToColor: number
@@ -20,7 +20,7 @@ class MatchableData extends Array<number> {
 			d.push(yMomentum);
 			if (isDisappearing || transformTo || transformToColor) {
 				d.push(isDisappearing ? 1 : 0);
-				d.push(disappearingTime);
+				d.push(disappearingTicks);
 				
 				if (transformTo || transformToColor) {
 					d.push(transformTo);
@@ -39,7 +39,7 @@ class MatchableData extends Array<number> {
 	static index_yMomentum = 4;
 	
 	static index_isDisappearing = 5;
-	static index_disappearingTime = 6;
+	static index_disappearingTicks = 6;
 	
 	static index_transformTo = 7;
 	static index_transformToColor = 8;

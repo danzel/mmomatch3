@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import Color = require('../../../app/Simulation/color');
+import Matchable = require('../../../app/Simulation/matchable');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import ScoreEarnedChecker = require('../../util/scoreEarnedChecker');
 import SwapHandler = require('../../../app/Simulation/swapHandler');
@@ -28,7 +29,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 
 		//Swap to form it down the left column
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][2], simulation.grid.cells[1][2]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
 			simulation.update();
 		}
 
@@ -50,7 +51,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		//Now swap with a 2 to clear them all
 		expect(simulation.inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[1][0])).toBe(true);
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
 			simulation.update();
 		}
 
@@ -71,7 +72,7 @@ describe('SpecialMatchables.ColorClearWhenMatched', () => {
 		]);
 
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[2][0], simulation.grid.cells[2][1]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear; i++) {
 			simulation.update();
 		}
 		

@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import Grid = require('../../../app/Simulation/grid');
 import QuietColumnDetector = require('../../../app/Simulation/quietColumnDetector');
+import Matchable = require('../../../app/Simulation/matchable');
 import MatchableFactory = require('../../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('../../util/neverSpawnManager');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
@@ -24,7 +25,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear; i++) {
 			simulation.update();
 		}
 
@@ -46,7 +47,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][2], simulation.grid.cells[0][3]);
-		for (let i = 0; i < SwapHandler.TicksToSwap * 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
 			simulation.update();
 		}
 
@@ -66,7 +67,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 3; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 1; i++) {
 			simulation.update();
 		}
 
@@ -91,7 +92,7 @@ describe('ComboOwnership.simpleSingleOwner', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[0][0], simulation.grid.cells[0][1]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 3; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 3; i++) {
 			simulation.update();
 		}
 

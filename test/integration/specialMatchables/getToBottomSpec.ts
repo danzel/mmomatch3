@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import Color = require('../../../app/Simulation/color');
+import Matchable = require('../../../app/Simulation/matchable');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import ScoreEarnedChecker = require('../../util/scoreEarnedChecker');
 import SwapHandler = require('../../../app/Simulation/swapHandler');
@@ -22,7 +23,7 @@ describe('SpecialMatchables.GetToBottom', () => {
 
 		//Swap to drop it to the bottom
 		simulation.swapHandler.swap(playerId, simulation.grid.cells[0][0], simulation.grid.cells[1][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap+ Matchable.TicksToDisappear * 2; i++) {
 			simulation.update();
 		}
 

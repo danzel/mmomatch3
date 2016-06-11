@@ -21,12 +21,12 @@ class Disappearer {
 				
 				if (matchable.isDisappearing) {
 					count++;
-					matchable.disappearingTime += dt;
+					matchable.disappearingTicks++;
 					
-					if (matchable.disappearingPercent >= 1) {
+					if (matchable.disappearingTicks >= Matchable.TicksToDisappear) {
 						if (matchable.transformTo) {
 							matchable.isDisappearing = false;
-							matchable.disappearingTime = 0;
+							matchable.disappearingTicks = 0;
 							
 							matchable.type = matchable.transformTo;
 							matchable.transformTo = null;

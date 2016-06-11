@@ -63,7 +63,7 @@ class PacketGenerator {
 			matchable.color,
 			matchable.type,
 			matchable.isDisappearing,
-			matchable.disappearingTime,
+			matchable.disappearingTicks,
 			matchable.yMomentum,
 			matchable.transformTo,
 			matchable.transformToColor
@@ -218,7 +218,7 @@ class PacketGenerator {
 				//We aren't using the factory here, if we did the id would get out of sync
 				let matchable = new Matchable(matchableData[MatchableData.index_id], x, matchableData[MatchableData.index_y], matchableData[MatchableData.index_color], matchableData[MatchableData.index_type]);
 				matchable.isDisappearing = !!matchableData[MatchableData.index_isDisappearing] || false;
-				matchable.disappearingTime = matchableData[MatchableData.index_disappearingTime] || 0;
+				matchable.disappearingTicks = matchableData[MatchableData.index_disappearingTicks] || 0;
 				matchable.yMomentum = matchableData[MatchableData.index_yMomentum] || 0;
 				matchable.transformTo = matchableData[MatchableData.index_transformTo] || null;
 				matchable.transformToColor = matchableData[MatchableData.index_transformToColor] || null;

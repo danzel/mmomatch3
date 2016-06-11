@@ -1,10 +1,11 @@
 ///<reference path="../../../typings/jasmine/jasmine.d.ts"/>
 import Grid = require('../../../app/Simulation/grid');
-import QuietColumnDetector = require('../../../app/Simulation/quietColumnDetector');
+import Matchable = require('../../../app/Simulation/matchable');
 import MatchableFactory = require('../../../app/Simulation/matchableFactory');
 import NeverSpawnManager = require('../../util/neverSpawnManager');
 import OwnershipMatchChecker = require('../../util/ownershipMatchChecker');
 import OwnedMatch = require('../../../app/Simulation/Scoring/ownedMatch');
+import QuietColumnDetector = require('../../../app/Simulation/quietColumnDetector');
 import Simulation = require('../../../app/Simulation/simulation');
 import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
@@ -24,7 +25,7 @@ describe('ComboOwnership.stopOwning', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);
-		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
 			simulation.update();
 		}
 
@@ -53,11 +54,11 @@ describe('ComboOwnership.stopOwning', () => {
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]); //1
-		for (let i = 0; i < SwapHandler.TicksToSwap; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 1; i++) {
 			simulation.update();
 		}
 		simulation.swapHandler.swap(playerId2, simulation.grid.cells[2][1], simulation.grid.cells[3][1]); //2
-		for (let i = 0; i < SwapHandler.TicksToSwap + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear; i++) {
 			simulation.update();
 		}
 
