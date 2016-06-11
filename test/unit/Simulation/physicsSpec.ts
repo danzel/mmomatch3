@@ -17,7 +17,7 @@ describe('Physics', () => {
 		let m = new Matchable(1, 0, 1, 1, Type.Normal);
 
 		grid.cells[0].push(m);
-		physics.updateMomentum(1 / 60);
+		physics.updateMomentum();
 
 		expect(m.isMoving).toBe(true);
 	});
@@ -27,7 +27,7 @@ describe('Physics', () => {
 		m.isDisappearing = true;
 
 		grid.cells[0].push(m);
-		physics.updateMomentum(1 / 60);
+		physics.updateMomentum();
 
 		expect(m.isMoving).toBe(false);
 	});
@@ -37,7 +37,7 @@ describe('Physics', () => {
 		m.beingSwapped = true;
 
 		grid.cells[0].push(m);
-		physics.updateMomentum(1 / 60);
+		physics.updateMomentum();
 
 		expect(m.isMoving).toBe(false);
 	});

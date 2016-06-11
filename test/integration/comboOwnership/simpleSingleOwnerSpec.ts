@@ -10,8 +10,6 @@ import Simulation = require('../../../app/Simulation/simulation');
 import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestUtil = require('../../util/util');
 
-//TODO: We'll need to handle swaps made over a hole, meaning one drops down (and then gets matched)
-
 let playerId1 = 99;
 
 describe('ComboOwnership.simpleSingleOwner', () => {

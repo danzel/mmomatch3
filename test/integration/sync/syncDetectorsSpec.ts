@@ -41,7 +41,7 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 12; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
@@ -72,7 +72,7 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear + 12; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
@@ -103,7 +103,7 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
@@ -198,7 +198,7 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
@@ -237,13 +237,13 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[1][0].id, simulation.grid.cells[2][0].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 1; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
 		//Swap and do a combo that makes the other stack disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[3][0].id, simulation.grid.cells[4][0].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
@@ -280,7 +280,7 @@ describe('SyncDetectors', () => {
 
 		//Swap and do a combo that makes some disappear
 		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
-		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 2; i++) {
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
 			serverComms.addClient();
 			serverComms.update();
 		}
