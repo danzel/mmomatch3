@@ -1,6 +1,7 @@
 import Behaviour = require('./behaviour');
 import BotHelper = require('./botHelper');
 import InputApplier = require('../Simulation/inputApplier');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import Simulation = require('../Simulation/simulation');
 
 class DefaultBehaviour extends Behaviour {
@@ -89,7 +90,7 @@ class DefaultBehaviour extends Behaviour {
 
 	protected chooseStartingLocation(): void {
 		this.lastPos.x = Math.floor(Math.random() * this.simulation.grid.width);
-		this.lastPos.y = Math.floor(Math.random() * this.simulation.grid.height);
+		this.lastPos.y = Math.floor(Math.random() * this.simulation.grid.height) * MagicNumbers.matchableYScale;
 	}
 }
 

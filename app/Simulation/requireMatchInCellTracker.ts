@@ -1,6 +1,5 @@
 import ComboOwnership = require('./Scoring/comboOwnership');
 import LiteEvent = require('../liteEvent');
-import MagicNumbers = require('./magicNumbers');
 import OwnedMatch = require('./Scoring/ownedMatch');
 import RequireMatch = require('./requireMatch');
 
@@ -20,7 +19,7 @@ class RequireMatchInCellTracker {
 			for (let j = 0; j < this.requirements.length; j++) {
 				let r = this.requirements[j];
 
-				if (r.x == m.x && r.y == m.y / MagicNumbers.matchableYScale) {
+				if (r.x == m.x && r.y == m.y) {
 					r.amount--;
 
 					if (r.amount == 0) {

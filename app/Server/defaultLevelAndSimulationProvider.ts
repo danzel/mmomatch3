@@ -44,7 +44,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		if (level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>level.victoryValue;
 			requireMatches.forEach(req => {
-				simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y, req.amount));
+				simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(req.x, req.y * MagicNumbers.matchableYScale, req.amount));
 			})
 		}
 		if (level.victoryType == VictoryType.GetThingsToBottom) {
