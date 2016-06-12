@@ -58,12 +58,12 @@ class MatchableRendererSprites {
 			sprites.push(sprite);
 		} else {
 			sprite = sprites[spriteIndex];
-			this.spriteIndexes[index]++;
 
 			sprite.visible = true;
 			sprite.scale.x = 1;
 			sprite.scale.y = 1;
 		}
+		this.spriteIndexes[index]++;
 
 		return sprite;
 	}
@@ -87,12 +87,12 @@ class MatchableRendererSprites {
 			this.overlaySprites.push(sprite);
 		} else {
 			sprite = this.overlaySprites[this.overlayIndex];
-			this.overlayIndex++;
 
 			sprite.visible = true;
 			sprite.scale.x = 1;
 			sprite.scale.y = 1;
 		}
+		this.overlayIndex++;
 
 		return sprite;
 
