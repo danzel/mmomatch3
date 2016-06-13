@@ -87,8 +87,8 @@ class SimulationRenderer {
 	}
 
 	private keepOnScreen() {
-		let maxOffscreenX = this.group.game.width - MatchableRenderer.PositionScalar;
-		let maxOffscreenY = this.group.game.height - MatchableRenderer.PositionScalar;
+		let maxOffscreenX = this.group.game.width - 2 * MatchableRenderer.PositionScalar;
+		let maxOffscreenY = this.group.game.height - 2 * MatchableRenderer.PositionScalar;
 
 		let leftX = this.group.game.width - maxOffscreenX;
 		let rightX = -this.simulation.grid.width * MatchableRenderer.PositionScalar * this.scale + maxOffscreenX;
