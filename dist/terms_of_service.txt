@@ -1,12 +1,12 @@
 Terms & Conditions
 
 - Definitions -
-MassiveMatch.io: is a product of Ironshod; 
+MassiveMatch.io: is a product of Cozy Barrel; 
 MassiveMatch.io Game: means the online multiplayer game entitled MassiveMatch.io, as available on the Site and includes all related games, software, applications, products or services relating to the MassiveMatch.io Game;
-Ironshod: is the owner of all intellectual property rights (IPRs) in the Site and MassiveMatch.io;
+Cozy Barrel: is the owner of all intellectual property rights (IPRs) in the Site and MassiveMatch.io;
 Intellectual Property: means all registered and unregistered (whether capable of registration or not) IPRs), including but not limited to copyright, design, goodwill, graphics, images, patents and trade marks;
 Site: means the URL at www.MassiveMatch.io 
-We, our or us: means Ironshod; and 
+We, our or us: means Cozy Barrel; and 
 You: means the actual or potential user of the Site and all current or future MassiveMatch.io games.
 
 - Terms of use -
@@ -17,7 +17,7 @@ Changes to terms
 We reserve the right to modify, alter and update the content of these Terms and Conditions at any time it is your responsibility to check these Terms and Conditions regularly so that you are aware of any such changes. Your continuing use of the Site constitutes your agreement to the changes. The current terms and conditions will be posted here: https://MassiveMatch.io/terms_of_service.txt
 
 - Age restrictions -
-We do not target the MassiveMatch.io website or its services to users under 13 of age. We may place certain access restrictions in relation to users under 13 years of age. You agree that if you assist users under 13 years old to access the MassiveMatch.io website or services, with your computer, internet enabled device, internet connection and/or facilities (whether owned, leased or borrowed) that you will assume full responsibility and liability for any consequences and that UNDER NO CIRCUMSTANCES, TO THE EXTENT PERMITTED BY LAW, WILL NEITHER IRONSHOD, ANY THIRD PARTY CONTENT PROVIDER NOR THEIR RESPECTIVE AGENTS SHALL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE THE SITE BY USERS UNDER 13 YEARS OF AGE, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+We do not target the MassiveMatch.io website or its services to users under 13 of age. We may place certain access restrictions in relation to users under 13 years of age. You agree that if you assist users under 13 years old to access the MassiveMatch.io website or services, with your computer, internet enabled device, internet connection and/or facilities (whether owned, leased or borrowed) that you will assume full responsibility and liability for any consequences and that UNDER NO CIRCUMSTANCES, TO THE EXTENT PERMITTED BY LAW, WILL NEITHER COZY BARREL, ANY THIRD PARTY CONTENT PROVIDER NOR THEIR RESPECTIVE AGENTS SHALL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE THE SITE BY USERS UNDER 13 YEARS OF AGE, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 Links
 We accept no responsibility for third party the links to or from the Site and/or MassiveMatch.io Game. The inclusion of these links does not mean that we endorse the material or content of the sites.
 
@@ -56,8 +56,8 @@ We will not be liable for any loss, damage or upset which you suffer as a result
 All IPRs in the Site and MassiveMatch.io Game.
 You may not use any of this content for any purpose or in any manner whatsoever that is not authorised by the copyright owner.
 You may not:
--	use the MassiveMatch icon, the words MASSIVEMATCHIO or MASSIVEMATCH, or any similar words on your website without the prior written consent of Ironshod;
--	use the words MASSIVEMATCH, IRONSHOD, or any similar words in the domain name for your website;
+-	use the MassiveMatch icon, the words MASSIVEMATCHIO or MASSIVEMATCH, or any similar words on your website without the prior written consent of Cozy Barrel;
+-	use the words MASSIVEMATCH, COZY BARREL, or any similar words in the domain name for your website;
 -	use the layout of MassiveMatch's website (www.MassiveMatch.io) on your website; 
 -	link to the MassiveMatch.io site or establish a link in such a way as to suggest any form of association, approval or endorsement on our part where none exists; or
 -	copy any aspect of MassiveMatch.io which includes but is not limited to the gameplay mechanics, graphics and the various themes; or
@@ -72,11 +72,11 @@ We will not be liable for any loss, damage or upset that you suffer as a consequ
 - Limitation of Liability -
 Although we attempt to ensure that all information contained on this website is error-free, we accept no liability for any omissions. 
 We will not be liable for any loss, damage or upset that you suffer as a consequence of the Site, or other MassiveMatch.io Game becoming temporarily or permanently unavailable. 
-UNDER NO CIRCUMSTANCES SHALL IRONSHOD OR ITS RESPECTIVE AGENTS BE LIABLE TO THE EXTENT PERMITTED BY LAW FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE IRONSHOD'S MassiveMatch.io WEB SITE, SOFTWARE AND/OR SERVICES, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+UNDER NO CIRCUMSTANCES SHALL COZY BARREL OR ITS RESPECTIVE AGENTS BE LIABLE TO THE EXTENT PERMITTED BY LAW FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE COZY BARREL'S MassiveMatch.io WEB SITE, SOFTWARE AND/OR SERVICES, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 YOU AGREE TO ASSUME ALL RISK RELATED TO YOUR USE OF THE SITE AND MassiveMatch.io GAME, INCLUDING BUT NOT LIMITED TO, THE RISK OF COMMUNICATIONS WITH OTHER PEOPLE OR DAMAGE TO YOUR COMPUTER.
 
 - Jurisdiction -
-The laws of New Zealand govern this agreement, without giving effect to conflict of laws provisions. The courts of New Zealand have exclusive jurisdiction over all disputes relating to or arising from the execution or performance of this agreement unless Ironshod wishes to initiate legal proceedings in your home legal district. In all judicial actions, arbitrations, or disputes resolution methods, the parties waive any punitive damages.
+The laws of New Zealand govern this agreement, without giving effect to conflict of laws provisions. The courts of New Zealand have exclusive jurisdiction over all disputes relating to or arising from the execution or performance of this agreement unless Cozy Barrel wishes to initiate legal proceedings in your home legal district. In all judicial actions, arbitrations, or disputes resolution methods, the parties waive any punitive damages.
 
 Contact us
 For any business or legal enquiries, please email: biz@massivematch.io or legal@massivematch.io. 
