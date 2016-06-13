@@ -1,6 +1,7 @@
 import BotHelper = require('./botHelper');
 import DefaultBehaviour = require('./defaultBehaviour');
 import InputApplier = require('../Simulation/inputApplier');
+import MagicNumbers = require('../Simulation/magicNumbers');
 import Simulation = require('../Simulation/simulation');
 
 class RequireMatchBehaviour extends DefaultBehaviour {
@@ -19,8 +20,8 @@ class RequireMatchBehaviour extends DefaultBehaviour {
 		let minX = this.lastPos.x - range;
 		let maxX = this.lastPos.x + range;
 
-		let minY = this.lastPos.y - range;
-		let maxY = this.lastPos.y + range;
+		let minY = this.lastPos.y - range * MagicNumbers.matchableYScale;
+		let maxY = this.lastPos.y + range * MagicNumbers.matchableYScale;
 
 		let positions = this.simulation.requireMatchInCellTracker.requirements;
 		for (var i = 0; i < positions.length; i++) {
@@ -49,7 +50,7 @@ class RequireMatchBehaviour extends DefaultBehaviour {
 		let pos = positions[i];
 
 		this.lastPos.x = pos.x;
-		this.lastPos.y = pos.y + 1;
+		this.lastPos.y = pos.y + MagicNumbers.matchableYScale;
 	}
 }
 
