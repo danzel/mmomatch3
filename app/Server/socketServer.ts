@@ -38,8 +38,16 @@ class SocketServer extends ServerComms {
 		//Could consider this https://github.com/isaacs/st
 		this.app.use(compression());
 		this.app.use(helmet.hidePoweredBy());
-		let oneDay = 86400000;
-		this.app.use(express.static('dist', { maxAge: oneDay }));
+		let oneDay = 24 * 60 * 60 * 1000;
+		
+		this.app.use(express.static('dist', {
+			maxAge: oneDay,
+			setHeaders: function (res, path) {
+				if (path.toLowerCase().indexOf('.html') != -1) {
+					res.setHeader('Cache-Control', 'public, max-age=0')
+				}
+			}
+		}));
 
 		if (config.httpsPort && config.domain && config.email) {
 			console.log('starting https');
