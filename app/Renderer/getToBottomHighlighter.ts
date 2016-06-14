@@ -43,7 +43,7 @@ class GetToBottomHighlighter {
 				tile.height = h;
 				tile.position.set(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar - 54) / 2, -h)
 
-				this.circlePingRenderer.show(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar) / 2, -h)
+				this.circlePingRenderer.show(m.x, m.y)
 			}
 		}
 

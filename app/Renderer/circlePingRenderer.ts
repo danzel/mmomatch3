@@ -1,12 +1,26 @@
+import MagicNumbers = require('../Simulation/magicNumbers');
+import MatchableRenderer = require('./matchableRenderer');
+
 class CirclePingRenderer {
 	private circles = new Array<Phaser.Image>();
 	private circlesUsed = 0;
+
+	private haveEverRendered = false;
+	private startTime = 0;
 
 	constructor(private group: Phaser.Group) {
 	}
 
 	show(x: number, y: number) {
-		let nowS = this.group.game.time.now / 1000;
+
+		if (!this.haveEverRendered) {
+			this.haveEverRendered = true;
+			this.startTime = this.group.game.time.now;
+		}
+		let nowS = (this.group.game.time.now - this.startTime) / 1000;
+
+		x = MatchableRenderer.PositionScalar * x + (MatchableRenderer.PositionScalar) / 2;
+		y = -((y / MagicNumbers.matchableYScale) + 0.5) * MatchableRenderer.PositionScalar;
 
 		if (this.circles.length == this.circlesUsed) {
 			let hi = this.group.game.add.sprite(0, 0, 'atlas', 'circle.png', this.group);

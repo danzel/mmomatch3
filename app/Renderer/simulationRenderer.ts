@@ -5,6 +5,7 @@ import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('./matchableRenderer');
+import RequireMatchHighlighter = require('./requireMatchHighlighter');
 import Type = require('../Simulation/type');
 
 interface XY {
@@ -14,6 +15,7 @@ interface XY {
 
 class SimulationRenderer {
 	private getToBottomHighlighter: GetToBottomHighlighter;
+	private requireMatchHighlighter: RequireMatchHighlighter;
 	private failedToSwapState = new FailedToSwapState();
 
 	private matchableRenderer: MatchableRenderer;
@@ -28,6 +30,7 @@ class SimulationRenderer {
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, this.circlePingRenderer);
+		this.requireMatchHighlighter = new RequireMatchHighlighter(simulation.requireMatchInCellTracker, this.circlePingRenderer);
 
 		this.scale = 0.2;
 		this.group.y = 400;
@@ -179,6 +182,7 @@ class SimulationRenderer {
 		this.circlePingRenderer.begin();
 
 		this.getToBottomHighlighter.render();
+		this.requireMatchHighlighter.render();
 
 		this.circlePingRenderer.end();
 
