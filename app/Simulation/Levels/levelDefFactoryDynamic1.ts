@@ -117,13 +117,13 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateLevelRequireMatch(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
 		let size = this.randomSize(gen);
-		let colorCount = this.randomColorCount(gen);
+		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when cage is near bottom
 		let failureValue = this.randomFailureValue(failureType, gen);
 
 		//Now calculate the victoryValue based on our random stuffs.
 		let difficulty =
 			this.calculateFailureDifficulty(failureType, failureValue) *
-			this.calculateColorDifficulty(colorCount);
+			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
 		//TODO: Randomness
 		
 		var amount = Math.round(difficulty * 0.15);
