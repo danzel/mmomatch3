@@ -1,3 +1,4 @@
+import CirclePingRenderer = require('./circlePingRenderer');
 import FailedToSwapState = require('./failedToSwapState');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
@@ -16,6 +17,7 @@ class SimulationRenderer {
 	private failedToSwapState = new FailedToSwapState();
 
 	private matchableRenderer: MatchableRenderer;
+	private circlePingRenderer: CirclePingRenderer;
 
 	constructor(private simulation: Simulation, private group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
@@ -24,7 +26,8 @@ class SimulationRenderer {
 		let matchablesOverlay = group.game.add.group(this.group);
 		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
 
-		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, group.game.add.group(group));
+		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
+		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, this.circlePingRenderer);
 
 		this.scale = 0.2;
 		this.group.y = 400;
@@ -172,7 +175,13 @@ class SimulationRenderer {
 
 		this.updateKeyboard(dt);
 
+
+		this.circlePingRenderer.begin();
+
 		this.getToBottomHighlighter.render();
+
+		this.circlePingRenderer.end();
+
 
 		this.matchableRenderer.begin();
 

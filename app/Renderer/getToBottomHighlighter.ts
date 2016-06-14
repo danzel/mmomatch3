@@ -1,3 +1,4 @@
+import CirclePingRenderer = require('./circlePingRenderer');
 import Grid = require('../Simulation/grid');
 import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
@@ -8,10 +9,9 @@ class GetToBottomHighlighter {
 
 	private width = 54;
 
-	private highlighters = new Array<Phaser.Sprite>();
 	private tiles = new Array<Phaser.TileSprite>();
 
-	constructor(private grid: Grid, private underGroup: Phaser.Group, private overGroup: Phaser.Group) {
+	constructor(private grid: Grid, private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
 	}
 
 	render() {
@@ -31,32 +31,24 @@ class GetToBottomHighlighter {
 					let t = this.underGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', 'gettobottom_repeat.png', this.underGroup);
 					t.alpha = 0.5;
 					this.tiles.push(t);
-					let hi = this.underGroup.game.add.sprite(0, 0, 'atlas', 'circle.png', this.overGroup);
-					hi.anchor.set(0.5);
-					this.highlighters.push(hi);
 				}
 
 				let tile = this.tiles[index];
 				tile.visible = true;
-				let highlighter = this.highlighters[index];
-				highlighter.visible = true;
 				index++;
 
-				//Use them
+				//Use it
 				tile.tilePosition.y = nowS * 300;
 				let h = ((m.y / MagicNumbers.matchableYScale) + 0.5) * MatchableRenderer.PositionScalar;
 				tile.height = h;
 				tile.position.set(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar - 54) / 2, -h)
 
-				highlighter.position.set(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar) / 2, -h)
-				highlighter.scale.set(Phaser.Easing.Cubic.Out((nowS / 3) % 1) * 9);
-				highlighter.alpha = 1 - Phaser.Easing.Sinusoidal.In((nowS / 3) % 1);
+				this.circlePingRenderer.show(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar) / 2, -h)
 			}
 		}
 
 		for (; index < this.tiles.length; index++) {
 			this.tiles[index].visible = false;
-			this.highlighters[index].visible = false;
 		}
 	}
 }
