@@ -29,6 +29,8 @@ class SimulationRenderer {
 		this.scale = 0.2;
 		this.group.y = 400;
 
+		group.game.scale.onFullScreenChange.add(() => this.keepOnScreen());
+
 		this.addDebugOverlay();
 	}
 

@@ -32,6 +32,7 @@ class AppEntry {
 		console.log("preload");
 		//this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
 		//This method doesn't shrink height when window shrinks, so replace it
 		this.game.scale.getParentBounds = function(target?: Phaser.Rectangle) {
 			target = target || new Phaser.Rectangle(0, 0, 0, 0);
@@ -47,6 +48,7 @@ class AppEntry {
 
 	create() {
 		console.log('create');
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
 
 		let levelNumber = parseInt((window.location.hash || "#").substr(1), 10) || 1;
 		this.createSimulationScene(levelNumber);

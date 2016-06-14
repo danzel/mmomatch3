@@ -3,6 +3,7 @@ var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
 var closeSvg = require('file?name=close.svg?[hash:6]!../../img/ui/close.svg');
+var fullscreenSvg = require('file?name=fullscreen.svg?[hash:6]!../../img/ui/fullscreen.svg');
 var matchable1 = require('file?name=pig.png?[hash:6]!../../img/skin/emojione-animals/balls/6.png');
 var colorClear = require('file?name=cc.png?[hash:6]!../../img/skin/emojione-animals/balls/colorclear.png');
 var vertical = require('file?name=oh.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/vertical.png');
@@ -43,7 +44,8 @@ class Manager {
 
 	private feedbackVisible = false;
 
-	constructor() {
+	constructor(private game: Phaser.Game) {
+		this.game.scale.fullScreenTarget = document.documentElement;
 		this.element = document.getElementById('overlay');
 		this.feedbackElement = document.getElementById('feedback-overlay');
 		this.bottomAdElement = document.getElementById('bottom-ad');
@@ -99,6 +101,13 @@ class Manager {
 		this.element.getElementsByClassName("feedback-button")[0].addEventListener('click', () => {
 			this.uiState.feedbackVisible = true;
 			this.render();
+		});
+		this.element.getElementsByClassName("fullscreen-button")[0].addEventListener('click', () => {
+			if (this.game.scale.isFullScreen) {
+				this.game.scale.stopFullScreen();
+			} else {
+				this.game.scale.startFullScreen(false);
+			}
 		});
 		this.addEventHandlers(this.element, this.uiState.helpVisible || (this.uiState.customOverlay && this.uiState.customOverlay.closeOnBackgroundClick));
 	}

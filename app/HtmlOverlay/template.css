@@ -96,14 +96,16 @@ a {
 	padding: 6px 10px;
 	border-radius: 14px 14px 0 0;
 	margin-right: 6px;
+	height:32px;
 }
 
 .bottom-corner-buttons {
 	font-size: 26px;
 }
 
-.feedback-button {
+.fullscreen-button img {
 	position: relative;
+	top: 3px;
 }
 
 

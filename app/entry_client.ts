@@ -39,7 +39,6 @@ class AppEntry {
 	playerNames: { [id: number]: string } = {};
 
 	constructor() {
-		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
 
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
@@ -49,6 +48,7 @@ class AppEntry {
 		console.log("preload");
 		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
 		//This method doesn't shrink height when window shrinks, so replace it
 		this.game.scale.getParentBounds = function (target?: Phaser.Rectangle) {
 			target = target || new Phaser.Rectangle(0, 0, 0, 0);
@@ -62,6 +62,7 @@ class AppEntry {
 	}
 
 	create() {
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
 		let welcome = new WelcomeScreen(this.htmlOverlayManager);
 		welcome.onLogin = (nickname, hideNames) => {
 			this.hideNames = hideNames;
