@@ -48,7 +48,8 @@ class AppEntry {
 	create() {
 		console.log('create');
 
-		this.createSimulationScene(1);
+		let levelNumber = parseInt((window.location.hash || "#").substr(1), 10) || 1;
+		this.createSimulationScene(levelNumber);
 	}
 
 	update() {
