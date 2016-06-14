@@ -80,7 +80,7 @@ gulp.task('sentry-release', ['webpack'], function() {
 		var opt = {
 			DOMAIN: domain,
 			API_URL: 'https://app.getsentry.com/api/0/projects/ironshod/massivematch-client/',
-			API_KEY: '0b971a8f7c21469781db28468a3251ae',
+			API_KEY: '0a546bf6eb9a4e939e10c92018687b46',
 			debug: true,
 			versionPrefix: '', // Append before the version number in package.json 
 		}
