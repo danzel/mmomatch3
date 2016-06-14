@@ -142,7 +142,7 @@ class AppEntry {
 	}
 
 	update() {
-		if (!this.simulationHandler) {
+		if (!this.simulationHandler || lastUpdateFailed) {
 			return;
 		}
 
@@ -171,18 +171,20 @@ for (var i = 0; i < scripts.length; i++) {
 		release = scripts[i].src.substr(index + 10);
 	}
 }
+let willShowErrorMessage: boolean;
 if (runningOnLive) {
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
 		release,
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
-			if (lastUpdateFailed) {
+			if (lastUpdateFailed && !willShowErrorMessage) {
+				willShowErrorMessage = true;
 				setTimeout(function () {
 					alert('Sorry, something broke. An error has been reported.\nRefreshing the page');
 					setTimeout(function () {
 						window.location.reload(true);
 					}, 1000);
-				}, 3000)
+				}, 4000)
 			}
 
 			return data;
