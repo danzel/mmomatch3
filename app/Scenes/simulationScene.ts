@@ -5,6 +5,7 @@ import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
 import HtmlOverlayManager = require('../HtmlOverlay/manager')
+import InitialZoomCalculator = require('./SimParts/initialZoomCalculator');
 import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
 import LevelDef = require('../Simulation/Levels/levelDef');
@@ -45,7 +46,7 @@ class SimulationScene {
 	detectorDisplays = new Array<DetectorDisplay>();
 
 
-	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: {[id: number]: string}, endAvailabilityDate: Date) {
+	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }, endAvailabilityDate: Date) {
 		let simulationGroup = new Phaser.Group(group.game, group);
 		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
@@ -63,7 +64,7 @@ class SimulationScene {
 			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId, playerNames);
 			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group), endAvailabilityDate);
 			this.playerCountRenderer.updateData(this.playerCountValue);
-			
+
 			this.pointsEarnedDisplay = new PointsEarnedDisplay(new Phaser.Group(group.game, group), simulation.scoreTracker, playerId);
 
 			this.zoomToRandomLocation();
@@ -81,6 +82,9 @@ class SimulationScene {
 	}
 
 	private zoomToRandomLocation() {
+		let zoomPos = InitialZoomCalculator.getZoomInTarget(this.simulation, this.level);
+		zoomPos.y = this.level.height - zoomPos.y;
+
 		//Assume the SimulationRenderer just fit to screen (which it will have)
 		//Calculate where the grid is
 		let width = this.renderer.getScale() * this.simulation.grid.width * MatchableRenderer.PositionScalar;
@@ -89,8 +93,19 @@ class SimulationScene {
 		let minX = (this.group.game.width - width) / 2;
 		let minY = (this.group.game.height - height) / 2;
 
-		let posX = minX + width * Math.random();
-		let posY = minY + height * Math.random();
+		zoomPos.x *= this.simulation.grid.width / (this.simulation.grid.width - 1);
+		zoomPos.x -= this.simulation.grid.width / 2;
+		zoomPos.x *= 1.1;
+		zoomPos.x += this.simulation.grid.width / 2;
+
+		zoomPos.y *= this.simulation.grid.height / (this.simulation.grid.height - 1);
+		zoomPos.y -= this.simulation.grid.height / 2;
+		zoomPos.y *= 1.1;
+		zoomPos.y += this.simulation.grid.height / 2;
+
+		let posX = minX + zoomPos.x * width / this.simulation.grid.width;
+		let posY = minY + zoomPos.y * height / this.simulation.grid.height;
+		console.log(minY, height, zoomPos.y * height / this.simulation.grid.height, posY);
 
 		//Track if player changes the scale, cancel if they do
 		let currentScale = this.renderer.getScale();
