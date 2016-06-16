@@ -44,6 +44,7 @@ class CirclePingRenderer {
 	end() {
 		while (this.circlesUsed < this.circles.length) {
 			this.circles[this.circlesUsed].visible = false;
+			this.circlesUsed++;
 		}
 	}
 }
