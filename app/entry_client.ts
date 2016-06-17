@@ -39,8 +39,6 @@ class AppEntry {
 	playerNames: { [id: number]: string } = {};
 
 	constructor() {
-		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
-
 		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
 	}
 
@@ -63,6 +61,7 @@ class AppEntry {
 
 	create() {
 		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
+		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
 		let welcome = new WelcomeScreen(this.htmlOverlayManager);
 		welcome.onLogin = (nickname, hideNames) => {
 			this.hideNames = hideNames;
