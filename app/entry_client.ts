@@ -203,6 +203,12 @@ function start() {
 			return;
 		}
 
+		//Wait till we are visible (firefox iframe) https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+		if (window.getComputedStyle(document.documentElement) == null) {
+			setTimeout(start, 100);
+			return;
+		}
+
 		new AppEntry();
 
 		[
