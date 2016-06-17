@@ -175,6 +175,10 @@ let willShowErrorMessage: boolean;
 if (runningOnLive) {
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
 		release,
+		ignoreErrors: [
+			"adsbygoogle.push() error: All ins elements in the DOM with class=adsbygoogle already have ads in them.",
+			"WeixinJSBridge is not defined"
+		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
 			if (lastUpdateFailed && !willShowErrorMessage) {
