@@ -21,6 +21,12 @@ class AppEntry {
 	scene: SimulationScene;
 
 	constructor() {
+		if (!(<any>window).Phaser) {
+			alert('Failed to load Phaser, refreshing the page to fix it');
+			window.location.reload(true);
+			return;
+		}
+
 		document.getElementById('welcome').style.display = 'none';
 		this.htmlOverlayManager = new HtmlOverlayManager();
 		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());
@@ -34,9 +40,9 @@ class AppEntry {
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
 		//This method doesn't shrink height when window shrinks, so replace it
-		this.game.scale.getParentBounds = function(target?: Phaser.Rectangle) {
+		this.game.scale.getParentBounds = function (target?: Phaser.Rectangle) {
 			target = target || new Phaser.Rectangle(0, 0, 0, 0);
-			
+
 			target.setTo(0, 0, document.body.clientWidth, document.body.clientHeight);
 			return target;
 		}

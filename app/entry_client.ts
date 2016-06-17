@@ -194,6 +194,12 @@ if (runningOnLive) {
 }
 function start() {
 	if (document.readyState == 'complete') {
+		if (!(<any>window).Phaser) {
+			alert('Failed to load Phaser, refreshing the page to fix it');
+			window.location.reload(true);
+			return;
+		}
+
 		new AppEntry();
 
 		[
