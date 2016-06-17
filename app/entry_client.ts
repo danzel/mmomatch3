@@ -60,9 +60,7 @@ class AppEntry {
 	}
 
 	create() {
-		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
-		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
-		let welcome = new WelcomeScreen(this.htmlOverlayManager);
+		let welcome = new WelcomeScreen();
 		welcome.onLogin = (nickname, hideNames) => {
 			this.hideNames = hideNames;
 			this.connect(nickname);
@@ -72,6 +70,8 @@ class AppEntry {
 
 	connect(nickname: string) {
 		console.log('create');
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
+		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
 
 		let socket: SocketClient;
 		if (runningOnLive) { //Standard port

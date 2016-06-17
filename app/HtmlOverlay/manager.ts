@@ -51,6 +51,29 @@ class Manager {
 		this.bottomAdElement = document.getElementById('bottom-ad');
 
 		this.render();
+
+		this.init();
+	}
+
+	private init() {
+		let btns = document.getElementById('bottom-corner-buttons');
+		btns.style.display = 'block';
+
+		btns.getElementsByClassName("help-button")[0].addEventListener('click', () => {
+			this.uiState.helpVisible = !this.uiState.helpVisible;
+			this.render();
+		});
+		btns.getElementsByClassName("feedback-button")[0].addEventListener('click', () => {
+			this.uiState.feedbackVisible = true;
+			this.render();
+		});
+		btns.getElementsByClassName("fullscreen-button")[0].addEventListener('click', () => {
+			if (this.game.scale.isFullScreen) {
+				this.game.scale.stopFullScreen();
+			} else {
+				this.game.scale.startFullScreen(false);
+			}
+		});
 	}
 
 	showOverlay(overlayOptions: OverlayOptions) {
@@ -93,22 +116,6 @@ class Manager {
 		if (this.uiState.customOverlay && this.uiState.customOverlay.postRenderCallback) {
 			this.uiState.customOverlay.postRenderCallback(document.getElementById('overlay'));
 		}
-
-		this.element.getElementsByClassName("help-button")[0].addEventListener('click', () => {
-			this.uiState.helpVisible = !this.uiState.helpVisible;
-			this.render();
-		});
-		this.element.getElementsByClassName("feedback-button")[0].addEventListener('click', () => {
-			this.uiState.feedbackVisible = true;
-			this.render();
-		});
-		this.element.getElementsByClassName("fullscreen-button")[0].addEventListener('click', () => {
-			if (this.game.scale.isFullScreen) {
-				this.game.scale.stopFullScreen();
-			} else {
-				this.game.scale.startFullScreen(false);
-			}
-		});
 		this.addEventHandlers(this.element, this.uiState.helpVisible || (this.uiState.customOverlay && this.uiState.customOverlay.closeOnBackgroundClick));
 	}
 

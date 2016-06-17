@@ -81,14 +81,16 @@ a {
 	height: 60px;	
 }
 
-.bottom-corner-buttons {
+#bottom-corner-buttons {
 	position: absolute;
 	right: 0px;
 	bottom: -4px;
 	z-index: 1;
+	font-size: 26px;
+	display: none;
 }
 
-.bottom-corner-buttons div {
+#bottom-corner-buttons div {
 	display: inline-block;
 	cursor: pointer;
 
@@ -99,13 +101,11 @@ a {
 	height:32px;
 }
 
-.bottom-corner-buttons {
-	font-size: 26px;
-}
-
 .fullscreen-button img {
 	position: relative;
 	top: 3px;
+	width: 26px;
+	height: 26px;
 }
 
 

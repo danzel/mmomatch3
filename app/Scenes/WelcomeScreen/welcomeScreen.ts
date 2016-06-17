@@ -1,5 +1,3 @@
-import HtmlOverlayManager = require('../../HtmlOverlay/manager');
-
 declare function require(filename: string): (data: {}) => string;
 require('./welcomeScreen.css');
 
@@ -10,7 +8,7 @@ class WelcomeScreen {
 
 	onLogin: (nickname: string, hideNames: boolean) => void;
 
-	constructor(private htmlOverlayManager: HtmlOverlayManager) {
+	constructor() {
 		this.element = document.getElementById('welcome');
 	}
 
