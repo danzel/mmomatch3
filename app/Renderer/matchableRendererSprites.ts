@@ -50,6 +50,10 @@ class MatchableRendererSprites {
 		let sprites = this.sprites[index];
 		let spriteIndex = this.spriteIndexes[index];
 
+		if (!sprites) {
+			throw new Error("Invalid getSprite " + color + ", " + type);
+		}
+
 		let sprite: Phaser.Image;
 		if (spriteIndex == sprites.length) {
 			sprite = this.group.game.add.image(0, 0, 'atlas', this.spriteKeys[index], this.group);
