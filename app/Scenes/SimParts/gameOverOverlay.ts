@@ -7,10 +7,18 @@ declare function require(filename: string): (data: {}) => string;
 var template = <(data: {}) => string>require('./gameOverOverlay.handlebars');
 require('./gameOverOverlay.css');
 
+var thumbsUp = require('file?name=thumbsup.png?[hash:6]!../../../img/ui/thumbsup.png');
+var thumbsDown = require('file?name=thumbsdown.png?[hash:6]!../../../img/ui/thumbsdown.png');
+
+
 class GameOverOverlay {
 	countdownText: string;
 	private rank: number;
 	clicked = new LiteEvent<void>();
+
+	private countdownElement: Element;
+	private voteUp: HTMLDivElement;
+	private voteDown: HTMLDivElement;
 
 	constructor(private htmlOverlayManager: HtmlOverlayManager, private time: Phaser.Time, private gameEndType: GameEndType, private countdown: number, scoreTracker: ScoreTracker, playerId: number, private playerCount: number) {
 
@@ -30,7 +38,11 @@ class GameOverOverlay {
 			this.countdown = Math.max(0, this.countdown - this.time.physicsElapsed);
 			this.countdownText = "Next Level in " + this.countdown.toFixed(1) + " seconds";
 
-			this.render();
+			if (this.countdownElement) {
+				this.countdownElement.innerHTML = this.countdownText;
+			} else {
+				this.render();
+			}
 		}
 	}
 
@@ -43,12 +55,38 @@ class GameOverOverlay {
 				isOutOfMoves: (this.gameEndType == GameEndType.NoMovesFailure),
 				rank: this.rank,
 				playerCount: Math.max(this.rank, this.playerCount), //Hack around you getting a worse rank than current amount of players 
-				bottomText: this.countdownText
+				bottomText: this.countdownText,
+				thumbsUp,
+				thumbsDown
 			}),
-			closeOnBackgroundClick: true,
+			closeOnBackgroundClick: !this.countdown,
 			closedCallback: () => this.clicked.trigger(),
-			showBannerAd: true
+			showBannerAd: true,
+			postRenderCallback: () => {
+				this.countdownElement = this.htmlOverlayManager.element.getElementsByClassName('bottom')[0];
+				this.voteUp = <HTMLDivElement>this.htmlOverlayManager.element.getElementsByClassName('vote up')[0];
+				this.voteDown = <HTMLDivElement>this.htmlOverlayManager.element.getElementsByClassName('vote down')[0];
+
+				this.voteUp.addEventListener('click', () => this.vote(true));
+				this.voteDown.addEventListener('click', () => this.vote(false));
+			}
 		});
+	}
+
+	private haveVoted = false;
+
+	private vote(up: boolean) {
+		if (this.haveVoted) {
+			return;
+		}
+		this.haveVoted = true;
+		//TODO: Transmit
+
+		if (up) {
+			this.voteDown.style.opacity = '0.4';
+		} else {
+			this.voteUp.style.opacity = '0.4';
+		}
 	}
 
 	private calculateRank(playerId: number, scoreTracker: ScoreTracker): number {

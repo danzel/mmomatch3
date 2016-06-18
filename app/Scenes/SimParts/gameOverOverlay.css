@@ -17,3 +17,20 @@
 	margin-top: 10px;
 	margin-bottom: 5px;
 }
+
+.vote {
+	padding:10px;
+	border-radius: 70px;
+	display: inline-block;
+	pointer-events: all;
+	cursor: pointer;
+	transition: opacity 0.3s;
+}
+
+.vote.up {
+	background-color: green;
+}
+
+.vote.down {
+	background-color: #c30d0d;
+}

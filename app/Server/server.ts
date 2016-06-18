@@ -106,7 +106,7 @@ class Server {
 		this.serverComms.sendBoot(bootData, Object.keys(this.clients));
 
 		this.gameEndDetector.gameEnded.on((victory) => {
-			setTimeout(() => this.loadLevel(levelNumber + 1), 5000);
+			setTimeout(() => this.loadLevel(levelNumber + 1), 8000);
 		});
 
 		this.levelStarted.trigger({ level: this.level, simulation: this.simulation, gameEndDetector: this.gameEndDetector });
