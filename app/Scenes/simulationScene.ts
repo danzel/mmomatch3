@@ -77,7 +77,7 @@ class SimulationScene {
 				this.detectorDisplays[i].disabled = true;
 			}
 
-			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, gameEndType, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue);
+			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, gameEndType, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue, this.level);
 		});
 	}
 

@@ -34,3 +34,11 @@
 .vote.down {
 	background-color: #c30d0d;
 }
+
+.vote.chosen {
+	pointer-events: none;
+}
+.vote.notchosen {
+	pointer-events: none;
+	opacity: 0.4;
+}

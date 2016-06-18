@@ -1,7 +1,10 @@
 import GameEndType = require('../../Simulation/Levels/gameEndType');
+import FailureType = require('../../Simulation/Levels/failureType');
 import HtmlOverlayManager = require('../../HtmlOverlay/manager')
-import LiteEvent = require('../../liteEvent')
+import LevelDef = require('../../Simulation/Levels/levelDef');
+import LiteEvent = require('../../liteEvent');
 import ScoreTracker = require('../../Simulation/Scoring/scoreTracker');
+import VictoryType = require('../../Simulation/Levels/victoryType');
 
 declare function require(filename: string): (data: {}) => string;
 var template = <(data: {}) => string>require('./gameOverOverlay.handlebars');
@@ -12,6 +15,7 @@ var thumbsDown = require('file?name=thumbsdown.png?[hash:6]!../../../img/ui/thum
 
 
 class GameOverOverlay {
+	private hasCountdown: boolean;
 	countdownText: string;
 	private rank: number;
 	clicked = new LiteEvent<void>();
@@ -20,11 +24,12 @@ class GameOverOverlay {
 	private voteUp: HTMLDivElement;
 	private voteDown: HTMLDivElement;
 
-	constructor(private htmlOverlayManager: HtmlOverlayManager, private time: Phaser.Time, private gameEndType: GameEndType, private countdown: number, scoreTracker: ScoreTracker, playerId: number, private playerCount: number) {
+	constructor(private htmlOverlayManager: HtmlOverlayManager, private time: Phaser.Time, private gameEndType: GameEndType, private countdown: number, scoreTracker: ScoreTracker, playerId: number, private playerCount: number, private level: LevelDef) {
 
 		this.rank = this.calculateRank(playerId, scoreTracker);
+		this.hasCountdown = !!countdown;
 
-		if (countdown) {
+		if (this.hasCountdown) {
 			this.countdownText = "??? in ???";
 			this.update();
 		} else {
@@ -80,13 +85,18 @@ class GameOverOverlay {
 			return;
 		}
 		this.haveVoted = true;
-		//TODO: Transmit
 
-		if (up) {
-			this.voteDown.style.opacity = '0.4';
-		} else {
-			this.voteUp.style.opacity = '0.4';
+		//Transmit
+		if (this.hasCountdown) {
+			let ga = (<any>window).ga;
+			if (ga) {
+				ga('send', 'event', 'level', 'rating', VictoryType[this.level.victoryType] + ":" + FailureType[this.level.failureType], up ? 1 : 0)
+			}
 		}
+
+
+		this.voteUp.classList.add(up ? 'chosen' : 'notchosen');
+		this.voteDown.classList.add(up ? 'notchosen' : 'chosen');
 	}
 
 	private calculateRank(playerId: number, scoreTracker: ScoreTracker): number {
