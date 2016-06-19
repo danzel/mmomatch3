@@ -1,4 +1,5 @@
 import ComboOwnership = require('../comboOwnership');
+import Language = require('../../../Language');
 import OwnedMatch = require('../ownedMatch');
 import Score = require('../score');
 import ScoreTracker = require('../scoreTracker');
@@ -9,7 +10,7 @@ class PointsScoreTracker extends ScoreTracker {
 	playerComboSize: { [playerId: number]: number } = {};
 
 	constructor(comboOwnership: ComboOwnership) {
-		super("Scores");
+		super(Language.t('points'));
 		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
 		comboOwnership.playerNoLongerInCombo.on((playerId) => this.playerNoLongerInCombo(playerId));
 	}

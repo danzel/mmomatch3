@@ -4,6 +4,15 @@ import Polyglot = require('node-polyglot');
 interface LanguageDef {
 	//Renderer
 	'players x': string;
+	'you': string;
+	'anonymous': string;
+
+	//Trackers
+	'animals': string;
+	'pigs/pugs': string;
+	'points': string;
+	'rescues': string;
+	'robodrops': string;
 
 	//levelDetailsOverlay
 	'level x': string;
@@ -30,6 +39,7 @@ interface LanguageDef {
 	'cagesremainingx': string;
 	'timeremainingx': string;
 	'pointsrequiredx': string;
+	'animalsremainingx': string;
 
 	//gameOverOverlay
 	'out of moves': string;
@@ -47,7 +57,16 @@ let translation = <{ [language: string]: LanguageDef }>{
 	'en': {
 		//Renderer
 		'players x': 'Players: %{num}',
-		
+		'you': 'You',
+		'anonymous': 'Anonymous',
+
+		//Trackers
+		'animals': 'Animals',
+		'pigs/pugs': 'Pigs/Pugs',
+		'points': 'Points',
+		'rescues': 'Rescues',
+		'robodrops': 'RoboDrops',
+
 		//levelDetailsOverlay
 		'level x': 'Level %{num}',
 		'click to start': 'Click to start',
@@ -72,7 +91,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'movesremainingx': 'Moves remaining %{num}',
 		'cagesremainingx': 'Cages remaining: %{num}',
 		'timeremainingx': 'Time remaining: %{num}',
-		'pointsrequiredx': 'Points required: %{num}/%{total}', 
+		'pointsrequiredx': 'Points required: %{num}/%{total}',
+		'animalsremainingx': 'Animals remaining: %{num}',
 
 		//gameOverOverlay
 		'out of moves': 'Out of Moves!',
@@ -88,6 +108,15 @@ let translation = <{ [language: string]: LanguageDef }>{
 	'es': {
 		//Renderer
 		'players x': 'Jugadores: %{num}',
+		'you': 'Usted',
+		'anonymous': 'Anónimo',
+
+		//Trackers
+		'animals': 'Animales',
+		'pigs/pugs': 'Cerdos/Barros amasados',
+		'points': 'Puntos',
+		'rescues': 'Rescates',
+		'robodrops': 'Gotas del robot',
 
 		//levelDetailsOverlay
 		'level x': 'Nivel %{num}',
@@ -113,7 +142,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'movesremainingx': 'Movimientos restantes: %{num}',
 		'cagesremainingx': 'Jaulas restantes: %{num}',
 		'timeremainingx': 'Tiempo restante: %{num}',
-		'pointsrequiredx': 'Puntos necesarios: %{num}/%{total}', 
+		'pointsrequiredx': 'Puntos necesarios: %{num}/%{total}',
+		'animalsremainingx': 'Animales restantes: %{num}',
 
 		//gameOverOverlay
 		'out of moves': '¡Sin movimientos!',

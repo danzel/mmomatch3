@@ -1,3 +1,4 @@
+import Language = require('../Language');
 import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 
 class ScoreRenderer {
@@ -98,9 +99,9 @@ class ScoreRenderer {
 		}
 		//return "Player " + playerId;
 		if (playerId == this.playerId) {
-			return "You";
+			return Language.t('you');
 		}
-		return "Anonymous"
+		return Language.t('anonymous');
 	}
 }
 

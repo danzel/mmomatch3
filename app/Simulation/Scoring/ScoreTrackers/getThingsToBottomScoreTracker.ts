@@ -1,5 +1,6 @@
 import ComboOwnership = require('../comboOwnership');
 import Grid = require('../../grid');
+import Language = require('../../../Language');
 import OwnedMatch = require('../ownedMatch');
 import Score = require('../score');
 import ScoreTracker = require('../scoreTracker');
@@ -9,7 +10,7 @@ import Type = require('../../type');
 
 class GetThingsToBottomScoreTracker extends ScoreTracker {
 	constructor(comboOwnership: ComboOwnership, private grid: Grid, swapHandler: SwapHandler) {
-		super("RoboDrops");
+		super(Language.t('robodrops'));
 		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
 		swapHandler.swapOccurred.on(swap => this.swapOccurred(swap));
 	}

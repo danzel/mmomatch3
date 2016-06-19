@@ -1,11 +1,12 @@
 import ComboOwnership = require('../comboOwnership');
+import Language = require('../../../Language');
 import OwnedMatch = require('../ownedMatch');
 import Score = require('../score');
 import ScoreTracker = require('../scoreTracker');
 
 class MatchXOfColorScoreTracker extends ScoreTracker {
 	constructor(comboOwnership: ComboOwnership) {
-		super("Pigs/Pugs");
+		super(Language.t('pigs/pugs'));
 		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
 	}
 
