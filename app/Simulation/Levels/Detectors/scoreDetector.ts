@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Simulation = require('../../simulation');
 
 class ScoreDetector extends Detector {
@@ -24,9 +25,9 @@ class ScoreDetector extends Detector {
 			}
 		}
 	}
-	
+
 	getDetailsText(): string {
-		return "Get " + this.scoreRequired + " Points";
+		return Language.t('get x points', { num: this.scoreRequired });
 	}
 }
 

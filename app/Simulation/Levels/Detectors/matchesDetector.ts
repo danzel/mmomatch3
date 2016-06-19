@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Simulation = require('../../simulation');
 
 class MatchesDetector extends Detector {
@@ -25,7 +26,7 @@ class MatchesDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Match " + this.totalMatchesRequired + " Animals";
+		return Language.t('match x', { num: this.totalMatchesRequired });
 	}
 }
 

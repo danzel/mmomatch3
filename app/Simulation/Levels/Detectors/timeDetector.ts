@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Simulation = require('../../simulation');
 
 class TimeDetector extends Detector {
@@ -25,7 +26,7 @@ class TimeDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "within " + this.totalTime + " Seconds";
+		return Language.t('within x secs', { sec: this.totalTime});
 	}
 }
 

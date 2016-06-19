@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Simulation = require('../../simulation');
 
 class SwapsDetector extends Detector {
@@ -33,13 +34,13 @@ class SwapsDetector extends Detector {
 					});
 				}
 			}
-			
+
 			this.isInitialCheck = false;
 		}
 	}
 
 	getDetailsText(): string {
-		return "within " + this.totalSwaps + " Moves";
+		return Language.t('within x moves', { num: this.totalSwaps });
 	}
 }
 

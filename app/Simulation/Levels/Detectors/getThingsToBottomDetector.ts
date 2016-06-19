@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Matchable = require('../../matchable');
 import Simulation = require('../../simulation');
 import Swap = require('../../swap');
@@ -45,14 +46,14 @@ class GetThingsToBottomDetector extends Detector {
 				this.amount++;
 			}
 		}));
-		
+
 		if (anyOnGrid && this.amount == 0) {
 			this.detected.trigger();
 		}
 	}
 
 	getDetailsText(): string {
-		return "Get " + this.totalAmount + " Robots to the bottom";
+		return Language.t('robots to bottom', { num: this.totalAmount })
 	}
 }
 

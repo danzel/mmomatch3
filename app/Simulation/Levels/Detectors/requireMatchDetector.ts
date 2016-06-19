@@ -1,5 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import RequireMatch = require('../../requireMatch');
 import Simulation = require('../../simulation');
 
@@ -30,7 +31,7 @@ class RequireMatchDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return "Rescue the animals from their cages";
+		return Language.t('rescue from cages');
 	}
 }
 

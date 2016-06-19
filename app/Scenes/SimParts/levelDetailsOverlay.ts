@@ -1,5 +1,6 @@
 import Detector = require('../../Simulation/Levels/detector');
 import HtmlOverlayManager = require('../../HtmlOverlay/manager')
+import Language = require('../../Language');
 import LevelDef = require('../../Simulation/Levels/levelDef');
 import LiteEvent = require('../../liteEvent');
 
@@ -21,7 +22,6 @@ class LevelDetailsOverlay {
 	constructor(private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private victoryDetector: Detector, private failureDetector: Detector) {
 
 		let details = {
-			levelNumber: this.level.levelNumber,
 			width: this.level.width,
 			height: this.level.height,
 			victoryText: this.victoryDetector.getDetailsText(),
@@ -29,7 +29,11 @@ class LevelDetailsOverlay {
 			pig,
 			pug,
 			cage,
-			gettobottom
+			gettobottom,
+
+			_level: Language.t('level x', { num: this.level.levelNumber }),
+			_size: Language.t('size'),
+			_clicktostart: Language.t('click to start')
 		};
 
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {
