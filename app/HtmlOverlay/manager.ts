@@ -1,3 +1,5 @@
+import Language = require('../Language');
+
 declare function require(filename: string): string | ((data: {}) => string);
 var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
@@ -34,6 +36,18 @@ class UIState {
 	colorClearSrc = colorClear;
 	verticalSrc = vertical;
 	areaclearSrc = areaclear;
+
+	_controls = Language.t('controls');
+	_helpline1 = Language.t('helpline1');
+	_helpline2 = Language.t('helpline2');
+	_helpline3 = Language.t('helpline3');
+	_helpline4 = Language.t('helpline4');
+	_helpline5 = Language.t('helpline5');
+	_helpline6 = Language.t('helpline6');
+	_specialmatches = Language.t('special matches');
+	_clearsinaline = Language.t('clears in a line');
+	_clearsarea = Language.t('clears area');
+	_clearsanimal = Language.t('clears animal');
 }
 
 class Manager {

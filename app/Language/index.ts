@@ -51,6 +51,19 @@ interface LanguageDef {
 	'next level in': string;
 	'rate level': string;
 	'click to continue': string;
+
+	//Help
+	'controls': string;
+	'helpline1': string;
+	'helpline2': string;
+	'helpline3': string;
+	'helpline4': string;
+	'helpline5': string;
+	'helpline6': string;
+	'special matches': string;
+	'clears in a line': string;
+	'clears area': string;
+	'clears animal': string;
 }
 
 let translation = <{ [language: string]: LanguageDef }>{
@@ -104,6 +117,19 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'next level in': 'Next level in %{sec} seconds',
 		'rate level': 'Rate this level',
 		'click to continue': 'Click to continue',
+		
+		//Help
+		'controls': 'Controles',
+		'helpline1': 'Click and drag animals to match them.',
+		'helpline2': 'You can only drag ones that will make a 3 in a row match.',
+		'helpline3': 'Zoom in and out using the mouse wheel.',
+		'helpline4': 'Move around by dragging with the right mouse button.',
+		'helpline5': 'You can also use the keyboard to look around',
+		'helpline6': '(Arrow Keys or WASD)',
+		'special matches': 'Special Matches',
+		'clears in a line': 'When matched, clears animals in a line',
+		'clears area': 'When matched, clears a small area',
+		'clears animal': 'When swapped with an animal, clears that animal'
 	},
 
 	'es': {
@@ -156,6 +182,20 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'next level in': 'Siguiente nivel en %{sec} segundos',
 		'rate level': 'Valorar este nivel',
 		'click to continue': 'Haz click para continuar',
+		
+		//Help
+		'controls': 'Controles',
+		'helpline1': 'Haga clic y arrastre los animales para emparejar ellos.',
+		'helpline2': 'Sólo se pueden arrastrar los que van a hacer un 3 en un emparejar de consecutivo.',
+		'helpline3': 'Acercar y alejar con la rueda del ratón.',
+		'helpline4': 'Moverse alrededor arrastrando con el botón derecho del ratón.',
+		'helpline5': 'También puede utilizar el teclado para mirar a su alrededor',
+		'helpline6': '(Teclas de flecha o WASD)',
+
+		'special matches': 'Emparejar especiales',
+		'clears in a line': 'Cuando se emparejan, rescata los animales en una línea',
+		'clears area': 'Cuando se emparejan, rescata a un área pequeña',
+		'clears animal': 'Cuando se intercambiada con un animal, rescatas ese animal'
 	}
 };
 

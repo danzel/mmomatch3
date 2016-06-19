@@ -10,22 +10,22 @@
 
 {{#if helpVisible}}
 <div class="overlay frame help-overlay b2">
-	<h1 class="b5">Controls</h1>
+	<h1 class="b5">{{_controls}}</h1>
 	<p>
-		Click and drag animals to match them.<br/>
-		You can only drag ones that will make a 3 in a row match.
+		{{_helpline1}}<br/>
+		{{_helpline2}}
 	</p>
 	<p>
-		Zoom in and out using the mouse wheel.<br/>
-		Move around by dragging with the right mouse button.
+		{{_helpline3}}<br/>
+		{{_helpline4}}
 	</p>
 	<p>
-		You can also use the keyboard to look around<br/>
-		(Arrow Keys or WASD)
+		{{_helpline5}}<br/>
+		{{_helpline6}}
 	</p>
 
 
-	<h2 class="b3">Special Matches</h2>
+	<h2 class="b3">{{_specialmatches}}</h2>
 	<div class="matchable-container b5">
 		<img class="matchable" src="{{matchable1Src}}" />
 		<img class="matchable" src="{{matchable1Src}}" />
@@ -38,7 +38,7 @@
 	</div>		
 
 	<p>
-		When matched, clears animals in a line
+		{{_clearsinaline}}
 	</p>
 	
 	<div class="matchable-container b5">
@@ -53,7 +53,7 @@
 	</div>		
 
 	<p>
-		When matched, clears a small area
+		{{_clearsarea}}
 	</p>
 
 	<div class="matchable-container b5">
@@ -66,7 +66,7 @@
 		<img class="matchable" src="{{colorClearSrc}}" />
 	</div>		
 	<p>
-		When swapped with an animal, clears that animal
+		{{_clearsanimal}}
 	</p>
 	
 	
