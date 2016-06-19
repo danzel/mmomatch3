@@ -2,16 +2,41 @@
 import Polyglot = require('node-polyglot');
 
 interface LanguageDef {
+
+	//gameOverOverlay
+	'out of moves': string;
+	'you win': string;
+	'defeated': string;
+	'level failed': string;
+	'level complete': string;
+	'you came': string;
+	'next level in': string;
 	'rate level': string;
 
 }
 
-let translation = <{[language: string]: LanguageDef}>{
+let translation = <{ [language: string]: LanguageDef }>{
 	'en': {
+		//gameOverOverlay
+		'out of moves': 'Out of Moves!',
+		'you win': 'You Win',
+		'defeated': 'Defeated',
+		'level failed': 'Level Failed',
+		'level complete': 'Level Complete!',
+		'you came': 'You came #%{rank} of %{playerCount} players',
+		'next level in': 'Next level in %{sec} seconds',
 		'rate level': 'Rate this level'
 	},
-	
+
 	'es': {
+		//gameOverOverlay
+		'out of moves': '¡Sin movimientos!',
+		'you win': '¡Tú ganas!',
+		'defeated': 'Derrotado',
+		'level failed': 'Nivel fracasado',
+		'level complete': '¡Nivel completado!',
+		'you came': 'Usted vino #%{rank} de %{playerCount} jugadores',
+		'next level in': 'Siguiente nivel en %{sec} segundos',
 		'rate level': 'Valorar este nivel'
 	}
 };

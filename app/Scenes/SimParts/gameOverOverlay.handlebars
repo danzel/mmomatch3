@@ -1,16 +1,16 @@
 <h1 class="header b5">
 	{{#if isOutOfMoves}}
-		Out of Moves!
+		{{_outofmoves}}
 	{{else if isTeam}}
-		{{#if victory}}You Win!{{else}}Defeated{{/if}}
+		{{#if victory}}{{_youwin}}!{{else}}{{_defeated}}{{/if}}
 	{{else}}
-		{{#if victory}}Level Complete!{{else}}Level Failed{{/if}}
+		{{#if victory}}{{_levelcomplete}}{{else}}{{_levelfailed}}{{/if}}
 	{{/if}}
 </h1>
-<h3 class="middle b3">You came #{{rank}} of {{playerCount}} players</h3>
+<h3 class="middle b3">{{_youcame}}</h3>
 <br />
 <div>
-	<h2 class="b3">{{rateLevel}}</h2>
+	<h2 class="b3">{{_ratelevel}}</h2>
 	<div class="vote up">
 		<img src="{{thumbsUp}}" style="width: 100px" />
 	</div>

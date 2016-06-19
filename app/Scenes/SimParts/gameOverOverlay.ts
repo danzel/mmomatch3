@@ -42,7 +42,7 @@ class GameOverOverlay {
 	update() {
 		if (this.countdown) {
 			this.countdown = Math.max(0, this.countdown - this.time.physicsElapsed);
-			this.countdownText = "Next Level in " + this.countdown.toFixed(1) + " seconds";
+			this.countdownText = Language.t('next level in', { sec: this.countdown.toFixed(1) });
 
 			if (this.countdownElement) {
 				this.countdownElement.innerHTML = this.countdownText;
@@ -59,13 +59,17 @@ class GameOverOverlay {
 				isTeam: (this.gameEndType == GameEndType.TeamDefeat || this.gameEndType == GameEndType.TeamVictory),
 				victory: (this.gameEndType == GameEndType.LevelVictory || this.gameEndType == GameEndType.TeamVictory),
 				isOutOfMoves: (this.gameEndType == GameEndType.NoMovesFailure),
-				rank: this.rank,
-				playerCount: Math.max(this.rank, this.playerCount), //Hack around you getting a worse rank than current amount of players 
 				bottomText: this.countdownText,
 				thumbsUp,
 				thumbsDown,
 
-				rateLevel: Language.t('rate level')
+				_outofmoves: Language.t('out of moves'),
+				_youwin: Language.t('you win'),
+				_defeated: Language.t('defeated'),
+				_levelcomplete: Language.t('level complete'),
+				_levelfailed: Language.t('level failed'),
+				_youcame: Language.t('you came', { rank: this.rank, playerCount: Math.max(this.rank, this.playerCount) }), //Hack around you getting a worse rank than current amount of players
+				_ratelevel: Language.t('rate level')
 			}),
 			closeOnBackgroundClick: !this.countdown,
 			closedCallback: () => this.clicked.trigger(),
