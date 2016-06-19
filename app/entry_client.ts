@@ -9,6 +9,7 @@ import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
+import Language = require('./Language');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import NewVersion = require('./HtmlOverlay/Overlays/newVersion');
 import Serializer = require('./Serializer/simple');
@@ -209,6 +210,7 @@ function start() {
 			return;
 		}
 
+		Language.init();
 		new AppEntry();
 
 		[

@@ -6,6 +6,7 @@ import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
+import Language = require('./Language');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
 import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
@@ -26,6 +27,7 @@ class AppEntry {
 			window.location.reload(true);
 			return;
 		}
+		Language.init();
 
 		document.getElementById('welcome').style.display = 'none';
 		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());

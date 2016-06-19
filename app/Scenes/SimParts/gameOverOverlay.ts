@@ -5,6 +5,7 @@ import LevelDef = require('../../Simulation/Levels/levelDef');
 import LiteEvent = require('../../liteEvent');
 import ScoreTracker = require('../../Simulation/Scoring/scoreTracker');
 import VictoryType = require('../../Simulation/Levels/victoryType');
+import Language = require('../../Language');
 
 declare function require(filename: string): (data: {}) => string;
 var template = <(data: {}) => string>require('./gameOverOverlay.handlebars');
@@ -62,7 +63,9 @@ class GameOverOverlay {
 				playerCount: Math.max(this.rank, this.playerCount), //Hack around you getting a worse rank than current amount of players 
 				bottomText: this.countdownText,
 				thumbsUp,
-				thumbsDown
+				thumbsDown,
+
+				rateLevel: Language.t('rate level')
 			}),
 			closeOnBackgroundClick: !this.countdown,
 			closedCallback: () => this.clicked.trigger(),
