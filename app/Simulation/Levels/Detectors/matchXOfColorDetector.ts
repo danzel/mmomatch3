@@ -1,6 +1,7 @@
 import Color = require('../../color');
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Simulation = require('../../simulation');
 
 class MatchXOfColorDetector extends Detector {
@@ -38,7 +39,7 @@ class MatchXOfColorDetector extends Detector {
 	}
 	
 	getColorText(): string {
-		return (this.isPugs() ? "Pugs" : "Pigs")
+		return (this.isPugs() ? Language.t('pugs') : Language.t('pigs'))
 	}
 }
 

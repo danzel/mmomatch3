@@ -33,13 +33,21 @@ class LevelDetailsOverlay {
 
 			_level: Language.t('level x', { num: this.level.levelNumber }),
 			_size: Language.t('size'),
-			_clicktostart: Language.t('click to start')
+			_clicktostart: Language.t('click to start'),
 		};
 
 		if (victoryDetector instanceof MatchXOfColorDetector && failureDetector instanceof MatchXOfColorDetector) {
 			(<any>details).pigsvspugs = true;
-			(<any>details).yourstext = victoryDetector.getColorText();
-			(<any>details).notyourstext = failureDetector.getColorText();
+			(<any>details)._pigsvspugs = Language.t('pigsvspugs');
+
+			let yoursText = victoryDetector.getColorText();
+			let notYoursText = failureDetector.getColorText();
+			
+			(<any>details)._youareonteam = Language.t('youareonteam', { team: yoursText });
+			(<any>details)._matchbutdontmatch = Language.t('matchbutdontmatch', { team: yoursText, notteam: notYoursText });
+
+			(<any>details).yourstext = yoursText;
+			(<any>details).notyourstext = notYoursText;
 			(<any>details).yours = victoryDetector.isPugs() ? pug : pig;
 			(<any>details).notyours = victoryDetector.isPugs() ? pig : pug
 		}

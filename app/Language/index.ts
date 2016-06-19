@@ -15,6 +15,11 @@ interface LanguageDef {
 	'robots to bottom': string;
 	'within x secs': string;
 	'within x moves': string;
+	'pigsvspugs': string;
+	'pigs': string;
+	'pugs': string;
+	'youareonteam': string;
+	'matchbutdontmatch': string;
 
 	//gameOverOverlay
 	'out of moves': string;
@@ -42,6 +47,11 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'robots to bottom': 'Get %{num} Robots to the bottom',
 		'within x secs': 'within %{sec} seconds',
 		'within x moves': 'within %{num} moves',
+		'pigsvspugs': 'Pigs VS Pugs',
+		'pigs': 'Pigs',
+		'pugs': 'Pugs',
+		'youareonteam': 'You are on team %{team}',
+		'matchbutdontmatch': "Match %{team}, but don't match %{notteam}",
 
 		//gameOverOverlay
 		'out of moves': 'Out of Moves!',
@@ -67,6 +77,11 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'robots to bottom': 'Consigue %{num} Robots a la parte inferior',
 		'within x secs': 'dentro de los %{sec} segundos',
 		'within x moves': 'dentro de los %{num} movimientos',
+		'pigsvspugs': 'Cerdos vs Barros amasados',
+		'pigs': 'Cerdos',
+		'pugs': 'Barros amasados',
+		'youareonteam': 'Usted está en %{team} el equipo',
+		'matchbutdontmatch': "Emparejar con %{team}, pero no emparejar %{notteam}",
 
 		//gameOverOverlay
 		'out of moves': '¡Sin movimientos!',
