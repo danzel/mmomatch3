@@ -34,7 +34,7 @@ class GameOverOverlay {
 			this.countdownText = "??? in ???";
 			this.update();
 		} else {
-			this.countdownText = "Click to continue";
+			this.countdownText = Language.t('click to continue');
 			this.render();
 		}
 	}

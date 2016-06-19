@@ -50,7 +50,7 @@ interface LanguageDef {
 	'you came': string;
 	'next level in': string;
 	'rate level': string;
-
+	'click to continue': string;
 }
 
 let translation = <{ [language: string]: LanguageDef }>{
@@ -102,7 +102,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'level complete': 'Level Complete!',
 		'you came': 'You came #%{rank} of %{playerCount} players',
 		'next level in': 'Next level in %{sec} seconds',
-		'rate level': 'Rate this level'
+		'rate level': 'Rate this level',
+		'click to continue': 'Click to continue',
 	},
 
 	'es': {
@@ -153,7 +154,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'level complete': '¡Nivel completado!',
 		'you came': 'Usted vino #%{rank} de %{playerCount} jugadores',
 		'next level in': 'Siguiente nivel en %{sec} segundos',
-		'rate level': 'Valorar este nivel'
+		'rate level': 'Valorar este nivel',
+		'click to continue': 'Haz click para continuar',
 	}
 };
 
