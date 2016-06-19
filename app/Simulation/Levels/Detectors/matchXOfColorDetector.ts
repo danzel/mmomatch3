@@ -25,13 +25,7 @@ class MatchXOfColorDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		let res = "Match " + this.config.amount + " " + this.getColorText();
-		
-		if (this.isVictory) {
-			return res;
-		}
-		
-		return "Don't " + res;
+		return 'unused';
 	}
 	
 	isPugs(): boolean {

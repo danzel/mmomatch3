@@ -1,5 +1,7 @@
 import GetThingsToBottomDetector = require('../../../Simulation/Levels/Detectors/getThingsToBottomDetector');
+
 import DetectorDisplay = require('../detectorDisplay');
+import Language = require('../../../Language');
 
 class GetThingsToBottomDisplay extends DetectorDisplay {
 	private text: Phaser.Text;
@@ -14,7 +16,7 @@ class GetThingsToBottomDisplay extends DetectorDisplay {
 		detector.valueChanged.on(() => this.update());
 	}
 	private update() {
-		this.text.text = "Get " + this.detector.amount + " Robot" + (this.detector.amount == 1 ? "" : "s") + " to the bottom";
+		this.text.text = Language.t('robots to bottom', { smart_count: this.detector.amount });
 	}
 }
 

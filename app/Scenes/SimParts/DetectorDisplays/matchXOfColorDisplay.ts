@@ -1,13 +1,14 @@
-import MatchXOfColorDetector = require('../../../Simulation/Levels/Detectors/matchXOfColorDetector');
-
 import DetectorDisplay = require('../detectorDisplay');
 
+import MatchXOfColorDetector = require('../../../Simulation/Levels/Detectors/matchXOfColorDetector');
+import Language = require('../../../Language');
 
 class MatchXOfColorDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: MatchXOfColorDetector) {
 		super();
 		
-		let text = new Phaser.Text(group.game, 0, 50, detector.getColorText() + " Remaining: " + detector.matchesRemaining, this.textStyle);
+		let text = new Phaser.Text(group.game, 0, 50, 'todo', this.textStyle);
+		this.updateText(text);
 		this.group.add(text);
 		
 		if (detector.isVictory) {
@@ -16,15 +17,17 @@ class MatchXOfColorDisplay extends DetectorDisplay {
 			let headerStyle = Object.create(this.textStyle);
 			headerStyle.fontSize = 40;
 			
-			let headerText = new Phaser.Text(group.game, 0, 0, "Team " + detector.getColorText(), headerStyle);
+			let headerText = new Phaser.Text(group.game, 0, 0, Language.t('teamx', { team: detector.getColorText() }), headerStyle);
 			this.group.add(headerText);
 		}
 		
-		detector.valueChanged.on(() => {
-			if (!this.disabled) {
-				text.text = detector.getColorText() + " Remaining: " + detector.matchesRemaining;
-			}
-		});
+		detector.valueChanged.on(() => this.updateText(text));
+	}
+
+	private updateText(text: Phaser.Text) {
+		if (!this.disabled) {
+			text.text = Language.t('xremaining', { thing: this.detector.getColorText(), num: this.detector.matchesRemaining });
+		}
 	}
 }
 

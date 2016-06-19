@@ -53,7 +53,7 @@ class GetThingsToBottomDetector extends Detector {
 	}
 
 	getDetailsText(): string {
-		return Language.t('robots to bottom', { num: this.totalAmount })
+		return Language.t('robots to bottom', { smart_count: this.totalAmount })
 	}
 }
 

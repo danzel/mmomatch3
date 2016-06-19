@@ -8,6 +8,7 @@ import HtmlOverlayManager = require('../HtmlOverlay/manager')
 import InitialZoomCalculator = require('./SimParts/initialZoomCalculator');
 import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
+import Language = require('../Language');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
 import MatchableRenderer = require('../Renderer/matchableRenderer');
@@ -153,7 +154,7 @@ class SimulationScene {
 	}
 
 	createLevelNumberDisplay() {
-		this.group.game.add.text(5, 5, "Level " + this.level.levelNumber, {
+		this.group.game.add.text(5, 5, Language.t('level x', { num: this.level.levelNumber }), {
 			fill: 'white',
 			font: 'Chewy',
 			fontSize: 30,

@@ -1,4 +1,5 @@
 import dateformat = require('dateformat');
+import Language = require('../Language');
 
 class PlayerCountRenderer {
 	textStyle: Phaser.PhaserTextStyle = {
@@ -6,7 +7,7 @@ class PlayerCountRenderer {
 		fontSize: 22,
 		fill: 'white',
 		strokeThickness: 4,
-		
+
 		boundsAlignH: 'right'
 	};
 
@@ -20,19 +21,19 @@ class PlayerCountRenderer {
 			let text2 = new Phaser.Text(this.group.game, -4, 4, "Server Closes: " + formatted, this.textStyle);
 			text2.setTextBounds(0, 0, 0, 0)
 			this.group.add(text2);
-			
+
 			yOffset = 26;
 		}
 
 		this.text = new Phaser.Text(this.group.game, -64, 4 + yOffset, "Players: ?", this.textStyle);
 		this.text.setTextBounds(0, 0, 0, 0);
 		this.group.add(this.text);
-		
+
 	}
-	
+
 	updateData(playerCount: number) {
-		this.text.text = "Players: " + playerCount;
-		
+		this.text.text = Language.t('players x', { num: playerCount });
+
 		this.group.position.x = this.group.game.width - 4;
 	}
 }
