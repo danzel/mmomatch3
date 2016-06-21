@@ -1,3 +1,5 @@
+import HtmlTranslator = require('../../Language/htmlTranslator');
+
 declare function require(filename: string): (data: {}) => string;
 require('./welcomeScreen.css');
 
@@ -13,7 +15,7 @@ class WelcomeScreen {
 	}
 
 	show() {
-		(<HTMLInputElement>document.getElementById('play-button')).value = "Play";
+		HtmlTranslator.apply();
 		this.addEventListeners();
 	}
 

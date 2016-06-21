@@ -37,32 +37,33 @@
 
 					<div class="login-area">
 						<form id="login-form">
-							<input class="nickname" type="text" placeholder="Nickname" maxlength="16" /><input id="play-button" class="button" type="button" value="Loading..." />
-							<label title="Hide other players names, recommended for young players"><input class="hidenames" type="checkbox" />Hide Names</label>
+							<input class="nickname" type="text" placeholder="Nickname" maxlength="16" id="nickname"/><input id="play-button" class="button" type="button" value="Loading..." />
+							<label title="Hide other players names, recommended for young players" id="lhidenames"><input class="hidenames" type="checkbox" /><span id="hidenames">Hide names</span></label>
 						</form>
 					</div>
 				</div>
 			</div>
 			<div class="mid">
 				<div class="whatisit">
-					<h2 class="b3">What is it?</h2>
-					
-					Massive Match is a match 3 game like Bejeweled or Candy Crush Saga, but with a massively multiplayer twist!<br/>
-					Play on a much larger grid where it isn't just you trying to make a match. Fast. Frantic. Fun.
+					<h2 class="b3" id="whatisit">What is it?</h2>
+					<span id="whatisit2">
+						Massive Match is a match 3 game like Bejeweled or Candy Crush Saga, but with a massively multiplayer twist!<br/>
+						Play on a much larger grid where it isn't just you trying to make a match. Fast. Frantic. Fun.
+					</span>
 				</div>
 				<div class="bottom">
 					<div class="left">
-						<h2 class="b3">Controls</h2>
+						<h2 class="b3" id="controls">Controls</h2>
 						
-						<p>
+						<p id="ctrl1">
 							Click and drag animals to match them.<br/>
 							You can only drag ones that will make a 3 in a row match.
 						</p>
-						<p>
+						<p id="ctrl2">
 							Zoom in and out using the mouse wheel.<br/>
 							Move around by dragging with the right mouse button.
 						</p>
-						<p>
+						<p id="ctrl3">
 							Every level has a different goal, pay attention to them.
 						</p>
 
@@ -73,10 +74,10 @@
 						<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-4749031612968477" data-ad-slot="6224879543"></ins>
 						<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 					</div><div class="right">
-						<h2 class="b3">News</h2>
+						<h2 class="b3" id="news">News</h2>
 
-						<h3>June 2016. Mid-Month Update</h3>
-						<div class="news">
+						<h3 id="june20162">June 2016. Mid-Month Update</h3>
+						<div class="news" id="june20162n">
 							<p>We've just put a few little improvements live, this hopefully gets everything stable to let us work on major features.<br/>
 							<ul style="display:inline-block; text-align: left">
 								<li>Improved level details screens</li>
@@ -87,8 +88,8 @@
 							</ul>
 						</div>
 						
-						<h3>June 2016. One week in</h3>
-						<div class="news">
+						<h3 id="june2016">June 2016. One week in</h3>
+						<div class="news" id="june2016n">
 							<p>Massive Match is now one week old!<br/><span style="color: yellow">THANK YOU</span> to all our players.</p>
 							<p>Since launch we've done a lot of bug fixes. There are still a few small bugs which we hope to have fixed soon.</p>
 							So, what's coming next?<br/>
@@ -101,9 +102,9 @@
 							<p>And more based on your suggestions. Send us some feedback using the button at the bottom right, we'd love to hear it.</p>
 							<p>If you are having fun please tell your friends, it helps us a lot. Expect another news blast later this month. Cya</p>
 						</div>
-						<h3>May 2016. We're in Alpha!</h3>
+						<h3 id="may2016">May 2016. We're in Alpha!</h3>
 						
-						<div class="news">
+						<div class="news" id="may2016n">
 							Massive Match is now in public alpha! As we are in alpha, there will be broken things and the game will probably lag at times. Please leave us some feedback with anything you encounter or any suggestions you have.<br/>
 							The Feedback link is at the bottom right.
 						</div>
@@ -111,16 +112,16 @@
 				</div>
 			</div>
 			<div class="corner-buttons b2">
-				<a href="privacy_policy.txt">Privacy Policy </a><a href="terms_of_service.txt">Terms of Service</a>
+				<a href="privacy_policy.txt" id="privacy-policy">Privacy Policy </a><a href="terms_of_service.txt" id="tos">Terms of Service</a>
 			</div>
 		</div>
 		<div id="overlay"></div>
 		<div id="bottom-corner-buttons" class="b3">
 			<div class="fullscreen-button">
 				<img src="fullscreen.svg" title="fullscreen" />
-			</div><div class="feedback-button">
+			</div><div class="feedback-button" id="feedback-button">
 				Feedback
-			</div><div class="help-button">
+			</div><div class="help-button" id="help-button">
 				Help
 			</div>
 		</div>
