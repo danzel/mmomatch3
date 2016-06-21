@@ -48,6 +48,8 @@ class UIState {
 	_clearsinaline = Language.t('clears in a line');
 	_clearsarea = Language.t('clears area');
 	_clearsanimal = Language.t('clears animal');
+	_connecting = Language.t('connecting');
+	_connectingrefresh = Language.t('connecting refresh');
 }
 
 class Manager {

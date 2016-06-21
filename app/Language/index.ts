@@ -64,6 +64,9 @@ interface LanguageDef {
 	'clears in a line': string;
 	'clears area': string;
 	'clears animal': string;
+	'connecting': string;
+	'connecting refresh': string;
+
 }
 
 let translation = <{ [language: string]: LanguageDef }>{
@@ -129,7 +132,9 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'special matches': 'Special Matches',
 		'clears in a line': 'When matched, clears animals in a line',
 		'clears area': 'When matched, clears a small area',
-		'clears animal': 'When swapped with an animal, clears that animal'
+		'clears animal': 'When swapped with an animal, clears that animal',
+		'connecting': 'Connecting...',
+		'connecting refresh': 'If this continues, try refreshing the page',
 	},
 
 	'es': {
@@ -195,7 +200,10 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'special matches': 'Emparejar especiales',
 		'clears in a line': 'Cuando se emparejan, rescata los animales en una línea',
 		'clears area': 'Cuando se emparejan, rescata a un área pequeña',
-		'clears animal': 'Cuando se intercambiada con un animal, rescatas ese animal'
+		'clears animal': 'Cuando se intercambiada con un animal, rescatas ese animal',
+
+		'connecting': 'Conectando...',
+		'connecting refresh': 'Si esto sigue así, intenta actualizar la página',
 	}
 };
 
