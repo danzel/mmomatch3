@@ -12,6 +12,9 @@ interface LanguageHtmlDef {
 
 	'news': string;
 
+	'june20163': string;
+	'june20163n': string;
+
 	'june20162': string;
 	'june20162n': string;
 
@@ -50,10 +53,19 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 		'ctrl3': 'Cada nivel tiene un objetivo diferente, prestar atención a ellos.',
 
 		'news': 'Noticias',
+
+		'june20163': '22 de Junio de 2016. Actualización',
+		'june20163n': 
+			"<p>Acabamos de lanzar nuestra última actualización para junio. La característica más importante es la traducción al español. Debe obtener automáticamente si su equipo está configurado para español. Otros idiomas se añadirán en el futuro.</p>" +
+			'<p><a style="color: lightgreen" href="https://docs.google.com/a/cozybarrel.com/forms/d/13TZ6l3P9dgQiFM0gf-txJ1ZwuUaqcC1HbLL8umwdCyI/viewform" target="_blank">Por favor, haga clic aquí para informar de los errores de traducción</a></p>' +
+			"<p>También hemos añadido la votación nivel por lo que podemos obtener alguna información sobre qué tipos de nivel te gusta. Verás que después de cada nivel.</p>" +
+			'<p>Hemos corregido un fallo que podría suceder a veces cuando se inició el juego. Lo sentimos acerca de eso!</p>' +
+			'<p>Disfrutar y decirle a sus amigos :)</p>',
+
 		'june20162': 'Junio de 2016. Mediados de mes las noticias',
 		'june20162n': 
 			"<p>Acabamos de poner algunas pequeñas mejoras viven. Esperemos que las cosas son ahora estables para que podamos trabajar en importantes características.<br/>" +
-			'<ul style="display:inline-block; text-align: left">' +
+			'<ul>' +
 				'<li>Mejora de detalles a nivel de las pantallas</li>' +
 				'<li>Robots desaparecen cuando llegan a la parte inferior</li>' +
 				'<li>Arreglo para algunas cárceles al azar</li>' +
@@ -66,7 +78,7 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 			'<p>Massive Match es ahora una semana de edad!<br/><span style="color: yellow">GRACIAS</span> a todos nuestros jugadores.</p>' +
 			"<p>Since the release we've done a lot of bug fixes. Existen todavía algunos pequeños errores que esperamos solucionar pronto.</p>" +
 			"Por lo tanto, lo que viene a continuación?<br/>" +
-			'<ul style="display:inline-block; text-align: left">' +
+			'<ul>' +
 				'<li>Una carga más rápida</li>' +
 				'<li>La eliminación de retardo</li>' +
 				'<li>Cambiar las jaulas para ser más fácil de ver</li>' +

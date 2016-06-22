@@ -42,6 +42,10 @@
 	max-width: 440px;
 	margin: 10px auto 30px auto;
 }
+#welcome .news ul {
+	display:inline-block;
+	text-align: left;
+}
 #welcome p, #welcome .news ul {
 	margin: 10px auto;
 }
