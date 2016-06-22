@@ -68,7 +68,7 @@ class GameOverOverlay {
 				_defeated: Language.t('defeated'),
 				_levelcomplete: Language.t('level complete'),
 				_levelfailed: Language.t('level failed'),
-				_youcame: Language.t('you came', { rank: this.rank, playerCount: Math.max(this.rank, this.playerCount) }), //Hack around you getting a worse rank than current amount of players
+				_youcame: Language.t('you came', { rank: this.rank, smart_count: Math.max(this.rank, this.playerCount) }), //Hack around you getting a worse rank than current amount of players
 				_ratelevel: Language.t('rate level')
 			}),
 			closeOnBackgroundClick: !this.countdown,
