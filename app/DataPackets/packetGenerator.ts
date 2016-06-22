@@ -220,8 +220,8 @@ class PacketGenerator {
 				matchable.isDisappearing = !!matchableData[MatchableData.index_isDisappearing] || false;
 				matchable.disappearingTicks = matchableData[MatchableData.index_disappearingTicks] || 0;
 				matchable.yMomentum = matchableData[MatchableData.index_yMomentum] || 0;
-				matchable.transformTo = matchableData[MatchableData.index_transformTo] || null;
-				matchable.transformToColor = matchableData[MatchableData.index_transformToColor] || null;
+				matchable.transformTo = matchableData[MatchableData.index_transformTo];
+				matchable.transformToColor = matchableData[MatchableData.index_transformToColor];
 
 				col.push(matchable);
 				matchableById[matchable.id] = matchable;
