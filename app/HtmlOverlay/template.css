@@ -101,7 +101,7 @@ a {
 	height:32px;
 }
 
-.fullscreen-button img {
+#fullscreen-button img {
 	position: relative;
 	top: 3px;
 	width: 26px;

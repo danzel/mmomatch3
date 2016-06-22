@@ -75,15 +75,15 @@ class Manager {
 		let btns = document.getElementById('bottom-corner-buttons');
 		btns.style.display = 'block';
 
-		btns.getElementsByClassName("help-button")[0].addEventListener('click', () => {
+		document.getElementById("help-button").addEventListener('click', () => {
 			this.uiState.helpVisible = !this.uiState.helpVisible;
 			this.render();
 		});
-		btns.getElementsByClassName("feedback-button")[0].addEventListener('click', () => {
+		document.getElementById("feedback-button").addEventListener('click', () => {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
-		btns.getElementsByClassName("fullscreen-button")[0].addEventListener('click', () => {
+		document.getElementById("fullscreen-button").addEventListener('click', () => {
 			if (this.game.scale.isFullScreen) {
 				this.game.scale.stopFullScreen();
 			} else {

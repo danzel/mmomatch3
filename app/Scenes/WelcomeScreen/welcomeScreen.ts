@@ -25,7 +25,7 @@ class WelcomeScreen {
 		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
 
 		let form = <HTMLFormElement>document.getElementById('login-form');
-		let button = <HTMLInputElement>this.element.getElementsByClassName('button')[0];
+		let button = <HTMLInputElement>document.getElementById('play-button');
 
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
