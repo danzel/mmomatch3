@@ -211,7 +211,7 @@ class Language {
 	static polyglot: Polyglot;
 
 	static init() {
-		let lang = 'es';//(window.navigator.language || 'en').toLowerCase();
+		let lang = (window.navigator.language || 'en').toLowerCase();
 
 		//https://github.com/airbnb/polyglot.js/blob/master/index.js#L242
 		if (lang != 'pt-br') {
@@ -221,8 +221,12 @@ class Language {
 			}
 		}
 
+		if (!translation[lang]) {
+			lang = 'en';
+		}
+
 		Language.polyglot = new Polyglot({
-			phrases: translation[lang] || translation['en'],
+			phrases: translation[lang],
 			locale: lang
 		});
 	}
