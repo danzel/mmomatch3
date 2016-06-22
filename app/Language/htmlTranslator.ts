@@ -24,6 +24,7 @@ interface LanguageHtmlDef {
 	'privacy-policy': string;
 	'tos': string;
 
+	'mistranslation': string;
 	'feedback-button': string;
 	'help-button': string;
 
@@ -81,6 +82,7 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'privacy-policy': 'Política de privacidad',
 		'tos': 'Términos de servicio',
+		'mistranslation': 'Mala traducción',
 		'feedback-button': 'Feedback',
 		'help-button': 'Ayuda',
 	}
@@ -90,13 +92,15 @@ interface LanguageSpecialDef {
 	'play-button': string;
 	'nickname': string;
 	'lhidenames': string;
+	'mistranslation': string;
 }
 
 let translationBySpecial = <{ [language: string]: LanguageSpecialDef }>{
 	'es': {
 		'play-button': 'Jugar',
 		'nickname': 'Apodo',
-		'lhidenames': 'Ocultar otros nombres de los jugadores, recomendado para los jugadores jóvenes'
+		'lhidenames': 'Ocultar otros nombres de los jugadores, recomendado para los jugadores jóvenes',
+		'mistranslation': 'https://docs.google.com/a/cozybarrel.com/forms/d/13TZ6l3P9dgQiFM0gf-txJ1ZwuUaqcC1HbLL8umwdCyI/viewform',
 	}
 }
 
@@ -105,12 +109,14 @@ class HtmlTranslator {
 		let t = translationByInnerHtml[Language.polyglot.locale()];
 		if (!t) {
 			(<HTMLInputElement>document.getElementById('play-button')).value = 'Play';
+			document.getElementById('mistranslation-button').style.display = 'none';
 			return;
 		}
 		let special = translationBySpecial[Language.polyglot.locale()];
 		(<HTMLInputElement>document.getElementById('play-button')).value = special['play-button'];
 		(<HTMLInputElement>document.getElementById('nickname')).placeholder = special['nickname'];
 		(<HTMLLabelElement>document.getElementById('lhidenames')).title = special['lhidenames'];
+		(<HTMLAnchorElement>document.getElementById('mistranslation')).href = special['mistranslation'];
 
 		for (let key in t) {
 			document.getElementById(key).innerHTML = t[key];
