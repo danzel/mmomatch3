@@ -24,7 +24,7 @@ class InitialZoomCalculator {
 			}
 		}
 
-		if (level.victoryType == VictoryType.RequireMatch) {
+		if (level.victoryType == VictoryType.RequireMatch && simulation.requireMatchInCellTracker.requirements.length > 0) {
 			let idx = Math.floor(Math.random() * simulation.requireMatchInCellTracker.requirements.length);
 			let req = simulation.requireMatchInCellTracker.requirements[idx];
 
