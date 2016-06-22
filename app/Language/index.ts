@@ -208,7 +208,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 };
 
 class Language {
-	static polyglot: Polyglot;
+	static polyglot = new Polyglot();
 
 	static init() {
 		let lang = (window.navigator.language || 'en').toLowerCase();
@@ -225,10 +225,8 @@ class Language {
 			lang = 'en';
 		}
 
-		Language.polyglot = new Polyglot({
-			phrases: translation[lang],
-			locale: lang
-		});
+		Language.polyglot.extend(translation[lang]);
+		Language.polyglot.locale(lang);
 	}
 
 	static t(key: string, interpolationOptions?: Polyglot.InterpolationOptions): string {
