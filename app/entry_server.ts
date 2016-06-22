@@ -4,6 +4,7 @@ import BetterInterval = require('./Server/betterInterval');
 import ConfigFile = require('./Server/config/configFile');
 import DatadogStats = require('./Server/datadogStats');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
+import Language = require('./Language');
 import LevelDefFactoryDebug = require('./Simulation/Levels/levelDefFactoryDebug');
 import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDynamic1');
 import Serializer = require('./Serializer/simple');
@@ -52,6 +53,7 @@ class AppEntry {
 	}
 }
 
+Language.init();
 let config = <ConfigFile>JSON.parse(fs.readFileSync('./serverconfig.json', 'utf8'));
 config.server.version = fs.readFileSync('./hash.txt', 'utf8'); 
 AppEntry.main(config);
