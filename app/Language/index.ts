@@ -67,6 +67,10 @@ interface LanguageDef {
 	'connecting': string;
 	'connecting refresh': string;
 
+	'newversion': string;
+	'newversion1': string;
+	'newversion2': string;
+	'newversion3': string;
 }
 
 let translation = <{ [language: string]: LanguageDef }>{
@@ -135,6 +139,11 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'clears animal': 'When swapped with an animal, clears that animal',
 		'connecting': 'Connecting...',
 		'connecting refresh': 'If this continues, try refreshing the page',
+
+		'newversion': 'New Version!',
+		'newversion1': 'A new version has been released.',
+		'newversion2': 'Please refresh the page to get the new version.',
+		'newversion3': 'Automatically refreshing in 20 seconds...',
 	},
 
 	'es': {
@@ -204,6 +213,11 @@ let translation = <{ [language: string]: LanguageDef }>{
 
 		'connecting': 'Conectando...',
 		'connecting refresh': 'Si esto sigue así, intenta actualizar la página',
+
+		'newversion': '¡Nueva versión!',
+		'newversion1': 'Una nueva versión ha sido puesto en libertad.',
+		'newversion2': 'Por favor, actualice la página para obtener la nueva versión.',
+		'newversion3': 'Refrescante de forma automática en 20 segundos...',
 	}
 };
 
