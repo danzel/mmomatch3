@@ -9,6 +9,7 @@ import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
 import HtmlOverlayManager = require('./HtmlOverlay/manager')
+import HtmlTranslator = require('./Language/htmlTranslator');
 import Language = require('./Language');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import NewVersion = require('./HtmlOverlay/Overlays/newVersion');
@@ -211,6 +212,7 @@ function start() {
 		}
 
 		Language.init();
+		HtmlTranslator.apply();
 		new AppEntry();
 
 		[
@@ -244,5 +246,8 @@ if (GoodBrowser) {
 	}
 } else {
 	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
-	window.location.replace('http://outdatedbrowser.com/');
+	HtmlTranslator.showStartButton();
+	document.getElementById('play-button').addEventListener('click', function() {
+		window.location.replace('http://outdatedbrowser.com/');
+	});
 }

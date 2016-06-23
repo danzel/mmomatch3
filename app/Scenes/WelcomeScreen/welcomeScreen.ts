@@ -15,8 +15,8 @@ class WelcomeScreen {
 	}
 
 	show() {
-		HtmlTranslator.apply();
 		this.addEventListeners();
+		HtmlTranslator.showStartButton();
 	}
 
 	private addEventListeners() {

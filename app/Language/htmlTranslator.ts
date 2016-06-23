@@ -109,18 +109,22 @@ interface LanguageSpecialDef {
 
 let translationBySpecial = <{ [language: string]: LanguageSpecialDef }>{
 	'es': {
-		'play-button': 'Jugar',
+		'play-button': 'Cargando...',
 		'nickname': 'Apodo',
 		'lhidenames': 'Ocultar otros nombres de los jugadores, recomendado para los jugadores jóvenes',
 		'mistranslation': 'https://docs.google.com/a/cozybarrel.com/forms/d/13TZ6l3P9dgQiFM0gf-txJ1ZwuUaqcC1HbLL8umwdCyI/viewform',
 	}
 }
 
+let playButton: {[key: string]: string} = {
+	'en': 'Play',
+	'es': 'Jugar',
+}
+
 class HtmlTranslator {
 	static apply() {
 		let t = translationByInnerHtml[Language.polyglot.locale()];
 		if (!t) {
-			(<HTMLInputElement>document.getElementById('play-button')).value = 'Play';
 			document.getElementById('mistranslation-button').style.display = 'none';
 			return;
 		}
@@ -133,6 +137,10 @@ class HtmlTranslator {
 		for (let key in t) {
 			document.getElementById(key).innerHTML = t[key];
 		}
+	}
+
+	static showStartButton() {
+		(<HTMLInputElement>document.getElementById('play-button')).value = playButton[Language.polyglot.locale()];
 	}
 }
 
