@@ -9,34 +9,35 @@ var webpack = require("webpack");
 var zip = require("gulp-zip");
 
 var webpackConfig = require("./webpack.config.js");
-var gulpSSHoce = new GulpSSH({
-	ignoreErrors: false,
-	sshConfig: {
-		host: 'mmomatch.australiaeast.cloudapp.azure.com',
-		port: 22,
-		username: 'azureuser',
-		privateKey: fs.readFileSync('./z_id_rsa')
-	}
-})
-var gulpSSHusw = new GulpSSH({
-	ignoreErrors: false,
-	sshConfig: {
-		host: 'mmomatch.westus.cloudapp.azure.com',
-		port: 22,
-		username: 'azureuser',
-		privateKey: fs.readFileSync('./z_id_rsa')
-	}
-})
-var gulpSSHeu = new GulpSSH({
-	ignoreErrors: false,
-	sshConfig: {
-		host: 'eu1.massivematch.io',
-		port: 22,
-		username: 'azureuser',
-		privateKey: fs.readFileSync('./z_id_rsa')
-	}
-})
 
+//Configuration of ssh nodes
+var sites = {
+	'oce': {
+		host: 'mmomatch.australiaeast.cloudapp.azure.com'
+	},
+	'usw': {
+		host: 'mmomatch.westus.cloudapp.azure.com'
+	},
+	'eu': {
+		host: 'eu1.massivematch.io'
+	}
+};
+var privateKey = fs.readFileSync('./z_id_rsa');
+
+var siteKeys = [];
+for (var siteKey in sites) {
+	siteKeys.push(siteKey);
+	var site = sites[siteKey];
+	site.ssh = new GulpSSH({
+		ignoreErrors: false,
+		sshConfig: {
+			host: site.host,
+			port: 22,
+			username: 'azureuser',
+			privateKey: privateKey
+		}
+	});
+}
 
 gulp.task("default", ["webpack", 'uglify-primus', 'server']);
 
@@ -104,60 +105,30 @@ gulp.task('package', ['sentry-release', 'default'], function() {
 		.pipe(gulp.dest(''));
 });
 
-gulp.task('copy-oce', ['package'], function() {
-	return gulp.src('archive.zip')
-		.pipe(gulpSSHoce.sftp('write', '/home/azureuser/archive.zip'));
-});
-gulp.task('copy-usw', ['package'], function() {
-	return gulp.src('archive.zip')
-		.pipe(gulpSSHusw.sftp('write', '/home/azureuser/archive.zip'));
-});
-gulp.task('copy-eu', ['package'], function() {
-	return gulp.src('archive.zip')
-		.pipe(gulpSSHeu.sftp('write', '/home/azureuser/archive.zip'));
+//Per site copy/deploy sets
+siteKeys.forEach(function (siteKey) {
+	var site = sites[siteKey];
+
+	gulp.task('copy-' + siteKey, ['package'], function() {
+		return gulp.src('archive.zip')
+			.pipe(site.ssh.sftp('write', '/home/azureuser/archive.zip'));
+	});
+
+	gulp.task('deploy-' + siteKey, ['copy-' + siteKey], function() {
+		return site.ssh.shell([
+				'cd /home/azureuser/a',
+				'rm -rf built_server dist package.json',
+				'unzip -o ../archive.zip',
+				'chmod 700 built_server -R',
+				'sudo iptables -I INPUT -p tcp --dport 8092 --syn -j DROP',
+				'sudo service mmomatch restart',
+				'sleep 2',
+				'sudo iptables -D INPUT -p tcp --dport 8092 --syn -j DROP'
+			], { filePath: 'shell-' + siteKey + '.log' })
+			.on('ssh2Data', function(data) {
+				process.stdout.write(data.toString());
+			});
+	});
 });
 
-gulp.task('deploy-oce', ['copy-oce'], function() {
-	return gulpSSHoce
-		.shell([
-			'cd /home/azureuser/a',
-			'rm -rf built_server dist package.json',
-			'unzip -o ../archive.zip',
-			'chmod 700 built_server -R',
-			'sudo iptables -I INPUT -p tcp --dport 8092 --syn -j DROP',
-			'sudo service mmomatch restart',
-			'sleep 2',
-			'sudo iptables -D INPUT -p tcp --dport 8092 --syn -j DROP'
-		], { filePath: 'shell-oce.log' })
-		.on('ssh2Data', function(data) {
-			process.stdout.write(data.toString());
-		});
-});
-gulp.task('deploy-usw', ['copy-usw'], function() {
-	return gulpSSHusw
-		.shell([
-			'cd /home/azureuser/a',
-			'rm -rf built_server dist package.json',
-			'unzip -o ../archive.zip',
-			'chmod 700 built_server -R',
-			'sudo service mmomatch restart'
-		], { filePath: 'shell-usw.log' })
-		.on('ssh2Data', function(data) {
-			process.stdout.write(data.toString());
-		});
-});
-gulp.task('deploy-eu', ['copy-eu'], function() {
-	return gulpSSHeu
-		.shell([
-			'cd /home/azureuser/a',
-			'rm -rf built_server dist package.json',
-			'unzip -o ../archive.zip',
-			'chmod 700 built_server -R',
-			'sudo service mmomatch restart'
-		], { filePath: 'shell-eu.log' })
-		.on('ssh2Data', function(data) {
-			process.stdout.write(data.toString());
-		});
-});
-
-gulp.task('deploy', ['deploy-oce', 'deploy-usw', 'deploy-eu']);
+gulp.task('deploy', siteKeys.map(function(siteKey) { return 'deploy-' + siteKey; }));
