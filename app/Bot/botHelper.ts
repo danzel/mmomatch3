@@ -10,7 +10,7 @@ class BotHelper {
 		{ x: 0, y: 1 },
 	];
 
-	constructor(private grid: Grid, private inputVerifier: InputVerifier) {
+	constructor(private grid: Grid, public inputVerifier: InputVerifier) {
 	}
 
 	findAllMovesInRange(startX: number, startY: number, rangeX: number, rangeY: number): Array<Move> {

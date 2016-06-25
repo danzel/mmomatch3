@@ -2,6 +2,7 @@ import Behaviour = require('./behaviour');
 import BotHelper = require('./botHelper');
 import InputApplier = require('../Simulation/inputApplier');
 import MagicNumbers = require('../Simulation/magicNumbers');
+import Move = require('./move');
 import Simulation = require('../Simulation/simulation');
 
 class DefaultBehaviour extends Behaviour {
@@ -24,6 +25,9 @@ class DefaultBehaviour extends Behaviour {
 	setIndex = 0;
 	setsFailedToMoveCount = 0;
 
+	queuedMove: Move = null;
+	queuedMoveTime = 0;
+
 	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
 		super(helper, simulation, inputApplier);
 
@@ -37,12 +41,28 @@ class DefaultBehaviour extends Behaviour {
 	}
 
 	update(dt: number): void {
+		if (this.queuedMove) {
+			this.queuedMoveTime -= dt;
+			if (this.queuedMoveTime <= 0) {
+				this.performMoveIfValid(this.queuedMove);
+				this.queuedMove = null;
+				this.queuedMoveTime = 0;
+			} else {
+				return;
+			}
+		}
+
 		this.secondsToNextMove -= dt;
 		if (this.secondsToNextMove > 0) {
 			return;
 		}
 
 		this.tryDoMove();
+	}
+
+	queueMove(m: Move) {
+		this.queuedMove = m;
+		this.queuedMoveTime = 0.1;
 	}
 
 	tryDoMove(): void {
@@ -52,7 +72,7 @@ class DefaultBehaviour extends Behaviour {
 
 		if (moves.length > 0) {
 			let m = moves[Math.floor(Math.random() * moves.length)];
-			this.performMove(m);
+			this.queueMove(m);
 
 			this.setIndex = 0;
 			this.setsFailedToMoveCount = 0;
