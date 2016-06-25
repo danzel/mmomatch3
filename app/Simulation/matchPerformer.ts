@@ -47,7 +47,7 @@ class MatchPerformer {
 	}
 
 	private testForMatch(matchable: Matchable): boolean {
-		var matchDetails = this.matchChecker.testForMatch(matchable);
+		var matchDetails = this.matchChecker.testForMatch(matchable, false);
 
 		if (matchDetails) {
 			this.performMatch(matchable, matchDetails.horizontal, matchDetails.vertical);

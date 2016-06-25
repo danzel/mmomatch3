@@ -62,7 +62,7 @@ class InputVerifier {
 		}
 		//Swapping and unswapping is sorta hax, but easiest way to do this
 		this.grid.swap(left, right);
-		var res = this.matchChecker.testForMatch(left) || this.matchChecker.testForMatch(right);
+		var res = this.matchChecker.testForMatch(left, true) || this.matchChecker.testForMatch(right, true);
 		this.grid.swap(left, right);
 		
 		if (res) {

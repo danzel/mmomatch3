@@ -34,4 +34,13 @@ describe('SpecialMatchables.GetToBottom', () => {
 
 		scoreEarnedChecker.expectNoMoreScores();
 	});
+	
+	it('cannot be swapped to the bottom if that doesnt make a match', () => {
+		let simulation = TestUtil.prepareForTest([
+			"B",
+			"1",
+		]);
+
+		expect(simulation.inputVerifier.swapIsValid(simulation.grid.cells[0][0], simulation.grid.cells[0][1])).toBe(false);
+	});
 });

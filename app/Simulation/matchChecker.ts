@@ -21,7 +21,7 @@ class MatchChecker {
 	}
 
 	/** Returns null if there is no match */
-	testForMatch(matchable: Matchable): MatchDetails {
+	testForMatch(matchable: Matchable, skipGetToBottom: boolean): MatchDetails {
 
 		//Horizontal Test
 		let xSame = 1;
@@ -38,7 +38,7 @@ class MatchChecker {
 		}
 
 		//Special Case: Matchable is a robot at the bottom
-		if (matchable.y == 0 && matchable.type == Type.GetToBottom) {
+		if (!skipGetToBottom && matchable.y == 0 && matchable.type == Type.GetToBottom) {
 			return new MatchDetails(false, false);
 		}
 
