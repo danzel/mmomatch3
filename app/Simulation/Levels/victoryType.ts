@@ -12,9 +12,6 @@ enum VictoryType {
 	GetThingsToBottom,
 
 	Matches,
-
-	/** Not a real VictoryType, just for random gen. Anything below here is out of the level rotation */
-	Count, 
 }
 
 export = VictoryType;

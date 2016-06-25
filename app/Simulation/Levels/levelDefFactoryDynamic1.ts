@@ -9,6 +9,27 @@ const defaultColorCount = 8;
 class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	playerCount = 10;
 
+	victoryTypes: Array<VictoryType>;
+	failureTypes: { [victoryType: number]: Array<FailureType> } = {};
+
+	constructor() {
+		super();
+
+		this.victoryTypes = [
+			VictoryType.GetThingsToBottom,
+			VictoryType.Matches,
+			VictoryType.MatchXOfColor,
+			VictoryType.RequireMatch,
+			VictoryType.Score
+		];
+
+		this.failureTypes[VictoryType.GetThingsToBottom] = [FailureType.Swaps, FailureType.Time];
+		this.failureTypes[VictoryType.Matches] = [FailureType.Swaps, FailureType.Time];
+		this.failureTypes[VictoryType.MatchXOfColor] = [FailureType.MatchXOfColor];
+		this.failureTypes[VictoryType.RequireMatch] = [FailureType.Swaps, FailureType.Time];
+		this.failureTypes[VictoryType.Score] = [FailureType.Swaps, FailureType.Time];
+	}
+
 	private debugPrintLevel(level: LevelDef) {
 		console.log(level.levelNumber, level.width + 'x' + level.height, level.colorCount);
 		console.log(VictoryType[level.victoryType], (level.victoryValue.length || level.victoryValue), FailureType[level.failureType], level.failureValue);
@@ -21,15 +42,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	}
 
 	private generateLevel(levelNumber: number): LevelDef {
-		let gen = new RandomGenerator(100 + levelNumber);
+		let gen = new RandomGenerator(levelNumber);
 
-		//Do these first as they don't use variable random numbers
-		let victoryType = <VictoryType>(levelNumber % VictoryType.Count);//gen.intExclusive(0, VictoryType.Count);
-		let failureType = <FailureType>gen.intExclusive(0, FailureType.Count);
-		//Pigs Vs Pugs!
-		if (victoryType == VictoryType.MatchXOfColor) {
-			failureType = FailureType.MatchXOfColor;
-		}
+		let victoryType = <VictoryType>(levelNumber % this.victoryTypes.length);
+		let failureType = this.failureTypes[victoryType][gen.intExclusive(0, this.failureTypes[victoryType].length)];
 
 		let level = this.generateLevelFromType(levelNumber, victoryType, failureType, gen);
 		if (!level.extraData) {
@@ -72,7 +88,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let failureValue: number;
 		switch (failureType) {
 			case FailureType.Swaps:
-				failureValue = Math.round(size.height * amount  / difficulty * 1.5 / 10) * 10;
+				failureValue = Math.round(size.height * amount / difficulty * 1.5 / 10) * 10;
 				break;
 			case FailureType.Time:
 				failureValue = Math.round(size.height * amount * 6 / difficulty / this.playerCount / 10) * 10;
@@ -125,7 +141,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			this.calculateFailureDifficulty(failureType, failureValue) *
 			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
 		//TODO: Randomness
-		
+
 		var amount = Math.round(difficulty * 0.15);
 
 		let victoryValue = new Array<{ x: number, y: number, amount: number }>();
@@ -158,13 +174,13 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 
 	private randomSize(gen: RandomGenerator): { width: number, height: number } {
-		
+
 		let minWidth = Math.min(40, 10 + this.playerCount * 2);
 		let maxWidth = Math.min(250, 10 + this.playerCount * 10);
-		
+
 		let minHeight = Math.min(40, 10 + this.playerCount * 2);
 		let maxHeight = Math.min(80, 10 + this.playerCount * 4)
-		
+
 		return { width: gen.intExclusive(minWidth, maxWidth), height: gen.intExclusive(minHeight, maxHeight) };
 	}
 
