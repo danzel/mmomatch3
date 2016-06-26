@@ -3,6 +3,7 @@ import Grid = require('./grid');
 import MagicNumbers = require('./magicNumbers');
 import Matchable = require('./matchable');
 import Type = require('./type');
+import TypeHelpers = require('./typeHelpers');
 
 class MatchDetails {
 	horizontal: boolean;
@@ -38,7 +39,7 @@ class MatchChecker {
 		}
 
 		//Special Case: Matchable is a robot at the bottom
-		if (!skipGetToBottom && matchable.y == 0 && matchable.type == Type.GetToBottom) {
+		if (!skipGetToBottom && matchable.y == 0 && TypeHelpers.isGetToBottom(matchable.type)) {
 			return new MatchDetails(false, false);
 		}
 
@@ -59,7 +60,7 @@ class MatchChecker {
 	matchableIsAbleToMatch(matchable: Matchable) {
 		if (!this.matchableIsAbleToSwap(matchable))
 			return false;
-		if (matchable.type == Type.GetToBottom)
+		if (TypeHelpers.isGetToBottom(matchable.type))
 			return false;
 		return true;
 	}

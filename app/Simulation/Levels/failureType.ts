@@ -3,7 +3,9 @@ enum FailureType {
 	Swaps,
 	
 	/** Value is { color: Color, amount: number } */
-	MatchXOfColor
+	MatchXOfColor,
+	/** Type that we want (Type.GetToBottomRace1/2) */
+	GetToBottomRace
 }
 
 export = FailureType;

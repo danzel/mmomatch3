@@ -4,6 +4,7 @@ import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('./matchableRenderer');
 import Type = require('../Simulation/type');
+import TypeHelpers = require('../Simulation/typeHelpers');
 
 class GetToBottomHighlighter {
 
@@ -23,17 +24,21 @@ class GetToBottomHighlighter {
 			var col = this.grid.cells[x];
 			for (var y = col.length - 1; y > 0; y--) {
 				let m = col[y];
-				if (m.type != Type.GetToBottom) {
+				if (!TypeHelpers.isGetToBottom(m.type)) {
 					continue;
 				}
+				let frame = this.tileFrameForType(m.type);
 
 				if (this.tiles.length == index) {
-					let t = this.underGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', 'gettobottom_repeat.png', this.underGroup);
+					let t = this.underGroup.game.add.tileSprite(0, 0, this.width, 0, 'atlas', frame, this.underGroup);
 					t.alpha = 0.5;
 					this.tiles.push(t);
 				}
 
 				let tile = this.tiles[index];
+				if (tile.frameName != frame) {
+					tile.frameName = frame;
+				}
 				tile.visible = true;
 				index++;
 
@@ -43,13 +48,26 @@ class GetToBottomHighlighter {
 				tile.height = h;
 				tile.position.set(MatchableRenderer.PositionScalar * m.x + (MatchableRenderer.PositionScalar - 54) / 2, -h)
 
-				this.circlePingRenderer.show(m.x, m.y)
+				this.circlePingRenderer.show(m.x, m.y);
 			}
 		}
 
 		for (; index < this.tiles.length; index++) {
 			this.tiles[index].visible = false;
 		}
+	}
+
+	private tileFrameForType(type: Type): string {
+		if (type == Type.GetToBottom) {
+			return 'gettobottom_repeat.png';
+		}
+		if (type == Type.GetToBottomRace1) {
+			return 'gettobottomrace1_repeat.png';
+		}
+		if (type == Type.GetToBottomRace2) {
+			return 'gettobottomrace2_repeat.png';
+		}
+		throw new Error('dont know tileFrame for type ' + type);
 	}
 }
 

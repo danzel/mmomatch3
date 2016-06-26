@@ -23,6 +23,17 @@ class InitialZoomCalculator {
 				return t;
 			}
 		}
+		if (level.victoryType == VictoryType.GetToBottomRace) {
+			let res: {x: number, y: number };
+			simulation.grid.cells.forEach(col => col.forEach((m, index) => {
+				if (m.type == level.victoryValue) {
+					res = { x: m.x, y: index };
+				}
+			}));
+			if (res) {
+				return res;
+			}
+		}
 
 		if (level.victoryType == VictoryType.RequireMatch && simulation.requireMatchInCellTracker.requirements.length > 0) {
 			let idx = Math.floor(Math.random() * simulation.requireMatchInCellTracker.requirements.length);

@@ -46,6 +46,16 @@ class Client {
 		this.clientComms.sendJoin(new JoinData(this.version, this.nickname || null));
 	}
 
+	private levelTypeIsTeamBased(level: LevelDef): boolean {
+		if (level.victoryType == VictoryType.MatchXOfColor) {
+			return true;
+		}
+		if (level.victoryType == VictoryType.GetToBottomRace) {
+			return true;
+		}
+		return false;
+	}
+
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
 		if (packet.packetType == PacketType.Reject) {
 			this.connectionRejected.trigger(<RejectData>packet.data);
@@ -63,8 +73,8 @@ class Client {
 			console.log('Received Boot, first 1000: ', asStr.substr(0, 1000));
 			console.log('Received Boot, last 1000: ', asStr.substr(asStr.length - 1000));*/
 
-			//SEMI-HACK. If Pigs vs Pugs, maybe swap failure/victory based on playerId
-			if (bootData.level.failureType == FailureType.MatchXOfColor && bootData.level.victoryType == VictoryType.MatchXOfColor && (this.playerId % 2 == 1)) {
+			//SEMI-HACK. If Team based, maybe swap failure/victory based on playerId
+			if (this.levelTypeIsTeamBased(bootData.level) && (this.playerId % 2 == 1)) {
 				let temp = bootData.level.failureValue;
 				bootData.level.failureValue = bootData.level.victoryValue;
 				bootData.level.victoryValue = temp;

@@ -1,6 +1,7 @@
 import FailureType = require('./failureType');
 import LevelDef = require('./levelDef');
 import LevelDefFactory = require('./levelDefFactory');
+import Type = require('../type');
 import VictoryType = require('./victoryType');
 
 
@@ -16,7 +17,10 @@ class LevelDefFactoryDebug implements LevelDefFactory {
 		//return new LevelDef(levelNumber, 12, 4, [], 4, FailureType.Time, VictoryType.GetThingsToBottom, 100, [4, 5, 8, 10]);
 		
 		//Require Match
-		return new LevelDef(levelNumber, 20, 20, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{ x: 4, y: 4, amount: 1 }, { x: 7, y: 4, amount: 1 }]);
+		//return new LevelDef(levelNumber, 20, 20, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{ x: 4, y: 4, amount: 1 }, { x: 7, y: 4, amount: 1 }]);
+
+		//Butterfly vs Bee
+		return new LevelDef(levelNumber, 20, 4, [], 4, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
 	}
 }
 

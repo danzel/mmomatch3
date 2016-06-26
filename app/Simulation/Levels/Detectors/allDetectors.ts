@@ -1,4 +1,5 @@
 import GetThingsToBottom = require('./getThingsToBottomDetector');
+import GetToBottomRace = require('./getToBottomRaceDetector');
 import Matches = require('./matchesDetector');
 import MatchXOfColor = require('./matchXOfColorDetector');
 import RequireMatch = require('./requireMatchDetector');
@@ -18,7 +19,8 @@ var AllDetectors = {
 	Time: Time,
 	
 	//Both
-	MatchXOfColor: MatchXOfColor
+	MatchXOfColor: MatchXOfColor,
+	GetToBottomRace: GetToBottomRace
 };
 
 export = AllDetectors;

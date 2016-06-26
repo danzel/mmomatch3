@@ -2,6 +2,9 @@ enum Type {
 	Normal,
 	
 	GetToBottom,
+
+	GetToBottomRace1,
+	GetToBottomRace2,
 	
 	HorizontalClearWhenMatched,
 	VerticalClearWhenMatched,

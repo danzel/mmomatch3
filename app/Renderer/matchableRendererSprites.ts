@@ -14,6 +14,8 @@ class MatchableRendererSprites {
 			this.spriteKeys.push('balls/' + (i + 1) + ".png")
 		}
 		this.spriteKeys.push("balls/gettobottom.png");
+		this.spriteKeys.push("balls/gettobottomrace1.png");
+		this.spriteKeys.push("balls/gettobottomrace2.png");
 		this.spriteKeys.push('balls/colorclear.png');
 
 		for (let i = 0; i < this.spriteKeys.length; i++) {
@@ -76,8 +78,14 @@ class MatchableRendererSprites {
 		if (type == Type.GetToBottom) {
 			return Color.Max;
 		}
-		if (type == Type.ColorClearWhenSwapped) {
+		if (type == Type.GetToBottomRace1) {
 			return Color.Max + 1;
+		}
+		if (type == Type.GetToBottomRace2) {
+			return Color.Max + 2;
+		}
+		if (type == Type.ColorClearWhenSwapped) {
+			return Color.Max + 3;
 		}
 		return color;
 	}

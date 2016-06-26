@@ -35,6 +35,10 @@ class TestUtil {
 						type = Type.ColorClearWhenSwapped;
 					} else if (c == 'B') {
 						type = Type.GetToBottom
+					} else if (c == '$') {
+						type = Type.GetToBottomRace1;
+					} else if (c == '%') {
+						type = Type.GetToBottomRace2;
 					}
 
 					if (type == Type.Normal) {
@@ -43,7 +47,7 @@ class TestUtil {
 						} else {
 							color = parseInt(c, 10);
 						}
-					} else if (type == Type.GetToBottom) {
+					} else if (type == Type.GetToBottom || type == Type.GetToBottomRace1 || type == Type.GetToBottomRace2) {
 						color = Color.None;
 					} else {
 						color = parseInt(specialColors[0], 10);

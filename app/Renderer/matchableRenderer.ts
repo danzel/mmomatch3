@@ -6,6 +6,7 @@ import MatchableRendererSprites = require('./matchableRendererSprites');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
 import Type = require('../Simulation/type');
+import TypeHelpers = require('../Simulation/typeHelpers');
 
 const positionScalar = 100;
 const xOffset = positionScalar / 2;
@@ -55,7 +56,7 @@ class MatchableRenderer {
 		}
 		
 
-		if (matchable.type == Type.GetToBottom) {
+		if (TypeHelpers.isGetToBottom(matchable.type)) {
 			sprite.scale.set(0.9 + 0.2 * Phaser.Easing.Sinusoidal.InOut(this.bounce(1500)));
 		}
 		

@@ -42,6 +42,8 @@ class SpecialMatchPerformer {
 				case Type.Normal:
 				case Type.ColorClearWhenSwapped: //This is handled in tryPerformSwapMatch
 				case Type.GetToBottom: //Do nothing
+				case Type.GetToBottomRace1: //Do nothing
+				case Type.GetToBottomRace2: //Do nothing
 					break;
 				case Type.HorizontalClearWhenMatched:
 					this.horizontalClear(m, match);

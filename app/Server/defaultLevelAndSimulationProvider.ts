@@ -41,6 +41,9 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 
 		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
 
+		//grid height is double because initial spawn is off the screen
+		let topOfGrid = (grid.height + grid.height - 1) * MagicNumbers.matchableYScale;
+
 		if (level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>level.victoryValue;
 			requireMatches.forEach(req => {
@@ -48,12 +51,17 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			})
 		}
 		if (level.victoryType == VictoryType.GetThingsToBottom) {
-			//grid height is double because initial spawn is off the screen
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
 			let spawns = <Array<number>>level.victoryValue;
 			for (let i = 0; i < spawns.length; i++) {
-				spawnManager.spawnOverride.addSpawn(spawns[i], (grid.height + grid.height - 1) * MagicNumbers.matchableYScale, Color.None, Type.GetToBottom);
+				spawnManager.spawnOverride.addSpawn(spawns[i], topOfGrid, Color.None, Type.GetToBottom);
 			}
+		}
+		if (level.victoryType == VictoryType.GetToBottomRace) {
+			let x = Math.floor(grid.width / 4); 
+			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
+			spawnManager.spawnOverride.addSpawn(x, topOfGrid, Color.None, Type.GetToBottomRace1);
+			spawnManager.spawnOverride.addSpawn(grid.width - x - 1, topOfGrid, Color.None, Type.GetToBottomRace2);
 		}
 
 		return { level: level, simulation: simulation };
@@ -63,6 +71,8 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		switch (level.victoryType) {
 			case VictoryType.GetThingsToBottom:
 				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler);
+			case VictoryType.GetToBottomRace:
+				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler, 'drops');
 			case VictoryType.Matches:
 				return new MatchesScoreTracker(simulation.comboOwnership);
 			case VictoryType.MatchXOfColor:

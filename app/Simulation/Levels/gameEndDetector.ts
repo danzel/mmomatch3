@@ -7,6 +7,7 @@ import Simulation = require('../simulation');
 import VictoryType = require('./victoryType');
 
 import GetThingsToBottomDetector = require('./Detectors/getThingsToBottomDetector');
+import GetToBottomRaceDetector = require('./Detectors/getToBottomRaceDetector');
 import MatchesDetector = require('./Detectors/matchesDetector');
 import MatchXOfColorDetector = require('./Detectors/matchXOfColorDetector');
 import NoMovesDetector = require('./Detectors/noMovesDetector');
@@ -57,12 +58,14 @@ class GameEndDetector {
 
 	private createFailureDetector(): Detector {
 		switch (this.gameEndConditions.failureType) {
+			case FailureType.GetToBottomRace:
+				return new GetToBottomRaceDetector(this.simulation, false, this.gameEndConditions.failureValue);
+			case FailureType.MatchXOfColor:
+				return new MatchXOfColorDetector(this.simulation, false, this.gameEndConditions.failureValue);
 			case FailureType.Swaps:
 				return new SwapsDetector(this.simulation, this.gameEndConditions.failureValue);
 			case FailureType.Time:
 				return new TimeDetector(this.simulation, this.gameEndConditions.failureValue);
-			case FailureType.MatchXOfColor:
-				return new MatchXOfColorDetector(this.simulation, false, this.gameEndConditions.failureValue);
 			default:
 				throw new Error("CFD Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[this.gameEndConditions.failureType])
 		}
@@ -70,16 +73,18 @@ class GameEndDetector {
 
 	private createVictoryDetector(): Detector {
 		switch (this.gameEndConditions.victoryType) {
-			case VictoryType.Matches:
-				return new MatchesDetector(this.simulation, this.gameEndConditions.victoryValue);
-			case VictoryType.Score:
-				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
-			case VictoryType.RequireMatch:
-				return new RequireMatchDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.GetThingsToBottom:
 				return new GetThingsToBottomDetector(this.simulation, this.gameEndConditions.victoryValue.length);
+			case VictoryType.GetToBottomRace:
+				return new GetToBottomRaceDetector(this.simulation, true, this.gameEndConditions.victoryValue);
+			case VictoryType.Matches:
+				return new MatchesDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.MatchXOfColor:
 				return new MatchXOfColorDetector(this.simulation, true, this.gameEndConditions.victoryValue);
+			case VictoryType.RequireMatch:
+				return new RequireMatchDetector(this.simulation, this.gameEndConditions.victoryValue);
+			case VictoryType.Score:
+				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
 			default:
 				throw new Error("CVD Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
 		}

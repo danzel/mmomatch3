@@ -4,6 +4,7 @@ import InputApplier = require('../Simulation/inputApplier');
 import MagicNumbers = require('../Simulation/magicNumbers');
 import Simulation = require('../Simulation/simulation');
 import Type = require('../Simulation/type');
+import TypeHelpers = require('../Simulation/typeHelpers');
 
 class GetThingsToBottomBehaviour extends DefaultBehaviour {
 	private moveCount = 0;
@@ -36,7 +37,7 @@ class GetThingsToBottomBehaviour extends DefaultBehaviour {
 		for (var x = 0; x < this.simulation.grid.width; x++) {
 			let col = this.simulation.grid.cells[x];
 			for (var y = 1; y < col.length; y++) {
-				if (col[y].type == Type.GetToBottom) {
+				if (TypeHelpers.isGetToBottom(col[y].type)) {
 					positions.push({ x, y: col[y].y });
 				}
 			}

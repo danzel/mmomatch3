@@ -295,4 +295,36 @@ describe('SyncDetectors', () => {
 			expect(g.gameEndType).toBe(GameEndType.NoMovesFailure);
 		}
 	});
+	
+	it('correctly syncs GetToBottomRaceDetector', () => {
+		let serverComms = new FakeServerComms(1);
+		let simulation = TestUtil.prepareForTest([
+			"8$1%9",
+			"11225"
+		]);
+		let level = new LevelDef(1, 5, 2, [], 10, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
+		server.start();
+		serverComms.server = server;
+
+		serverComms.addClient();
+		serverComms.update();
+		serverComms.update();
+
+		//Swap and do a combo that makes some disappear
+		serverComms.clients[0].sendSwap(simulation.grid.cells[2][0].id, simulation.grid.cells[2][1].id);
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
+			serverComms.addClient();
+			serverComms.update();
+		}
+		serverComms.flushClients();
+
+		let gameEndDetectors = serverComms.getAllGameEndDetectors();
+		for (let i = 0; i < gameEndDetectors.length; i++) {
+			let g = gameEndDetectors[i];
+			//Hack in Client randomises which is which, so we can't test for failure/victory
+			expect(g.gameHasEnded).toBe(true);
+			expect([GameEndType.TeamDefeat, GameEndType.TeamVictory]).toContain(g.gameEndType);
+		}
+	});
 });

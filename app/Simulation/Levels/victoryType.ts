@@ -11,6 +11,9 @@ enum VictoryType {
 	/** LevelDef.VictoryValue is an array of column indexes to start the thing at the top of */
 	GetThingsToBottom,
 
+	/** Type that we want (Type.GetToBottomRace1/2) */
+	GetToBottomRace,
+
 	Matches,
 }
 

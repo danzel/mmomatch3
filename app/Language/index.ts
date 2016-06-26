@@ -7,12 +7,13 @@ interface LanguageDef {
 	'you': string;
 	'anonymous': string;
 
-	//Trackers
+	//Score Trackers
 	'animals': string;
 	'pigs/pugs': string;
 	'points': string;
 	'rescues': string;
 	'robodrops': string;
+	'drops': string;
 
 	//levelDetailsOverlay
 	'level x': string;
@@ -31,6 +32,12 @@ interface LanguageDef {
 	'pugs': string;
 	'youareonteam': string;
 	'matchbutdontmatch': string;
+	
+	'butterflyvsbee': string;
+	'butterfly to bottom': string;
+	'bee to bottom': string;
+	'before butterfly to bottom': string;
+	'before bee to bottom': string;
 
 	//DetectorDisplays
 	'xremaining': string;
@@ -86,6 +93,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'points': 'Points',
 		'rescues': 'Rescues',
 		'robodrops': 'RoboDrops',
+		'drops': 'Drops',
 
 		//levelDetailsOverlay
 		'level x': 'Level %{num}',
@@ -104,6 +112,12 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'pugs': 'Pugs',
 		'youareonteam': 'You are on team %{team}',
 		'matchbutdontmatch': "Match %{team}, but don't match %{notteam}",
+
+		'butterflyvsbee': 'Butterfly VS Bee',
+		'butterfly to bottom': 'Get the Butterfly to the bottom',
+		'bee to bottom': 'Get the Bee to the bottom',
+		'before butterfly to bottom': 'before the Butterfly',
+		'before bee to bottom': 'before the Bee',
 
 		//DetectorDisplays
 		'xremaining': '%{thing} remaining: %{num}',
@@ -158,6 +172,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'points': 'Puntos',
 		'rescues': 'Rescates',
 		'robodrops': 'Gotas del robot',
+		'drops': 'Gotas',
 
 		//levelDetailsOverlay
 		'level x': 'Nivel %{num}',
@@ -176,6 +191,12 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'pugs': 'Barros amasados',
 		'youareonteam': 'Usted está en %{team} el equipo',
 		'matchbutdontmatch': "Emparejar con %{team}, pero no emparejar %{notteam}",
+
+		'butterflyvsbee': 'Mariposa VS Abeja',
+		'butterfly to bottom': 'Mueva la mariposa a la parte inferior',
+		'bee to bottom': 'Mueva la abeja a la parte inferior',
+		'before butterfly to bottom': 'antes de la mariposa',
+		'before bee to bottom': 'antes de la abeja',
 
 		//DetectorDisplays
 		'xremaining': '%{thing} restantes: %{num}',

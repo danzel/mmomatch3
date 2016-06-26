@@ -7,10 +7,11 @@ import ScoreTracker = require('../scoreTracker');
 import Swap = require('../../swap');
 import SwapHandler = require('../../swapHandler');
 import Type = require('../../type');
+import TypeHelpers = require('../../typeHelpers');
 
 class GetThingsToBottomScoreTracker extends ScoreTracker {
-	constructor(comboOwnership: ComboOwnership, private grid: Grid, swapHandler: SwapHandler) {
-		super(Language.t('robodrops'));
+	constructor(comboOwnership: ComboOwnership, private grid: Grid, swapHandler: SwapHandler, title?: string) {
+		super(Language.t(title || 'robodrops'));
 		comboOwnership.ownedMatchPerformed.on((data) => { this.ownedMatchPerformed(data); });
 		swapHandler.swapOccurred.on(swap => this.swapOccurred(swap));
 	}
@@ -24,7 +25,7 @@ class GetThingsToBottomScoreTracker extends ScoreTracker {
 			let m = data.matchables[i];
 			let col = this.grid.cells[m.x];
 			for (var y = col.length - 1; col[y].y > m.y && !foundOne; y--) {
-				if (col[y].type == Type.GetToBottom) {
+				if (TypeHelpers.isGetToBottom(col[y].type)) {
 					foundOne = true;
 				}
 			}
@@ -44,11 +45,11 @@ class GetThingsToBottomScoreTracker extends ScoreTracker {
 	}
 
 	private swapOccurred(swap: Swap): void {
-		if ((swap.left.type == Type.GetToBottom && swap.left.y > swap.right.y) || (swap.right.type == Type.GetToBottom && swap.right.y > swap.left.y)) {
+		if ((TypeHelpers.isGetToBottom(swap.left.type) && swap.left.y > swap.right.y) || (TypeHelpers.isGetToBottom(swap.right.type) && swap.right.y > swap.left.y)) {
 			//Moved the robot up, lose a point
 			this.points[swap.playerId] = (this.points[swap.playerId] || 0) - 1;
 			this.playerEarnedPoints.trigger(new Score(swap.playerId, -1));
-		} else if ((swap.left.type == Type.GetToBottom && swap.left.y < swap.right.y) || (swap.right.type == Type.GetToBottom && swap.right.y < swap.left.y)) {
+		} else if ((TypeHelpers.isGetToBottom(swap.left.type) && swap.left.y < swap.right.y) || (TypeHelpers.isGetToBottom(swap.right.type) && swap.right.y < swap.left.y)) {
 			//Moved the robot down, gain a point
 			this.points[swap.playerId] = (this.points[swap.playerId] || 0) + 1;
 			this.playerEarnedPoints.trigger(new Score(swap.playerId, 1));

@@ -9,6 +9,7 @@ import SpecialMatchPerformer = require('./specialMatchPerformer');
 import Swap = require('./swap');
 import SwapHandler = require('./swapHandler');
 import Type = require('./type');
+import TypeHelpers = require('./typeHelpers');
 
 class MatchPerformer {
 	private matchChecker: MatchChecker;
@@ -75,7 +76,7 @@ class MatchPerformer {
 		if (horizontal && vertical) {
 			matchType = MatchType.NormalCross;
 		}
-		if (matched.length == 1 && matchable.type == Type.GetToBottom) {
+		if (matched.length == 1 && TypeHelpers.isGetToBottom(matchable.type)) {
 			matchType = MatchType.GetToBottom;
 		}
 
