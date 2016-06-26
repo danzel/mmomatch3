@@ -20,7 +20,10 @@ class LevelDefFactoryDebug implements LevelDefFactory {
 		//return new LevelDef(levelNumber, 20, 20, [], 8, FailureType.Time, VictoryType.RequireMatch, 100, [{ x: 4, y: 4, amount: 1 }, { x: 7, y: 4, amount: 1 }]);
 
 		//Butterfly vs Bee
-		return new LevelDef(levelNumber, 20, 4, [], 4, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
+		//return new LevelDef(levelNumber, 20, 4, [], 4, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
+
+		//Get x points
+		return new LevelDef(levelNumber, 200, 50, [], 8, FailureType.Time, VictoryType.Score, 100, 1000000);
 	}
 }
 
