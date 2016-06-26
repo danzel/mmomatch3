@@ -24,7 +24,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		];
 
 		this.failureTypes[VictoryType.GetThingsToBottom] = [FailureType.Swaps, FailureType.Time];
-		this.failureTypes[VictoryType.Matches] = [FailureType.Swaps, FailureType.Time];
+		this.failureTypes[VictoryType.Matches] = [FailureType.Time];
 		this.failureTypes[VictoryType.MatchXOfColor] = [FailureType.MatchXOfColor];
 		this.failureTypes[VictoryType.RequireMatch] = [FailureType.Swaps, FailureType.Time];
 		this.failureTypes[VictoryType.Score] = [FailureType.Swaps, FailureType.Time];
