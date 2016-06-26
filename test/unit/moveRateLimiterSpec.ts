@@ -1,5 +1,5 @@
 ///<reference path="../../typings/jasmine/jasmine.d.ts"/>
-import MoveRateLimiter = require('../../app/server/moveRateLimiter');
+import MoveRateLimiter = require('../../app/Server/moveRateLimiter');
 
 describe('MoveRateLimiter', () => {
 	it('allows a first move', () => {
