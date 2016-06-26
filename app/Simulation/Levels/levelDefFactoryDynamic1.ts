@@ -44,7 +44,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	private generateLevel(levelNumber: number): LevelDef {
 		let gen = new RandomGenerator(levelNumber);
 
-		let victoryType = <VictoryType>(levelNumber % this.victoryTypes.length);
+		let victoryType = <VictoryType>(this.victoryTypes[levelNumber % this.victoryTypes.length]);
 		let failureType = this.failureTypes[victoryType][gen.intExclusive(0, this.failureTypes[victoryType].length)];
 
 		let level = this.generateLevelFromType(levelNumber, victoryType, failureType, gen);
