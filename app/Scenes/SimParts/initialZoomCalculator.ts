@@ -42,10 +42,7 @@ class InitialZoomCalculator {
 			return { x: req.x, y: req.y / MagicNumbers.matchableYScale };
 		}
 
-		return { x: level.width - 1, y: (level.height - 1) };
-		//return { x: 0, y: 0};
-		//return { x: 0.5 * level.width, y: 0.5 * level.height };
-		//return { x: Math.random() * level.width, y: Math.random() * level.height };
+		return { x: Math.random() * level.width, y: Math.random() * level.height };
 	}
 }
 
