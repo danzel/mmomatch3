@@ -58,7 +58,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			}
 		}
 		if (level.victoryType == VictoryType.GetToBottomRace) {
-			let x = Math.floor(grid.width / 4); 
+			let x = Math.floor(grid.width / 4) + 1; 
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
 			spawnManager.spawnOverride.addSpawn(x, topOfGrid, Color.None, Type.GetToBottomRace1);
 			spawnManager.spawnOverride.addSpawn(grid.width - x - 1, topOfGrid, Color.None, Type.GetToBottomRace2);

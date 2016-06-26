@@ -2,6 +2,7 @@ import FailureType = require('./failureType');
 import LevelDef = require('./levelDef');
 import LevelDefFactoryDynamic = require('./levelDefFactoryDynamic');
 import RandomGenerator = require('../randomGenerator');
+import Type = require('../type');
 import VictoryType = require('./victoryType');
 
 const defaultColorCount = 8;
@@ -18,12 +19,14 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		this.victoryTypes = [
 			VictoryType.GetThingsToBottom,
 			VictoryType.Matches,
-			VictoryType.MatchXOfColor,
+			VictoryType.GetToBottomRace,
 			VictoryType.RequireMatch,
-			VictoryType.Score
+			VictoryType.Score,
+			VictoryType.MatchXOfColor,
 		];
 
 		this.failureTypes[VictoryType.GetThingsToBottom] = [FailureType.Swaps, FailureType.Time];
+		this.failureTypes[VictoryType.GetToBottomRace] = [FailureType.GetToBottomRace];
 		this.failureTypes[VictoryType.Matches] = [FailureType.Time];
 		this.failureTypes[VictoryType.MatchXOfColor] = [FailureType.MatchXOfColor];
 		this.failureTypes[VictoryType.RequireMatch] = [FailureType.Swaps, FailureType.Time];
@@ -60,6 +63,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		switch (victoryType) {
 			case VictoryType.GetThingsToBottom:
 				return this.generateLevelGetThingsToBottom(levelNumber, failureType, gen);
+			case VictoryType.GetToBottomRace:
+				return this.generateLevelGetToBottomRace(levelNumber, gen);
 			case VictoryType.Matches:
 				return this.generateLevelMatches(levelNumber, failureType, gen);
 			case VictoryType.MatchXOfColor:
@@ -104,6 +109,16 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		}
 
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.GetThingsToBottom, failureValue, victoryValue);
+	}
+
+	private generateLevelGetToBottomRace(levelNumber: number, gen: RandomGenerator) {
+		let size = {
+			width: gen.intExclusive(22, 30),
+			height: gen.intExclusive(30, 50)
+		};
+		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
+
+		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
 	}
 
 	private generateLevelMatches(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
