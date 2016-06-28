@@ -60,7 +60,7 @@ class MatchChecker {
 	matchableIsAbleToMatch(matchable: Matchable) {
 		if (!this.matchableIsAbleToSwap(matchable))
 			return false;
-		if (TypeHelpers.isGetToBottom(matchable.type))
+		if (TypeHelpers.isGetToBottom(matchable.type) || matchable.type == Type.GrowOverGrid)
 			return false;
 		return true;
 	}

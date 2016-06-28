@@ -41,7 +41,6 @@ class MatchPerformer {
 			didSwap = this.testForMatch(swap.right) || didSwap;
 		}
 		
-		//TODO: Only if swaps making a match is required
 		if (!didSwap) {
 			this.swapDidntCauseAMatch.trigger(swap);
 		}

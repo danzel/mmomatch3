@@ -17,6 +17,7 @@ class MatchableRendererSprites {
 		this.spriteKeys.push("balls/gettobottomrace1.png");
 		this.spriteKeys.push("balls/gettobottomrace2.png");
 		this.spriteKeys.push('balls/colorclear.png');
+		this.spriteKeys.push("balls/gettobottom.png"); //TODO
 
 		for (let i = 0; i < this.spriteKeys.length; i++) {
 			this.sprites.push([]);
@@ -86,6 +87,9 @@ class MatchableRendererSprites {
 		}
 		if (type == Type.ColorClearWhenSwapped) {
 			return Color.Max + 3;
+		}
+		if (type == Type.GrowOverGrid) {
+			return Color.Max + 4;
 		}
 		return color;
 	}

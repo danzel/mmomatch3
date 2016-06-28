@@ -47,3 +47,4 @@ Create a display in Scenes/SimParts/DetectorDisplays
 Add any special code to defaultLevelAndSimulationProvider
 Add a scoreTracker to Simulation/Scoring and defaultLevelAndSimulationProvider.createScoreTracker
 Add a sync test to syncDetectorsSpec.ts
+Add to LevelDefFactoryDynamic1

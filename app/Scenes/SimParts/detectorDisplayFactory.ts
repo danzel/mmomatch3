@@ -4,6 +4,7 @@ import Detectors = require('../../Simulation/Levels/Detectors/allDetectors');
 
 import GetToBottomRaceDisplay = require('./DetectorDisplays/getToBottomRaceDisplay');
 import GetThingsToBottomDisplay = require('./DetectorDisplays/getThingsToBottomDisplay');
+import GrowOverGridDisplay = require('./DetectorDisplays/growOverGridDisplay');
 import MatchesDisplay = require('./DetectorDisplays/matchesDisplay');
 import MatchXOfColorDisplay = require('./DetectorDisplays/matchXOfColorDisplay');
 import RequireMatchDisplay = require('./DetectorDisplays/requireMatchDisplay')
@@ -29,6 +30,8 @@ var DetectorDisplayFactory = {
 			return new GetThingsToBottomDisplay(group, detector);
 		} else if (detector instanceof Detectors.GetToBottomRace) {
 			return new GetToBottomRaceDisplay(group, detector);
+		} else if (detector instanceof Detectors.GrowOverGrid) {
+			return new GrowOverGridDisplay(group, detector);
 		} else if (detector instanceof Detectors.MatchXOfColor) {
 			return new MatchXOfColorDisplay(group, detector);
 		} else {

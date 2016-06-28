@@ -44,6 +44,7 @@ class SpecialMatchPerformer {
 				case Type.GetToBottom: //Do nothing
 				case Type.GetToBottomRace1: //Do nothing
 				case Type.GetToBottomRace2: //Do nothing
+				case Type.GrowOverGrid: //Do nothing
 					break;
 				case Type.HorizontalClearWhenMatched:
 					this.horizontalClear(m, match);

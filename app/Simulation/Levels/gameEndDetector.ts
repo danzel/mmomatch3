@@ -8,6 +8,7 @@ import VictoryType = require('./victoryType');
 
 import GetThingsToBottomDetector = require('./Detectors/getThingsToBottomDetector');
 import GetToBottomRaceDetector = require('./Detectors/getToBottomRaceDetector');
+import GrowOverGridDetector = require('./Detectors/growOverGridDetector');
 import MatchesDetector = require('./Detectors/matchesDetector');
 import MatchXOfColorDetector = require('./Detectors/matchXOfColorDetector');
 import NoMovesDetector = require('./Detectors/noMovesDetector');
@@ -77,6 +78,8 @@ class GameEndDetector {
 				return new GetThingsToBottomDetector(this.simulation, this.gameEndConditions.victoryValue.length);
 			case VictoryType.GetToBottomRace:
 				return new GetToBottomRaceDetector(this.simulation, true, this.gameEndConditions.victoryValue);
+			case VictoryType.GrowOverGrid:
+				return new GrowOverGridDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.Matches:
 				return new MatchesDetector(this.simulation, this.gameEndConditions.victoryValue);
 			case VictoryType.MatchXOfColor:

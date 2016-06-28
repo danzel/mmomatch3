@@ -14,6 +14,9 @@ enum VictoryType {
 	/** Type that we want (Type.GetToBottomRace1/2) */
 	GetToBottomRace,
 
+	/** Percentage of grid required to grow over */
+	GrowOverGrid,
+
 	Matches,
 }
 

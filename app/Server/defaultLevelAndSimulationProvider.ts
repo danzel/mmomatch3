@@ -1,5 +1,6 @@
 import Color = require('../Simulation/color');
 import GridFactory = require('../Simulation/Levels/gridFactory');
+import GrowOverGridTransformer = require('../Simulation/growOverGridTransformer');
 import LevelAndSimulationProvider = require('./levelAndSimulationProvider');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDefFactory = require('../Simulation/Levels/levelDefFactory');
@@ -16,9 +17,10 @@ import Type = require('../Simulation/type');
 import VictoryType = require('../Simulation/Levels/victoryType');
 
 import GetThingsToBottomScoreTracker = require('../Simulation/Scoring/ScoreTrackers/getThingsToBottomScoreTracker');
-import PointsScoreTracker = require('../Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
+import GrowOverGridScoreTracker = require('../Simulation/Scoring/ScoreTrackers/growOverGridScoreTracker');
 import MatchesScoreTracker = require('../Simulation/Scoring/ScoreTrackers/matchesScoreTracker');
 import MatchXOfColorScoreTracker = require('../Simulation/Scoring/ScoreTrackers/matchXOfColorScoreTracker');
+import PointsScoreTracker = require('../Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 import RequireMatchScoreTracker = require('../Simulation/Scoring/ScoreTrackers/requireMatchScoreTracker');
 
 
@@ -38,11 +40,11 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		let matchableFactory = new MatchableFactory();
 		let spawnManager = new SpawningSpawnManager(grid, matchableFactory, new RandomGenerator(), level.colorCount);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, 60);
-
-		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
+		DefaultLevelAndSimulationProvider.populateSimulationExtras(simulation, level);
 
 		//grid height is double because initial spawn is off the screen
 		let topOfGrid = (grid.height + grid.height - 1) * MagicNumbers.matchableYScale;
+		let bottomOfGrid = (grid.height) * MagicNumbers.matchableYScale;
 
 		if (level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>level.victoryValue;
@@ -58,21 +60,36 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			}
 		}
 		if (level.victoryType == VictoryType.GetToBottomRace) {
-			let x = Math.floor(grid.width / 4) + 1; 
+			let x = Math.floor(grid.width / 4) + 1;
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
 			spawnManager.spawnOverride.addSpawn(x, topOfGrid, Color.None, Type.GetToBottomRace1);
 			spawnManager.spawnOverride.addSpawn(grid.width - x - 1, topOfGrid, Color.None, Type.GetToBottomRace2);
+		}
+		if (level.victoryType == VictoryType.GrowOverGrid) {
+			let x = Math.floor(grid.width / 2);
+			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
+			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid, Color.None, Type.GrowOverGrid);
 		}
 
 		return { level: level, simulation: simulation };
 	}
 
-	static createScoreTracker(level: LevelDef, simulation: Simulation): ScoreTracker {
+	static populateSimulationExtras(simulation: Simulation, level: LevelDef) : void {
+		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
+
+		if (level.victoryType == VictoryType.GrowOverGrid) {
+			new GrowOverGridTransformer(simulation.matchPerformer, simulation.grid);
+		}
+	}
+
+	private static createScoreTracker(level: LevelDef, simulation: Simulation): ScoreTracker {
 		switch (level.victoryType) {
 			case VictoryType.GetThingsToBottom:
 				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler);
 			case VictoryType.GetToBottomRace:
 				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler, 'drops');
+			case VictoryType.GrowOverGrid:
+				return new GrowOverGridScoreTracker();
 			case VictoryType.Matches:
 				return new MatchesScoreTracker(simulation.comboOwnership);
 			case VictoryType.MatchXOfColor:

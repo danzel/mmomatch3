@@ -143,7 +143,7 @@ class PacketGenerator {
 		let grid = GridFactory.createGrid(bootData.level);
 		let spawnManager = new ClientSpawnManager(grid, matchableFactory);
 		let simulation = new Simulation(grid, spawnManager, matchableFactory, bootData.simulationData.tickRate);
-		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation)
+		DefaultLevelAndSimulationProvider.populateSimulationExtras(simulation, level)
 
 		//Points
 		Object.keys(bootData.simulationData.pointsData).forEach(key => {

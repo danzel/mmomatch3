@@ -1,5 +1,6 @@
 import GetThingsToBottom = require('./getThingsToBottomDetector');
 import GetToBottomRace = require('./getToBottomRaceDetector');
+import GrowOverGrid = require('./growOverGridDetector');
 import Matches = require('./matchesDetector');
 import MatchXOfColor = require('./matchXOfColorDetector');
 import RequireMatch = require('./requireMatchDetector');
@@ -13,6 +14,7 @@ var AllDetectors = {
 	Score: Score,
 	RequireMatch: RequireMatch,
 	GetThingsToBottom: GetThingsToBottom,
+	GrowOverGrid: GrowOverGrid,
 	
 	//Failure
 	Swaps: Swaps,

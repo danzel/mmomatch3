@@ -5,6 +5,8 @@ enum Type {
 
 	GetToBottomRace1,
 	GetToBottomRace2,
+
+	GrowOverGrid,
 	
 	HorizontalClearWhenMatched,
 	VerticalClearWhenMatched,

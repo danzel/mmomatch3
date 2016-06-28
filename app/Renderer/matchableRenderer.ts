@@ -49,7 +49,7 @@ class MatchableRenderer {
 			sprite.y += failTransform.y;
 		}
 
-		if (matchable.transformTo && matchable.transformTo != Type.ColorClearWhenSwapped) {
+		if (matchable.transformTo && MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
 			sprite.alpha = 1;
 		} else {
 			sprite.alpha = 1 - matchable.disappearingPercent;
@@ -65,8 +65,8 @@ class MatchableRenderer {
 		} else if (matchable.transformTo) {
 			if (MatchableRenderer.typeHasOverlay(matchable.transformTo)) {
 				this.renderOverlay(matchable, matchable.transformTo, sprite, matchable.disappearingPercent);
-			} else 	if (matchable.transformTo == Type.ColorClearWhenSwapped) {
-				let overlay = this.sprites.getSprite(Color.None, Type.ColorClearWhenSwapped);
+			} else {
+				let overlay = this.sprites.getSprite(Color.None, matchable.transformTo);
 				overlay.position.x = sprite.position.x;
 				overlay.position.y = sprite.position.y;
 				overlay.alpha = 1 - sprite.alpha;
