@@ -183,7 +183,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'get x points': 'Obtener %{num} puntos',
 		'match x': 'Emparejar %{num} animales',
 		'rescue from cages': 'Rescata a los animales desde el interior de las jaulas',
-		'robots to bottom': 'Obtener %{smart_count} del robot a la parte inferior||||Obtener %{smart_count} Robots a la parte inferior',
+		'robots to bottom': 'Llevar %{smart_count} del robot a la parte inferior||||Llevar %{smart_count} Robots a la parte inferior',
 		'within x secs': 'dentro de los %{sec} segundos',
 		'within x moves': 'dentro de los %{num} movimientos',
 		'pigsvspugs': 'Cerdos vs Barros amasados',
