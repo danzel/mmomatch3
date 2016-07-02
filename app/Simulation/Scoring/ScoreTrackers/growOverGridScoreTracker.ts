@@ -1,11 +1,12 @@
 import GrowOverGridTransformer = require('../../growOverGridTransformer')
+import Language = require('../../../Language');
 import OwnedMatch = require('../ownedMatch');
 import Score = require('../score');
 import ScoreTracker = require('../scoreTracker');
 
 class GrowOverGridScoreTracker extends ScoreTracker {
 	constructor(growOverGridTransformer: GrowOverGridTransformer) {
-		super('todo');
+		super(Language.t('plants'));
 
 		growOverGridTransformer.matchablesTransforming.on(match => this.matchablesTransforming(match));
 	}

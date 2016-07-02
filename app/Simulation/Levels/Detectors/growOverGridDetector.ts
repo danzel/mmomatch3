@@ -1,13 +1,14 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
+import Language = require('../../../Language');
 import Matchable = require('../../matchable');
 import Simulation = require('../../simulation');
 import Type = require('../../type');
 
 class GrowOverGridDetector extends Detector {
-	growAmount: number;
+	grownAmount: number;
 
-	constructor(private simulation: Simulation, private amountRequired: number) {
+	constructor(private simulation: Simulation, public totalAmountRequired: number) {
 		super(GameEndType.LevelVictory);
 		this.matchableSpawned = this.matchableSpawned.bind(this);
 
@@ -21,7 +22,7 @@ class GrowOverGridDetector extends Detector {
 	}
 
 	update() {
-		this.growAmount = 0;
+		this.grownAmount = 0;
 		this.simulation.grid.cells.forEach(col => col.forEach(m => {
 			if (m.type == Type.GrowOverGrid) {
 				this.increment();
@@ -29,7 +30,7 @@ class GrowOverGridDetector extends Detector {
 		}));
 	}
 
-	matchableSpawned(matchable: Matchable): void {
+	private matchableSpawned(matchable: Matchable): void {
 		if (matchable.type == Type.GrowOverGrid) {
 			this.increment();
 			//Only one is spawned, so don't listen for more
@@ -37,17 +38,17 @@ class GrowOverGridDetector extends Detector {
 		}
 	}
 
-	increment() {
-		this.growAmount++;
+	private increment() {
+		this.grownAmount++;
 		this.valueChanged.trigger();
 
-		if (this.growAmount == this.amountRequired) {
+		if (this.grownAmount == this.totalAmountRequired) {
 			this.detected.trigger();
 		}
 	}
 
 	getDetailsText(): string {
-		return "todo"; //TODO
+		return Language.t('growplantx', { num: this.totalAmountRequired });
 	}
 }
 export = GrowOverGridDetector;

@@ -6,6 +6,7 @@ import LiteEvent = require('../../liteEvent');
 
 import GetThingsToBottomDetector = require('../../Simulation/Levels/Detectors/getThingsToBottomDetector');
 import GetToBottomRaceDetector = require('../../Simulation/Levels/Detectors/getToBottomRaceDetector');
+import GrowOverGridDetector  = require('../../Simulation/Levels/Detectors/growOverGridDetector');
 import MatchXOfColorDetector = require('../../Simulation/Levels/Detectors/matchXOfColorDetector');
 import RequireMatchDetector = require('../../Simulation/Levels/Detectors/requireMatchDetector');
 
@@ -66,6 +67,9 @@ class LevelDetailsOverlay {
 
 			(<any>details).yours = victoryDetector.isButterfly() ? butterfly : bee;
 			(<any>details).notyours = victoryDetector.isButterfly() ? bee : butterfly;
+		}
+		if (victoryDetector instanceof GrowOverGridDetector) {
+			(<any>details).subtext = Language.t('matchnexttoplant');
 		}
 
 		htmlOverlayManager.showOverlay({

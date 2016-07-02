@@ -16,6 +16,11 @@
 	font-size: 28px;
 }
 
+.level-details-overlay .sub-text {
+	font-size: 22px;
+	margin-top: 10px;
+}
+
 .level-details-overlay .start {
 	font-size: 22px;
 }

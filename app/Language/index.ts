@@ -14,6 +14,7 @@ interface LanguageDef {
 	'rescues': string;
 	'robodrops': string;
 	'drops': string;
+	'plants': string;
 
 	//levelDetailsOverlay
 	'level x': string;
@@ -32,7 +33,8 @@ interface LanguageDef {
 	'pugs': string;
 	'youareonteam': string;
 	'matchbutdontmatch': string;
-	
+	'matchnexttoplant': string;
+
 	'butterflyvsbee': string;
 	'butterfly to bottom': string;
 	'bee to bottom': string;
@@ -47,6 +49,8 @@ interface LanguageDef {
 	'timeremainingx': string;
 	'pointsrequiredx': string;
 	'animalsremainingx': string;
+	'growplantx': string;
+	'plantremainingx': string;
 
 	//gameOverOverlay
 	'out of moves': string;
@@ -94,6 +98,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'rescues': 'Rescues',
 		'robodrops': 'RoboDrops',
 		'drops': 'Drops',
+		'plants': 'Plants',
 
 		//levelDetailsOverlay
 		'level x': 'Level %{num}',
@@ -112,6 +117,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'pugs': 'Pugs',
 		'youareonteam': 'You are on team %{team}',
 		'matchbutdontmatch': "Match %{team}, but don't match %{notteam}",
+		'matchnexttoplant': 'Match next to the plant to grow it',
 
 		'butterflyvsbee': 'Butterfly VS Bee',
 		'butterfly to bottom': 'Get the Butterfly to the bottom',
@@ -127,6 +133,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'timeremainingx': 'Time remaining: %{num}',
 		'pointsrequiredx': 'Points required: %{num}/%{total}',
 		'animalsremainingx': 'Animals remaining: %{num}',
+		'growplantx': 'Grow the plant to size %{num}',
+		'plantremainingx': 'Grow %{smart_count} more plant||||Grow %{smart_count} more plants',
 
 		//gameOverOverlay
 		'out of moves': 'Out of Moves!',
@@ -138,7 +146,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'next level in': 'Next level in %{sec} seconds',
 		'rate level': 'Rate this level',
 		'click to continue': 'Click to continue',
-		
+
 		//Help
 		'controls': 'Controles',
 		'helpline1': 'Click and drag animals to match them.',
@@ -173,6 +181,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'rescues': 'Rescates',
 		'robodrops': 'Gotas del robot',
 		'drops': 'Gotas',
+		'plants': 'Plantas',
 
 		//levelDetailsOverlay
 		'level x': 'Nivel %{num}',
@@ -191,6 +200,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'pugs': 'Barros amasados',
 		'youareonteam': 'Usted está en %{team} el equipo',
 		'matchbutdontmatch': "Emparejar con %{team}, pero no emparejar %{notteam}",
+		'matchnexttoplant': 'Emparejar al lado de la planta para crecer',
 
 		'butterflyvsbee': 'Mariposa VS Abeja',
 		'butterfly to bottom': 'Mueva la mariposa a la parte inferior',
@@ -206,6 +216,8 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'timeremainingx': 'Tiempo restante: %{num}',
 		'pointsrequiredx': 'Puntos necesarios: %{num}/%{total}',
 		'animalsremainingx': 'Animales restantes: %{num}',
+		'growplantx': 'Cultivar la planta a la tamaño %{num}',
+		'plantremainingx': 'Crecer más %{smart_count} planta||||Crecer más %{smart_count} plantas',
 
 		//gameOverOverlay
 		'out of moves': '¡Sin movimientos!',
@@ -217,7 +229,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'next level in': 'Siguiente nivel en %{sec} segundos',
 		'rate level': 'Valorar este nivel',
 		'click to continue': 'Haz click para continuar',
-		
+
 		//Help
 		'controls': 'Controles',
 		'helpline1': 'Haga clic y arrastre los animales para emparejar ellos.',
