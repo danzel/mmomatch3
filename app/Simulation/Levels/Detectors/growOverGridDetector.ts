@@ -1,7 +1,6 @@
 import Detector = require('../detector');
 import GameEndType = require('../gameEndType');
 import Language = require('../../../Language');
-import Matchable = require('../../matchable');
 import Simulation = require('../../simulation');
 import Type = require('../../type');
 
@@ -10,9 +9,12 @@ class GrowOverGridDetector extends Detector {
 
 	constructor(private simulation: Simulation, public totalAmountRequired: number) {
 		super(GameEndType.LevelVictory);
-		this.matchableSpawned = this.matchableSpawned.bind(this);
 
-		simulation.spawnManager.matchableSpawned.on(this.matchableSpawned);
+		simulation.spawnManager.matchableSpawned.on(m => {
+			if (m.type == Type.GrowOverGrid) {
+				this.increment();
+			}
+		});
 
 		simulation.disappearer.matchableTransformed.on(m => {
 			if (m.type == Type.GrowOverGrid) {
@@ -28,14 +30,6 @@ class GrowOverGridDetector extends Detector {
 				this.increment();
 			}
 		}));
-	}
-
-	private matchableSpawned(matchable: Matchable): void {
-		if (matchable.type == Type.GrowOverGrid) {
-			this.increment();
-			//Only one is spawned, so don't listen for more
-			this.simulation.spawnManager.matchableSpawned.off(this.matchableSpawned);
-		}
 	}
 
 	private increment() {

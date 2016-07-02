@@ -68,7 +68,10 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 		if (level.victoryType == VictoryType.GrowOverGrid) {
 			let x = Math.floor(grid.width / 2);
 			spawnManager.spawnOverride = new SpawnOverride(matchableFactory);
-			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid, Color.None, Type.GrowOverGrid);
+			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid + 0 * MagicNumbers.matchableYScale, Color.None, Type.GrowOverGrid);
+			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid + 1 * MagicNumbers.matchableYScale, Color.None, Type.GrowOverGrid);
+			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid + 2 * MagicNumbers.matchableYScale, Color.None, Type.GrowOverGrid);
+			spawnManager.spawnOverride.addSpawn(x, bottomOfGrid + 3 * MagicNumbers.matchableYScale, Color.None, Type.GrowOverGrid);
 		}
 
 		return { level: level, simulation: simulation };

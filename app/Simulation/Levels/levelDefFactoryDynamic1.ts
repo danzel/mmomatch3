@@ -19,14 +19,16 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		this.victoryTypes = [
 			VictoryType.GetThingsToBottom,
 			VictoryType.Matches,
+			VictoryType.GrowOverGrid,
 			VictoryType.GetToBottomRace,
 			VictoryType.RequireMatch,
 			VictoryType.Score,
-			VictoryType.MatchXOfColor,
+			VictoryType.MatchXOfColor, // Pigs vs Pugs
 		];
 
 		this.failureTypes[VictoryType.GetThingsToBottom] = [FailureType.Swaps, FailureType.Time];
 		this.failureTypes[VictoryType.GetToBottomRace] = [FailureType.GetToBottomRace];
+		this.failureTypes[VictoryType.GrowOverGrid] = [FailureType.Swaps, FailureType.Time];
 		this.failureTypes[VictoryType.Matches] = [FailureType.Time];
 		this.failureTypes[VictoryType.MatchXOfColor] = [FailureType.MatchXOfColor];
 		this.failureTypes[VictoryType.RequireMatch] = [FailureType.Swaps, FailureType.Time];
@@ -40,7 +42,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	getLevel(levelNumber: number): LevelDef {
 		let level = this.generateLevel(levelNumber);
-		this.debugPrintLevel(level);
+		//this.debugPrintLevel(level);
 		return level;
 	}
 
@@ -65,6 +67,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return this.generateLevelGetThingsToBottom(levelNumber, failureType, gen);
 			case VictoryType.GetToBottomRace:
 				return this.generateLevelGetToBottomRace(levelNumber, gen);
+			case VictoryType.GrowOverGrid:
+				return this.generateLevelGrowOverGrid(levelNumber, failureType, gen);
 			case VictoryType.Matches:
 				return this.generateLevelMatches(levelNumber, failureType, gen);
 			case VictoryType.MatchXOfColor:
@@ -119,6 +123,22 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
 
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
+	}
+
+	private generateLevelGrowOverGrid(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
+		let size = this.randomSize(gen);
+		let colorCount = this.randomColorCount(gen, defaultColorCount - 1);
+		let failureValue = this.randomFailureValue(failureType, gen);
+
+		//Now calculate the victoryValue based on our random stuffs.
+		let difficulty =
+			this.calculateHeightDifficulty(size.height) *
+			this.calculateFailureDifficulty(failureType, failureValue) *
+			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
+		//TODO: Randomness
+
+		let victoryValue = Math.round(difficulty * 0.09) * 10;
+		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.GrowOverGrid, failureValue, victoryValue);
 	}
 
 	private generateLevelMatches(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
