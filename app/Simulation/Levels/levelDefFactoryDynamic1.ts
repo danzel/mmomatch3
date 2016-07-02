@@ -126,18 +126,17 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	}
 
 	private generateLevelGrowOverGrid(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
-		let size = this.randomSize(gen);
+		let size = this.randomSizeSmallerSquare(gen);
 		let colorCount = this.randomColorCount(gen, defaultColorCount - 1);
 		let failureValue = this.randomFailureValue(failureType, gen);
 
 		//Now calculate the victoryValue based on our random stuffs.
 		let difficulty =
-			this.calculateHeightDifficulty(size.height) *
 			this.calculateFailureDifficulty(failureType, failureValue) *
 			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
 		//TODO: Randomness
 
-		let victoryValue = Math.round(difficulty * 0.09) * 10;
+		let victoryValue = Math.round(difficulty * 0.055) * 10;
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.GrowOverGrid, failureValue, victoryValue);
 	}
 
@@ -217,6 +216,16 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let maxHeight = Math.min(80, 10 + this.playerCount * 4)
 
 		return { width: gen.intExclusive(minWidth, maxWidth), height: gen.intExclusive(minHeight, maxHeight) };
+	}
+
+
+	private randomSizeSmallerSquare(gen: RandomGenerator): { width: number, height: number } {
+
+		let minSize = Math.min(60, 10 + this.playerCount * 2);
+		let maxSize = Math.min(80, 10 + this.playerCount * 10);
+		let size = gen.intExclusive(minSize, maxSize);
+
+		return { width: size, height: size };
 	}
 
 	private randomColorCount(gen: RandomGenerator, defaultCount?: number): number {
