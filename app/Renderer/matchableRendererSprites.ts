@@ -17,7 +17,7 @@ class MatchableRendererSprites {
 		this.spriteKeys.push("balls/gettobottomrace1.png");
 		this.spriteKeys.push("balls/gettobottomrace2.png");
 		this.spriteKeys.push('balls/colorclear.png');
-		this.spriteKeys.push("balls/gettobottom.png"); //TODO
+		this.spriteKeys.push("balls/grow.png");
 
 		for (let i = 0; i < this.spriteKeys.length; i++) {
 			this.sprites.push([]);
