@@ -179,7 +179,8 @@ if (runningOnLive) {
 		release,
 		ignoreErrors: [
 			"adsbygoogle.push() error: All ins elements in the DOM with class=adsbygoogle already have ads in them.",
-			"WeixinJSBridge is not defined"
+			"WeixinJSBridge is not defined",
+			"TypeError: event.data.indexOf is not a function" //Some ads seem to cause this
 		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
