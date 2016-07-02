@@ -5,8 +5,9 @@ import Simulation = require('../Simulation/simulation');
 import VictoryType = require('../Simulation/Levels/victoryType');
 
 import Behaviour = require('./behaviour');
-import GetThingsToBottomBehaviour = require('./getThingsToBottomBehaviour');
 import DefaultBehaviour = require('./defaultBehaviour');
+import GetThingsToBottomBehaviour = require('./getThingsToBottomBehaviour');
+import GrowOverGridBehaviour = require('./growOverGridBehaviour');
 import RequireMatchBehaviour = require('./requireMatchBehaviour');
 
 class Bot {
@@ -29,6 +30,9 @@ class Bot {
 			case VictoryType.GetThingsToBottom:
 			case VictoryType.GetToBottomRace:
 				this.behaviour = new GetThingsToBottomBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
+				break;
+			case VictoryType.GrowOverGrid:
+				this.behaviour = new GrowOverGridBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
 				break;
 			default:
 				this.behaviour = new DefaultBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
