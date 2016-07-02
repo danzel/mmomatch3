@@ -17,8 +17,8 @@ class MatchXOfColorScoreTracker extends ScoreTracker {
 			let points = 0;
 			let desiredColor = (playerId % 2 == 1) ? 5 : 3;
 
-			for (var j = 0; j < data.matchables.length; j++) {
-				let m = data.matchables[j];
+			for (var j = 0; j < data.match.matchables.length; j++) {
+				let m = data.match.matchables[j];
 				if (m.color == desiredColor) {
 					points++;
 				}
@@ -27,7 +27,7 @@ class MatchXOfColorScoreTracker extends ScoreTracker {
 			if (points > 0) {
 				this.points[playerId] = (this.points[playerId] || 0) + points;
 				//Could move total matches by color in to here instead of ?????
-				this.playerEarnedPoints.trigger(new Score(playerId, data.matchables.length));
+				this.playerEarnedPoints.trigger(new Score(playerId, data.match.matchables.length));
 			}
 		}
 	}

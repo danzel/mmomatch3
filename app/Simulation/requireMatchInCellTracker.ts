@@ -13,8 +13,8 @@ class RequireMatchInCellTracker {
 	}
 
 	private ownedMatchPerformed(match: OwnedMatch) {
-		for (let i = 0; i < match.matchables.length; i++) {
-			let m = match.matchables[i];
+		for (let i = 0; i < match.match.matchables.length; i++) {
+			let m = match.match.matchables[i];
 
 			for (let j = 0; j < this.requirements.length; j++) {
 				let r = this.requirements[j];

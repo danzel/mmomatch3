@@ -20,7 +20,7 @@ class PointsScoreTracker extends ScoreTracker {
 			var playerId = data.players[i];
 
 			let comboSize = (this.playerComboSize[playerId] || 0) + 1;
-			let points = comboSize * this.pointsPerMatchable * data.matchables.length;
+			let points = comboSize * this.pointsPerMatchable * data.match.matchables.length;
 			//console.log('player', playerId, 'comboSize', comboSize, 'size', data.matchables.length, '=', points)
 
 			this.playerComboSize[playerId] = comboSize;

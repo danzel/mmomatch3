@@ -4,7 +4,7 @@ import RequireMatchInCellTracker = require('../../requireMatchInCellTracker');
 import Score = require('../score');
 import ScoreTracker = require('../scoreTracker');
 
-class MatchesScoreTracker extends ScoreTracker {
+class RequireMatchScoreTracker extends ScoreTracker {
 	constructor(matchTracker: RequireMatchInCellTracker) {
 		super(Language.t('rescues'));
 		matchTracker.requirementMet.on(match => this.requirementMet(match));
@@ -20,4 +20,4 @@ class MatchesScoreTracker extends ScoreTracker {
 		}
 	}
 }
-export = MatchesScoreTracker;
+export = RequireMatchScoreTracker;

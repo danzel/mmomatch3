@@ -1,6 +1,7 @@
 import ComboOwnership = require('./Scoring/comboOwnership');
 import Disappearer = require('./disappearer');
 import Grid = require('./grid');
+import GrowOverGridTransformer = require('./growOverGridTransformer');
 import InputVerifier = require('./inputVerifier');
 import LiteEvent = require('../liteEvent');
 import MatchChecker = require('./matchChecker');
@@ -31,6 +32,7 @@ class Simulation {
 	inputVerifier: InputVerifier;
 	quietColumnDetector: QuietColumnDetector;
 	comboOwnership: ComboOwnership;
+	growOverGridTransformer: GrowOverGridTransformer;
 	scoreTracker: ScoreTracker;
 	requireMatchInCellTracker: RequireMatchInCellTracker;
 	simulationStats: SimulationStats;
@@ -56,6 +58,7 @@ class Simulation {
 		this.inputVerifier = new InputVerifier(this.grid, this.matchChecker, true);
 		this.quietColumnDetector = new QuietColumnDetector(this.grid, this.physics, this.swapHandler, this.matchPerformer, this.disappearer, spawnManager);
 		this.comboOwnership = new ComboOwnership(this.grid, this.swapHandler, this.matchPerformer, this.quietColumnDetector);
+		this.growOverGridTransformer = null;
 		this.scoreTracker = null;
 		this.requireMatchInCellTracker = new RequireMatchInCellTracker(this.comboOwnership);
 		

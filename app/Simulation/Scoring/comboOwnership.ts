@@ -99,7 +99,7 @@ class ComboOwnership {
 			ownersArray.push(parseInt(key, 10));
 		}
 
-		this.ownedMatchPerformed.trigger(new OwnedMatch(ownersArray, matches));
+		this.ownedMatchPerformed.trigger(new OwnedMatch(ownersArray, match));
 	}
 
 	private columnBecameQuiet(x: number) {

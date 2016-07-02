@@ -14,10 +14,10 @@ class MatchesScoreTracker extends ScoreTracker {
 		for (let i = 0; i < data.players.length; i++) {
 			var playerId = data.players[i];
 
-			this.points[playerId] = (this.points[playerId] || 0) + data.matchables.length;
+			this.points[playerId] = (this.points[playerId] || 0) + data.match.matchables.length;
 			//Could move total matches in to here instead of matchPerformer
 
-			this.playerEarnedPoints.trigger(new Score(playerId, data.matchables.length));
+			this.playerEarnedPoints.trigger(new Score(playerId, data.match.matchables.length));
 		}
 	}
 }

@@ -1,12 +1,7 @@
-import Matchable = require('../matchable');
+import Match = require('../match');
 
 class OwnedMatch {
-	players: Array<number>;
-	matchables: Array<Matchable>;
-	
-	constructor(players: Array<number>, matchables: Array<Matchable>) {
-		this.players = players;
-		this.matchables = matchables;
+	constructor(public players: Array<number>, public match: Match) {
 	}
 }
 

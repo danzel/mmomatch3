@@ -19,10 +19,10 @@ class GetThingsToBottomScoreTracker extends ScoreTracker {
 	private ownedMatchPerformed(data: OwnedMatch): void {
 		let amountDropping = 0;
 
-		for (let i = 0; i < data.matchables.length; i++) {
+		for (let i = 0; i < data.match.matchables.length; i++) {
 			//Scan down above to check if there is a GetToBottom
 			let foundOne = false;
-			let m = data.matchables[i];
+			let m = data.match.matchables[i];
 			let col = this.grid.cells[m.x];
 			for (var y = col.length - 1; col[y].y > m.y && !foundOne; y--) {
 				if (TypeHelpers.isGetToBottom(col[y].type)) {

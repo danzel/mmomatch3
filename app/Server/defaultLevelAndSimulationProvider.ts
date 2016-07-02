@@ -75,11 +75,11 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 	}
 
 	static populateSimulationExtras(simulation: Simulation, level: LevelDef) : void {
-		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
-
 		if (level.victoryType == VictoryType.GrowOverGrid) {
-			new GrowOverGridTransformer(simulation.matchPerformer, simulation.grid);
+			simulation.growOverGridTransformer = new GrowOverGridTransformer(simulation.comboOwnership, simulation.grid);
 		}
+
+		simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(level, simulation);
 	}
 
 	private static createScoreTracker(level: LevelDef, simulation: Simulation): ScoreTracker {
@@ -89,7 +89,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			case VictoryType.GetToBottomRace:
 				return new GetThingsToBottomScoreTracker(simulation.comboOwnership, simulation.grid, simulation.swapHandler, 'drops');
 			case VictoryType.GrowOverGrid:
-				return new GrowOverGridScoreTracker();
+				return new GrowOverGridScoreTracker(simulation.growOverGridTransformer);
 			case VictoryType.Matches:
 				return new MatchesScoreTracker(simulation.comboOwnership);
 			case VictoryType.MatchXOfColor:
