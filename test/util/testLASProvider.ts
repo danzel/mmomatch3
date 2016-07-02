@@ -10,7 +10,7 @@ class TestLASProvider implements LevelAndSimulationProvider {
 	}
 
 	loadLevel(levelNumber: number): { level: LevelDef, simulation: Simulation } {
-		this.simulation.scoreTracker = DefaultLevelAndSimulationProvider.createScoreTracker(this.level, this.simulation);
+		DefaultLevelAndSimulationProvider.populateSimulationExtras(this.simulation, this.level);
 
 		if (this.level.victoryType == VictoryType.RequireMatch) {
 			let requireMatches = <Array<{ x: number, y: number; amount: number }>>this.level.victoryValue;

@@ -327,4 +327,36 @@ describe('SyncDetectors', () => {
 			expect([GameEndType.TeamDefeat, GameEndType.TeamVictory]).toContain(g.gameEndType);
 		}
 	});
+	
+	it('correctly syncs GrowOverGridDetector', () => {
+		let serverComms = new FakeServerComms(1);
+		let simulation = TestUtil.prepareForTest([
+			"156",
+			"411",
+			"3G2"
+		]);
+		let level = new LevelDef(1, 3, 3, [], 10, FailureType.Swaps, VictoryType.GrowOverGrid, 100, 4);
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig);
+		server.start();
+		serverComms.server = server;
+
+		serverComms.addClient();
+		serverComms.update();
+		serverComms.update();
+
+		//Swap and do a combo that makes some disappear
+		serverComms.clients[0].sendSwap(simulation.grid.cells[0][2].id, simulation.grid.cells[0][1].id);
+		for (let i = 0; i < SwapHandler.TicksToSwap + Matchable.TicksToDisappear * 2 + 22; i++) {
+			serverComms.addClient();
+			serverComms.update();
+		}
+		serverComms.flushClients();
+
+		let gameEndDetectors = serverComms.getAllGameEndDetectors();
+		for (let i = 0; i < gameEndDetectors.length; i++) {
+			let g = gameEndDetectors[i];
+			expect(g.gameHasEnded).toBe(true);
+			expect(g.gameEndType).toBe(GameEndType.LevelVictory);
+		}
+	});
 });

@@ -19,7 +19,7 @@ describe('Points.multipleOwner', () => {
 		]);
 		simulation.scoreTracker = new PointsScoreTracker(simulation.comboOwnership);
 
-		simulation.comboOwnership.ownedMatchPerformed.on(c => console.log('m', c.matchables.length, c.players))
+		simulation.comboOwnership.ownedMatchPerformed.on(c => console.log('m', c.match.matchables.length, c.players))
 
 		simulation.update();
 		simulation.swapHandler.swap(playerId1, simulation.grid.cells[2][0], simulation.grid.cells[3][0]);

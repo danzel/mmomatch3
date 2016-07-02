@@ -23,7 +23,7 @@ class OwnershipMatchChecker {
 		match.players.sort();
 		players.sort();
 
-		expect(match.matchables.length).toEqual(matchableCount);
+		expect(match.match.matchables.length).toEqual(matchableCount);
 		expect(match.players).toEqual(players);
 		
 		this.matches.splice(0, 1);
