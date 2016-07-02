@@ -31,7 +31,6 @@ class DefaultBehaviour extends Behaviour {
 	constructor(helper: BotHelper, simulation: Simulation, inputApplier: InputApplier) {
 		super(helper, simulation, inputApplier);
 
-		this.chooseStartingLocation();
 		this.secondsToNextMove = this.calculateVariedTime(this.config.startingDelay, this.config.startingVariation);
 	}
 
@@ -55,6 +54,11 @@ class DefaultBehaviour extends Behaviour {
 		this.secondsToNextMove -= dt;
 		if (this.secondsToNextMove > 0) {
 			return;
+		}
+
+		//Haven't chosen a starting position yet
+		if (this.lastPos.x == -1) {
+			this.chooseStartingLocation();
 		}
 
 		this.tryDoMove();
@@ -103,6 +107,7 @@ class DefaultBehaviour extends Behaviour {
 		if (moves.length > 0) {
 			let m = moves[Math.floor(Math.random() * moves.length)];
 			this.performMove(m);
+			this.chooseStartingLocation();
 			return;
 		}
 		console.warn("bot failed to forceMove")

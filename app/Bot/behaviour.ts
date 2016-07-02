@@ -6,7 +6,7 @@ import Move = require('./move');
 import Simulation = require('../Simulation/simulation');
 
 abstract class Behaviour {
-	lastPos = { x: 0, y: 0 };
+	lastPos = { x: -1, y: -1 };
 
 	constructor(protected helper: BotHelper, protected simulation: Simulation, protected inputApplier: InputApplier) {
 
