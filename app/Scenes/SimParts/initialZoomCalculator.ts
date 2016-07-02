@@ -41,6 +41,22 @@ class InitialZoomCalculator {
 
 			return { x: req.x, y: req.y / MagicNumbers.matchableYScale };
 		}
+		if (level.victoryType == VictoryType.GrowOverGrid) {
+			let things = new Array<{ x: number, y: number }>();
+
+			simulation.grid.cells.forEach(col => col.forEach((m, index) => {
+				if (m.type == Type.GrowOverGrid) {
+					things.push({ x: m.x, y: index });
+				}
+			}));
+
+			if (things.length > 0) {
+				let idx = Math.floor(Math.random() * things.length);
+				let t = things[idx];
+
+				return t;
+			}
+		}
 
 		return { x: Math.random() * level.width, y: Math.random() * level.height };
 	}
