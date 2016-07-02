@@ -27,6 +27,7 @@ class Bot {
 				this.behaviour = new RequireMatchBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
 				break;
 			case VictoryType.GetThingsToBottom:
+			case VictoryType.GetToBottomRace:
 				this.behaviour = new GetThingsToBottomBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
 				break;
 			default:
