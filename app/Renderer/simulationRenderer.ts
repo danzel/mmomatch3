@@ -26,7 +26,7 @@ class SimulationRenderer {
 
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
 		let matchablesOverlay = group.game.add.group(this.group);
-		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
+		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState, simulation.grid);
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, this.circlePingRenderer);
