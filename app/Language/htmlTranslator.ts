@@ -12,6 +12,9 @@ interface LanguageHtmlDef {
 
 	'news': string;
 
+	'july2016': string;
+	'july2016n': string;
+
 	'june20163': string;
 	'june20163n': string;
 
@@ -53,6 +56,14 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 		'ctrl3': 'Cada nivel tiene un objetivo diferente, prestar atención a ellos.',
 
 		'news': 'Noticias',
+
+		'july2016': 'Julio de 2016. Nuevos Niveles!',
+		'july2016n': 
+		'<p>Bienvenido a julio. Este mes tenemos 2 nuevos tipos de nivel!</p>' +
+		'<p>El primero es <b>cultivar la planta</b>. Este es un nivel de cooperación, tiene que emparejar junto a la planta para hacerla crecer. Cultivar la planta a un cierto tamaño antes de la hora / mueve limitan a ganar.</p>' +
+		'<p>La segunda es <b>mariposa VS abeja</b>. Este nivel es como equipo Llevar a los robots a la parte inferior. Trabajar en conjunto con su equipo para obtener su insecto hasta el fondo antes que el otro equipo puede.</p>' +
+		'<p>Espero que disfrutes de los nuevos niveles. Por favor enviarme comentarios!</p>' +
+		'<p>Divertirse y decirle a sus amigos :)</p>',
 
 		'june20163': '22 de Junio de 2016. Actualización',
 		'june20163n': 

@@ -49,6 +49,10 @@
 #welcome p, #welcome .news ul {
 	margin: 10px auto;
 }
+.news b {
+	font-weight: normal;
+	color: yellow;
+}
 #welcome .ad {
 	margin: 10px auto;
 }
