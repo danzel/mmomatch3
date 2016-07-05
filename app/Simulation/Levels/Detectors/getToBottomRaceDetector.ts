@@ -7,7 +7,7 @@ import Swap = require('../../swap');
 import Type = require('../../type');
 
 class GetToBottomRaceDetector extends Detector {
-	constructor(private simulation: Simulation, public isVictory: boolean, private matchableType: Type) {
+	constructor(private simulation: Simulation, public isVictory: boolean, public matchableType: Type) {
 		super(isVictory ? GameEndType.TeamVictory : GameEndType.TeamDefeat);
 
 		simulation.disappearer.matchableDisappeared.on(matchable => this.checkMatchable(matchable));

@@ -1,4 +1,6 @@
 import CirclePingRenderer = require('./circlePingRenderer');
+import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
+import GetToBottomRaceDetector = require('../Simulation/Levels/Detectors/getToBottomRaceDetector');
 import Grid = require('../Simulation/grid');
 import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
@@ -9,10 +11,14 @@ import TypeHelpers = require('../Simulation/typeHelpers');
 class GetToBottomHighlighter {
 
 	private width = 54;
-
 	private tiles = new Array<Phaser.TileSprite>();
+	private highlightType = Type.GetToBottom;
 
-	constructor(private grid: Grid, private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
+	constructor(private grid: Grid, gameEndDetector: GameEndDetector, private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
+		
+		if (gameEndDetector.victoryDetector instanceof GetToBottomRaceDetector) {
+			this.highlightType = (<GetToBottomRaceDetector>gameEndDetector.victoryDetector).matchableType;
+		}
 	}
 
 	render() {
@@ -24,7 +30,7 @@ class GetToBottomHighlighter {
 			var col = this.grid.cells[x];
 			for (var y = col.length - 1; y > 0; y--) {
 				let m = col[y];
-				if (!TypeHelpers.isGetToBottom(m.type)) {
+				if (m.type != this.highlightType) {
 					continue;
 				}
 				let frame = this.tileFrameForType(m.type);

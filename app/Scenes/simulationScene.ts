@@ -49,7 +49,7 @@ class SimulationScene {
 
 	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }, endAvailabilityDate: Date) {
 		let simulationGroup = new Phaser.Group(group.game, group);
-		this.renderer = new SimulationRenderer(this.simulation, simulationGroup);
+		this.renderer = new SimulationRenderer(this.simulation, gameEndDetector, simulationGroup);
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
 

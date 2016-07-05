@@ -1,5 +1,6 @@
 import CirclePingRenderer = require('./circlePingRenderer');
 import FailedToSwapState = require('./failedToSwapState');
+import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
 import InputApplier = require('../Simulation/inputApplier');
 import Simulation = require('../Simulation/simulation');
@@ -21,7 +22,7 @@ class SimulationRenderer {
 	private matchableRenderer: MatchableRenderer;
 	private circlePingRenderer: CirclePingRenderer;
 
-	constructor(private simulation: Simulation, private group: Phaser.Group) {
+	constructor(private simulation: Simulation, gameEndDetector: GameEndDetector, private group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
 
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
@@ -29,7 +30,7 @@ class SimulationRenderer {
 		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState, simulation.grid);
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
-		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, getToBottomUnder, this.circlePingRenderer);
+		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, gameEndDetector, getToBottomUnder, this.circlePingRenderer);
 		this.requireMatchHighlighter = new RequireMatchHighlighter(simulation.requireMatchInCellTracker, this.circlePingRenderer);
 
 		this.scale = 0.2;
