@@ -6,8 +6,8 @@ class Matchable {
 	
 	isDisappearing = false;
 	disappearingTicks = 0;
-	transformToColor: Color;
-	transformTo: Type;
+	transformToColor: Color = null;
+	transformTo: Type = null;
 
 	yMomentum = 0;
 
