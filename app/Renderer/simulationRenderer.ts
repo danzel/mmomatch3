@@ -187,13 +187,13 @@ class SimulationRenderer {
 
 		this.circlePingRenderer.begin();
 
-		this.getToBottomHighlighter.render();
 		this.requireMatchHighlighter.render(this.simulation.requireMatchInCellTracker);
 
 		this.circlePingRenderer.end();
 
 
 		this.matchableRenderer.begin();
+		this.getToBottomHighlighter.begin();
 
 		var swaps = this.simulation.swapHandler.swaps;
 
@@ -215,10 +215,12 @@ class SimulationRenderer {
 						}
 					}
 				}
+				this.getToBottomHighlighter.render(m);
 			}
 		}
 
 		this.matchableRenderer.end();
+		this.getToBottomHighlighter.end();
 
 		this.failedToSwapState.update(dt);
 
