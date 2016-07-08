@@ -22,12 +22,12 @@ class SimulationRenderer {
 	private matchableRenderer: MatchableRenderer;
 	private circlePingRenderer: CirclePingRenderer;
 
-	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, private group: Phaser.Group) {
+	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
 
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
 		let matchablesOverlay = group.game.add.group(this.group);
-		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState, simulation.grid);
+		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer);
@@ -180,6 +180,11 @@ class SimulationRenderer {
 		}
 	}
 
+	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector): void {
+		this.simulation = simulation;
+		this.gameEndDetector = gameEndDetector;
+	}
+
 	update(dt: number) {
 
 		this.updateKeyboard(dt);
@@ -192,7 +197,7 @@ class SimulationRenderer {
 		this.circlePingRenderer.end();
 
 
-		this.matchableRenderer.begin();
+		this.matchableRenderer.begin(this.simulation.grid.width);
 		this.getToBottomHighlighter.begin(this.gameEndDetector);
 
 		var swaps = this.simulation.swapHandler.swaps;

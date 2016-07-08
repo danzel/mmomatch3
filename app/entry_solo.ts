@@ -84,6 +84,7 @@ class AppEntry {
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {
+				this.scene.removeFromSimulationRenderer();
 				sceneGroup.destroy();
 				console.log('creating');
 				this.createSimulationScene(levelNumber + 1);

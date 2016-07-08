@@ -46,6 +46,10 @@ class PlayersOnSimulation {
 		simulation.swapHandler.swapStarted.on((swap) => this.swapStarted(swap));
 	}
 
+	removeFromSimulationRendererGroup() {
+		this.group.destroy();
+	}
+
 	private swapStarted(swap: Swap) {
 		if (swap.playerId == this.playerId) {
 			return;

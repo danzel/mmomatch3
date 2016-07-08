@@ -26,6 +26,10 @@ class RequireMatchRenderer {
 		simulation.requireMatchInCellTracker.requirementMet.on((req) => this.requirementMet(req))
 	}
 
+	removeFromSimulationRendererGroup() {
+		this.group.destroy();
+	}
+
 	private requirementPartiallyMet(req: RequireMatch) {
 		//TODO
 		throw new Error("RequireMatchRenderer for amount > 1 isn't implemented")

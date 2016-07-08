@@ -115,6 +115,7 @@ class AppEntry {
 		this.unavailableOverlay.hasPlayed = true;
 		this.unavailableOverlay.hide();
 		if (this.sceneGroup) {
+			this.scene.removeFromSimulationRenderer();
 			this.sceneGroup.destroy();
 		}
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);

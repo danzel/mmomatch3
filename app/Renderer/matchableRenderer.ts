@@ -12,21 +12,19 @@ const positionScalar = 100;
 const xOffset = positionScalar / 2;
 const yOffset = positionScalar / 2;
 
-interface GridSize {
-	width: number;
-	height: number;
-}
-
 class MatchableRenderer {
 	public static PositionScalar = positionScalar;
 
 	sprites: MatchableRendererSprites;
 
-	constructor(private group: Phaser.SpriteBatch, overlayGroup: Phaser.Group, private failedToSwapState: FailedToSwapState, private gridSize: GridSize) {
+	gridWidth = 0;
+
+	constructor(private group: Phaser.SpriteBatch, overlayGroup: Phaser.Group, private failedToSwapState: FailedToSwapState) {
 		this.sprites = new MatchableRendererSprites(group, overlayGroup);
 	}
 
-	begin(): void {
+	begin(gridWidth: number): void {
+		this.gridWidth = gridWidth;
 		this.sprites.begin();
 	}
 
@@ -40,7 +38,7 @@ class MatchableRenderer {
 	}
 
 	private calculateGrowPulseScale(matchable: Matchable) {
-		let x = Math.abs(matchable.x - (0.5 * this.gridSize.width));
+		let x = Math.abs(matchable.x - (0.5 * this.gridWidth));
 		let y = matchable.y / MagicNumbers.matchableYScale;
 
 		let dist = Math.sqrt(x * x + y * y);

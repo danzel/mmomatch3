@@ -27,7 +27,8 @@ interface SimulationSceneConfiguration {
 }
 
 class SimulationScene {
-	private renderer: SimulationRenderer;
+	private static renderer: SimulationRenderer;
+
 	private playersOnSimulation: PlayersOnSimulation;
 	private requireMatchRenderer: RequireMatchRenderer;
 	private input: InputHandler;
@@ -48,12 +49,19 @@ class SimulationScene {
 
 
 	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }, endAvailabilityDate: Date) {
-		let simulationGroup = new Phaser.Group(group.game, group);
-		this.renderer = new SimulationRenderer(this.simulation, gameEndDetector, simulationGroup);
+		if (!SimulationScene.renderer) {
+			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group));
+		} else {
+			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector);
+			group.add(SimulationScene.renderer.group);
+		}
+		let simulationGroup = SimulationScene.renderer.group;
+
+
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
 
-		this.input = new InputHandler(group, this.renderer, this.simulation, inputApplier);
+		this.input = new InputHandler(group, SimulationScene.renderer, this.simulation, inputApplier);
 
 		this.levelDetailsOverlay = new LevelDetailsOverlay(htmlOverlayManager, level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
@@ -82,14 +90,20 @@ class SimulationScene {
 		});
 	}
 
+	removeFromSimulationRenderer() {
+		this.playersOnSimulation.removeFromSimulationRendererGroup();
+		this.requireMatchRenderer.removeFromSimulationRendererGroup();
+		SimulationScene.renderer.group.parent.removeChild(SimulationScene.renderer.group);
+	}
+
 	private zoomToRandomLocation() {
 		let zoomPos = InitialZoomCalculator.getZoomInTarget(this.simulation, this.level);
 		zoomPos.y = this.level.height - zoomPos.y;
 
 		//Assume the SimulationRenderer just fit to screen (which it will have)
 		//Calculate where the grid is
-		let width = this.renderer.getScale() * this.simulation.grid.width * MatchableRenderer.PositionScalar;
-		let height = this.renderer.getScale() * this.simulation.grid.height * MatchableRenderer.PositionScalar;
+		let width = SimulationScene.renderer.getScale() * this.simulation.grid.width * MatchableRenderer.PositionScalar;
+		let height = SimulationScene.renderer.getScale() * this.simulation.grid.height * MatchableRenderer.PositionScalar;
 
 		let minX = (this.group.game.width - width) / 2;
 		let minY = (this.group.game.height - height) / 2;
@@ -109,15 +123,15 @@ class SimulationScene {
 		console.log(minY, height, zoomPos.y * height / this.simulation.grid.height, posY);
 
 		//Track if player changes the scale, cancel if they do
-		let currentScale = this.renderer.getScale();
+		let currentScale = SimulationScene.renderer.getScale();
 
 		this.initialZoomIn = () => {
-			if (this.renderer.getScale() > 0.4 || currentScale != this.renderer.getScale()) {
+			if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
 				this.initialZoomIn = null;
 				return;
 			}
-			this.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / this.renderer.getScale())))));
-			currentScale = this.renderer.getScale();
+			SimulationScene.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
+			currentScale = SimulationScene.renderer.getScale();
 		};
 	}
 
@@ -130,7 +144,7 @@ class SimulationScene {
 
 	update(): void {
 		if (!this.haveFitRenderer && this.group.game.width != 0) {
-			this.renderer.fitToBounds(this.group.game.width, this.group.game.height);
+			SimulationScene.renderer.fitToBounds(this.group.game.width, this.group.game.height);
 			this.haveFitRenderer = true;
 		}
 		if (this.initialZoomIn) {
@@ -150,7 +164,7 @@ class SimulationScene {
 	}
 
 	preRender(): void {
-		this.renderer.update(this.group.game.time.physicsElapsed);
+		SimulationScene.renderer.update(this.group.game.time.physicsElapsed);
 	}
 
 	createLevelNumberDisplay() {
