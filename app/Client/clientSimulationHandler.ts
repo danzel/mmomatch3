@@ -41,6 +41,41 @@ class ClientSimulationHandler {
 				var swap = frame.swapData[i];
 				var left = this.simulation.grid.findMatchableById(swap.leftId);
 				var right = this.simulation.grid.findMatchableById(swap.rightId);
+
+				//Trying to get a good error...
+				if (!left || !right) {
+					let error = 'Q ' + this.frameQueue.length + ' @ ' + this.level.levelNumber + ' (' + swap.leftId + ',' + swap.rightId + ') ';
+					if (!left) {
+						error += 'L';
+
+						let closestId = 0;
+						let closestDiff = Number.MAX_VALUE; 
+						this.simulation.grid.cells.forEach(col => col.forEach(m => {
+							let diff = Math.abs(m.id - swap.leftId);
+							if (diff < closestDiff) {
+								closestId = m.id;
+								closestDiff = diff;
+							}
+						}));
+						error += '[' + closestId + '] ';
+					}
+					if (!right) {
+						error += 'R';
+
+						let closestId = 0;
+						let closestDiff = Number.MAX_VALUE; 
+						this.simulation.grid.cells.forEach(col => col.forEach(m => {
+							let diff = Math.abs(m.id - swap.rightId);
+							if (diff < closestDiff) {
+								closestId = m.id;
+								closestDiff = diff;
+							}
+						}));
+						error += '[' + closestId + '] ';
+					}
+
+					throw new Error("Failed to swap at frame " + this.simulation.framesElapsed + ' ' + error);
+				}
 				this.simulation.swapHandler.swap(swap.playerId, left, right);
 			}
 			
