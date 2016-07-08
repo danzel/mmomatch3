@@ -31,7 +31,7 @@ class SimulationRenderer {
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(simulation.grid, gameEndDetector, getToBottomUnder, this.circlePingRenderer);
-		this.requireMatchHighlighter = new RequireMatchHighlighter(simulation.requireMatchInCellTracker, this.circlePingRenderer);
+		this.requireMatchHighlighter = new RequireMatchHighlighter(this.circlePingRenderer);
 
 		this.scale = 0.2;
 		this.group.y = 400;
@@ -188,7 +188,7 @@ class SimulationRenderer {
 		this.circlePingRenderer.begin();
 
 		this.getToBottomHighlighter.render();
-		this.requireMatchHighlighter.render();
+		this.requireMatchHighlighter.render(this.simulation.requireMatchInCellTracker);
 
 		this.circlePingRenderer.end();
 
