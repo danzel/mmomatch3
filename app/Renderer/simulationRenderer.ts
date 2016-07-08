@@ -22,6 +22,8 @@ class SimulationRenderer {
 	private matchableRenderer: MatchableRenderer;
 	private circlePingRenderer: CirclePingRenderer;
 
+	private outline: Phaser.Graphics;
+
 	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group) {
 		let getToBottomUnder = group.game.add.group(group);
 
@@ -43,7 +45,7 @@ class SimulationRenderer {
 			}
 		});
 
-		this.addDebugOverlay();
+		this.updateOutline();
 	}
 
 	fitToBounds(width: number, height: number) {
@@ -141,11 +143,14 @@ class SimulationRenderer {
 		this.group.scale = new Phaser.Point(scale, scale);
 	}
 
-	private addDebugOverlay() {
-		let graphics = this.group.game.add.graphics(0, 0, this.group);
-		//graphics.beginFill(0x999999);
-		graphics.lineStyle(3, 0xFFFFFF, 0.7);
-		graphics.drawRect(0, 0, this.simulation.grid.width * MatchableRenderer.PositionScalar, -this.simulation.grid.height * MatchableRenderer.PositionScalar);
+	private updateOutline() {
+		if (!this.outline) {
+			this.outline = this.group.game.add.graphics(0, 0, this.group);
+		} else {
+			this.outline.clear();
+		}
+		this.outline.lineStyle(3, 0xFFFFFF, 0.7);
+		this.outline.drawRect(0, 0, this.simulation.grid.width * MatchableRenderer.PositionScalar, -this.simulation.grid.height * MatchableRenderer.PositionScalar);
 	}
 
 	private left = [Phaser.Keyboard.LEFT, Phaser.Keyboard.A];
@@ -183,6 +188,7 @@ class SimulationRenderer {
 	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector): void {
 		this.simulation = simulation;
 		this.gameEndDetector = gameEndDetector;
+		this.updateOutline();
 	}
 
 	update(dt: number) {
