@@ -36,6 +36,10 @@ class ClientSimulationHandler {
 		let frame = this.frameQueue.shift();
 
 		if (frame) {
+			if (this.simulation.framesElapsed != frame.frame) {
+				throw new Error("At bad frame. " + this.simulation.framesElapsed + " " + frame.frame + " Q " + this.frameQueue.length + " L " + this.level.levelNumber);
+			}
+
 			//Swaps
 			for (let i = 0; i < frame.swapData.length; i++) {
 				var swap = frame.swapData[i];

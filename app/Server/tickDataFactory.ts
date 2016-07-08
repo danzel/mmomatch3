@@ -32,7 +32,7 @@ class TickDataFactory {
 	private ensureFrameData(): FrameData {
 		var frame = this.simulation.framesElapsed - this.lastSentFramesElapsed;
 		if (!this.frameData[frame]) {
-			this.frameData[frame] = new FrameData();
+			this.frameData[frame] = new FrameData(this.simulation.framesElapsed);
 		}
 		return this.frameData[frame];
 	}

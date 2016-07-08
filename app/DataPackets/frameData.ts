@@ -5,7 +5,7 @@ class FrameData {
 	spawnData: Array<SpawnData>;
 	swapData: Array<SwapServerData>;
 	
-	constructor() {
+	constructor(public frame: number) {
 		this.spawnData = [];
 		this.swapData = [];
 	}
