@@ -17,16 +17,18 @@ class GetToBottomHighlighter {
 	private tiles = new Array<Phaser.TileSprite>();
 	private nowS: number;
 
-	constructor(private grid: Grid, gameEndDetector: GameEndDetector, private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
-		
-		if (gameEndDetector.victoryDetector instanceof GetToBottomRaceDetector) {
-			this.highlightType = (<GetToBottomRaceDetector>gameEndDetector.victoryDetector).matchableType;
-		}
+	constructor(private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
 	}
 
-	begin() {
+	begin(gameEndDetector: GameEndDetector) {
 		this.index = 0;
 		this.nowS = this.underGroup.game.time.now / 1000;
+
+		if (gameEndDetector.victoryDetector instanceof GetToBottomRaceDetector) {
+			this.highlightType = (<GetToBottomRaceDetector>gameEndDetector.victoryDetector).matchableType;
+		} else {
+			this.highlightType = Type.GetToBottom;
+		}
 	}
 
 	render(m: Matchable) {
