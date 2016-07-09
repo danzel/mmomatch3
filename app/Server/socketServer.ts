@@ -1,7 +1,10 @@
 /// <reference path="../../typings/express/express.d.ts" />
+/// <reference path="../../typings/express-session/express-session.d.ts" />
 /// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
+/// <reference path="../../typings/passport/passport.d.ts" />
+/// <reference path="../../typings/passport/passport-twitter.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
 import compression = require('compression');
@@ -9,6 +12,10 @@ import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
+import session = require('express-session');
+
+import passport = require('passport');
+import passportTwitter = require('passport-twitter');
 
 import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
@@ -32,50 +39,10 @@ class SocketServer extends ServerComms {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer, config: SocketServerConfig) {
+	constructor(private serializer: Serializer, private config: SocketServerConfig) {
 		super();
-		this.app = express();
-		//Could consider this https://github.com/isaacs/st
-		this.app.use(compression());
-		this.app.use(helmet.hidePoweredBy());
-		let oneDay = 24 * 60 * 60 * 1000;
-		
-		this.app.use(express.static('dist', {
-			maxAge: oneDay,
-			setHeaders: function (res, path) {
-				if (path.toLowerCase().indexOf('.html') != -1) {
-					res.setHeader('Cache-Control', 'public, max-age=0')
-				}
-			}
-		}));
 
-		if (config.httpsPort && config.domain && config.email) {
-			console.log('starting https');
-
-			LEX.debug = true;
-			if (!console.debug) {
-				console.debug = console.log;
-			}
-
-			var lex = LEX.create({
-				configDir: './letsencrypt/etc',
-				approveRegistration: function (hostname, cb) {
-					cb(null, { domains: [config.domain], email: config.email, agreeTos: true });
-				}
-			});
-			http.createServer(LEX.createAcmeResponder(lex, function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
-				res.setHeader('Location', 'https://' + req.headers.host + req.url);
-				res.statusCode = 302;
-				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(config.httpPort);
-
-			this.httpServer = https.createServer(lex.httpsOptions, LEX.createAcmeResponder(lex, this.app));
-			this.httpServer.listen(config.httpsPort);
-		} else {
-			console.log('starting http');
-			this.httpServer = http.createServer(this.app);
-			this.httpServer.listen(config.httpPort);
-		}
+		this.createHttpServer();
 
 		this.primus = new Primus(this.httpServer, {
 			pathname: '/sock',
@@ -156,6 +123,83 @@ class SocketServer extends ServerComms {
 			for (let id in this.clients) {
 				this.clients[id].write(serialized);
 			}
+		}
+	}
+
+	private createHttpServer() {
+		this.app = express();
+		//Could consider this https://github.com/isaacs/st
+		this.app.use(compression());
+		this.app.use(helmet.hidePoweredBy());
+		let oneDay = 24 * 60 * 60 * 1000;
+		
+		this.app.use(express.static('dist', {
+			maxAge: oneDay,
+			setHeaders: function (res, path) {
+				if (path.toLowerCase().indexOf('.html') != -1) {
+					res.setHeader('Cache-Control', 'public, max-age=0')
+				}
+			}
+		}));
+
+		this.app.use(session({
+			secret: 'todo put this in the json file' //TODO
+		 }));
+		this.app.use(passport.initialize());
+		this.app.use(passport.session());
+
+		passport.serializeUser(function(user, done) {
+			done(null, user.passport + "|" + user.id);
+		});
+
+		passport.deserializeUser(function(id: string, done: (error: any, user: any) => void) {
+			/*User.findById(id, function(err, user) {
+				done(err, user);
+			});*/
+
+			let split = id.indexOf('|');
+			done(null, { provider: id.substr(0, split), id: id.substr(split + 1) });
+		});
+
+		//Twitter
+		passport.use(new passportTwitter.Strategy({
+			consumerKey: '',
+			consumerSecret: '',
+			callbackURL: 'http://localhost:8091/auth/twitter/callback' //TODO 
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			//debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/twitter', passport.authenticate('twitter'));
+		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/success', failureRedirect: '/failure' }));
+
+
+		if (this.config.httpsPort && this.config.domain && this.config.email) {
+			console.log('starting https');
+
+			LEX.debug = true;
+			if (!console.debug) {
+				console.debug = console.log;
+			}
+
+			var lex = LEX.create({
+				configDir: './letsencrypt/etc',
+				approveRegistration: function (hostname, cb) {
+					cb(null, { domains: [this.config.domain], email: this.config.email, agreeTos: true });
+				}
+			});
+			http.createServer(LEX.createAcmeResponder(lex, function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
+				res.setHeader('Location', 'https://' + req.headers.host + req.url);
+				res.statusCode = 302;
+				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
+			})).listen(this.config.httpPort);
+
+			this.httpServer = https.createServer(lex.httpsOptions, LEX.createAcmeResponder(lex, this.app));
+			this.httpServer.listen(this.config.httpsPort);
+		} else {
+			console.log('starting http');
+			this.httpServer = http.createServer(this.app);
+			this.httpServer.listen(this.config.httpPort);
 		}
 	}
 }
