@@ -27,8 +27,15 @@ class WelcomeScreen {
 		let form = <HTMLFormElement>document.getElementById('login-form');
 		let button = <HTMLInputElement>document.getElementById('play-button');
 
+
+		if (window.localStorage.getItem('nickname')) {
+			this.nickname.value = window.localStorage.getItem('nickname');
+		}
+
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
+			window.localStorage.setItem('nickname', this.nickname.value);
+			
 			this.onLogin(this.nickname.value, this.hidenames.checked);
 
 			ev.preventDefault();
