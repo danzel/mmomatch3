@@ -1,11 +1,14 @@
-(function UMDish(name, context, definition) {
+(function UMDish(name, context, definition, plugins) {
   context[name] = definition.call(context);
+  for (var i = 0; i < plugins.length; i++) {
+    plugins[i](context[name])
+  }
   if (typeof module !== "undefined" && module.exports) {
     module.exports = context[name];
   } else if (typeof define === "function" && define.amd) {
     define(function reference() { return context[name]; });
   }
-})("Primus", this, function wrapper() {
+})("Primus", this || {}, function wrapper() {
   var define, module, exports
     , Primus = (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
@@ -148,6 +151,8 @@ module.exports = function emits() {
 },{}],3:[function(_dereq_,module,exports){
 'use strict';
 
+var has = Object.prototype.hasOwnProperty;
+
 //
 // We store our EE objects in a plain object whose properties are event names.
 // If `Object.create(null)` is not supported we prefix the event names with a
@@ -163,7 +168,7 @@ var prefix = typeof Object.create !== 'function' ? '~' : false;
  *
  * @param {Function} fn Event handler to be called.
  * @param {Mixed} context Context for function execution.
- * @param {Boolean} once Only emit once
+ * @param {Boolean} [once=false] Only emit once
  * @api private
  */
 function EE(fn, context, once) {
@@ -182,12 +187,37 @@ function EE(fn, context, once) {
 function EventEmitter() { /* Nothing to set */ }
 
 /**
- * Holds the assigned EventEmitters by name.
+ * Hold the assigned EventEmitters by name.
  *
  * @type {Object}
  * @private
  */
 EventEmitter.prototype._events = undefined;
+
+/**
+ * Return an array listing the events for which the emitter has registered
+ * listeners.
+ *
+ * @returns {Array}
+ * @api public
+ */
+EventEmitter.prototype.eventNames = function eventNames() {
+  var events = this._events
+    , names = []
+    , name;
+
+  if (!events) return names;
+
+  for (name in events) {
+    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+  }
+
+  if (Object.getOwnPropertySymbols) {
+    return names.concat(Object.getOwnPropertySymbols(events));
+  }
+
+  return names;
+};
 
 /**
  * Return a list of assigned event listeners.
@@ -274,8 +304,8 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
  * Register a new EventListener for the given event.
  *
  * @param {String} event Name of the event.
- * @param {Functon} fn Callback function.
- * @param {Mixed} context The context of the function.
+ * @param {Function} fn Callback function.
+ * @param {Mixed} [context=this] The context of the function.
  * @api public
  */
 EventEmitter.prototype.on = function on(event, fn, context) {
@@ -299,7 +329,7 @@ EventEmitter.prototype.on = function on(event, fn, context) {
  *
  * @param {String} event Name of the event.
  * @param {Function} fn Callback function.
- * @param {Mixed} context The context of the function.
+ * @param {Mixed} [context=this] The context of the function.
  * @api public
  */
 EventEmitter.prototype.once = function once(event, fn, context) {
@@ -837,7 +867,271 @@ Recovery.prototype.destroy = destroy('timers attempt _fn');
 //
 module.exports = Recovery;
 
-},{"demolish":1,"eventemitter3":3,"millisecond":4,"one-time":5,"tick-tock":9}],8:[function(_dereq_,module,exports){
+},{"demolish":1,"eventemitter3":8,"millisecond":4,"one-time":5,"tick-tock":10}],8:[function(_dereq_,module,exports){
+'use strict';
+
+//
+// We store our EE objects in a plain object whose properties are event names.
+// If `Object.create(null)` is not supported we prefix the event names with a
+// `~` to make sure that the built-in object properties are not overridden or
+// used as an attack vector.
+// We also assume that `Object.create(null)` is available when the event name
+// is an ES6 Symbol.
+//
+var prefix = typeof Object.create !== 'function' ? '~' : false;
+
+/**
+ * Representation of a single EventEmitter function.
+ *
+ * @param {Function} fn Event handler to be called.
+ * @param {Mixed} context Context for function execution.
+ * @param {Boolean} once Only emit once
+ * @api private
+ */
+function EE(fn, context, once) {
+  this.fn = fn;
+  this.context = context;
+  this.once = once || false;
+}
+
+/**
+ * Minimal EventEmitter interface that is molded against the Node.js
+ * EventEmitter interface.
+ *
+ * @constructor
+ * @api public
+ */
+function EventEmitter() { /* Nothing to set */ }
+
+/**
+ * Holds the assigned EventEmitters by name.
+ *
+ * @type {Object}
+ * @private
+ */
+EventEmitter.prototype._events = undefined;
+
+/**
+ * Return a list of assigned event listeners.
+ *
+ * @param {String} event The events that should be listed.
+ * @param {Boolean} exists We only need to know if there are listeners.
+ * @returns {Array|Boolean}
+ * @api public
+ */
+EventEmitter.prototype.listeners = function listeners(event, exists) {
+  var evt = prefix ? prefix + event : event
+    , available = this._events && this._events[evt];
+
+  if (exists) return !!available;
+  if (!available) return [];
+  if (available.fn) return [available.fn];
+
+  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
+    ee[i] = available[i].fn;
+  }
+
+  return ee;
+};
+
+/**
+ * Emit an event to all registered event listeners.
+ *
+ * @param {String} event The name of the event.
+ * @returns {Boolean} Indication if we've emitted an event.
+ * @api public
+ */
+EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events || !this._events[evt]) return false;
+
+  var listeners = this._events[evt]
+    , len = arguments.length
+    , args
+    , i;
+
+  if ('function' === typeof listeners.fn) {
+    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+
+    switch (len) {
+      case 1: return listeners.fn.call(listeners.context), true;
+      case 2: return listeners.fn.call(listeners.context, a1), true;
+      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
+      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
+      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+    }
+
+    for (i = 1, args = new Array(len -1); i < len; i++) {
+      args[i - 1] = arguments[i];
+    }
+
+    listeners.fn.apply(listeners.context, args);
+  } else {
+    var length = listeners.length
+      , j;
+
+    for (i = 0; i < length; i++) {
+      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+
+      switch (len) {
+        case 1: listeners[i].fn.call(listeners[i].context); break;
+        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
+        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+        default:
+          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+            args[j - 1] = arguments[j];
+          }
+
+          listeners[i].fn.apply(listeners[i].context, args);
+      }
+    }
+  }
+
+  return true;
+};
+
+/**
+ * Register a new EventListener for the given event.
+ *
+ * @param {String} event Name of the event.
+ * @param {Functon} fn Callback function.
+ * @param {Mixed} context The context of the function.
+ * @api public
+ */
+EventEmitter.prototype.on = function on(event, fn, context) {
+  var listener = new EE(fn, context || this)
+    , evt = prefix ? prefix + event : event;
+
+  if (!this._events) this._events = prefix ? {} : Object.create(null);
+  if (!this._events[evt]) this._events[evt] = listener;
+  else {
+    if (!this._events[evt].fn) this._events[evt].push(listener);
+    else this._events[evt] = [
+      this._events[evt], listener
+    ];
+  }
+
+  return this;
+};
+
+/**
+ * Add an EventListener that's only called once.
+ *
+ * @param {String} event Name of the event.
+ * @param {Function} fn Callback function.
+ * @param {Mixed} context The context of the function.
+ * @api public
+ */
+EventEmitter.prototype.once = function once(event, fn, context) {
+  var listener = new EE(fn, context || this, true)
+    , evt = prefix ? prefix + event : event;
+
+  if (!this._events) this._events = prefix ? {} : Object.create(null);
+  if (!this._events[evt]) this._events[evt] = listener;
+  else {
+    if (!this._events[evt].fn) this._events[evt].push(listener);
+    else this._events[evt] = [
+      this._events[evt], listener
+    ];
+  }
+
+  return this;
+};
+
+/**
+ * Remove event listeners.
+ *
+ * @param {String} event The event we want to remove.
+ * @param {Function} fn The listener that we need to find.
+ * @param {Mixed} context Only remove listeners matching this context.
+ * @param {Boolean} once Only remove once listeners.
+ * @api public
+ */
+EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events || !this._events[evt]) return this;
+
+  var listeners = this._events[evt]
+    , events = [];
+
+  if (fn) {
+    if (listeners.fn) {
+      if (
+           listeners.fn !== fn
+        || (once && !listeners.once)
+        || (context && listeners.context !== context)
+      ) {
+        events.push(listeners);
+      }
+    } else {
+      for (var i = 0, length = listeners.length; i < length; i++) {
+        if (
+             listeners[i].fn !== fn
+          || (once && !listeners[i].once)
+          || (context && listeners[i].context !== context)
+        ) {
+          events.push(listeners[i]);
+        }
+      }
+    }
+  }
+
+  //
+  // Reset the array, or remove it completely if we have no more listeners.
+  //
+  if (events.length) {
+    this._events[evt] = events.length === 1 ? events[0] : events;
+  } else {
+    delete this._events[evt];
+  }
+
+  return this;
+};
+
+/**
+ * Remove all listeners or only the listeners for the specified event.
+ *
+ * @param {String} event The event want to remove all listeners for.
+ * @api public
+ */
+EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
+  if (!this._events) return this;
+
+  if (event) delete this._events[prefix ? prefix + event : event];
+  else this._events = prefix ? {} : Object.create(null);
+
+  return this;
+};
+
+//
+// Alias methods names because people roll like that.
+//
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+
+//
+// This function doesn't apply anymore.
+//
+EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
+  return this;
+};
+
+//
+// Expose the prefix.
+//
+EventEmitter.prefixed = prefix;
+
+//
+// Expose the module.
+//
+if ('undefined' !== typeof module) {
+  module.exports = EventEmitter;
+}
+
+},{}],9:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -877,7 +1171,7 @@ module.exports = function required(port, protocol) {
   return port !== 0;
 };
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
@@ -1154,13 +1448,14 @@ Tick.prototype.end = Tick.prototype.destroy = function end() {
 Tick.Timer = Timer;
 module.exports = Tick;
 
-},{"millisecond":4}],10:[function(_dereq_,module,exports){
+},{"millisecond":4}],11:[function(_dereq_,module,exports){
 'use strict';
 
 var required = _dereq_('requires-port')
   , lolcation = _dereq_('./lolcation')
   , qs = _dereq_('querystringify')
-  , relativere = /^\/(?!\/)/;
+  , relativere = /^\/(?!\/)/
+  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
 
 /**
  * These are the parse instructions for the URL parsers, it informs the parser
@@ -1177,13 +1472,36 @@ var required = _dereq_('requires-port')
 var instructions = [
   ['#', 'hash'],                        // Extract from the back.
   ['?', 'query'],                       // Extract from the back.
-  ['//', 'protocol', 2, 1, 1],          // Extract from the front.
   ['/', 'pathname'],                    // Extract from the back.
   ['@', 'auth', 1],                     // Extract from the front.
   [NaN, 'host', undefined, 1, 1],       // Set left over value.
   [/\:(\d+)$/, 'port'],                 // RegExp the back.
   [NaN, 'hostname', undefined, 1, 1]    // Set left over.
 ];
+
+ /**
+ * @typedef ProtocolExtract
+ * @type Object
+ * @property {String} protocol Protocol matched in the URL, in lowercase
+ * @property {Boolean} slashes Indicates whether the protocol is followed by double slash ("//")
+ * @property {String} rest     Rest of the URL that is not part of the protocol
+ */
+
+ /**
+  * Extract protocol information from a URL with/without double slash ("//")
+  *
+  * @param  {String} address   URL we want to extract from.
+  * @return {ProtocolExtract}  Extracted information
+  * @private
+  */
+function extractProtocol(address) {
+  var match = protocolre.exec(address);
+  return {
+    protocol: match[1] ? match[1].toLowerCase() : '',
+    slashes: !!match[2],
+    rest: match[3] ? match[3] : ''
+  };
+}
 
 /**
  * The actual URL instance. Instead of returning an object we've opted-in to
@@ -1192,8 +1510,8 @@ var instructions = [
  *
  * @constructor
  * @param {String} address URL we want to parse.
- * @param {Boolean|function} parser Parser for the query string.
- * @param {Object} location Location defaults for relative paths.
+ * @param {Object|String} location Location defaults for relative paths.
+ * @param {Boolean|Function} parser Parser for the query string.
  * @api public
  */
 function URL(address, location, parser) {
@@ -1228,6 +1546,12 @@ function URL(address, location, parser) {
   }
 
   location = lolcation(location);
+
+  // extract protocol information before running the instructions
+  var extracted = extractProtocol(address);
+  url.protocol = extracted.protocol || location.protocol || '';
+  url.slashes = extracted.slashes || location.slashes;
+  address = extracted.rest;
 
   for (; i < instructions.length; i++) {
     instruction = instructions[i];
@@ -1299,8 +1623,12 @@ function URL(address, location, parser) {
  * This is convenience method for changing properties in the URL instance to
  * insure that they all propagate correctly.
  *
- * @param {String} prop Property we need to adjust.
- * @param {Mixed} value The newly assigned value.
+ * @param {String} prop          Property we need to adjust.
+ * @param {Mixed} value          The newly assigned value.
+ * @param {Boolean|Function} fn  When setting the query, it will be the function used to parse
+ *                               the query.
+ *                               When setting the protocol, double slash will be removed from
+ *                               the final url if it is true.
  * @returns {URL}
  * @api public
  */
@@ -1335,6 +1663,9 @@ URL.prototype.set = function set(part, value, fn) {
       url.hostname = value[0];
       url.port = value[1];
     }
+  } else if ('protocol' === part) {
+    url.protocol = value;
+    url.slashes = !fn;
   } else {
     url[part] = value;
   }
@@ -1355,7 +1686,11 @@ URL.prototype.toString = function toString(stringify) {
 
   var query
     , url = this
-    , result = url.protocol +'//';
+    , protocol = url.protocol;
+
+  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+
+  var result = protocol + (url.slashes ? '//' : '');
 
   if (url.username) {
     result += url.username;
@@ -1384,13 +1719,15 @@ URL.qs = qs;
 URL.location = lolcation;
 module.exports = URL;
 
-},{"./lolcation":11,"querystringify":6,"requires-port":8}],11:[function(_dereq_,module,exports){
+},{"./lolcation":12,"querystringify":6,"requires-port":9}],12:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
+var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+
 /**
  * These properties should not be copied or inherited from. This is only needed
- * for all non blob URL's as the a blob URL does not include a hash, only the
+ * for all non blob URL's as a blob URL does not include a hash, only the
  * origin.
  *
  * @type {Object}
@@ -1407,7 +1744,7 @@ var ignore = { hash: 1, query: 1 }
  * encoded in the `pathname` so we can thankfully generate a good "default"
  * location from it so we can generate proper relative URL's again.
  *
- * @param {Object} loc Optional default location object.
+ * @param {Object|String} loc Optional default location object.
  * @returns {Object} lolcation object.
  * @api public
  */
@@ -1424,16 +1761,22 @@ module.exports = function lolcation(loc) {
   } else if ('string' === type) {
     finaldestination = new URL(loc, {});
     for (key in ignore) delete finaldestination[key];
-  } else if ('object' === type) for (key in loc) {
-    if (key in ignore) continue;
-    finaldestination[key] = loc[key];
+  } else if ('object' === type) {
+    for (key in loc) {
+      if (key in ignore) continue;
+      finaldestination[key] = loc[key];
+    }
+
+    if (finaldestination.slashes === undefined) {
+      finaldestination.slashes = slashes.test(loc.href);
+    }
   }
 
   return finaldestination;
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./":10}],12:[function(_dereq_,module,exports){
+},{"./":11}],13:[function(_dereq_,module,exports){
 'use strict';
 
 var alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('')
@@ -1503,7 +1846,7 @@ yeast.encode = encode;
 yeast.decode = decode;
 module.exports = yeast;
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 /*globals require, define */
 'use strict';
 
@@ -1547,7 +1890,7 @@ try {
   if (location.origin) {
     defaultUrl = location.origin;
   } else {
-    defaultUrl = location.protocol +'//'+ location.hostname + (location.port ? ':'+ location.port : '');
+    defaultUrl = location.protocol +'//'+ location.host;
   }
 } catch (e) {
   defaultUrl = 'http://127.0.0.1';
@@ -1698,7 +2041,7 @@ function Primus(url, options) {
  * @returns {Object|Undefined} The module that we required.
  * @api private
  */
-Primus.require = function requires(name) {
+Primus.requires = Primus.require = function requires(name) {
   if ('function' !== typeof _dereq_) return undefined;
 
   return !('function' === typeof define && define.amd)
@@ -1713,7 +2056,7 @@ Primus.require = function requires(name) {
 var Stream;
 
 try {
-  Primus.Stream = Stream = Primus.require('stream');
+  Primus.Stream = Stream = Primus.requires('stream');
 
   //
   // Normally inheritance is done in the same way as we do in our catch
@@ -1723,7 +2066,7 @@ try {
   //
   // @see https://github.com/joyent/node/issues/4971
   //
-  Primus.require('util').inherits(Primus, Stream);
+  Primus.requires('util').inherits(Primus, Stream);
 } catch (e) {
   Primus.Stream = EventEmitter;
   Primus.prototype = new EventEmitter();
@@ -1789,26 +2132,6 @@ Primus.prototype.ark = {};
  * @api public
  */
 Primus.prototype.emits = _dereq_('emits');
-
-/**
- * A small wrapper around `emits` to add a default parser when one is not
- * supplied. The default parser will defer the emission of the event to make
- * sure that the event is emitted at the correct time.
- *
- * @returns {Function} A function that will emit the event when called.
- * @api private
- */
-Primus.prototype.trigger = function trigger() {
-  for (var i = 0, l = arguments.length, args = new Array(l); i < l; i++) {
-    args[i] = arguments[i];
-  }
-
-  if ('function' !== typeof args[l - 1]) args.push(function defer(next) {
-    setTimeout(next, 0);
-  });
-
-  return this.emits.apply(this, args);
-};
 
 /**
  * Return the given plugin.
@@ -2002,7 +2325,7 @@ Primus.prototype.initialise = function initialise(options) {
   primus.on('incoming::data', function message(raw) {
     primus.decoder(raw, function decoding(err, data) {
       //
-      // Do a "save" emit('error') when we fail to parse a message. We don't
+      // Do a "safe" emit('error') when we fail to parse a message. We don't
       // want to throw here as listening to errors should be optional.
       //
       if (err) return primus.listeners('error').length && primus.emit('error', err);
@@ -2535,13 +2858,12 @@ Primus.prototype.clone = function clone(obj) {
  * @api private
  */
 Primus.prototype.merge = function merge(target) {
-  var args = Array.prototype.slice.call(arguments, 1);
-
-  for (var i = 0, l = args.length, key, obj; i < l; i++) {
-    obj = args[i];
+  for (var i = 1, key, obj; i < arguments.length; i++) {
+    obj = arguments[i];
 
     for (key in obj) {
-      if (obj.hasOwnProperty(key)) target[key] = obj[key];
+      if (Object.prototype.hasOwnProperty.call(obj, key))
+        target[key] = obj[key];
     }
   }
 
@@ -2643,7 +2965,7 @@ Primus.prototype.uri = function uri(options) {
   //
   // Optionally add a search query.
   //
-  if (qsa) server.push('?'+ options.query);
+  if (qsa) server[server.length - 1] += '?'+ options.query;
   else delete options.query;
 
   if (options.object) return options;
@@ -2707,8 +3029,8 @@ Primus.connect = function connect(url, options) {
 Primus.EventEmitter = EventEmitter;
 
 //
-// These libraries are automatically are automatically inserted at the
-// server-side using the Primus#library method.
+// These libraries are automatically inserted at the server-side using the
+// Primus#library method.
 //
 Primus.prototype.client = function client() {
   var primus = this
@@ -2721,7 +3043,7 @@ Primus.prototype.client = function client() {
     if ('undefined' !== typeof WebSocket) return WebSocket;
     if ('undefined' !== typeof MozWebSocket) return MozWebSocket;
 
-    try { return Primus.require('ws'); }
+    try { return Primus.requires('ws'); }
     catch (e) {}
 
     return undefined;
@@ -2730,7 +3052,6 @@ Primus.prototype.client = function client() {
   if (!Factory) return primus.critical(new Error(
     'Missing required `ws` module. Please run `npm install --save ws`'
   ));
-
 
   //
   // Connect to the given URL.
@@ -2763,20 +3084,19 @@ Primus.prototype.client = function client() {
           protocol: prot,
           query: qsa
         }));
+
+        socket.binaryType = 'arraybuffer';
       }
     } catch (e) { return primus.emit('error', e); }
 
     //
     // Setup the Event handlers.
     //
-    socket.binaryType = 'arraybuffer';
-    socket.onopen = primus.trigger('incoming::open');
-    socket.onerror = primus.trigger('incoming::error');
-    socket.onclose = primus.trigger('incoming::end');
-    socket.onmessage = primus.trigger('incoming::data', function parse(next, evt) {
-      setTimeout(function defer() {
-        next(undefined, evt.data);
-      }, 0);
+    socket.onopen = primus.emits('incoming::open');
+    socket.onerror = primus.emits('incoming::error');
+    socket.onclose = primus.emits('incoming::end');
+    socket.onmessage = primus.emits('incoming::data', function parse(next, evt) {
+      next(undefined, evt.data);
     });
   });
 
@@ -2808,7 +3128,7 @@ Primus.prototype.client = function client() {
     socket = null;
   });
 };
-Primus.prototype.authorization = false;
+Primus.prototype.authorization = true;
 Primus.prototype.pathname = "/sock";
 Primus.prototype.encoder = function encoder(data, fn) {
   var err;
@@ -2828,7 +3148,7 @@ Primus.prototype.decoder = function decoder(data, fn) {
 
   fn(err, data);
 };
-Primus.prototype.version = "4.0.4";
+Primus.prototype.version = "5.2.2";
 
 if (
      'undefined' !== typeof document
@@ -2877,6 +3197,9 @@ if (
 //
 module.exports = Primus;
 
-},{"demolish":1,"emits":2,"eventemitter3":3,"querystringify":6,"recovery":7,"tick-tock":9,"url-parse":10,"yeast":12}]},{},[13])(13);
+},{"demolish":1,"emits":2,"eventemitter3":3,"querystringify":6,"recovery":7,"tick-tock":10,"url-parse":11,"yeast":13}]},{},[14])(14);
   return Primus;
-});
+},
+[
+
+]);
