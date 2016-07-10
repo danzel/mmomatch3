@@ -11,8 +11,12 @@ interface SocketServerConfig {
 	allowedOrigins?: Array<string>;
 
 	sessionSecret: string;
-	twitterConsumerKey: '';
-	twitterConsumerSecret: '';
+
+	twitterConsumerKey: string;
+	twitterConsumerSecret: string;
+
+	googleClientID: string;
+	googleClientSecret: string;
 }
 
 export = SocketServerConfig;

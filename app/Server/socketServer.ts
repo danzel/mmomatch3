@@ -4,6 +4,7 @@
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
 /// <reference path="../../typings/passport/passport.d.ts" />
+/// <reference path="../../typings/passport/passport-google-oauth20.d.ts" />
 /// <reference path="../../typings/passport/passport-twitter.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
@@ -16,6 +17,7 @@ import session = require('express-session');
 
 import passport = require('passport');
 import passportTwitter = require('passport-twitter');
+import passportGoogle = require('passport-google-oauth20');
 
 import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
@@ -132,7 +134,7 @@ class SocketServer extends ServerComms {
 		this.app.use(compression());
 		this.app.use(helmet.hidePoweredBy());
 		let oneDay = 24 * 60 * 60 * 1000;
-		
+
 		this.app.use(express.static('dist', {
 			maxAge: oneDay,
 			setHeaders: function (res, path) {
@@ -144,15 +146,15 @@ class SocketServer extends ServerComms {
 
 		this.app.use(session({
 			secret: this.config.sessionSecret
-		 }));
+		}));
 		this.app.use(passport.initialize());
 		this.app.use(passport.session());
 
-		passport.serializeUser(function(user, done) {
+		passport.serializeUser(function (user, done) {
 			done(null, user.passport + "|" + user.id);
 		});
 
-		passport.deserializeUser(function(id: string, done: (error: any, user: any) => void) {
+		passport.deserializeUser(function (id: string, done: (error: any, user: any) => void) {
 			/*User.findById(id, function(err, user) {
 				done(err, user);
 			});*/
@@ -172,6 +174,19 @@ class SocketServer extends ServerComms {
 		}));
 		this.app.get('/auth/twitter', passport.authenticate('twitter'));
 		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/success', failureRedirect: '/failure' }));
+
+		//Google
+		passport.use(new passportGoogle.Strategy({
+			clientID: this.config.googleClientID,
+			clientSecret: this.config.googleClientSecret,
+			callbackURL: '/auth/google/callback'
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/google', passport.authenticate('google', { scope: 'profile' }));
+		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/success', failureRedirect: '/failure' }));
+
 
 
 		if (this.config.httpsPort && this.config.domain && this.config.email) {
