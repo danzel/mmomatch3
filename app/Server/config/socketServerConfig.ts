@@ -17,6 +17,9 @@ interface SocketServerConfig {
 
 	googleClientID: string;
 	googleClientSecret: string;
+
+	facebookClientID: string;
+	facebookClientSecret: string;
 }
 
 export = SocketServerConfig;

@@ -4,6 +4,7 @@
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
 /// <reference path="../../typings/passport/passport.d.ts" />
+/// <reference path="../../typings/passport/passport-facebook.d.ts" />
 /// <reference path="../../typings/passport/passport-google-oauth20.d.ts" />
 /// <reference path="../../typings/passport/passport-twitter.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
@@ -16,8 +17,9 @@ import LEX = require('letsencrypt-express');
 import session = require('express-session');
 
 import passport = require('passport');
-import passportTwitter = require('passport-twitter');
+import passportFacebook = require('passport-facebook');
 import passportGoogle = require('passport-google-oauth20');
+import passportTwitter = require('passport-twitter');
 
 import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
@@ -181,11 +183,24 @@ class SocketServer extends ServerComms {
 			clientSecret: this.config.googleClientSecret,
 			callbackURL: '/auth/google/callback'
 		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
-			debugger;
+			//debugger;
 			done(null, { provider: profile.provider, id: profile.id });
 		}));
 		this.app.get('/auth/google', passport.authenticate('google', { scope: 'profile' }));
 		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/success', failureRedirect: '/failure' }));
+
+
+		//Facebook
+		passport.use(new passportFacebook.Strategy({
+			clientID: this.config.facebookClientID,
+			clientSecret: this.config.facebookClientSecret,
+			callbackURL: '/auth/facebook/callback'
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			//debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/facebook', passport.authenticate('facebook'));
+		this.app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/failure' }));
 
 
 
