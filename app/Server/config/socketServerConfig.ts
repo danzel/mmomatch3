@@ -9,6 +9,10 @@ interface SocketServerConfig {
 	email?: string;
 	/** domains for checking if websocket is allowed */
 	allowedOrigins?: Array<string>;
+
+	sessionSecret: string;
+	twitterConsumerKey: '';
+	twitterConsumerSecret: '';
 }
 
 export = SocketServerConfig;

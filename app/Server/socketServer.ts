@@ -143,7 +143,7 @@ class SocketServer extends ServerComms {
 		}));
 
 		this.app.use(session({
-			secret: 'todo put this in the json file' //TODO
+			secret: this.config.sessionSecret
 		 }));
 		this.app.use(passport.initialize());
 		this.app.use(passport.session());
@@ -163,9 +163,9 @@ class SocketServer extends ServerComms {
 
 		//Twitter
 		passport.use(new passportTwitter.Strategy({
-			consumerKey: '',
-			consumerSecret: '',
-			callbackURL: 'http://localhost:8091/auth/twitter/callback' //TODO 
+			consumerKey: this.config.twitterConsumerKey,
+			consumerSecret: this.config.twitterConsumerSecret,
+			callbackURL: '/auth/twitter/callback'
 		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
 			//debugger;
 			done(null, { provider: profile.provider, id: profile.id });
