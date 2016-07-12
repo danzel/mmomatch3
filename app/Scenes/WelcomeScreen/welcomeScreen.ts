@@ -34,7 +34,11 @@ class WelcomeScreen {
 
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
-			window.localStorage.setItem('nickname', this.nickname.value);
+			try {
+				window.localStorage.setItem('nickname', this.nickname.value);
+			} catch (e) {
+				//Ignore, Safari in private browsing fails here
+			}
 			
 			this.onLogin(this.nickname.value, this.hidenames.checked);
 
