@@ -181,7 +181,12 @@ if (runningOnLive) {
 		ignoreErrors: [
 			"adsbygoogle.push() error: All ins elements in the DOM with class=adsbygoogle already have ads in them.",
 			"WeixinJSBridge is not defined",
-			"TypeError: event.data.indexOf is not a function" //Some ads seem to cause this
+
+			"Can't execute code from a freed script", //Error when in an iframe and we are closed
+
+			//Some ads seem to cause these
+			"TypeError: event.data.indexOf is not a function",
+			"event.data.indexOf is not a function"
 		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
