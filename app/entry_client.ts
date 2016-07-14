@@ -92,7 +92,7 @@ class AppEntry {
 			if (nickname) {
 				this.playerNames[data.playerId] = nickname;
 			}
-			CircleCursor.setCursor(this.game, data.playerId);
+			CircleCursor.setCursorSafe(this.game, data.playerId);
 		})
 		this.client.newNamesReceived.on(names => {
 			if (names && !this.hideNames) {

@@ -48,7 +48,7 @@ class AppEntry {
 			return target;
 		}
 		this.game.stage.backgroundColor = 0x273348;
-		CircleCursor.setCursor(this.game, Math.floor(Math.random() * 100));
+		CircleCursor.setCursorSafe(this.game, Math.floor(Math.random() * 100));
 
 		GraphicsLoader.load(this.game);
 	}

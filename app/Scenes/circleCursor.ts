@@ -4,7 +4,17 @@ import MersenneTwister = require('mersenne-twister');
 import HslToRgb = require('../Util/hslToRgb');
 
 class CircleCursor {
-	static setCursor(game: Phaser.Game, playerId: number): void {
+	static setCursorSafe(game: Phaser.Game, playerId: number): void {
+		try
+		{
+			CircleCursor.setCursor(game, playerId);
+		}
+		catch (ex) {
+			//Fails in IE/Edge occasionally
+		}
+	}
+
+	private static setCursor(game: Phaser.Game, playerId: number): void {
 
 		//Stolen from playersOnSimulation
 		let rand = new MersenneTwister(playerId);
