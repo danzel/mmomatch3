@@ -151,7 +151,10 @@ class SocketServer extends ServerComms {
 
 		this.app.use(session({
 			store: new FileStore(),
-			secret: this.config.sessionSecret
+			secret: this.config.sessionSecret,
+			resave: true,
+			saveUninitialized: false
+
 		}));
 		this.app.use(passport.initialize());
 		this.app.use(passport.session());
