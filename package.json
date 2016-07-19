@@ -22,6 +22,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "primus": "^5.2.2",
+    "session-file-store": "^0.2.0",
     "winston": "^2.2.0",
     "ws": "^1.0.0"
   },

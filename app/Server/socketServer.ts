@@ -1,5 +1,6 @@
 /// <reference path="../../typings/express/express.d.ts" />
 /// <reference path="../../typings/express-session/express-session.d.ts" />
+/// <reference path="../../typings/express-session/session-file-store.d.ts" />
 /// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
@@ -15,6 +16,8 @@ import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
 import session = require('express-session');
+import FileStoreFactory = require('session-file-store');
+var FileStore = FileStoreFactory(session);
 
 import passport = require('passport');
 import passportFacebook = require('passport-facebook');
@@ -147,6 +150,7 @@ class SocketServer extends ServerComms {
 		}));
 
 		this.app.use(session({
+			store: new FileStore(),
 			secret: this.config.sessionSecret
 		}));
 		this.app.use(passport.initialize());
