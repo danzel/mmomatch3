@@ -63,12 +63,17 @@ class SocketServer extends ServerComms {
 			}
 		});
 
+		this.registerSessionHandlers({
+			use: (handler) => (<any>this.primus).before(handler)
+		});
+
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
 	}
 
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark.id);
+		//((<any>spark.request).user
 
 		let callback = this.sparkDataReceivedBound;
 		spark.on('data', function (data: any) {
@@ -133,6 +138,18 @@ class SocketServer extends ServerComms {
 		}
 	}
 
+	private registerSessionHandlers(app: { use: (handler: express.RequestHandler) => void }) {
+		app.use(session({
+			store: new FileStore(),
+			secret: this.config.sessionSecret,
+			resave: true,
+			saveUninitialized: false
+
+		}));
+		app.use(passport.initialize());
+		app.use(passport.session());
+	}
+
 	private createHttpServer() {
 		this.app = express();
 		//Could consider this https://github.com/isaacs/st
@@ -149,15 +166,7 @@ class SocketServer extends ServerComms {
 			}
 		}));
 
-		this.app.use(session({
-			store: new FileStore(),
-			secret: this.config.sessionSecret,
-			resave: true,
-			saveUninitialized: false
-
-		}));
-		this.app.use(passport.initialize());
-		this.app.use(passport.session());
+		this.registerSessionHandlers(this.app);
 
 		passport.serializeUser(function (user, done) {
 			done(null, user.passport + "|" + user.id);
