@@ -23,6 +23,7 @@
     "passport-twitter": "^1.0.4",
     "primus": "^5.2.2",
     "session-file-store": "^0.2.0",
+    "sqlite3": "^3.1.4",
     "winston": "^2.2.0",
     "ws": "^1.0.0"
   },

@@ -14,7 +14,7 @@ class LevelDef implements GameEndConditions {
 	// http://candycrush.wikia.com/wiki/Level_Types
 	// http://candycrushsoda.wikia.com/wiki/Level_Types
 	
-	/** Any extra details about this level, level generators should populate it with values that fed in to the generation */
+	/** Any extra details about this level (only for logging), level generators should populate it with values that fed in to the generation */
 	extraData: any;
 
 	constructor(

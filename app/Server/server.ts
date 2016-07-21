@@ -105,7 +105,7 @@ class Server {
 		this.clientsWhoLeftThisLevel.length = 0;
 		this.serverComms.sendBoot(bootData, Object.keys(this.clients));
 
-		this.gameEndDetector.gameEnded.on((victory) => {
+		this.gameEndDetector.gameEnded.on((gameEndType) => {
 			setTimeout(() => this.loadLevel(levelNumber + 1), 8000);
 		});
 
