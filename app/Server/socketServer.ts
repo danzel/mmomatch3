@@ -73,7 +73,14 @@ class SocketServer extends ServerComms {
 
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark.id);
-		//((<any>spark.request).user
+
+		let provider: string = null;
+		let providerId: string = null;
+		if ((<any>spark.request).user) {
+			let user = (<any>spark.request).user;
+			provider = user.provider;
+			providerId = user.id;
+		}
 
 		let callback = this.sparkDataReceivedBound;
 		spark.on('data', function (data: any) {
@@ -81,7 +88,7 @@ class SocketServer extends ServerComms {
 		});
 
 		this.clients[spark.id] = spark;
-		this.connected.trigger(spark.id);
+		this.connected.trigger({ id: spark.id, provider, providerId });
 	}
 
 	private connectionDisconnected(spark: Primus.Spark) {
@@ -169,7 +176,7 @@ class SocketServer extends ServerComms {
 		this.registerSessionHandlers(this.app);
 
 		passport.serializeUser(function (user, done) {
-			done(null, user.passport + "|" + user.id);
+			done(null, user.provider + "|" + user.id);
 		});
 
 		passport.deserializeUser(function (id: string, done: (error: any, user: any) => void) {

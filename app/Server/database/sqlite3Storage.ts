@@ -6,7 +6,7 @@ import GameEndType = require('../../Simulation/Levels/gameEndType');
 import LevelDef = require('../../Simulation/Levels/levelDef');
 import Player = require('../../Simulation/Scoring/player');
 import ScoreTracker = require('../../Simulation/Scoring/scoreTracker');
-import Storage = require('./Storage');
+import DataStorage = require('./dataStorage');
 import TeamLogic = require('../../Simulation/Levels/teamLogic');
 
 import LevelModel = require('./Models/levelModel');
@@ -14,7 +14,7 @@ import LevelPlayerModel = require('./Models/levelPlayerModel');
 import PlayerModel = require('./Models/playerModel');
 
 
-class Sqlite3Storage implements Storage {
+class Sqlite3Storage implements DataStorage {
 	private db: sqlite3.Database;
 	constructor(filename: string) {
 		let dbExists = filename != ':memory:' && fs.existsSync(filename);
@@ -118,7 +118,14 @@ class Sqlite3Storage implements Storage {
 					}
 				}
 
-				stmt.finalize(done);
+				stmt.finalize((err: Error) => {
+					if (err) {
+						throw err;
+					}
+					if (done) {
+						done();
+					}
+				});
 			});
 	}
 

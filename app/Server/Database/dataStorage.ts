@@ -7,7 +7,7 @@ import LevelModel = require('./Models/levelModel');
 import LevelPlayerModel = require('./Models/levelPlayerModel');
 import PlayerModel = require('./Models/playerModel');
 
-interface Storage {
+interface DataStorage {
 	ensurePlayerExists(authProvider: string, authId: string, name: string, done: (playerId: number) => void): void;
 	recordLevelResult(level: LevelDef, gameEndType: GameEndType, players: Array<Player>, scoreTracker: ScoreTracker, done?: () => void): void;
 
@@ -15,4 +15,4 @@ interface Storage {
 	getLatestLevelResults(playerDbId: number, count: number, done: (levels: Array<LevelModel & LevelPlayerModel>) => void): void;
 };
 
-export = Storage;
+export = DataStorage;
