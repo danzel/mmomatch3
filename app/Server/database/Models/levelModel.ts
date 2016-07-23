@@ -15,6 +15,7 @@ interface LevelModel {
 	/** JSON Encoded */
 	victoryValue: string;
 
-
 	gameEndType: GameEndType;
-}
+};
+
+export = LevelModel;
