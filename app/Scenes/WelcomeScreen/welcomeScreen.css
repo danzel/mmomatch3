@@ -82,11 +82,16 @@
 	border: 1px solid grey;
 	border-radius: 4px;
 	
-	width: 65%;
+	width: 55%;
 	margin-right: 5%;
 
 	margin-top: 4px;
 	margin-bottom: 4px;
+}
+
+#lhidenames {
+	width: 60%;
+	display: inline-block;
 }
 
 #welcome input[type="button"] {
@@ -97,10 +102,55 @@
 	border: 1px solid grey;
 	border-radius: 4px;
 	
-	width: 30%;
+	width: 40%;
 }
 #welcome input[type="button"]:active {
 	background-color: grey;
+}
+
+#welcome .btn-container {
+	display: none;
+}
+
+#welcome .btn-social {
+	display: block;
+
+	border-radius: 6px;
+	line-height: 1.3;
+	padding: 10px 6px;
+	border: 1px solid rgba(0,0,0,0.2);
+
+	margin-bottom: 4px;
+}
+
+#welcome .btn-social .img {
+	width: 26px;
+	height: 26px;
+	background-image: url(../../../img/ui/social-icons.png);
+	background-size: 26px;
+	display: inline-block;
+	vertical-align: middle;
+	float: left;
+}
+
+#welcome .btn-social.facebook .img {
+	background-origin: 0 0;
+}
+#welcome .btn-social.google .img {
+	background-position: 0 -26px;
+}
+#welcome .btn-social.twitter .img {
+	background-position: 0 -52px;
+}
+
+#welcome .btn-social.facebook {
+	background-color: #3b5998;
+}
+#welcome .btn-social.google {
+	background-color: #dd4b39;
+}
+#welcome .btn-social.twitter {
+	background-color: #55acee;
 }
 
 

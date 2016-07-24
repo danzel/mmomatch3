@@ -198,7 +198,7 @@ class SocketServer extends ServerComms {
 			done(null, { provider: profile.provider, id: profile.id });
 		}));
 		this.app.get('/auth/twitter', passport.authenticate('twitter'));
-		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/success', failureRedirect: '/failure' }));
+		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/#success', failureRedirect: '/#failure' }));
 
 		//Google
 		passport.use(new passportGoogle.Strategy({
@@ -210,7 +210,7 @@ class SocketServer extends ServerComms {
 			done(null, { provider: profile.provider, id: profile.id });
 		}));
 		this.app.get('/auth/google', passport.authenticate('google', { scope: 'profile' }));
-		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/success', failureRedirect: '/failure' }));
+		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/#success', failureRedirect: '/#failure' }));
 
 
 		//Facebook
@@ -223,9 +223,12 @@ class SocketServer extends ServerComms {
 			done(null, { provider: profile.provider, id: profile.id });
 		}));
 		this.app.get('/auth/facebook', passport.authenticate('facebook'));
-		this.app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/failure' }));
+		this.app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/#success', failureRedirect: '/#failure' }));
 
-
+		this.app.get('/logout', (req, res) => {
+			req.logout();
+			res.redirect('/');
+		});
 
 		if (this.config.httpsPort && this.config.domain && this.config.email) {
 			console.log('starting https');

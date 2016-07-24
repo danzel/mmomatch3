@@ -131,6 +131,19 @@ let playButton: {[key: string]: string} = {
 	'en': 'Play',
 	'es': 'Jugar',
 }
+let playAsGuestButton: {[key: string]: string} = {
+	'en': 'Play as guest',
+	'es': 'Jugar TODO',
+}
+let loginButton: {[key: string]: string} = {
+	'en': 'Login',
+	'es': 'TODO',
+}
+let logoutButton: {[key: string]: string} = {
+	'en': 'Logout',
+	'es': 'TODO',
+}
+
 
 class HtmlTranslator {
 	static apply() {
@@ -150,8 +163,12 @@ class HtmlTranslator {
 		}
 	}
 
-	static showStartButton() {
-		(<HTMLInputElement>document.getElementById('play-button')).value = playButton[Language.polyglot.locale()];
+	static showStartButton(playerIsLoggedIn: boolean) {
+		let play = playerIsLoggedIn ? playButton : playAsGuestButton;
+		let login = playerIsLoggedIn ? logoutButton : loginButton;
+		
+		(<HTMLInputElement>document.getElementById('play-button')).value = play[Language.polyglot.locale()];
+		(<HTMLInputElement>document.getElementById('login-button')).value = login[Language.polyglot.locale()];
 	}
 }
 
