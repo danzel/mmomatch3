@@ -20,7 +20,7 @@ class WelcomeScreen {
 	}
 
 	private addEventListeners() {
-		
+
 		this.nickname = <HTMLInputElement>this.element.getElementsByClassName('nickname')[0];
 		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
 
@@ -28,10 +28,14 @@ class WelcomeScreen {
 		let button = <HTMLInputElement>document.getElementById('play-button');
 
 
-		if (window.localStorage.getItem('nickname')) {
-			this.nickname.value = window.localStorage.getItem('nickname');
+		try {
+			if (window.localStorage.getItem('nickname')) {
+				this.nickname.value = window.localStorage.getItem('nickname');
+			}
+		} catch (e) {
+			//Ignore, some chrome versions fail here
 		}
-
+		
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
 			try {
@@ -39,7 +43,7 @@ class WelcomeScreen {
 			} catch (e) {
 				//Ignore, Safari in private browsing fails here
 			}
-			
+
 			this.onLogin(this.nickname.value, this.hidenames.checked);
 
 			ev.preventDefault();
