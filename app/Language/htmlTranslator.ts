@@ -57,13 +57,19 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'oct2016': 'Octubre de 2016. De vuelta al trabajo',
+		'oct2016n': 
+			'<p>Y de repente es octubre. Lo siento por el silencio en los últimos meses, hemos estado trabajando duro en otros proyectos. Pero hemos terminado con ellos, así que ya es hora de Massive Match!</p>' +
+			'<p>Acabamos de lanzar un par de correcciones de errores y algunas mejoras a la traducción en español.</p>' +
+			'<p>¡Disfruta y pásatelo bien!</p>',
+
 		'july2016': 'Julio de 2016. Nuevos Niveles!',
 		'july2016n': 
-		'<p>Bienvenido a julio. Este mes tenemos 2 nuevos tipos de nivel!</p>' +
-		'<p>El primero es <b>cultivar la planta</b>. Este es un nivel de cooperación, tiene que emparejar junto a la planta para hacerla crecer. Cultivar la planta a un cierto tamaño antes de la hora / mueve limitan a ganar.</p>' +
-		'<p>La segunda es <b>mariposa VS abeja</b>. Este nivel es como equipo Llevar a los robots a la parte inferior. Trabajar en conjunto con su equipo para obtener su insecto hasta el fondo antes que el otro equipo puede.</p>' +
-		'<p>Espero que disfrutes de los nuevos niveles. Por favor enviarme comentarios!</p>' +
-		'<p>Divertirse y decirle a sus amigos :)</p>',
+			'<p>Bienvenido a julio. Este mes tenemos 2 nuevos tipos de nivel!</p>' +
+			'<p>El primero es <b>cultivar la planta</b>. Este es un nivel de cooperación, tiene que emparejar junto a la planta para hacerla crecer. Cultivar la planta a un cierto tamaño antes de la hora / mueve limitan a ganar.</p>' +
+			'<p>La segunda es <b>mariposa VS abeja</b>. Este nivel es como equipo Llevar a los robots a la parte inferior. Trabajar en conjunto con su equipo para obtener su insecto hasta el fondo antes que el otro equipo puede.</p>' +
+			'<p>Espero que disfrutes de los nuevos niveles. Por favor enviarme comentarios!</p>' +
+			'<p>Divertirse y decirle a sus amigos :)</p>',
 
 		'june20163': '22 de Junio de 2016. Actualización',
 		'june20163n': 
