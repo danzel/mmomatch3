@@ -17,9 +17,6 @@ var sites = {
 	},
 	'usw': {
 		host: 'mmomatch.westus.cloudapp.azure.com'
-	},
-	'eu': {
-		host: 'eu1.massivematch.io'
 	}
 };
 var privateKey = fs.readFileSync('./z_id_rsa');
