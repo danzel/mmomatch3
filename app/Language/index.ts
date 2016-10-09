@@ -176,7 +176,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 
 		//Trackers
 		'animals': 'Animales',
-		'pigs/pugs': 'Cerdos/Barros amasados',
+		'pigs/pugs': 'Cerdos/Perros',
 		'points': 'Puntos',
 		'rescues': 'Rescates',
 		'robodrops': 'Gotas del robot',
@@ -195,9 +195,9 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'robots to bottom': 'Llevar %{smart_count} del robot a la parte inferior||||Llevar %{smart_count} Robots a la parte inferior',
 		'within x secs': 'dentro de los %{sec} segundos',
 		'within x moves': 'dentro de los %{num} movimientos',
-		'pigsvspugs': 'Cerdos vs Barros amasados',
+		'pigsvspugs': 'Cerdos vs Perros',
 		'pigs': 'Cerdos',
-		'pugs': 'Barros amasados',
+		'pugs': 'Perros',
 		'youareonteam': 'Usted está en %{team} el equipo',
 		'matchbutdontmatch': "Emparejar con %{team}, pero no emparejar %{notteam}",
 		'matchnexttoplant': 'Emparejar al lado de la planta para crecer',
@@ -206,7 +206,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'butterfly to bottom': 'Mueva la mariposa a la parte inferior',
 		'bee to bottom': 'Mueva la abeja a la parte inferior',
 		'before butterfly to bottom': 'antes de la mariposa',
-		'before bee to bottom': 'antes de la abeja',
+		'before bee to bottom': 'antes que la abeja',
 
 		//DetectorDisplays
 		'xremaining': '%{thing} restantes: %{num}',
