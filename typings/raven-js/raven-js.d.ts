@@ -4,7 +4,7 @@ declare module "raven-js" {
 		release?: string;
 		serverName?: string;
 		tags?: any;
-		whitelistUrls?: Array<string>;
+		whitelistUrls?: Array<string | RegExp>;
 		ignoreErrors?: Array<string>;
 		ignoreUrls?: Array<string>;
 		includePaths?: Array<string>;

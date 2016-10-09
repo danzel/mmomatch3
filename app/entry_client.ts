@@ -178,15 +178,15 @@ let willShowErrorMessage: boolean;
 if (runningOnLive) {
 	Raven.config('https://85f0d002c2ab4b5f811e6dfae46fa0b0@app.getsentry.com/76603', {
 		release,
+		whitelistUrls: [
+			/massivematch\.io/,
+			/cdnjs\.cloudflare\.com/,
+		],
 		ignoreErrors: [
 			"adsbygoogle.push() error: All ins elements in the DOM with class=adsbygoogle already have ads in them.",
 			"WeixinJSBridge is not defined",
 
 			"Can't execute code from a freed script", //Error when in an iframe and we are closed
-
-			//Some ads seem to cause these
-			"TypeError: event.data.indexOf is not a function",
-			"event.data.indexOf is not a function"
 		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
