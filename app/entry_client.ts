@@ -63,9 +63,13 @@ class AppEntry {
 
 	create() {
 		let welcome = new WelcomeScreen();
+		let created = false;
 		welcome.onLogin = (nickname, hideNames) => {
-			this.hideNames = hideNames;
-			this.connect(nickname);
+			if (!created) {
+				created = true;
+				this.hideNames = hideNames;
+				this.connect(nickname);
+			}
 		};
 		welcome.show();
 	}
