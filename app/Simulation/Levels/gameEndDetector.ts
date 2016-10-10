@@ -68,7 +68,7 @@ class GameEndDetector {
 			case FailureType.Time:
 				return new TimeDetector(this.simulation, this.gameEndConditions.failureValue);
 			default:
-				throw new Error("CFD Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[this.gameEndConditions.failureType])
+				throw new Error("CFD Don't know about FailureType " + this.gameEndConditions.failureType + " " + FailureType[<FailureType>this.gameEndConditions.failureType])
 		}
 	}
 
@@ -89,7 +89,7 @@ class GameEndDetector {
 			case VictoryType.Score:
 				return new ScoreDetector(this.simulation, this.gameEndConditions.victoryValue);
 			default:
-				throw new Error("CVD Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[this.gameEndConditions.victoryType]);
+				throw new Error("CVD Don't know about VictoryType " + this.gameEndConditions.victoryType + " " + VictoryType[<VictoryType>this.gameEndConditions.victoryType]);
 		}
 	}
 }

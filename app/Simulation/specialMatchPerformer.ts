@@ -56,7 +56,7 @@ class SpecialMatchPerformer {
 					this.areaClear3x3(m, match);
 					break;
 				default:
-					throw new Error("Don't know what to do when a Type " + Type[m.type] + " is matched");
+					throw new Error("Don't know what to do when a Type " + Type[<any>m.type] + " is matched");
 			}
 		}
 	}

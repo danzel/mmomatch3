@@ -102,7 +102,7 @@ class DefaultLevelAndSimulationProvider implements LevelAndSimulationProvider {
 			case VictoryType.Score:
 				return new PointsScoreTracker(simulation.comboOwnership);
 			default:
-				throw new Error("Don't know about the ScoreTracker for victoryType " + level.victoryType + ' ' + VictoryType[level.victoryType]);
+				throw new Error("Don't know about the ScoreTracker for victoryType " + level.victoryType + ' ' + VictoryType[<VictoryType>level.victoryType]);
 		}
 	}
 }

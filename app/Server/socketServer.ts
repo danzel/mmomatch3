@@ -58,19 +58,23 @@ class SocketServer extends ServerComms {
 			}
 
 			var lex = LEX.create({
-				configDir: './letsencrypt/etc',
-				approveRegistration: function (hostname, cb) {
-					cb(null, { domains: [config.domain], email: config.email, agreeTos: true });
-				}
+				server: 'https://acme-v01.api.letsencrypt.org/directory',
+				email: config.email,
+				agreeTos: true,
+				approveDomains: [config.domain]
 			});
-			http.createServer(LEX.createAcmeResponder(lex, function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
+			http.createServer(lex.middleware(function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
 				res.setHeader('Location', 'https://' + req.headers.host + req.url);
 				res.statusCode = 302;
 				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(config.httpPort);
+			})).listen(config.httpPort, function() {
+				console.log("Listening for ACME http-01 challenges on", this.address());
+			});
 
-			this.httpServer = https.createServer(lex.httpsOptions, LEX.createAcmeResponder(lex, this.app));
-			this.httpServer.listen(config.httpsPort);
+			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
+			this.httpServer.listen(config.httpsPort, function() {
+				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
+			});
 		} else {
 			console.log('starting http');
 			this.httpServer = http.createServer(this.app);

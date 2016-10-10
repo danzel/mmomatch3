@@ -76,7 +76,7 @@ class ServerLogger {
 	private encodeVictoryValue(victoryType: VictoryType, victoryValue: any): any {
 		switch (victoryType) {
 			case VictoryType.RequireMatch:
-				return (<[]>victoryValue).length;
+				return (<Array<any>>victoryValue).length;
 			default:
 				return victoryValue;
 		}

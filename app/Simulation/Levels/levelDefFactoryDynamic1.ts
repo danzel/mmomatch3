@@ -77,9 +77,9 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 				return this.generateLevelRequireMatch(levelNumber, failureType, gen);
 			case VictoryType.Score:
 				return this.generateLevelScore(levelNumber, failureType, gen);
+			default:
+				throw new Error("Cannot generate level for type " + victoryType + " " + VictoryType[<VictoryType>victoryType]);
 		}
-
-		throw new Error("Cannot generate level for type " + victoryType + " " + VictoryType[victoryType]);
 	}
 
 	private generateLevelGetThingsToBottom(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
