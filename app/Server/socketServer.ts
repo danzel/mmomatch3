@@ -9,11 +9,12 @@ import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
+import Primus = require('primus');
+//import fs = require('fs');
 
 import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
-import Primus = require('primus');
 import PacketType = require('../DataPackets/packetType');
 import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('../Serializer/serializer');
@@ -92,6 +93,8 @@ class SocketServer extends ServerComms {
 				}
 			}
 		});
+
+		//fs.writeFileSync('primus.js', this.primus.library());
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.primus.on('disconnection', this.connectionDisconnected.bind(this));

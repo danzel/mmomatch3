@@ -16,7 +16,7 @@
     "letsencrypt-express": "^2.0.3",
     "mersenne-twister": "^1.1.0",
     "node-dogstatsd": "0.0.6",
-    "primus": "^5.2.2",
+    "primus": "^6.0.3",
     "winston": "^2.2.0",
     "ws": "^1.1.1"
   },
