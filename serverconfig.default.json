@@ -20,7 +20,7 @@
 		"httpPort": 8091,
 		
 		"httpsPort": 8092,
-		"domain": "???.massivematch.io",
+		"domains": [ "???.massivematch.io", "massivematch.io" ],
 		"email": "danzel@localhost.geek.nz",
 		
 		"allowedOrigins": [

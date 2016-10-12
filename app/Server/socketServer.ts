@@ -50,7 +50,7 @@ class SocketServer extends ServerComms {
 			}
 		}));
 
-		if (config.httpsPort && config.domain && config.email) {
+		if (config.httpsPort && config.domains && config.email) {
 			console.log('starting https');
 
 			LEX.debug = true;
@@ -62,7 +62,7 @@ class SocketServer extends ServerComms {
 				server: 'https://acme-v01.api.letsencrypt.org/directory',
 				email: config.email,
 				agreeTos: true,
-				approveDomains: [config.domain]
+				approveDomains: config.domains
 			});
 			http.createServer(lex.middleware(function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
 				res.setHeader('Location', 'https://' + req.headers.host + req.url);

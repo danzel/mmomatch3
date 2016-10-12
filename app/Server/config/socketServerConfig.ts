@@ -3,8 +3,8 @@ interface SocketServerConfig {
 	httpPort: number;
 	/** Optional. The https port we listen on` */
 	httpsPort?: number;
-	/** domain name for https letsencrypt registration */
-	domain?: string;
+	/** domain names for https letsencrypt registration */
+	domains?: Array<string>;
 	/** for letsencrypt registration */
 	email?: string;
 	/** domains for checking if websocket is allowed */
