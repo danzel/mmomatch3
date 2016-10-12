@@ -190,7 +190,15 @@ if (runningOnLive) {
 			"adsbygoogle.push() error: All ins elements in the DOM with class=adsbygoogle already have ads in them.",
 			"WeixinJSBridge is not defined",
 
-			"Can't execute code from a freed script", //Error when in an iframe and we are closed
+			//Error when in an iframe and we are closed
+			"Can't execute code from a freed script",
+			"Impossible d'exécuter le code à partir d'un script libéré",
+			"Code eines freigegebenen Skripts kann nicht ausgeführt werden",
+			"解放されたスクリプトからコードを実行できません。",
+			"No se puede ejecutar código de un script liberado",
+			"Не удается выполнить программу из освобожденного сценария",
+			"Kan programmacode niet uitvoeren vanuit een vrijgegeven script",
+			"Não é possível executar o código a partir de um script liberado"
 		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
