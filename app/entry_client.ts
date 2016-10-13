@@ -265,7 +265,7 @@ if (GoodBrowser) {
 	}
 } else {
 	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
-	HtmlTranslator.showStartButton();
+	HtmlTranslator.showStartButton(false);
 	document.getElementById('play-button').addEventListener('click', function() {
 		window.location.replace('http://outdatedbrowser.com/');
 	});

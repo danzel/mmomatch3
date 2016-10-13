@@ -1,5 +1,6 @@
 ///<reference path="../../typings/jasmine/jasmine.d.ts"/>
 import FakeServerComms = require('../util/fakeServerComms');
+import MockStorage = require('../util/mockStorage');
 import RequireMatch = require('../../app/simulation/requireMatch');
 import Server = require('../../app/Server/server');
 import TestLASProvider = require('../util/testLASProvider');
@@ -12,7 +13,7 @@ describe('RequireMatchInCell', () => {
 			['1121']
 		);
 
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null });
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null }, new MockStorage());
 		server.start();
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(0, 0, 1));
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(1, 0, 1));

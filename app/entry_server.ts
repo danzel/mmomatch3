@@ -10,6 +10,7 @@ import LevelDefFactoryDynamic1 = require('./Simulation/Levels/levelDefFactoryDyn
 import Serializer = require('./Serializer/simple');
 import Server = require('./Server/server');
 import ServerLogger = require('./Server/serverLogger');
+import Sqlite3Storage = require('./Server/Database/sqlite3Storage');
 import SocketServer = require('./Server/socketServer');
 import StatePersister = require('./Server/statePersister');
 
@@ -28,7 +29,7 @@ class AppEntry {
 		}
 
 		let serverComms = new SocketServer(new Serializer(), config.socketServer);
-		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), config.server);
+		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), config.server, new Sqlite3Storage(config.sqlite3StorageFilename));
 
 		new DatadogStats(this.server);
 		new ServerLogger(this.server, serverComms);

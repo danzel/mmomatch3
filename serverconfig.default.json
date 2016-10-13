@@ -27,5 +27,6 @@
 			"https://oce1.massivematch.io",
 			"https://massivematch.io"
 		]
-	}
+	},
+	"sqlite3StorageFilename": ":memory:"
 }

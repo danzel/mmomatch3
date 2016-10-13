@@ -12,6 +12,7 @@ import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('../Serializer/serializer')
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
+import TeamLogic = require('../Simulation/Levels/teamLogic');
 import TickData = require('../DataPackets/tickData');
 import UnavailableData = require('../DataPackets/unavailableData');
 import VictoryType = require('../Simulation/Levels/victoryType');
@@ -46,16 +47,6 @@ class Client {
 		this.clientComms.sendJoin(new JoinData(this.version, this.nickname || null));
 	}
 
-	private levelTypeIsTeamBased(level: LevelDef): boolean {
-		if (level.victoryType == VictoryType.MatchXOfColor) {
-			return true;
-		}
-		if (level.victoryType == VictoryType.GetToBottomRace) {
-			return true;
-		}
-		return false;
-	}
-
 	private dataReceived(packet: { packetType: PacketType, data: any }) {
 		if (packet.packetType == PacketType.Reject) {
 			this.connectionRejected.trigger(<RejectData>packet.data);
@@ -74,7 +65,7 @@ class Client {
 			console.log('Received Boot, last 1000: ', asStr.substr(asStr.length - 1000));*/
 
 			//SEMI-HACK. If Team based, maybe swap failure/victory based on playerId
-			if (this.levelTypeIsTeamBased(bootData.level) && (this.playerId % 2 == 1)) {
+			if (TeamLogic.levelTypeIsTeamBased(bootData.level) && TeamLogic.playerIsOnOppositeTeam(this.playerId)) {
 				let temp = bootData.level.failureValue;
 				bootData.level.failureValue = bootData.level.victoryValue;
 				bootData.level.victoryValue = temp;

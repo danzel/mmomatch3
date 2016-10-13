@@ -2,6 +2,7 @@
 import FakeServerComms = require('../../util/fakeServerComms');
 import LevelAndSimulationProvider = require('../../../app/Server/levelAndSimulationProvider');
 import LevelDef = require('../../../app/Simulation/Levels/levelDef');
+import MockStorage = require('../../util/mockStorage');
 import PointsScoreTracker = require('../../../app/Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 import Server = require('../../../app/Server/server');
 import Simulation = require('../../../app/Simulation/simulation');
@@ -16,7 +17,7 @@ describe('Sync', () => {
 			"82189",
 			"11222"
 		]);
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2, VictoryType.Score), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null });
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2, VictoryType.Score), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null }, new MockStorage());
 		server.start();
 		serverComms.server = server;
 

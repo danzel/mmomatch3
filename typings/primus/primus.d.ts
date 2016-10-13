@@ -90,6 +90,20 @@ declare module "primus" {
 			 * @param options Options to tell the client to reconnect (default is no)
 			 */
 			end(data?: any, options?: { reconnect: boolean }): void;
+
+			/**
+			 * The spark.headers property contains the headers of either the request that started a handshake with the server or the headers of the actual real-time connection. This depends on the module you are using.
+			 * Please note that sending custom headers from the client to the server is impossible as not all transports that these transformers support can add custom headers to a request (JSONP for example).
+			 * If you need to send custom data, use a query string when connecting
+			 */
+			headers: any;
+
+			/**
+			 * The spark.request gives you access to the HTTP request that was used to initiate the real-time connection with the server.
+			 * Please note that this request is already answered and closed (in most cases) so do not attempt to write or answer it anyway.
+			 * But it might be useful to access methods that get added by middleware layers, etc.
+			 */
+			request: http.ClientRequest;
 		}
 	}
 

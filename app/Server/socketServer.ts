@@ -1,16 +1,30 @@
 /// <reference path="../../typings/express/express.d.ts" />
+/// <reference path="../../typings/express-session/express-session.d.ts" />
+/// <reference path="../../typings/express-session/session-file-store.d.ts" />
 /// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
+/// <reference path="../../typings/passport/passport.d.ts" />
+/// <reference path="../../typings/passport/passport-facebook.d.ts" />
+/// <reference path="../../typings/passport/passport-google-oauth20.d.ts" />
+/// <reference path="../../typings/passport/passport-twitter.d.ts" />
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
 import compression = require('compression');
+import FileStoreFactory = require('session-file-store');
 import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
 import Primus = require('primus');
+import session = require('express-session');
+var FileStore = FileStoreFactory(session);
 //import fs = require('fs');
+
+import passport = require('passport');
+import passportFacebook = require('passport-facebook');
+import passportGoogle = require('passport-google-oauth20');
+import passportTwitter = require('passport-twitter');
 
 import BootData = require('../DataPackets/bootData');
 import InitData = require('../DataPackets/initData');
@@ -33,54 +47,10 @@ class SocketServer extends ServerComms {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer, config: SocketServerConfig) {
+	constructor(private serializer: Serializer, private config: SocketServerConfig) {
 		super();
-		this.app = express();
-		//Could consider this https://github.com/isaacs/st
-		this.app.use(compression());
-		this.app.use(helmet.hidePoweredBy());
-		let oneDay = 24 * 60 * 60 * 1000;
 		
-		this.app.use(express.static('dist', {
-			maxAge: oneDay,
-			setHeaders: function (res, path) {
-				if (path.toLowerCase().indexOf('.html') != -1) {
-					res.setHeader('Cache-Control', 'public, max-age=0')
-				}
-			}
-		}));
-
-		if (config.httpsPort && config.domains && config.email) {
-			console.log('starting https');
-
-			LEX.debug = true;
-			if (!console.debug) {
-				console.debug = console.log;
-			}
-
-			var lex = LEX.create({
-				server: 'https://acme-v01.api.letsencrypt.org/directory',
-				email: config.email,
-				agreeTos: true,
-				approveDomains: config.domains
-			});
-			http.createServer(lex.middleware(function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
-				res.setHeader('Location', 'https://' + req.headers.host + req.url);
-				res.statusCode = 302;
-				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(config.httpPort, function() {
-				console.log("Listening for ACME http-01 challenges on", this.address());
-			});
-
-			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
-			this.httpServer.listen(config.httpsPort, function() {
-				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
-			});
-		} else {
-			console.log('starting http');
-			this.httpServer = http.createServer(this.app);
-			this.httpServer.listen(config.httpPort);
-		}
+		this.createHttpServer();
 
 		this.primus = new Primus(this.httpServer, {
 			pathname: '/sock',
@@ -96,6 +66,10 @@ class SocketServer extends ServerComms {
 
 		//fs.writeFileSync('primus.js', this.primus.library());
 
+		this.registerSessionHandlers({
+			use: (handler) => (<any>this.primus).before(handler)
+		});
+
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
 	}
@@ -103,13 +77,21 @@ class SocketServer extends ServerComms {
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark.id);
 
+		let provider: string = null;
+		let providerId: string = null;
+		if ((<any>spark.request).user) {
+			let user = (<any>spark.request).user;
+			provider = user.provider;
+			providerId = user.id;
+		}
+
 		let callback = this.sparkDataReceivedBound;
 		spark.on('data', function (data: any) {
 			callback(spark, data);
 		});
 
 		this.clients[spark.id] = spark;
-		this.connected.trigger(spark.id);
+		this.connected.trigger({ id: spark.id, provider, providerId });
 	}
 
 	private connectionDisconnected(spark: Primus.Spark) {
@@ -163,6 +145,124 @@ class SocketServer extends ServerComms {
 			for (let id in this.clients) {
 				this.clients[id].write(serialized);
 			}
+		}
+	}
+
+	private registerSessionHandlers(app: { use: (handler: express.RequestHandler) => void }) {
+		app.use(session({
+			store: new FileStore(),
+			secret: this.config.sessionSecret,
+			resave: true,
+			saveUninitialized: false
+
+		}));
+		app.use(passport.initialize());
+		app.use(passport.session());
+}
+
+	private createHttpServer() {
+		this.app = express();
+		//Could consider this https://github.com/isaacs/st
+		this.app.use(compression());
+		this.app.use(helmet.hidePoweredBy());
+		let oneDay = 24 * 60 * 60 * 1000;
+
+		this.app.use(express.static('dist', {
+			maxAge: oneDay,
+			setHeaders: function (res, path) {
+				if (path.toLowerCase().indexOf('.html') != -1) {
+					res.setHeader('Cache-Control', 'public, max-age=0')
+				}
+			}
+		}));
+
+		this.registerSessionHandlers(this.app);
+
+		passport.serializeUser(function (user, done) {
+			done(null, user.provider + "|" + user.id);
+		});
+
+		passport.deserializeUser(function (id: string, done: (error: any, user: any) => void) {
+			/*User.findById(id, function(err, user) {
+				done(err, user);
+			});*/
+
+			let split = id.indexOf('|');
+			done(null, { provider: id.substr(0, split), id: id.substr(split + 1) });
+		});
+
+		//Twitter
+		passport.use(new passportTwitter.Strategy({
+			consumerKey: this.config.twitterConsumerKey,
+			consumerSecret: this.config.twitterConsumerSecret,
+			callbackURL: '/auth/twitter/callback'
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			//debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/twitter', passport.authenticate('twitter'));
+		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+
+		//Google
+		passport.use(new passportGoogle.Strategy({
+			clientID: this.config.googleClientID,
+			clientSecret: this.config.googleClientSecret,
+			callbackURL: '/auth/google/callback'
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			//debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/google', passport.authenticate('google', { scope: 'profile' }));
+		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+
+
+		//Facebook
+		passport.use(new passportFacebook.Strategy({
+			clientID: this.config.facebookClientID,
+			clientSecret: this.config.facebookClientSecret,
+			callbackURL: '/auth/facebook/callback'
+		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
+			//debugger;
+			done(null, { provider: profile.provider, id: profile.id });
+		}));
+		this.app.get('/auth/facebook', passport.authenticate('facebook'));
+		this.app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+
+		this.app.get('/logout', (req, res) => {
+			req.logout();
+			res.redirect('/');
+		});
+
+		if (config.httpsPort && config.domains && config.email) {
+			console.log('starting https');
+
+			LEX.debug = true;
+			if (!console.debug) {
+				console.debug = console.log;
+			}
+
+			var lex = LEX.create({
+				server: 'https://acme-v01.api.letsencrypt.org/directory',
+				email: config.email,
+				agreeTos: true,
+				approveDomains: config.domains
+			});
+			http.createServer(lex.middleware(function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
+				res.setHeader('Location', 'https://' + req.headers.host + req.url);
+				res.statusCode = 302;
+				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
+			})).listen(config.httpPort, function() {
+				console.log("Listening for ACME http-01 challenges on", this.address());
+			});
+
+			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
+			this.httpServer.listen(config.httpsPort, function() {
+				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
+			});
+		} else {
+			console.log('starting http');
+			this.httpServer = http.createServer(this.app);
+			this.httpServer.listen(config.httpPort);
 		}
 	}
 }

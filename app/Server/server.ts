@@ -2,6 +2,7 @@ import AvailabilityManager = require('./availabilityManager');
 import Bot = require('../Bot/bot');
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
+import DataStorage = require('./Database/dataStorage');
 import DebugLogger = require('../debugLogger');
 import DirectInputApplier = require('../Simulation/SinglePlayer/directInputApplier');
 import FrameData = require('../DataPackets/frameData');
@@ -54,6 +55,7 @@ class Server {
 	private moveRateLimiter: MoveRateLimiter;
 
 	private clientsRequiringJoin = new Array<string>();
+	private clientsRequiringJoinProviderDetails: { [id: string]: { provider: string, providerId: string } } = {};
 	private clientsRequiringBoot = new Array<Player>();
 	private clients: { [id: string]: Player } = {};
 	private clientsWhoLeftThisLevel = new Array<Player>();
@@ -61,11 +63,11 @@ class Server {
 	private bots = new Array<Bot>();
 	private botPlayers = new Array<Player>();
 
-	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig) {
+	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig, private storage: DataStorage) {
 		this.availabilityManager = new AvailabilityManager(config);
 		this.currentlyAvailable = this.availabilityManager.availableAt(new Date())
 
-		serverComms.connected.on(id => this.connectionReceived(id));
+		serverComms.connected.on(details => this.connectionReceived(details.id, details.provider, details.providerId));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
 
@@ -105,19 +107,27 @@ class Server {
 		this.clientsWhoLeftThisLevel.length = 0;
 		this.serverComms.sendBoot(bootData, Object.keys(this.clients));
 
-		this.gameEndDetector.gameEnded.on((victory) => {
+		this.gameEndDetector.gameEnded.on((gameEndType) => {
+			let players = new Array<Player>();
+			for (var key in this.clients) {
+				players.push(this.clients[key]);
+			}
+			this.storage.recordLevelResult(this.level, gameEndType, players, this.simulation.scoreTracker);
 			setTimeout(() => this.loadLevel(levelNumber + 1), 8000);
 		});
 
 		this.levelStarted.trigger({ level: this.level, simulation: this.simulation, gameEndDetector: this.gameEndDetector });
 	}
 
-	private connectionReceived(id: string) {
+	private connectionReceived(id: string, provider: string, providerId: string) {
 		if (!this.currentlyAvailable) {
 			//TODO: We should sorta be able to push people straight in to this.clients if we aren't available, this would mean they'd boot faster
 			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
 		}
 		this.clientsRequiringJoin.push(id);
+		if (provider && providerId) {
+			this.clientsRequiringJoinProviderDetails[id] = { provider, providerId };
+		}
 	}
 
 	private connectionDisconnected(id: string) {
@@ -136,6 +146,7 @@ class Server {
 			let index = this.clientsRequiringJoin.indexOf(id);
 			if (index >= 0) {
 				this.clientsRequiringJoin.splice(index, 1);
+				delete this.clientsRequiringJoinProviderDetails[id];
 			}
 		}
 	}
@@ -155,6 +166,7 @@ class Server {
 		//Version mismatch: Kick them
 		if (!this.config.skipVersionCheck && this.config.version && this.config.version != join.version) {
 			this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
+			delete this.clientsRequiringJoinProviderDetails[id];
 			this.serverComms.sendReject(new RejectData('version'), id);
 			this.serverComms.disconnect(id);
 			return;
@@ -166,6 +178,12 @@ class Server {
 
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 		this.playerJoined.trigger(player);
+
+		if (this.clientsRequiringJoinProviderDetails[id]) {
+			let details = this.clientsRequiringJoinProviderDetails[id];
+			this.storage.ensurePlayerExists(details.provider, details.providerId, join.playerName, (databaseId) => player.databaseId = databaseId);
+		}
+
 
 		let names: { [id: number]: string } = {};
 		for (var key in this.clients) {
@@ -188,6 +206,7 @@ class Server {
 		}
 
 		this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
+		delete this.clientsRequiringJoinProviderDetails[id];
 		this.clientsRequiringBoot.push(player);
 	}
 

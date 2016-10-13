@@ -1,11 +1,11 @@
 enum GameEndType {
-	TeamVictory,
-	TeamDefeat,
+	TeamVictory = 1,
+	TeamDefeat = 2,
 	
-	LevelFailure,
-	LevelVictory,
+	LevelFailure = 3,
+	LevelVictory = 4,
 	
-	NoMovesFailure
+	NoMovesFailure = 5
 };
 
 export = GameEndType;

@@ -15,11 +15,14 @@ class WelcomeScreen {
 	}
 
 	show() {
-		this.addEventListeners();
-		HtmlTranslator.showStartButton();
+		let playerIsLoggedIn = window.location.hash.indexOf('success') >= 0;
+		window.location.hash = '';
+
+		this.addEventListeners(playerIsLoggedIn);
+		HtmlTranslator.showStartButton(playerIsLoggedIn);
 	}
 
-	private addEventListeners() {
+	private addEventListeners(playerIsLoggedIn: boolean) {
 
 		this.nickname = <HTMLInputElement>this.element.getElementsByClassName('nickname')[0];
 		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
@@ -29,7 +32,7 @@ class WelcomeScreen {
 
 
 		try {
-			if (window.localStorage.getItem('nickname')) {
+			if (playerIsLoggedIn && window.localStorage.getItem('nickname')) {
 				this.nickname.value = window.localStorage.getItem('nickname');
 			}
 		} catch (e) {
@@ -50,8 +53,20 @@ class WelcomeScreen {
 			return false;
 		};
 		form.addEventListener('submit', buttonAction);
-		button.addEventListener('click', buttonAction)
+		button.addEventListener('click', buttonAction);
+
+		if (playerIsLoggedIn) {
+			loginButton.addEventListener('click', () => {
+				window.location.assign('/logout');
+			});
+		} else {
+			let loginAreaVisible = false;
+			loginButton.addEventListener('click', () => {
+				loginAreaVisible = !loginAreaVisible;
+				loginContainer.style.display = loginAreaVisible ? 'block' : 'none';
+			});
 	}
+}
 }
 
 export = WelcomeScreen;
