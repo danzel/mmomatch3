@@ -233,7 +233,7 @@ class SocketServer extends ServerComms {
 			res.redirect('/');
 		});
 
-		if (config.httpsPort && config.domains && config.email) {
+		if (this.config.httpsPort && this.config.domains && this.config.email) {
 			console.log('starting https');
 
 			LEX.debug = true;
@@ -243,26 +243,26 @@ class SocketServer extends ServerComms {
 
 			var lex = LEX.create({
 				server: 'https://acme-v01.api.letsencrypt.org/directory',
-				email: config.email,
+				email: this.config.email,
 				agreeTos: true,
-				approveDomains: config.domains
+				approveDomains: this.config.domains
 			});
 			http.createServer(lex.middleware(function redirectHttps(req: http.IncomingMessage, res: http.ServerResponse) {
 				res.setHeader('Location', 'https://' + req.headers.host + req.url);
 				res.statusCode = 302;
 				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(config.httpPort, function() {
+			})).listen(this.config.httpPort, function() {
 				console.log("Listening for ACME http-01 challenges on", this.address());
 			});
 
 			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
-			this.httpServer.listen(config.httpsPort, function() {
+			this.httpServer.listen(this.config.httpsPort, function() {
 				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
 			});
 		} else {
 			console.log('starting http');
 			this.httpServer = http.createServer(this.app);
-			this.httpServer.listen(config.httpPort);
+			this.httpServer.listen(this.config.httpPort);
 		}
 	}
 }

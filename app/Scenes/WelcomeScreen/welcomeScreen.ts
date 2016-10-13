@@ -30,6 +30,8 @@ class WelcomeScreen {
 		let form = <HTMLFormElement>document.getElementById('login-form');
 		let button = <HTMLInputElement>document.getElementById('play-button');
 
+		let loginButton = <HTMLInputElement>document.getElementById('login-button');
+		let loginContainer = <HTMLInputElement>document.getElementsByClassName('btn-container')[0];
 
 		try {
 			if (playerIsLoggedIn && window.localStorage.getItem('nickname')) {
@@ -38,7 +40,7 @@ class WelcomeScreen {
 		} catch (e) {
 			//Ignore, some chrome versions fail here
 		}
-		
+
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
 			try {
@@ -65,8 +67,8 @@ class WelcomeScreen {
 				loginAreaVisible = !loginAreaVisible;
 				loginContainer.style.display = loginAreaVisible ? 'block' : 'none';
 			});
+		}
 	}
-}
 }
 
 export = WelcomeScreen;
