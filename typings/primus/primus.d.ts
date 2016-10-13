@@ -62,6 +62,8 @@ declare module "primus" {
 		 * Return the client-side library as a string
 		 */
 		library(): string;
+
+		use(any: any): void;
 	}
 
 	module Primus {

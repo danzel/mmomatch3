@@ -49,7 +49,7 @@ class SocketServer extends ServerComms {
 
 	constructor(private serializer: Serializer, private config: SocketServerConfig) {
 		super();
-		
+
 		this.createHttpServer();
 
 		this.primus = new Primus(this.httpServer, {
@@ -66,9 +66,7 @@ class SocketServer extends ServerComms {
 
 		//fs.writeFileSync('primus.js', this.primus.library());
 
-		this.registerSessionHandlers({
-			use: (handler) => (<any>this.primus).before(handler)
-		});
+		this.registerSessionHandlers(this.primus);
 
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
@@ -158,7 +156,7 @@ class SocketServer extends ServerComms {
 		}));
 		app.use(passport.initialize());
 		app.use(passport.session());
-}
+	}
 
 	private createHttpServer() {
 		this.app = express();
@@ -251,12 +249,12 @@ class SocketServer extends ServerComms {
 				res.setHeader('Location', 'https://' + req.headers.host + req.url);
 				res.statusCode = 302;
 				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(this.config.httpPort, function() {
+			})).listen(this.config.httpPort, function () {
 				console.log("Listening for ACME http-01 challenges on", this.address());
 			});
 
 			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
-			this.httpServer.listen(this.config.httpsPort, function() {
+			this.httpServer.listen(this.config.httpsPort, function () {
 				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
 			});
 		} else {
