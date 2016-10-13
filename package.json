@@ -11,8 +11,8 @@
     "bit-array": "^0.2.2",
     "compression": "^1.6.2",
     "dateformat": "^1.0.12",
-    "express-session": "^1.14.0",
     "express": "^4.14.0",
+    "express-session": "^1.14.0",
     "helmet": "^2.3.0",
     "letsencrypt-express": "^2.0.3",
     "mersenne-twister": "^1.1.0",
@@ -22,7 +22,6 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "primus": "^6.0.3",
-    "session-file-store": "^0.2.0",
     "sqlite3": "^3.1.4",
     "winston": "^2.2.0",
     "ws": "^1.1.1"

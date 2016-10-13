@@ -30,7 +30,7 @@ class Client {
 	tickReceived = new LiteEvent<TickData>();
 	unavailableReceived = new LiteEvent<UnavailableData>();
 
-	constructor(private clientComms: ClientComms, private version: string, public nickname?: string) {
+	constructor(private clientComms: ClientComms, private version: string, public nickname: string, public token: string) {
 		if (this.nickname && this.nickname.length > 16) {
 			this.nickname = this.nickname.substr(0, 16);
 		}
@@ -44,7 +44,7 @@ class Client {
 	}
 
 	private connected() {
-		this.clientComms.sendJoin(new JoinData(this.version, this.nickname || null));
+		this.clientComms.sendJoin(new JoinData(this.version, this.nickname || null, this.token));
 	}
 
 	private dataReceived(packet: { packetType: PacketType, data: any }) {

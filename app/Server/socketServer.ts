@@ -1,6 +1,5 @@
 /// <reference path="../../typings/express/express.d.ts" />
 /// <reference path="../../typings/express-session/express-session.d.ts" />
-/// <reference path="../../typings/express-session/session-file-store.d.ts" />
 /// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
@@ -11,14 +10,12 @@
 /// <reference path="../../typings/primus/primus.d.ts" />
 import express = require('express');
 import compression = require('compression');
-import FileStoreFactory = require('session-file-store');
 import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
 import LEX = require('letsencrypt-express');
 import Primus = require('primus');
 import session = require('express-session');
-var FileStore = FileStoreFactory(session);
 //import fs = require('fs');
 
 import passport = require('passport');
@@ -37,6 +34,7 @@ import SocketServerConfig = require('./config/socketServerConfig');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
 import UnavailableData = require('../DataPackets/unavailableData');
+import UserTokenProvider = require('./userTokenProvider');
 
 class SocketServer extends ServerComms {
 	private app: express.Express;
@@ -47,7 +45,7 @@ class SocketServer extends ServerComms {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer, private config: SocketServerConfig) {
+	constructor(private serializer: Serializer, private userTokenProvider: UserTokenProvider, private config: SocketServerConfig) {
 		super();
 
 		this.createHttpServer();
@@ -66,8 +64,6 @@ class SocketServer extends ServerComms {
 
 		//fs.writeFileSync('primus.js', this.primus.library());
 
-		this.registerSessionHandlers(this.primus);
-
 		this.primus.on('connection', this.connectionReceived.bind(this));
 		this.primus.on('disconnection', this.connectionDisconnected.bind(this));
 	}
@@ -75,21 +71,13 @@ class SocketServer extends ServerComms {
 	private connectionReceived(spark: Primus.Spark) {
 		console.log("connection", spark.id);
 
-		let provider: string = null;
-		let providerId: string = null;
-		if ((<any>spark.request).user) {
-			let user = (<any>spark.request).user;
-			provider = user.provider;
-			providerId = user.id;
-		}
-
 		let callback = this.sparkDataReceivedBound;
 		spark.on('data', function (data: any) {
 			callback(spark, data);
 		});
 
 		this.clients[spark.id] = spark;
-		this.connected.trigger({ id: spark.id, provider, providerId });
+		this.connected.trigger({ id: spark.id });
 	}
 
 	private connectionDisconnected(spark: Primus.Spark) {
@@ -146,18 +134,6 @@ class SocketServer extends ServerComms {
 		}
 	}
 
-	private registerSessionHandlers(app: { use: (handler: express.RequestHandler) => void }) {
-		app.use(session({
-			store: new FileStore(),
-			secret: this.config.sessionSecret,
-			resave: true,
-			saveUninitialized: false
-
-		}));
-		app.use(passport.initialize());
-		app.use(passport.session());
-	}
-
 	private createHttpServer() {
 		this.app = express();
 		//Could consider this https://github.com/isaacs/st
@@ -174,10 +150,11 @@ class SocketServer extends ServerComms {
 			}
 		}));
 
-		this.registerSessionHandlers(this.app);
+		this.app.use(session({ secret: this.config.sessionSecret }));
+		this.app.use(passport.initialize());
 
 		passport.serializeUser(function (user, done) {
-			done(null, user.provider + "|" + user.id);
+			done(null, user.provider + "|" + user.providerId);
 		});
 
 		passport.deserializeUser(function (id: string, done: (error: any, user: any) => void) {
@@ -186,7 +163,7 @@ class SocketServer extends ServerComms {
 			});*/
 
 			let split = id.indexOf('|');
-			done(null, { provider: id.substr(0, split), id: id.substr(split + 1) });
+			done(null, { provider: id.substr(0, split), providerId: id.substr(split + 1) });
 		});
 
 		//Twitter
@@ -196,10 +173,11 @@ class SocketServer extends ServerComms {
 			callbackURL: '/auth/twitter/callback'
 		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
 			//debugger;
-			done(null, { provider: profile.provider, id: profile.id });
+			done(null, { provider: profile.provider, providerId: profile.id });
 		}));
 		this.app.get('/auth/twitter', passport.authenticate('twitter'));
-		this.app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+		this.createAuthCallback('/auth/twitter/callback', 'twitter');
+
 
 		//Google
 		passport.use(new passportGoogle.Strategy({
@@ -208,10 +186,10 @@ class SocketServer extends ServerComms {
 			callbackURL: '/auth/google/callback'
 		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
 			//debugger;
-			done(null, { provider: profile.provider, id: profile.id });
+			done(null, { provider: profile.provider, providerId: profile.id });
 		}));
 		this.app.get('/auth/google', passport.authenticate('google', { scope: 'profile' }));
-		this.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+		this.createAuthCallback('/auth/google/callback', 'google');
 
 
 		//Facebook
@@ -221,10 +199,10 @@ class SocketServer extends ServerComms {
 			callbackURL: '/auth/facebook/callback'
 		}, (token: string, tokenSecret: string, profile: passport.Profile, done: (error: any, user?: any) => void) => {
 			//debugger;
-			done(null, { provider: profile.provider, id: profile.id });
+			done(null, { provider: profile.provider, providerId: profile.id });
 		}));
 		this.app.get('/auth/facebook', passport.authenticate('facebook'));
-		this.app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/#success', failureRedirect: '/#failure' }));
+		this.createAuthCallback('/auth/facebook/callback', 'facebook');
 
 		this.app.get('/logout', (req, res) => {
 			req.logout();
@@ -262,6 +240,17 @@ class SocketServer extends ServerComms {
 			this.httpServer = http.createServer(this.app);
 			this.httpServer.listen(this.config.httpPort);
 		}
+	}
+
+	//https://github.com/jaredhanson/passport/blob/master/lib/middleware/authenticate.js#L34
+	createAuthCallback(url: string, provider: string): void {
+		this.app.get(url, (req, res, next) => {
+			passport.authenticate(provider, (err: Error, user: any, info: any, status: number) => {
+				if (err) { return next(err); }
+				if (!user) { return res.redirect('/#failure'); }
+				res.redirect('/#success,' + this.userTokenProvider.getTokenForUser(user));
+			})(req, res, next);
+		});
 	}
 }
 

@@ -13,6 +13,7 @@ import ServerLogger = require('./Server/serverLogger');
 import Sqlite3Storage = require('./Server/Database/sqlite3Storage');
 import SocketServer = require('./Server/socketServer');
 import StatePersister = require('./Server/statePersister');
+import UserTokenProvider = require('./Server/userTokenProvider');
 
 class AppEntry {
 	server: Server;
@@ -28,8 +29,9 @@ class AppEntry {
 			statePersister.apply(config, levelDefFactory);
 		}
 
-		let serverComms = new SocketServer(new Serializer(), config.socketServer);
-		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), config.server, new Sqlite3Storage(config.sqlite3StorageFilename));
+		let userTokenProvider = new UserTokenProvider();
+		let serverComms = new SocketServer(new Serializer(), userTokenProvider, config.socketServer);
+		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), new Sqlite3Storage(config.sqlite3StorageFilename), userTokenProvider, config.server);
 
 		new DatadogStats(this.server);
 		new ServerLogger(this.server, serverComms);

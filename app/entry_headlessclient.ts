@@ -54,7 +54,7 @@ class AppEntry {
 		console.log('create');
 
 		let socket = new NodeSocketClient('https://massivematch.io', new Serializer());
-		this.client = new Client(socket, release, nickname);
+		this.client = new Client(socket, release, null, nickname);
 		this.client.connectionRejected.on(rejectData => {
 			//One day... rejectData.reason
 			console.log('connection rejected');

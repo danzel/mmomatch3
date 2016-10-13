@@ -8,7 +8,7 @@ import TickData = require('../DataPackets/tickData');
 import UnavailableData = require('../DataPackets/unavailableData');
 
 abstract class ServerComms {
-	connected = new LiteEvent<{ id: string, provider: string, providerId: string }>();
+	connected = new LiteEvent<{ id: string }>();
 	disconnected = new LiteEvent<string>();
 	dataReceived = new LiteEvent<{ id: string, packet: { packetType: PacketType, data: any } }>();
 

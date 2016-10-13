@@ -8,7 +8,7 @@ class WelcomeScreen {
 	private nickname: HTMLInputElement;
 	private hidenames: HTMLInputElement;
 
-	onLogin: (nickname: string, hideNames: boolean) => void;
+	onLogin: (nickname: string, token: string, hideNames: boolean) => void;
 
 	constructor() {
 		this.element = document.getElementById('welcome');
@@ -16,13 +16,19 @@ class WelcomeScreen {
 
 	show() {
 		let playerIsLoggedIn = window.location.hash.indexOf('success') >= 0;
+		let split = window.location.hash.split(',');
+		let token: string;
+		if (playerIsLoggedIn && split.length == 2) {
+			token = split[1];
+		}
+
 		window.location.hash = '';
 
-		this.addEventListeners(playerIsLoggedIn);
+		this.addEventListeners(playerIsLoggedIn, token);
 		HtmlTranslator.showStartButton(playerIsLoggedIn);
 	}
 
-	private addEventListeners(playerIsLoggedIn: boolean) {
+	private addEventListeners(playerIsLoggedIn: boolean, token: string) {
 
 		this.nickname = <HTMLInputElement>this.element.getElementsByClassName('nickname')[0];
 		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
@@ -49,7 +55,7 @@ class WelcomeScreen {
 				//Ignore, Safari in private browsing fails here
 			}
 
-			this.onLogin(this.nickname.value, this.hidenames.checked);
+			this.onLogin(this.nickname.value, token, this.hidenames.checked);
 
 			ev.preventDefault();
 			return false;

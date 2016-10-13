@@ -33,6 +33,7 @@ import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
 import TickDataFactory = require('./tickDataFactory');
 import UnavailableData = require('../DataPackets/unavailableData');
+import UserTokenProvider = require('./userTokenProvider');
 
 
 class Server {
@@ -55,7 +56,6 @@ class Server {
 	private moveRateLimiter: MoveRateLimiter;
 
 	private clientsRequiringJoin = new Array<string>();
-	private clientsRequiringJoinProviderDetails: { [id: string]: { provider: string, providerId: string } } = {};
 	private clientsRequiringBoot = new Array<Player>();
 	private clients: { [id: string]: Player } = {};
 	private clientsWhoLeftThisLevel = new Array<Player>();
@@ -63,11 +63,11 @@ class Server {
 	private bots = new Array<Bot>();
 	private botPlayers = new Array<Player>();
 
-	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private config: ServerConfig, private storage: DataStorage) {
+	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private storage: DataStorage, private userTokenProvider: UserTokenProvider, private config: ServerConfig) {
 		this.availabilityManager = new AvailabilityManager(config);
 		this.currentlyAvailable = this.availabilityManager.availableAt(new Date())
 
-		serverComms.connected.on(details => this.connectionReceived(details.id, details.provider, details.providerId));
+		serverComms.connected.on(details => this.connectionReceived(details.id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
 
@@ -119,15 +119,12 @@ class Server {
 		this.levelStarted.trigger({ level: this.level, simulation: this.simulation, gameEndDetector: this.gameEndDetector });
 	}
 
-	private connectionReceived(id: string, provider: string, providerId: string) {
+	private connectionReceived(id: string) {
 		if (!this.currentlyAvailable) {
 			//TODO: We should sorta be able to push people straight in to this.clients if we aren't available, this would mean they'd boot faster
 			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
 		}
 		this.clientsRequiringJoin.push(id);
-		if (provider && providerId) {
-			this.clientsRequiringJoinProviderDetails[id] = { provider, providerId };
-		}
 	}
 
 	private connectionDisconnected(id: string) {
@@ -146,7 +143,6 @@ class Server {
 			let index = this.clientsRequiringJoin.indexOf(id);
 			if (index >= 0) {
 				this.clientsRequiringJoin.splice(index, 1);
-				delete this.clientsRequiringJoinProviderDetails[id];
 			}
 		}
 	}
@@ -163,11 +159,18 @@ class Server {
 	}
 
 	private joinReceived(id: string, join: JoinData) {
+		let rejectReason: string;
 		//Version mismatch: Kick them
 		if (!this.config.skipVersionCheck && this.config.version && this.config.version != join.version) {
+			rejectReason = 'version';
+		}
+		//They provided an invalid token (logged in and server restarted, or they are trying to hax)
+		if (join.userToken && !this.userTokenProvider.getUserForToken(join.userToken)) {
+			rejectReason = 'token';
+		}
+		if (rejectReason) {
 			this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
-			delete this.clientsRequiringJoinProviderDetails[id];
-			this.serverComms.sendReject(new RejectData('version'), id);
+			this.serverComms.sendReject(new RejectData(rejectReason), id);
 			this.serverComms.disconnect(id);
 			return;
 		}
@@ -179,9 +182,9 @@ class Server {
 		var player = this.playerProvider.createPlayer(id, join.playerName);
 		this.playerJoined.trigger(player);
 
-		if (this.clientsRequiringJoinProviderDetails[id]) {
-			let details = this.clientsRequiringJoinProviderDetails[id];
-			this.storage.ensurePlayerExists(details.provider, details.providerId, join.playerName, (databaseId) => player.databaseId = databaseId);
+		if (join.userToken && this.userTokenProvider.getUserForToken(join.userToken)) {
+			let user = this.userTokenProvider.getUserForToken(join.userToken);
+			this.storage.ensurePlayerExists(user.provider, user.providerId, join.playerName, (databaseId) => player.databaseId = databaseId);
 		}
 
 
@@ -206,7 +209,6 @@ class Server {
 		}
 
 		this.clientsRequiringJoin.splice(this.clientsRequiringJoin.indexOf(id), 1);
-		delete this.clientsRequiringJoinProviderDetails[id];
 		this.clientsRequiringBoot.push(player);
 	}
 

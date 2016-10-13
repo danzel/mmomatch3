@@ -64,17 +64,17 @@ class AppEntry {
 	create() {
 		let welcome = new WelcomeScreen();
 		let created = false;
-		welcome.onLogin = (nickname, hideNames) => {
+		welcome.onLogin = (nickname, token, hideNames) => {
 			if (!created) {
 				created = true;
 				this.hideNames = hideNames;
-				this.connect(nickname);
+				this.connect(nickname, token);
 			}
 		};
 		welcome.show();
 	}
 
-	connect(nickname: string) {
+	connect(nickname: string, token: string) {
 		console.log('create');
 		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
 		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
@@ -85,7 +85,7 @@ class AppEntry {
 		} else { //Non-standard port, assume dev and hack for it
 			socket = new SocketClient('http://' + window.location.hostname + ':8091', new Serializer());
 		}
-		this.client = new Client(socket, release, nickname);
+		this.client = new Client(socket, release, nickname, token);
 		this.client.connectionRejected.on(rejectData => {
 			//One day... rejectData.reason
 			NewVersion.show(this.htmlOverlayManager);
