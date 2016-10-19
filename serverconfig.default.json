@@ -4,17 +4,7 @@
 		"framesPerTick": 3,
 		"initialLevel": 1,
 		"botsLeaveForPlayers": true,
-		"botCount": 10,
-		"availability": [
-			{
-				"start": "2016-04-15T05:00:00.000Z",
-				"end": "2016-04-15T05:30:00.000Z"
-			},
-			{
-				"start": "2016-04-22T05:00:00.000Z",
-				"end": "2016-04-22T05:30:00.000Z"
-			}
-		]
+		"botCount": 10
 	},
 	"socketServer": {
 		"httpPort": 8091,

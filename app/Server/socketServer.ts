@@ -33,7 +33,6 @@ import ServerComms = require('./serverComms');
 import SocketServerConfig = require('./config/socketServerConfig');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
-import UnavailableData = require('../DataPackets/unavailableData');
 import UserTokenProvider = require('./userTokenProvider');
 
 class SocketServer extends ServerComms {
@@ -121,17 +120,6 @@ class SocketServer extends ServerComms {
 		var data = this.serializer.serializeTick(tickData);
 
 		this.send(data, ids);
-	}
-
-	sendUnavailable(unavailableData: UnavailableData, id?: string) {
-		let serialized = this.serializer.serializeUnavailable(unavailableData);
-		if (id) {
-			this.clients[id].write(serialized);
-		} else {
-			for (let id in this.clients) {
-				this.clients[id].write(serialized);
-			}
-		}
 	}
 
 	private createHttpServer() {

@@ -24,15 +24,14 @@ import SwapHandler = require('../Simulation/swapHandler');
 import PointsScoreTracker = require('../Simulation/Scoring/ScoreTrackers/pointsScoreTracker');
 
 class PacketGenerator {
-	generateBootData(level: LevelDef, simulation: Simulation, newNameCollection: NewNameCollection, endAvailabilityDate: string): BootData {
+	generateBootData(level: LevelDef, simulation: Simulation, newNameCollection: NewNameCollection): BootData {
 		return new BootData(
 			this.generateLevelDefData(level),
 			this.generateGridData(simulation.grid),
 			this.generateSwapHandlerData(simulation.swapHandler),
 			this.generateSimulationData(simulation),
 			this.generateRequireMatchData(simulation.requireMatchInCellTracker),
-			this.generateNewNameCollectionData(newNameCollection),
-			endAvailabilityDate
+			this.generateNewNameCollectionData(newNameCollection)
 		);
 	}
 

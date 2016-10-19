@@ -18,8 +18,6 @@ import Simulation = require('./Simulation/simulation');
 import SimulationScene = require('./Scenes/simulationScene');
 import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
-import UnavailableData = require('./DataPackets/unavailableData');
-import UnavailableOverlay = require('./Scenes/Unavailable/unavailableOverlay');
 import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
 
 let runningOnLive = (window.location.host == window.location.hostname); //Checks we are on standard port (no :8080)
@@ -28,7 +26,6 @@ let lastUpdateFailed = false;
 
 class AppEntry {
 	htmlOverlayManager: HtmlOverlayManager;
-	unavailableOverlay: UnavailableOverlay;
 	client: Client;
 	game: Phaser.Game;
 	playerId: number;
@@ -77,7 +74,6 @@ class AppEntry {
 	connect(nickname: string, token: string) {
 		console.log('create');
 		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
-		this.unavailableOverlay = new UnavailableOverlay(this.htmlOverlayManager);
 
 		let socket: SocketClient;
 		if (runningOnLive) { //Standard port
@@ -107,7 +103,6 @@ class AppEntry {
 		});
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
-		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
 
 
 		this.htmlOverlayManager.setConnectionError(true);
@@ -115,9 +110,7 @@ class AppEntry {
 		socket.disconnected.on(() => this.htmlOverlayManager.setConnectionError(true));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }) {
-		this.unavailableOverlay.hasPlayed = true;
-		this.unavailableOverlay.hide();
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {
 		if (this.sceneGroup) {
 			this.scene.removeFromSimulationRenderer();
 			this.sceneGroup.destroy();
@@ -125,7 +118,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 8 }, this.playerId, this.playerNames, data.endAvailabilityDate);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 8 }, this.playerId, this.playerNames);
 		//new DebugLogger(data.simulation);
 	}
 
@@ -135,17 +128,6 @@ class AppEntry {
 		if (tickData.playerCount) {
 			this.scene.playerCount = tickData.playerCount;
 		}
-	}
-
-	unavailableReceived(data: UnavailableData) {
-		if (this.sceneGroup) {
-			this.sceneGroup.destroy();
-			this.sceneGroup = null;
-		}
-		this.simulationHandler = null;
-		this.scene = null;
-
-		this.unavailableOverlay.show(data.nextAvailableDate);
 	}
 
 	update() {

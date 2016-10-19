@@ -10,7 +10,6 @@ import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
 import SocketClient = require('./Client/socketClient');
 import TickData = require('./DataPackets/tickData');
-import UnavailableData = require('./DataPackets/unavailableData');
 
 let release = '6db9c79b77a1b4551b20';
 
@@ -75,13 +74,12 @@ class AppEntry {
 		});
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
-		this.client.unavailableReceived.on(unavailability => this.unavailableReceived(unavailability));
 
 		socket.connected.on(() => console.log('connected'));
 		socket.disconnected.on(() => console.log('disconnected'));
 	}
 
-	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }) {
+	simulationReceived(data: { level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }) {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		if (this.beABot) {
@@ -98,9 +96,6 @@ class AppEntry {
 			}
 		}
 
-	}
-	unavailableReceived(data: UnavailableData) {
-		console.log('unavailable:', data.nextAvailableDate);
 	}
 }
 

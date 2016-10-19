@@ -14,7 +14,6 @@ import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TeamLogic = require('../Simulation/Levels/teamLogic');
 import TickData = require('../DataPackets/tickData');
-import UnavailableData = require('../DataPackets/unavailableData');
 import VictoryType = require('../Simulation/Levels/victoryType');
 
 class Client {
@@ -26,9 +25,8 @@ class Client {
 	initReceived = new LiteEvent<InitData>();
 
 	newNamesReceived = new LiteEvent<{ [id: number]: string }>();
-	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector, endAvailabilityDate: Date }>();
+	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
 	tickReceived = new LiteEvent<TickData>();
-	unavailableReceived = new LiteEvent<UnavailableData>();
 
 	constructor(private clientComms: ClientComms, private version: string, public nickname: string, public token: string) {
 		if (this.nickname && this.nickname.length > 16) {
@@ -78,8 +76,7 @@ class Client {
 			this.simulationReceived.trigger({
 				level: level,
 				simulation: simulation,
-				gameEndDetector: new GameEndDetector(level, simulation),
-				endAvailabilityDate: bootData.endAvailabilityDate ? new Date(bootData.endAvailabilityDate) : null
+				gameEndDetector: new GameEndDetector(level, simulation)
 			});
 		} else if (packet.packetType == PacketType.Tick) {
 			let tickData = <TickData>packet.data;
@@ -93,8 +90,6 @@ class Client {
 
 			this.newNamesReceived.trigger(tickData.names);
 			this.tickReceived.trigger(tickData);
-		} else if (packet.packetType == PacketType.Unavailable) {
-			this.unavailableReceived.trigger(<UnavailableData>packet.data);
 		} else {
 			console.warn('Received unexpected packet ', packet);
 		}

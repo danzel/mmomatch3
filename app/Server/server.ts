@@ -1,4 +1,3 @@
-import AvailabilityManager = require('./availabilityManager');
 import Bot = require('../Bot/bot');
 import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
@@ -32,7 +31,6 @@ import SwapClientData = require('../DataPackets/swapClientData');
 import SwapServerData = require('../DataPackets/swapServerData');
 import TickData = require('../DataPackets/tickData');
 import TickDataFactory = require('./tickDataFactory');
-import UnavailableData = require('../DataPackets/unavailableData');
 import UserTokenProvider = require('./userTokenProvider');
 
 
@@ -42,13 +40,10 @@ class Server {
 	playerJoined = new LiteEvent<Player>();
 	playerLeft = new LiteEvent<Player>();
 
-	private availabilityManager: AvailabilityManager;
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
 	private newNameCollection = new NewNameCollection();
 	private tickDataFactory: TickDataFactory;
-
-	private currentlyAvailable: boolean;
 
 	private level: LevelDef;
 	private simulation: Simulation;
@@ -64,9 +59,6 @@ class Server {
 	private botPlayers = new Array<Player>();
 
 	constructor(private serverComms: ServerComms, private levelAndSimulationProvider: LevelAndSimulationProvider, private storage: DataStorage, private userTokenProvider: UserTokenProvider, private config: ServerConfig) {
-		this.availabilityManager = new AvailabilityManager(config);
-		this.currentlyAvailable = this.availabilityManager.availableAt(new Date())
-
 		serverComms.connected.on(details => this.connectionReceived(details.id));
 		serverComms.disconnected.on(id => this.connectionDisconnected(id));
 		serverComms.dataReceived.on(data => this.dataReceived(data));
@@ -80,9 +72,7 @@ class Server {
 	getPlayerCount(): number { return this.getRealPlayerCount() + this.bots.length; }
 
 	public start() {
-		if (this.currentlyAvailable) {
-			this.loadLevel(this.config.initialLevel);
-		}
+		this.loadLevel(this.config.initialLevel);
 	}
 
 	private loadLevel(levelNumber: number) {
@@ -101,7 +91,7 @@ class Server {
 			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid)));
 		}
 
-		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection, this.availabilityManager.currentAvailableEndJSON(new Date()));
+		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection);
 
 		this.newNameCollection.clear();
 		this.clientsWhoLeftThisLevel.length = 0;
@@ -120,10 +110,6 @@ class Server {
 	}
 
 	private connectionReceived(id: string) {
-		if (!this.currentlyAvailable) {
-			//TODO: We should sorta be able to push people straight in to this.clients if we aren't available, this would mean they'd boot faster
-			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())), id);
-		}
 		this.clientsRequiringJoin.push(id);
 	}
 
@@ -232,21 +218,6 @@ class Server {
 	}
 
 	update() {
-		let nowAvailable = this.availabilityManager.availableAt(new Date());
-		if (!this.currentlyAvailable && !nowAvailable) {
-			return;
-		}
-		if (!this.currentlyAvailable && nowAvailable) {
-			this.currentlyAvailable = true;
-			this.start();
-			return;
-		}
-		if (this.currentlyAvailable && !nowAvailable) {
-			this.currentlyAvailable = false;
-			this.serverComms.sendUnavailable(new UnavailableData(this.availabilityManager.nextAvailableJSON(new Date())));
-			return;
-		}
-
 		if (this.getRealPlayerCount() == 0) {
 			return;
 		}
@@ -264,7 +235,7 @@ class Server {
 		this.serverComms.sendTick(tickData, Object.keys(this.clients));
 
 		if (this.clientsRequiringBoot.length > 0) {
-			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection, this.availabilityManager.currentAvailableEndJSON(new Date()));
+			let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection);
 			var toBoot = new Array<string>();
 			this.clientsRequiringBoot.forEach((player) => {
 				toBoot.push(player.commsId);
