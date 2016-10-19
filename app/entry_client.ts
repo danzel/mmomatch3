@@ -87,7 +87,7 @@ class AppEntry {
 		}
 		this.client = new Client(socket, release, nickname, token);
 		this.client.connectionRejected.on(rejectData => {
-			//One day... rejectData.reason
+			//One day... rejectData.reason (version / token)
 			NewVersion.show(this.htmlOverlayManager);
 		})
 		this.client.initReceived.on(data => {

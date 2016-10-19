@@ -104,7 +104,7 @@ class Sqlite3Storage implements DataStorage {
 					return b.points - a.points;
 				});
 
-				//insert player rows
+				//insert player rows, haveInserted to avoid inserting the player twice
 				let haveInserted: { [databaseId: number]: boolean } = {};
 				for (let i = 0; i < array.length; i++) {
 					let p = array[i];
