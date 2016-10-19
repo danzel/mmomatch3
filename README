@@ -10,9 +10,9 @@ Replace online script tags with:
 
 
 Linux server install:
-wget https://deb.nodesource.com/setup_5.x
+wget https://deb.nodesource.com/setup_6.x
 sudo -s
-bash setup_5.x
+bash setup_6.x
 apt-get install nodejs unzip
 DD_API_KEY=1e144774a558ef746b8b21acaf935aa1 bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
 echo "#! /bin/sh" > /etc/network/if-up.d/nodefirewall
