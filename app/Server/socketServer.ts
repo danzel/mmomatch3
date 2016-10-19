@@ -4,6 +4,7 @@ import Primus = require('primus');
 //import fs = require('fs');
 
 import BootData = require('../DataPackets/bootData');
+import DataStorage = require('./Database/dataStorage');
 import HttpServer = require('./httpServer');
 import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
@@ -25,10 +26,10 @@ class SocketServer extends ServerComms {
 
 	private clients: { [id: string]: Primus.Spark } = {};
 
-	constructor(private serializer: Serializer, userTokenProvider: UserTokenProvider, config: SocketServerConfig) {
+	constructor(private serializer: Serializer, userTokenProvider: UserTokenProvider, storage: DataStorage, config: SocketServerConfig) {
 		super();
 
-		this.httpServer = new HttpServer(userTokenProvider, config);
+		this.httpServer = new HttpServer(userTokenProvider, storage, config);
 
 		this.primus = new Primus(this.httpServer.httpServer, {
 			pathname: '/sock',

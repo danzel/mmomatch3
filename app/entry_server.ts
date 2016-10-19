@@ -30,8 +30,9 @@ class AppEntry {
 		}
 
 		let userTokenProvider = new UserTokenProvider();
-		let serverComms = new SocketServer(new Serializer(), userTokenProvider, config.socketServer);
-		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), new Sqlite3Storage(config.sqlite3StorageFilename), userTokenProvider, config.server);
+		let storage = new Sqlite3Storage(config.sqlite3StorageFilename);
+		let serverComms = new SocketServer(new Serializer(), userTokenProvider, storage, config.socketServer);
+		this.server = new Server(serverComms, new DefaultLevelAndSimulationProvider(levelDefFactory), storage, userTokenProvider, config.server);
 
 		new DatadogStats(this.server);
 		new ServerLogger(this.server, serverComms);

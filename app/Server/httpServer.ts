@@ -29,7 +29,7 @@ class HttpServer {
 	httpServer: http.Server | https.Server;
 
 
-	constructor(private userTokenProvider: UserTokenProvider, private config: SocketServerConfig) {
+	constructor(private userTokenProvider: UserTokenProvider, private storage: DataStorage, private config: SocketServerConfig) {
 		this.app = express();
 		//Could consider this https://github.com/isaacs/st
 		this.app.use(compression());
@@ -44,6 +44,17 @@ class HttpServer {
 				}
 			}
 		}));
+
+		this.app.get('/user/profile/view/:playerDbId', (req, res) => {
+			storage.getPlayer(req.params.playerDbId, (player) => {
+				storage.getLatestLevelResults(req.params.playerDbId, 5, (levels) => {
+					res.render('../Pages/viewUserProfile.hbs', {
+						name: player.lastUsedName,
+						levels: levels
+					});
+				});
+			});
+		});
 
 		this.configurePassport();
 
@@ -84,7 +95,11 @@ class HttpServer {
 		}
 	}
 	private configurePassport(): void {
-		this.app.use(session({ secret: this.config.sessionSecret }));
+		this.app.use(session({
+			secret: this.config.sessionSecret,
+			resave: true,
+			saveUninitialized: false
+		}));
 		this.app.use(passport.initialize());
 
 		passport.serializeUser(function (user, done) {

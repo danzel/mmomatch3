@@ -12,6 +12,7 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "express-session": "^1.14.0",
+    "hbs": "^4.0.1",
     "helmet": "^2.3.0",
     "letsencrypt-express": "^2.0.3",
     "mersenne-twister": "^1.1.0",

@@ -93,6 +93,7 @@ gulp.task('package', ['sentry-release', 'default'], function() {
 	return gulp.src([
 		'./built_server/**/*',
 		'./dist/**/*',
+		'./Pages/**/*',
 		'./package.json',
 		'./hash.txt',
 		'./upstart-mmomatch.conf',
