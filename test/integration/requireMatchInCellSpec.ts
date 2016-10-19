@@ -5,6 +5,7 @@ import RequireMatch = require('../../app/simulation/requireMatch');
 import Server = require('../../app/Server/server');
 import TestLASProvider = require('../util/testLASProvider');
 import TestUtil = require('../util/util');
+import UserTokenProvider = require('../../app/Server/userTokenProvider');
 
 describe('RequireMatchInCell', () => {
 	it('removes when matched and syncs correctly to clients', () => {
@@ -13,7 +14,7 @@ describe('RequireMatchInCell', () => {
 			['1121']
 		);
 
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null }, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2), simulation),  new MockStorage(), new UserTokenProvider(), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null });
 		server.start();
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(0, 0, 1));
 		simulation.requireMatchInCellTracker.requirements.push(new RequireMatch(1, 0, 1));

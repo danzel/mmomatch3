@@ -8,6 +8,7 @@ import Server = require('../../../app/Server/server');
 import Simulation = require('../../../app/Simulation/simulation');
 import TestLASProvider = require('../../util/testLASProvider');
 import TestUtil = require('../../util/util');
+import UserTokenProvider = require('../../../app/Server/userTokenProvider');
 import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 
 describe('Sync', () => {
@@ -17,7 +18,7 @@ describe('Sync', () => {
 			"82189",
 			"11222"
 		]);
-		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2, VictoryType.Score), simulation), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null }, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(TestUtil.createNeverEndingLevel(5, 2, VictoryType.Score), simulation), new MockStorage(), new UserTokenProvider(), { fps: 60, framesPerTick: 2, initialLevel: 1, version: null });
 		server.start();
 		serverComms.server = server;
 

@@ -11,6 +11,7 @@ import SwapHandler = require('../../../app/Simulation/swapHandler');
 import TestLASProvider = require('../../util/testLASProvider');
 import TestUtil = require('../../util/util');
 import Type = require('../../../app/Simulation/type');
+import UserTokenProvider = require('../../../app/Server/userTokenProvider');
 import VictoryType = require('../../../app/Simulation/Levels/victoryType');
 
 import GetThingsToBottomDetector = require('../../../app/Simulation/Levels/Detectors/getThingsToBottomDetector');
@@ -32,7 +33,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 6);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -63,7 +64,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 999999, 90);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -94,7 +95,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Score, 1, 999999);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -125,7 +126,7 @@ describe('SyncDetectors', () => {
 			"11223393"
 		]);
 		let level = new LevelDef(1, 8, 2, [], 10, FailureType.Time, VictoryType.Score, 12, 999999);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -156,7 +157,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.RequireMatch, 999999, [{ x: 0, y: 0, amount: 1 }]);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -189,7 +190,7 @@ describe('SyncDetectors', () => {
 			"11837"
 		]);
 		let level = new LevelDef(1, 5, 4, [], 10, FailureType.MatchXOfColor, VictoryType.MatchXOfColor, { color: 2, amount: 99 }, { color: 1, amount: 6 });
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -228,7 +229,7 @@ describe('SyncDetectors', () => {
 			"21625"
 		]);
 		let level = new LevelDef(1, 5, 4, [], 10, FailureType.Swaps, VictoryType.GetThingsToBottom, 999999, [2, 4]);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -271,7 +272,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.Swaps, VictoryType.Matches, 999999, 999999);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -304,7 +305,7 @@ describe('SyncDetectors', () => {
 			"11225"
 		]);
 		let level = new LevelDef(1, 5, 2, [], 10, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
@@ -337,7 +338,7 @@ describe('SyncDetectors', () => {
 			"3G2"
 		]);
 		let level = new LevelDef(1, 3, 3, [], 10, FailureType.Swaps, VictoryType.GrowOverGrid, 100, 4);
-		let server = new Server(serverComms, new TestLASProvider(level, simulation), serverConfig, new MockStorage());
+		let server = new Server(serverComms, new TestLASProvider(level, simulation), new MockStorage(), new UserTokenProvider(), serverConfig);
 		server.start();
 		serverComms.server = server;
 
