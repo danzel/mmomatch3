@@ -97,7 +97,7 @@ gulp.task('package', ['sentry-release', 'default'], function() {
 		'./hash.txt',
 		'./upstart-mmomatch.conf',
 		'!./**/*.map'
-	], { base: '.' })
+	], { base: '.', nodir: true })
 		.pipe(zip('archive.zip'))
 		.pipe(gulp.dest(''));
 });
@@ -116,7 +116,6 @@ siteKeys.forEach(function (siteKey) {
 				'cd /home/azureuser/a',
 				'rm -rf built_server dist package.json',
 				'unzip -o ../archive.zip',
-				'chmod 700 built_server -R',
 				'sudo iptables -I INPUT -p tcp --dport 8092 --syn -j DROP',
 				'sudo service mmomatch restart',
 				'sleep 2',
