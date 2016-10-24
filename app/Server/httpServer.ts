@@ -3,6 +3,7 @@
 /// <reference path="../../typings/compression/compression.d.ts" />
 /// <reference path="../../typings/helmet/helmet.d.ts" />
 /// <reference path="../../typings/letsencrypt-express/letsencrypt-express.d.ts" />
+/// <reference path="../../typings/ordinal-number-suffix/ordinal-number-suffix.d.ts" />
 /// <reference path="../../typings/passport/passport.d.ts" />
 /// <reference path="../../typings/passport/passport-facebook.d.ts" />
 /// <reference path="../../typings/passport/passport-google-oauth20.d.ts" />
@@ -12,6 +13,7 @@ import compression = require('compression');
 import helmet = require('helmet');
 import http = require('http');
 import https = require('https');
+import ordinal = require('ordinal-number-suffix');
 import LEX = require('letsencrypt-express');
 import session = require('express-session');
 
@@ -48,6 +50,7 @@ class HttpServer {
 		this.app.get('/user/profile/view/:playerDbId', (req, res) => {
 			storage.getPlayer(req.params.playerDbId, (player) => {
 				storage.getLatestLevelResults(req.params.playerDbId, 5, (levels) => {
+					levels.forEach(l => l.rank = <any>ordinal(l.rank));
 					res.render('../Pages/viewUserProfile.hbs', {
 						name: player.lastUsedName,
 						levels: levels
