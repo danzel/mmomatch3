@@ -12,6 +12,7 @@
 #welcome .top {
 	width: 100%;
 	padding-top: 24px;
+	padding-bottom: 6px;
 	background-color: #8FB863;
 	border-bottom: 5px solid #6382B8;
 	flex: 0 0 auto;
@@ -66,6 +67,10 @@
 	stroke-width: 6px;
 }
 
+#welcome form {
+	margin: 0;
+}
+
 #welcome .login-area {
 	font-family: 'Chewy';
 	font-size: 20px;
@@ -110,6 +115,7 @@
 
 #welcome .btn-container {
 	display: none;
+	padding-top: 6px;
 }
 
 #welcome .btn-social {
@@ -151,6 +157,12 @@
 }
 #welcome .btn-social.twitter {
 	background-color: #55acee;
+}
+
+
+#welcome #logged-in-area {
+	display: none;
+	padding-top: 6px;
 }
 
 

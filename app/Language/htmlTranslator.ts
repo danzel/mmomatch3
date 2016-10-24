@@ -149,7 +149,10 @@ let logoutButton: {[key: string]: string} = {
 	'en': 'Logout',
 	'es': 'TODO',
 }
-
+let viewProfileButton: {[key: string]: string} = {
+	'en': 'View your profile',
+	'es': 'Ver su perfil'
+}
 
 class HtmlTranslator {
 	static apply() {
@@ -175,6 +178,7 @@ class HtmlTranslator {
 		
 		(<HTMLInputElement>document.getElementById('play-button')).value = play[Language.polyglot.locale()];
 		(<HTMLInputElement>document.getElementById('login-button')).value = login[Language.polyglot.locale()];
+		(<HTMLInputElement>document.getElementById('view-profile')).value = viewProfileButton[Language.polyglot.locale()];
 	}
 }
 

@@ -15,20 +15,22 @@ class WelcomeScreen {
 	}
 
 	show() {
-		let playerIsLoggedIn = window.location.hash.indexOf('success') >= 0;
 		let split = window.location.hash.split(',');
+		let playerIsLoggedIn = split[0] == '#success';
 		let token: string;
-		if (playerIsLoggedIn && split.length == 2) {
+		let playerId: string;
+		if (playerIsLoggedIn && split.length == 3) {
 			token = split[1];
+			playerId = split[2];
 		}
 
 		history.replaceState({}, document.title, "/");
 
-		this.addEventListeners(playerIsLoggedIn, token);
+		this.addEventListeners(playerIsLoggedIn, token, playerId);
 		HtmlTranslator.showStartButton(playerIsLoggedIn);
 	}
 
-	private addEventListeners(playerIsLoggedIn: boolean, token: string) {
+	private addEventListeners(playerIsLoggedIn: boolean, token: string, playerId: string) {
 
 		this.nickname = <HTMLInputElement>this.element.getElementsByClassName('nickname')[0];
 		this.hidenames = <HTMLInputElement>this.element.getElementsByClassName('hidenames')[0];
@@ -67,6 +69,9 @@ class WelcomeScreen {
 			loginButton.addEventListener('click', () => {
 				window.location.assign('/logout');
 			});
+
+			document.getElementById('logged-in-area').style.display = 'block';
+			(<HTMLAnchorElement>document.getElementById('view-profile')).href = "/user/profile/view/" + playerId;
 		} else {
 			let loginAreaVisible = false;
 			loginButton.addEventListener('click', () => {
