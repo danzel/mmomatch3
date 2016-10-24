@@ -197,19 +197,13 @@ class SimulationRenderer {
 
 
 		this.circlePingRenderer.begin();
-
-		this.requireMatchHighlighter.render(this.simulation.requireMatchInCellTracker);
-
-		this.circlePingRenderer.end();
-
-
 		this.matchableRenderer.begin(this.simulation.grid.width);
 		this.getToBottomHighlighter.begin(this.gameEndDetector);
 
+		this.requireMatchHighlighter.render(this.simulation.requireMatchInCellTracker);
+
 		var swaps = this.simulation.swapHandler.swaps;
 
-		//First render those not swapping, then those swapping
-		//Seperately because no good was to look up swaps in the swapHandler
 		let cells = this.simulation.grid.cells;
 		for (let x = 0; x < cells.length; x++) {
 			let col = cells[x];
@@ -232,6 +226,7 @@ class SimulationRenderer {
 
 		this.matchableRenderer.end();
 		this.getToBottomHighlighter.end();
+		this.circlePingRenderer.end();
 
 		this.failedToSwapState.update(dt);
 
