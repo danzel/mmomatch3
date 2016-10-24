@@ -22,7 +22,7 @@ class WelcomeScreen {
 			token = split[1];
 		}
 
-		window.location.hash = '';
+		history.replaceState({}, document.title, "/");
 
 		this.addEventListeners(playerIsLoggedIn, token);
 		HtmlTranslator.showStartButton(playerIsLoggedIn);
