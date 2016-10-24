@@ -33,6 +33,7 @@ interface LanguageHtmlDef {
 	'mistranslation': string;
 	'feedback-button': string;
 	'help-button': string;
+	'view-profile': string;
 
 	[key: string]: string;
 }
@@ -114,6 +115,7 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 		'mistranslation': 'Mala traducción',
 		'feedback-button': 'Feedback',
 		'help-button': 'Ayuda',
+		'view-profile': 'Ver su perfil',
 	}
 }
 
@@ -139,19 +141,15 @@ let playButton: {[key: string]: string} = {
 }
 let playAsGuestButton: {[key: string]: string} = {
 	'en': 'Play as guest',
-	'es': 'Jugar TODO',
+	'es': 'Jugar', //Jugar como invitado
 }
 let loginButton: {[key: string]: string} = {
 	'en': 'Login',
-	'es': 'TODO',
+	'es': 'Iniciar sesión',
 }
 let logoutButton: {[key: string]: string} = {
 	'en': 'Logout',
-	'es': 'TODO',
-}
-let viewProfileButton: {[key: string]: string} = {
-	'en': 'View your profile',
-	'es': 'Ver su perfil'
+	'es': 'Cerrar sesión',
 }
 
 class HtmlTranslator {
@@ -178,7 +176,6 @@ class HtmlTranslator {
 		
 		(<HTMLInputElement>document.getElementById('play-button')).value = play[Language.polyglot.locale()];
 		(<HTMLInputElement>document.getElementById('login-button')).value = login[Language.polyglot.locale()];
-		(<HTMLInputElement>document.getElementById('view-profile')).value = viewProfileButton[Language.polyglot.locale()];
 	}
 }
 
