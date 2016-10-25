@@ -148,7 +148,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'click to continue': 'Click to continue',
 
 		//Help
-		'controls': 'Controles',
+		'controls': 'Controls',
 		'helpline1': 'Click and drag animals to match them.',
 		'helpline2': 'You can only drag ones that will make a 3 in a row match.',
 		'helpline3': 'Zoom in and out using the mouse wheel.',
