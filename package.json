@@ -15,6 +15,7 @@
     "letsencrypt-express": "^2.0.3",
     "mersenne-twister": "^1.1.0",
     "node-dogstatsd": "0.0.6",
+    "node-polyglot": "^2.0.0",
     "primus": "^6.0.3",
     "winston": "^2.2.0",
     "ws": "^1.1.1"
@@ -36,7 +37,6 @@
     "html-webpack-plugin": "^2.22.0",
     "jasmine": "^2.5.2",
     "json-loader": "^0.5.4",
-    "node-polyglot": "^2.0.0",
     "phaser": "^2.6.2",
     "raven-js": "^3.7.0",
     "ts-loader": "^0.9.0",
