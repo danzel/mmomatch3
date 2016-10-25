@@ -6,7 +6,6 @@ import RejectData = require('../DataPackets/rejectData');
 import Simulation = require('../Simulation/simulation');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
-import UnavailableData = require('../DataPackets/unavailableData');
 
 interface Serializer {
 	serializeReject(rejectData: RejectData): any;
@@ -16,8 +15,6 @@ interface Serializer {
 	serializeBoot(bootData: BootData): any;
 
 	serializeTick(tickData: TickData): any;
-
-	serializeUnavailable(unavailableData: UnavailableData): any;
 
 	serializeJoin(joinData: JoinData): any;
 

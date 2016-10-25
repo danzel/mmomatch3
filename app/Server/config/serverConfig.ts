@@ -16,7 +16,6 @@ interface ServerConfig {
 	botCount?: number;
 
 	disableStatePersister?: boolean;
-	availability?: Array<AvailabilityRange>;
 }
 
 export = ServerConfig;

@@ -6,7 +6,6 @@ import RejectData = require('../DataPackets/rejectData');
 import Serializer = require('./serializer');
 import SwapClientData = require('../DataPackets/swapClientData');
 import TickData = require('../DataPackets/tickData');
-import UnavailableData = require('../DataPackets/unavailableData');
 
 interface SerializedBoot {
 	idCounter: number;
@@ -36,11 +35,6 @@ class SimpleSerializer implements Serializer {
 	serializeTick(tickData: TickData): any {
 		(<any>tickData).packetType = PacketType.Tick;
 		return tickData;
-	}
-
-	serializeUnavailable(unavailableData: UnavailableData): any {
-		(<any>unavailableData).packetType = PacketType.Unavailable;
-		return unavailableData;
 	}
 
 	serializeJoin(joinData: JoinData): any {

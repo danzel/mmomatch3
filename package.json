@@ -10,7 +10,6 @@
   "dependencies": {
     "bit-array": "^0.2.2",
     "compression": "^1.6.2",
-    "dateformat": "^1.0.12",
     "express": "^4.14.0",
     "helmet": "^2.3.0",
     "letsencrypt-express": "^2.0.3",

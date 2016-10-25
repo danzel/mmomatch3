@@ -48,7 +48,7 @@ class SimulationScene {
 	detectorDisplays = new Array<DetectorDisplay>();
 
 
-	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }, endAvailabilityDate: Date) {
+	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }) {
 		if (!SimulationScene.renderer) {
 			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group));
 		} else {
@@ -71,7 +71,7 @@ class SimulationScene {
 			this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 
 			this.scoreRenderer = new ScoreRenderer(new Phaser.Group(group.game, group), this.simulation.scoreTracker, playerId, playerNames);
-			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group), endAvailabilityDate);
+			this.playerCountRenderer = new PlayerCountRenderer(new Phaser.Group(group.game, group));
 			this.playerCountRenderer.updateData(this.playerCountValue);
 
 			this.pointsEarnedDisplay = new PointsEarnedDisplay(new Phaser.Group(group.game, group), simulation.scoreTracker, playerId);
