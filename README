@@ -13,7 +13,7 @@ Linux server install:
 wget https://deb.nodesource.com/setup_6.x
 sudo -s
 bash setup_6.x
-apt-get install nodejs unzip
+apt-get install nodejs unzip build-essential
 DD_API_KEY=1e144774a558ef746b8b21acaf935aa1 bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
 echo "#! /bin/sh" > /etc/network/if-up.d/nodefirewall
 echo "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8091" >> /etc/network/if-up.d/nodefirewall

@@ -13,10 +13,16 @@ var webpackConfig = require("./webpack.config.js");
 //Configuration of ssh nodes
 var sites = {
 	'oce': {
+		username: 'azureuser',
 		host: 'mmomatch.australiaeast.cloudapp.azure.com'
 	},
 	'usw': {
+		username: 'azureuser',
 		host: 'mmomatch.westus.cloudapp.azure.com'
+	},
+	'usw2': {
+		username: 'ubuntu',
+		host: 'usw2.massivematch.io'
 	}
 };
 var privateKey = fs.readFileSync('./z_id_rsa');
@@ -30,7 +36,7 @@ for (var siteKey in sites) {
 		sshConfig: {
 			host: site.host,
 			port: 22,
-			username: 'azureuser',
+			username: site.username,
 			privateKey: privateKey
 		}
 	});
@@ -108,12 +114,12 @@ siteKeys.forEach(function (siteKey) {
 
 	gulp.task('copy-' + siteKey, ['package'], function() {
 		return gulp.src('archive.zip')
-			.pipe(site.ssh.sftp('write', '/home/azureuser/archive.zip'));
+			.pipe(site.ssh.sftp('write', 'archive.zip'));
 	});
 
 	gulp.task('deploy-' + siteKey, ['copy-' + siteKey], function() {
 		return site.ssh.shell([
-				'cd /home/azureuser/a',
+				'cd a',
 				'rm -rf built_server dist package.json',
 				'unzip -o ../archive.zip',
 				'sudo iptables -I INPUT -p tcp --dport 8092 --syn -j DROP',
