@@ -1,5 +1,7 @@
 .game-over-overlay {
-	width: 480px;
+	width: 530px;
+	max-width: 100%;
+	box-sizing: border-box;
 
 	pointer-events: none;
 }

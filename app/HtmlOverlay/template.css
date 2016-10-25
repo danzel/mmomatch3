@@ -110,7 +110,9 @@ a {
 
 
 .help-overlay {
-	width: 420px;
+	width: 470px;
+	max-width: 100%;
+	box-sizing: border-box;
 	top: 30px;
 	font-size: 18px;
 }
@@ -167,9 +169,18 @@ div.matchable {
 
 
 .feedback-overlay {
-	width: 400px;
+	width: 410px;
+	max-width: 100%;
+	box-sizing: border-box;
 	padding: 0;
 	top: 10px;
+}
+
+.feedback-overlay iframe {
+	position: relative;
+	width: 100%;
+	height: 700px;
+	max-height: 90vh;
 }
 
 .feedback-overlay h2 {
@@ -209,6 +220,8 @@ div.matchable {
 	height: 0;
 	border-top: 76px solid rgba(200,200,200,0.5);
 	border-left: 76px solid transparent;
+
+	pointer-events: none;
 }
 #beta {
     position: absolute;
@@ -217,4 +230,44 @@ div.matchable {
 
     transform: rotateZ(45deg);
 	font-size: 20px;
+
+	pointer-events: none;
+}
+
+@media (max-width: 400px) {
+	body {
+		overflow-y: auto;
+	}
+	h1 {
+		font-size: 40px;
+	}
+	h2 {
+		font-size: 32px;
+	}
+	h3 {
+		font-size: 22px;
+	}
+	#connection-error {
+		width: 100%;
+		box-sizing: border-box;
+	}
+	#connection-error .details {
+		font-size: 20px;
+	}
+	#bottom-corner-buttons {
+		font-size: 20px;
+	}
+	.help-overlay {
+		font-size: 16px;
+	}
+	.help-overlay h1 {
+		font-size: 34px;
+	}
+	.help-overlay h2 {
+		font-size: 26px;
+	}
+	.close-button {
+		height: 40px;
+		width: 40px;
+	}
 }

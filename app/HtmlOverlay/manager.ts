@@ -83,13 +83,17 @@ class Manager {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
-		document.getElementById("fullscreen-button").addEventListener('click', () => {
+		let fsb = document.getElementById("fullscreen-button");
+		fsb.addEventListener('click', () => {
 			if (this.game.scale.isFullScreen) {
 				this.game.scale.stopFullScreen();
 			} else {
 				this.game.scale.startFullScreen(false);
 			}
 		});
+		if (!(<any>this.game.device).fullscreen) {
+			fsb.remove();
+		}
 	}
 
 	showOverlay(overlayOptions: OverlayOptions) {

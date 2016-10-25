@@ -145,3 +145,24 @@
     border-radius: 10px 10px 0 0;
     margin-left: 4px;
 }
+
+@media (max-width: 400px) {
+	#welcome .left, #welcome .right  {
+		display: block;
+		width: 95%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	#welcome .top .wrap {
+		width: 100%;
+	}
+
+	#welcome .mid {
+		overflow-y: visible;
+	}
+
+	#welcome .corner-buttons {
+		position: fixed;
+	}
+}
