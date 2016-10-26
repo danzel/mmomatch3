@@ -38,7 +38,12 @@ class AppEntry {
 	playerNames: { [id: number]: string } = {};
 
 	constructor() {
-		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
+		this.game = new Phaser.Game({
+			width: <any>'100%',
+			height: <any>'100%',
+			state: <any>this,
+			resolution: 2
+		});
 	}
 
 	preload() {
@@ -53,6 +58,15 @@ class AppEntry {
 			target.setTo(0, 0, document.body.clientWidth, document.body.clientHeight);
 			return target;
 		}
+		//On retina displays when using RESIZE resetCanvas isn't called, and it needs to be, so cludge that in too
+		let ud = (<any>this.game.scale).updateDimensions.bind(this.game.scale);
+		(<any>this.game.scale).updateDimensions = function(width: number, height: number, resize: boolean) {
+			ud(width, height, resize);
+			if (resize) {
+				(<any>this.game.scale).resetCanvas();
+			}
+		}
+
 		this.game.stage.backgroundColor = 0x273348;
 
 		GraphicsLoader.load(this.game);
