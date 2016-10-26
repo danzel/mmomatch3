@@ -9,7 +9,11 @@
 		<meta property="og:image" content="https://massivematch.io/favicon.png" />
 		<meta property="og:type" content="product" />
 
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="favicon.png">
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
 		<% for (var css in htmlWebpackPlugin.files.css) { %>
 		<link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
 		<% } %>
