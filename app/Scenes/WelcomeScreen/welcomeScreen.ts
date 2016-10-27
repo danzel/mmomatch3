@@ -38,6 +38,7 @@ class WelcomeScreen {
 		
 		let buttonAction = (ev: Event) => {
 			this.element.style.display = 'none';
+			window.scrollTo(0, 0);
 			try {
 				window.localStorage.setItem('nickname', this.nickname.value);
 			} catch (e) {

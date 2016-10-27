@@ -12,6 +12,12 @@ interface LanguageHtmlDef {
 
 	'news': string;
 
+	'oct20162': string;
+	'oct20162n': string;
+	
+	'oct2016': string;
+	'oct2016n': string;
+	
 	'july2016': string;
 	'july2016n': string;
 
@@ -56,6 +62,11 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 		'ctrl3': 'Cada nivel tiene un objetivo diferente, prestar atención a ellos.',
 
 		'news': 'Noticias',
+
+		'oct20162': 'Fines de octubre el año 2016',
+		'oct20162n': 
+			'<p>Hemos actualizado Massive Match para trabajar mejor en los teléfonos móviles.</p>' +
+			'<p>Si tiene algún problema, por favor enviarnos alguna sugerencia utilizando el botón en el juego.</p>',
 
 		'oct2016': 'Octubre de 2016. De vuelta al trabajo',
 		'oct2016n': 

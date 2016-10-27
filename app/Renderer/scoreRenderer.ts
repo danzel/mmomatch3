@@ -3,19 +3,19 @@ import ScoreTracker = require('../Simulation/Scoring/scoreTracker');
 
 class ScoreRenderer {
 
-	fontSize = 22;
+	fontSize = 16;
 
 	headerTextStyle = <Phaser.PhaserTextStyle>{
 		fill: 'white',
 		font: 'Chewy',
-		fontSize: this.fontSize + 10,
-		strokeThickness: 8
+		fontSize: this.fontSize + 8,
+		strokeThickness: 6
 	};
 	textStyle = <Phaser.PhaserTextStyle>{
 		fill: 'white',
 		font: 'Chewy',
 		fontSize: this.fontSize,
-		strokeThickness: 6
+		strokeThickness: 4
 	};
 	defaultFill = 'white';
 	myScoreFill = 'yellow';
@@ -28,7 +28,7 @@ class ScoreRenderer {
 
 	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number, private playerNames: {[id: number]: string}) {
 
-		this.title = new Phaser.Text(this.group.game, 2, -4, scoreTracker.headingText, this.headerTextStyle);
+		this.title = new Phaser.Text(this.group.game, 2, 4, scoreTracker.headingText, this.headerTextStyle);
 		this.group.add(this.title);
 
 		this.scoreGroup = new Phaser.Group(group.game, group);

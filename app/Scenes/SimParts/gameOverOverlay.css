@@ -1,11 +1,9 @@
 .game-over-overlay {
-	width: 480px;
+	width: 530px;
+	max-width: 100%;
+	box-sizing: border-box;
 
 	pointer-events: none;
-}
-
-.game-over-overlay .header {
-	font-size: 70px;
 }
 
 .game-over-overlay .middle {

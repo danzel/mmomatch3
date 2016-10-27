@@ -1,3 +1,4 @@
+import BannerAdManager = require('./bannerAdManager');
 import Language = require('../Language');
 
 declare function require(filename: string): string | ((data: {}) => string);
@@ -55,16 +56,14 @@ class UIState {
 class Manager {
 	element: HTMLElement;
 	feedbackElement: HTMLElement;
-	bottomAdElement: HTMLElement;
 	uiState = new UIState();
 
 	private feedbackVisible = false;
 
-	constructor(private game: Phaser.Game) {
+	constructor(private game: Phaser.Game, private bannerAdManager: BannerAdManager) {
 		this.game.scale.fullScreenTarget = document.documentElement;
 		this.element = document.getElementById('overlay');
 		this.feedbackElement = document.getElementById('feedback-overlay');
-		this.bottomAdElement = document.getElementById('bottom-ad');
 
 		this.render();
 
@@ -83,13 +82,17 @@ class Manager {
 			this.uiState.feedbackVisible = true;
 			this.render();
 		});
-		document.getElementById("fullscreen-button").addEventListener('click', () => {
+		let fsb = document.getElementById("fullscreen-button");
+		fsb.addEventListener('click', () => {
 			if (this.game.scale.isFullScreen) {
 				this.game.scale.stopFullScreen();
 			} else {
 				this.game.scale.startFullScreen(false);
 			}
 		});
+		if (!(<any>this.game.device).fullscreen) {
+			fsb.remove();
+		}
 	}
 
 	showOverlay(overlayOptions: OverlayOptions) {
@@ -119,16 +122,10 @@ class Manager {
 		}
 		if (this.uiState.bottomAdVisible != (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false)) {
 			this.uiState.bottomAdVisible = (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false);
-			if (this.bottomAdElement) { //May be totally adblocked off the screen
-				if (this.uiState.bottomAdVisible) {
-					//Cludge to make it not get hidden/shown when the game initially loads
-					if (this.bottomAdElement.innerHTML == '') {
-						this.bottomAdElement.innerHTML = '<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4749031612968477" data-ad-slot="9178345940"></ins>';
-						((<any>window).adsbygoogle || []).push({});
-					}
-				} else {
-					this.bottomAdElement.innerHTML = '';
-				}
+			if (this.uiState.bottomAdVisible) {
+				this.bannerAdManager.show();
+			} else {
+				this.bannerAdManager.hide()
 			}
 		}
 		if (this.uiState.customOverlay && this.uiState.customOverlay.postRenderCallback) {

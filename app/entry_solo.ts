@@ -1,5 +1,6 @@
 /// <reference path="../typings/webfontloader/webfontloader.d.ts" />
 
+import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
 import CircleCursor = require('./Scenes/circleCursor');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
@@ -55,7 +56,11 @@ class AppEntry {
 
 	create() {
 		console.log('create');
-		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
+
+		let bannerAdManager = new BannerAdManager();
+		bannerAdManager.show();
+
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game, bannerAdManager);
 
 		let levelNumber = parseInt((window.location.hash || "#").substr(1), 10) || 1;
 		this.createSimulationScene(levelNumber);

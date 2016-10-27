@@ -138,7 +138,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 
 		//gameOverOverlay
 		'out of moves': 'Out of Moves!',
-		'you win': 'You Win',
+		'you win': 'You Win!',
 		'defeated': 'Defeated',
 		'level failed': 'Level Failed',
 		'level complete': 'Level Complete!',
