@@ -274,4 +274,9 @@ div.matchable {
 	#bottom-ad {
 		margin-left: -160px; /* Half the ad width */
 	}
+
+	#fullscreen-button img {
+		width: 20px;
+		height: 20px;
+	}
 }

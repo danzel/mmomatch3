@@ -165,4 +165,10 @@
 	#welcome .corner-buttons {
 		position: fixed;
 	}
+
+	#bottom-corner-buttons div {
+		padding: 3px 7px;
+		border-radius: 10px 10px 0 0;
+		margin-right: 4px;
+	}
 }
