@@ -1,8 +1,8 @@
-<h1 class="header b5">
+<h1 class="b5">
 	{{#if isOutOfMoves}}
 		{{_outofmoves}}
 	{{else if isTeam}}
-		{{#if victory}}{{_youwin}}!{{else}}{{_defeated}}{{/if}}
+		{{#if victory}}{{_youwin}}{{else}}{{_defeated}}{{/if}}
 	{{else}}
 		{{#if victory}}{{_levelcomplete}}{{else}}{{_levelfailed}}{{/if}}
 	{{/if}}

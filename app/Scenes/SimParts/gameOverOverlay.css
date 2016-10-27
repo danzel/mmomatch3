@@ -6,10 +6,6 @@
 	pointer-events: none;
 }
 
-.game-over-overlay .header {
-	font-size: 70px;
-}
-
 .game-over-overlay .middle {
 	font-size: 28px;
 }
