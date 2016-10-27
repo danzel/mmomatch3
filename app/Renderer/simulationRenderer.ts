@@ -230,6 +230,8 @@ class SimulationRenderer {
 
 		this.failedToSwapState.update(dt);
 
+		//Workaround for phaser #2826 
+		this.group.updateTransform();
 	}
 
 }
