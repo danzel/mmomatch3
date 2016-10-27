@@ -42,7 +42,7 @@ class AppEntry {
 			width: <any>'100%',
 			height: <any>'100%',
 			state: <any>this,
-			resolution: 2
+			resolution: window.devicePixelRatio || 1
 		});
 	}
 
