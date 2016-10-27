@@ -85,7 +85,6 @@ a {
 	position: fixed;
 	right: 0px;
 	bottom: -4px;
-	z-index: 1;
 	font-size: 26px;
 	display: none;
 }
@@ -257,7 +256,6 @@ div.matchable {
 	}
 	#bottom-corner-buttons {
 		font-size: 20px;
-		z-index: 0;
 	}
 	.help-overlay {
 		font-size: 16px;
