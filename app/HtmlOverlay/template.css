@@ -82,7 +82,7 @@ a {
 }
 
 #bottom-corner-buttons {
-	position: absolute;
+	position: fixed;
 	right: 0px;
 	bottom: -4px;
 	z-index: 1;
@@ -115,6 +115,9 @@ a {
 	box-sizing: border-box;
 	top: 30px;
 	font-size: 18px;
+
+	max-height: 90vh;
+    overflow-y: scroll;
 }
 .help-overlay h2 {
 	margin-bottom: 5px;
@@ -152,6 +155,8 @@ div.matchable {
 	margin: 0 auto;
 
 	width: 400px;
+	max-width: 100%;
+	box-sizing: border-box;
 
 	text-align: center;
 	
@@ -246,10 +251,6 @@ div.matchable {
 	}
 	h3 {
 		font-size: 22px;
-	}
-	#connection-error {
-		width: 100%;
-		box-sizing: border-box;
 	}
 	#connection-error .details {
 		font-size: 20px;
