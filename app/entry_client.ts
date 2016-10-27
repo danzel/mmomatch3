@@ -1,6 +1,7 @@
 /// <reference path="../typings/raven-js/raven-js.d.ts" />
 import Raven = require('raven-js');
 
+import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
 import CircleCursor = require('./Scenes/circleCursor');
 import Client = require('./Client/client');
 import ClientSimulationHandler = require('./Client/clientSimulationHandler');
@@ -25,6 +26,7 @@ let release = '';
 let lastUpdateFailed = false;
 
 class AppEntry {
+	bannerAdManager: BannerAdManager;
 	htmlOverlayManager: HtmlOverlayManager;
 	client: Client;
 	game: Phaser.Game;
@@ -73,6 +75,9 @@ class AppEntry {
 	}
 
 	create() {
+		this.bannerAdManager = new BannerAdManager();
+		this.bannerAdManager.show();
+
 		let welcome = new WelcomeScreen();
 		let created = false;
 		welcome.onLogin = (nickname, hideNames) => {
@@ -87,7 +92,7 @@ class AppEntry {
 
 	connect(nickname: string) {
 		console.log('create');
-		this.htmlOverlayManager = new HtmlOverlayManager(this.game);
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game, this.bannerAdManager);
 
 		let socket: SocketClient;
 		if (runningOnLive) { //Standard port

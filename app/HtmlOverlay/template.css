@@ -256,6 +256,7 @@ div.matchable {
 	}
 	#bottom-corner-buttons {
 		font-size: 20px;
+		z-index: 0;
 	}
 	.help-overlay {
 		font-size: 16px;
@@ -269,5 +270,8 @@ div.matchable {
 	.close-button {
 		height: 40px;
 		width: 40px;
+	}
+	#bottom-ad {
+		margin-left: -160px; /* Half the ad width */
 	}
 }
