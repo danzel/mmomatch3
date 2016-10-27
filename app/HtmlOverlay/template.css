@@ -197,7 +197,7 @@ div.matchable {
 	position: fixed;
 	left: 50%;
 	bottom: 0;
-	margin-left: -368px; /* Half the ad width */
+	margin-left: -364px; /* Half the ad width */
 }
 
 
@@ -272,12 +272,15 @@ div.matchable {
 		height: 40px;
 		width: 40px;
 	}
-	#bottom-ad {
-		margin-left: -160px; /* Half the ad width */
-	}
 
 	#fullscreen-button img {
 		width: 20px;
 		height: 20px;
+	}
+}
+
+@media (max-width: 727px) {
+	#bottom-ad {
+		margin-left: -160px; /* Half the ad width */
 	}
 }
