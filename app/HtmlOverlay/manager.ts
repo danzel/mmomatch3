@@ -91,7 +91,7 @@ class Manager {
 			}
 		});
 		if (!(<any>this.game.device).fullscreen) {
-			fsb.remove();
+			fsb.parentNode.removeChild(fsb);
 		}
 	}
 
