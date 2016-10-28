@@ -12,9 +12,9 @@ class GrowOverGridBehaviour extends DefaultBehaviour {
 		super(helper, simulation, inputApplier);
 
 		this.config.delays = [
-			{ seconds: 0.5, range: 1, variation: 0.2 },
-			{ seconds: 0.5, range: 2, variation: 0.2 },
-			{ seconds: 1, range: 3, variation: 0.2 }
+			{ seconds: 1, range: 1, variation: 0.2 },
+			{ seconds: 3, range: 2, variation: 0.2 },
+			{ seconds: 3, range: 3, variation: 0.2 }
 		];
 	}
 

@@ -66,7 +66,7 @@ class DefaultBehaviour extends Behaviour {
 
 	queueMove(m: Move) {
 		this.queuedMove = m;
-		this.queuedMoveTime = 0.1;
+		this.queuedMoveTime = 0.2;
 	}
 
 	tryDoMove(): void {
