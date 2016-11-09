@@ -50,9 +50,9 @@ class SimulationScene {
 
 	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }) {
 		if (!SimulationScene.renderer) {
-			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group));
+			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId);
 		} else {
-			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector);
+			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector, playerId);
 			group.add(SimulationScene.renderer.group);
 		}
 		let simulationGroup = SimulationScene.renderer.group;

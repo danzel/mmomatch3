@@ -7,6 +7,7 @@ import Simulation = require('../Simulation/simulation');
 import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('./matchableRenderer');
 import RequireMatchHighlighter = require('./requireMatchHighlighter');
+import SimulationParticleRenderer = require('./simulationParticleRenderer');
 import Type = require('../Simulation/type');
 
 interface XY {
@@ -20,16 +21,20 @@ class SimulationRenderer {
 	private failedToSwapState = new FailedToSwapState();
 
 	private matchableRenderer: MatchableRenderer;
+	private simulationParticleRenderer: SimulationParticleRenderer;
 	private circlePingRenderer: CirclePingRenderer;
 
 	private outline: Phaser.Graphics;
 
-	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group) {
+	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group, playerId: number) {
 		let getToBottomUnder = group.game.add.group(group);
 
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
 		let matchablesOverlay = group.game.add.group(this.group);
 		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
+
+		this.simulationParticleRenderer = new SimulationParticleRenderer(group);
+		this.simulationParticleRenderer.simulationChanged(simulation, playerId);
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer);
@@ -185,9 +190,11 @@ class SimulationRenderer {
 		}
 	}
 
-	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector): void {
+	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number): void {
 		this.simulation = simulation;
 		this.gameEndDetector = gameEndDetector;
+
+		this.simulationParticleRenderer.simulationChanged(simulation, playerId);
 		this.updateOutline();
 	}
 
