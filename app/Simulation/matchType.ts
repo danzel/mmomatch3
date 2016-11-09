@@ -7,7 +7,7 @@ enum MatchType {
 	HorizontalClear,
 	VerticalClear,
 	
-	AreaClear3x3,
+	AreaClear5x5,
 
 	ColorClear,
 	

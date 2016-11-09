@@ -52,8 +52,8 @@ class SpecialMatchPerformer {
 				case Type.VerticalClearWhenMatched:
 					this.verticalClear(m, match);
 					break;
-				case Type.AreaClear3x3WhenMatched:
-					this.areaClear3x3(m, match);
+				case Type.AreaClear5x5WhenMatched:
+					this.areaClear5x5(m, match);
 					break;
 				default:
 					throw new Error("Don't know what to do when a Type " + Type[<any>m.type] + " is matched");
@@ -126,11 +126,11 @@ class SpecialMatchPerformer {
 		match.matchType = MatchType.VerticalClear;
 	}
 	
-	private areaClear3x3(source: Matchable, match: Match) {
-		let startX = Math.max(0, source.x - 1);
-		let maxX = Math.min(this.grid.width, source.x + 2);
-		let startY = Math.max(0, source.y - MagicNumbers.matchableYScale);
-		let maxY = Math.min(this.grid.height * MagicNumbers.matchableYScale, source.y + 2 * MagicNumbers.matchableYScale);
+	private areaClear5x5(source: Matchable, match: Match) {
+		let startX = Math.max(0, source.x - 2);
+		let maxX = Math.min(this.grid.width, source.x + 3);
+		let startY = Math.max(0, source.y - MagicNumbers.matchableYScale * 2);
+		let maxY = Math.min(this.grid.height * MagicNumbers.matchableYScale, source.y + 3 * MagicNumbers.matchableYScale);
 		
 		for (let x = startX; x < maxX; x++) {
 			for (let y = startY; y < maxY; y += MagicNumbers.matchableYScale) {
@@ -142,7 +142,7 @@ class SpecialMatchPerformer {
 			}
 		}
 		
-		match.matchType = MatchType.AreaClear3x3;
+		match.matchType = MatchType.AreaClear5x5;
 	}
 }
 

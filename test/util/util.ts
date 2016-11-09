@@ -73,7 +73,7 @@ class TestUtil {
 	 * B for get to bottom
 	 * (Unimplemented follow)
 	 * + for horizontal and vertical clear
-	 * # for 3x3 clear
+	 * # for 5x5 clear
 	 * @param specialColors The colors of the special matchables in bottom to top, left to right order
 	 */
 	static prepareForTest(gridConfig: Array<string>, specialColors?: string, tickRate: number = 1): Simulation {

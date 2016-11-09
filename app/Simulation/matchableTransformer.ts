@@ -169,7 +169,7 @@ class MatchableTransformer {
 			let m = match.matchables[i];
 			
 			if (m.x == mostX && m.y == mostY) {
-				m.transformTo = Type.AreaClear3x3WhenMatched;
+				m.transformTo = Type.AreaClear5x5WhenMatched;
 				m.transformToColor = m.color;
 				this.matchableTransforming.trigger(m);
 				

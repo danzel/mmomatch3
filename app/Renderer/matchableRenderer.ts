@@ -34,7 +34,7 @@ class MatchableRenderer {
 
 
 	private static typeHasOverlay(type: Type): boolean {
-		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear3x3WhenMatched;
+		return type == Type.VerticalClearWhenMatched || type == Type.HorizontalClearWhenMatched || type == Type.AreaClear5x5WhenMatched;
 	}
 
 	private calculateGrowPulseScale(matchable: Matchable) {
@@ -112,7 +112,7 @@ class MatchableRenderer {
 			case Type.HorizontalClearWhenMatched:
 				frame = 'balloverlays/horizontal.png';
 				break;
-			case Type.AreaClear3x3WhenMatched:
+			case Type.AreaClear5x5WhenMatched:
 				frame = 'balloverlays/areaclear.png';
 				break;
 			default:
