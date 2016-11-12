@@ -63,6 +63,10 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'nov2016': 'Noviembre de 2016. ¡Gráficos y mucho más!',
+		'nov2016n':
+			'<p>Este mes hemos añadido algunos nuevos efectos gráficos cuando haces una coincidencia. También actualizamos el área de bloque especial claro para despejar un área 5x5 en vez de un área 3x3.</p>' +
+			'<p>Gracias a todos por la retroalimentación, por favor, dile a tus amigos acerca de Massive Match!</p>',
 		'oct20162': 'Fines de octubre el año 2016',
 		'oct20162n': 
 			'<p>Hemos actualizado Massive Match para trabajar mejor en los teléfonos móviles.</p>' +
