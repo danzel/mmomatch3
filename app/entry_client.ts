@@ -1,4 +1,3 @@
-/// <reference path="../typings/raven-js/raven-js.d.ts" />
 import Raven = require('raven-js');
 
 import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
