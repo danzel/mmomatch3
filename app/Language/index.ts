@@ -225,7 +225,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'defeated': 'Derrotado',
 		'level failed': 'Nivel fallido',
 		'level complete': '¡Nivel completado!',
-		'you came': 'Usted vino #%{rank} de %{smart_count} jugador||||Usted vino #%{rank} de %{smart_count} jugadores',
+		'you came': 'Usted fue #%{rank} de %{smart_count} jugador||||Usted fue #%{rank} de %{smart_count} jugadores',
 		'next level in': 'Siguiente nivel en %{sec} segundos',
 		'rate level': 'Valorar este nivel',
 		'click to continue': 'Haz click para continuar',
