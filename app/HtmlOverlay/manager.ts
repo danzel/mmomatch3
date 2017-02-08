@@ -5,12 +5,12 @@ declare function require(filename: string): string | ((data: {}) => string);
 var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
-var closeSvg = require('file?name=close.svg?[hash:6]!../../img/ui/close.svg');
-var fullscreenSvg = require('file?name=fullscreen.svg?[hash:6]!../../img/ui/fullscreen.svg');
-var matchable1 = require('file?name=pig.png?[hash:6]!../../img/skin/emojione-animals/balls/6.png');
-var colorClear = require('file?name=cc.png?[hash:6]!../../img/skin/emojione-animals/balls/colorclear.png');
-var vertical = require('file?name=oh.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/vertical.png');
-var areaclear = require('file?name=ac.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/areaclear.png');
+var closeSvg = require('file-loader?name=close.svg?[hash:6]!../../img/ui/close.svg');
+var fullscreenSvg = require('file-loader?name=fullscreen.svg?[hash:6]!../../img/ui/fullscreen.svg');
+var matchable1 = require('file-loader?name=pig.png?[hash:6]!../../img/skin/emojione-animals/balls/6.png');
+var colorClear = require('file-loader?name=cc.png?[hash:6]!../../img/skin/emojione-animals/balls/colorclear.png');
+var vertical = require('file-loader?name=oh.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/vertical.png');
+var areaclear = require('file-loader?name=ac.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/areaclear.png');
 
 interface OverlayOptions {
 	className: string;

@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "css-loader": "^0.26.0",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "2.0.0-rc.3",
     "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
     "gulp-sentry-release": "^1.0.4",
@@ -34,13 +34,13 @@
     "handlebars": "^4.0.6",
     "handlebars-loader": "^1.4.0",
     "hash-webpack-plugin": "0.0.5",
-    "html-webpack-plugin": "^2.24.1",
+    "html-webpack-plugin": "^2.28.0",
     "jasmine": "^2.5.2",
     "json-loader": "^0.5.4",
     "phaser": "^2.6.2",
     "raven-js": "^3.8.1",
-    "ts-loader": "^1.2.2",
+    "ts-loader": "^2.0.0",
     "typescript": "^2.0.10",
-    "webpack": "^1.13.3"
+    "webpack": "^2.2.1"
   }
 }

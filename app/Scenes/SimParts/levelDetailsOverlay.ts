@@ -12,13 +12,13 @@ import RequireMatchDetector = require('../../Simulation/Levels/Detectors/require
 
 var template = <(data: {}) => string>require('./levelDetailsOverlay.handlebars');
 require('./levelDetailsOverlay.css');
-var pig = require('file?name=pig.png?[hash:6]!../../../img/skin/emojione-animals/balls/6.png');
-var pug = require('file?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
-var pug = require('file?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
-var cage = require('file?name=cage.png?[hash:6]!../../../img/skin/emojione-animals/requirematch.png');
-var gettobottom = require('file?name=gettobottom.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottom.png');
-var bee = require('file?name=bee.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottomrace2.png');
-var butterfly = require('file?name=butterfly.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottomrace1.png');
+var pig = require('file-loader?name=pig.png?[hash:6]!../../../img/skin/emojione-animals/balls/6.png');
+var pug = require('file-loader?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
+var pug = require('file-loader?name=pug.png?[hash:6]!../../../img/skin/emojione-animals/balls/4.png');
+var cage = require('file-loader?name=cage.png?[hash:6]!../../../img/skin/emojione-animals/requirematch.png');
+var gettobottom = require('file-loader?name=gettobottom.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottom.png');
+var bee = require('file-loader?name=bee.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottomrace2.png');
+var butterfly = require('file-loader?name=butterfly.png?[hash:6]!../../../img/skin/emojione-animals/balls/gettobottomrace1.png');
 
 class LevelDetailsOverlay {
 	becameClosed = new LiteEvent<void>();
