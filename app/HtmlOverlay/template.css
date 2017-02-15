@@ -117,6 +117,8 @@ a {
 
 	max-height: 90vh;
     overflow-y: scroll;
+
+	z-index: 1; /* Appear on top of ads */
 }
 .help-overlay h2 {
 	margin-bottom: 5px;
