@@ -66,7 +66,6 @@ class SimulationScene {
 		this.levelDetailsOverlay = new LevelDetailsOverlay(htmlOverlayManager, level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
 		this.levelDetailsOverlay.becameClosed.on(() => {
-			this.createLevelNumberDisplay();
 			this.createVictoryConditionDisplay(gameEndDetector.victoryDetector);
 			this.createFailureConditionDisplay(gameEndDetector.failureDetector);
 
@@ -166,27 +165,18 @@ class SimulationScene {
 	preRender(): void {
 		SimulationScene.renderer.update(this.group.game.time.physicsElapsed);
 	}
-
-	createLevelNumberDisplay() {
-		this.group.game.add.text(5, 5, Language.t('level x', { num: this.level.levelNumber }), {
-			fill: 'white',
-			font: 'Chewy',
-			fontSize: 30,
-			strokeThickness: 8
-		}, this.group)
-	}
-
+	
 	createVictoryConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
 		group.x = 5;
-		group.y = 40;
+		group.y = 5;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
 	}
 
 	createFailureConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
 		group.x = 5;
-		group.y = 70;
+		group.y = 35;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
 	}
 }

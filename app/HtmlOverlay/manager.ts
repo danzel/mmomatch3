@@ -93,6 +93,9 @@ class Manager {
 		if (!(<any>this.game.device).fullscreen) {
 			fsb.parentNode.removeChild(fsb);
 		}
+
+		document.getElementById('beta-bg').remove();
+		document.getElementById('beta').remove();
 	}
 
 	showOverlay(overlayOptions: OverlayOptions) {

@@ -14,7 +14,7 @@ class PlayerCountRenderer {
 	text: Phaser.Text;
 
 	constructor(private group: Phaser.Group) {
-		this.text = new Phaser.Text(this.group.game, -64, 4, "Players: ?", this.textStyle);
+		this.text = new Phaser.Text(this.group.game, -4, 4, "Players: ?", this.textStyle);
 		this.text.setTextBounds(0, 0, 0, 0);
 		this.group.add(this.text);
 
