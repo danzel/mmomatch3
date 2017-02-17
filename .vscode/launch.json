@@ -18,7 +18,9 @@
 			},
 			"externalConsole": false,
 			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/built_server"
+			"outFiles": [
+				"${workspaceRoot}/built_server/**/*.js"
+			]
 		},
 		{
 			"name": "Attach",
