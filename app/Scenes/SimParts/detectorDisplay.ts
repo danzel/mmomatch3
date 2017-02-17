@@ -4,7 +4,7 @@ abstract class DetectorDisplay {
 	textStyle = <Phaser.PhaserTextStyle>{
 		fill: 'white',
 		font: 'Chewy',
-		fontSize: 22,
+		fontSize: 18,
 		strokeThickness: 6
 	}
 }

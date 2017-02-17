@@ -169,14 +169,14 @@ class SimulationScene {
 	createVictoryConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
 		group.x = 5;
-		group.y = 5;
+		group.y = 22;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
 	}
 
 	createFailureConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
 		group.x = 5;
-		group.y = 35;
+		group.y = 44;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
 	}
 }

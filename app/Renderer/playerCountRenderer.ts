@@ -3,7 +3,7 @@ import Language = require('../Language');
 class PlayerCountRenderer {
 	textStyle: Phaser.PhaserTextStyle = {
 		font: 'Chewy',
-		fontSize: 22,
+		fontSize: 18,
 		fill: 'white',
 		strokeThickness: 4,
 
@@ -14,7 +14,7 @@ class PlayerCountRenderer {
 	text: Phaser.Text;
 
 	constructor(private group: Phaser.Group) {
-		this.text = new Phaser.Text(this.group.game, -4, 4, "Players: ?", this.textStyle);
+		this.text = new Phaser.Text(this.group.game, 2, 0, "Players: ?", this.textStyle);
 		this.text.setTextBounds(0, 0, 0, 0);
 		this.group.add(this.text);
 

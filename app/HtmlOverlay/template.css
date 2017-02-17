@@ -87,20 +87,28 @@ a {
 	bottom: -4px;
 	font-size: 26px;
 	display: none;
+	text-align: right;
 }
 
 #bottom-corner-buttons div {
-	display: inline-block;
-	cursor: pointer;
-
 	background-color: rgba(200,200,200,0.5);
 	padding: 6px 10px;
-	border-radius: 14px 14px 0 0;
+	border-radius: 14px 0 0 0;
 	margin-right: 6px;
+	line-height: 200%;
+}
+#bcb-content {
+	display: none;
+}
+
+#menu-button {
+	cursor: pointer;
+	display: inline-block;
+	border-radius: 14px 14px 0 0 !important;
 	height:32px;
 }
 
-#fullscreen-button img {
+#menu-button img {
 	position: relative;
 	top: 3px;
 	width: 26px;
@@ -259,6 +267,14 @@ div.matchable {
 	#bottom-corner-buttons {
 		font-size: 20px;
 	}
+	#bottom-corner-buttons div {
+		padding: 3px 7px;
+		border-radius: 10px 0 0 0;
+		margin-right: 4px;
+	}
+	#menu-button {
+		border-radius: 10px 10px 0 0 !important;
+	}
 	.help-overlay {
 		font-size: 16px;
 	}
@@ -273,7 +289,7 @@ div.matchable {
 		width: 40px;
 	}
 
-	#fullscreen-button img {
+	#menu-button img {
 		width: 20px;
 		height: 20px;
 	}

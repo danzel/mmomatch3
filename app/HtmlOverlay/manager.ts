@@ -6,7 +6,7 @@ var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
 require('./template.css');
 var closeSvg = require('file-loader?name=close.svg?[hash:6]!../../img/ui/close.svg');
-var fullscreenSvg = require('file-loader?name=fullscreen.svg?[hash:6]!../../img/ui/fullscreen.svg');
+var menuSvg = require('file-loader?name=menu.svg?[hash:6]!../../img/ui/menu.svg');
 var matchable1 = require('file-loader?name=pig.png?[hash:6]!../../img/skin/emojione-animals/balls/6.png');
 var colorClear = require('file-loader?name=cc.png?[hash:6]!../../img/skin/emojione-animals/balls/colorclear.png');
 var vertical = require('file-loader?name=oh.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/vertical.png');
@@ -25,6 +25,7 @@ class UIState {
 	get overlayVisible() {
 		return this.helpVisible || this.customOverlay;
 	}
+	menuVisible = false;
 	helpVisible = false;
 	feedbackVisible = false;
 	connectionErrorVisible = false;
@@ -74,28 +75,45 @@ class Manager {
 		let btns = document.getElementById('bottom-corner-buttons');
 		btns.style.display = 'block';
 
-		document.getElementById("help-button").addEventListener('click', () => {
+		document.getElementById("help").addEventListener('click', (ev) => {
+			ev.preventDefault();
 			this.uiState.helpVisible = !this.uiState.helpVisible;
 			this.render();
+			this.hideMenu();
 		});
-		document.getElementById("feedback-button").addEventListener('click', () => {
+		document.getElementById("feedback").addEventListener('click', (ev) => {
+			ev.preventDefault();
 			this.uiState.feedbackVisible = true;
 			this.render();
+			this.hideMenu();
 		});
-		let fsb = document.getElementById("fullscreen-button");
-		fsb.addEventListener('click', () => {
+		let fsb = document.getElementById("fullscreen");
+		fsb.addEventListener('click', (ev) => {
+			ev.preventDefault();
 			if (this.game.scale.isFullScreen) {
 				this.game.scale.stopFullScreen();
 			} else {
 				this.game.scale.startFullScreen(false);
 			}
+			this.hideMenu();
 		});
 		if (!(<any>this.game.device).fullscreen) {
 			fsb.parentNode.removeChild(fsb);
 		}
 
+		document.getElementById('menu-button').addEventListener('click', (ev) => {
+			ev.preventDefault();
+			this.uiState.menuVisible = !this.uiState.menuVisible;
+			document.getElementById('bcb-content').style.display = this.uiState.menuVisible ? 'block' : 'none';
+		})
+
 		document.getElementById('beta-bg').remove();
 		document.getElementById('beta').remove();
+	}
+
+	hideMenu() {
+		this.uiState.menuVisible = false;
+		document.getElementById('bcb-content').style.display = 'none';
 	}
 
 	showOverlay(overlayOptions: OverlayOptions) {

@@ -36,9 +36,10 @@ interface LanguageHtmlDef {
 	'privacy-policy': string;
 	'tos': string;
 
+	'fullscreen': string;
 	'mistranslation': string;
-	'feedback-button': string;
-	'help-button': string;
+	'feedback': string;
+	'help': string;
 
 	[key: string]: string;
 }
@@ -126,9 +127,10 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'privacy-policy': 'Política de privacidad',
 		'tos': 'Términos de servicio',
-		'mistranslation': 'Mala traducción',
-		'feedback-button': 'Feedback',
-		'help-button': 'Ayuda',
+		'fullscreen': 'Pantalla completa<br/>',
+		'mistranslation': 'Mala traducción<br/>',
+		'feedback': 'Realimentación<br/>',
+		'help': 'Ayuda',
 	}
 }
 
@@ -157,7 +159,7 @@ class HtmlTranslator {
 	static apply() {
 		let t = translationByInnerHtml[Language.polyglot.locale()];
 		if (!t) {
-			document.getElementById('mistranslation-button').style.display = 'none';
+			document.getElementById('mistranslation').style.display = 'none';
 			return;
 		}
 		let special = translationBySpecial[Language.polyglot.locale()];
