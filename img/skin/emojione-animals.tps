@@ -2,9 +2,9 @@
 <data version="1.0">
     <struct type="Settings">
         <key>fileFormatVersion</key>
-        <int>3</int>
+        <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.1.0</string>
+        <string>4.2.2</string>
         <key>fileName</key>
         <string>C:/Users/dave/Code/mmomatch3/img/skin/emojione-animals.tps</string>
         <key>autoSDSettings</key>
@@ -28,8 +28,6 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <false/>
-        <key>premultiplyAlpha</key>
         <false/>
         <key>shapeDebug</key>
         <false/>
@@ -99,8 +97,6 @@
             <key>height</key>
             <int>-1</int>
         </QSize>
-        <key>reduceBorderArtifacts</key>
-        <false/>
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
@@ -108,10 +104,8 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
-            <false/>
-            <key>forceWordAligned</key>
             <false/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
@@ -156,6 +150,8 @@
         <false/>
         <key>outputFormat</key>
         <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
+        <key>alphaHandling</key>
+        <enum type="SettingsBase::AlphaHandling">ClearTransparentPixels</enum>
         <key>contentProtection</key>
         <struct type="ContentProtection">
             <key>key</key>
@@ -167,8 +163,6 @@
         <false/>
         <key>prependSmartFolderName</key>
         <false/>
-        <key>cleanTransparentPixels</key>
-        <true/>
         <key>globalSpriteSettings</key>
         <struct type="SpriteSettings">
             <key>scale</key>
@@ -210,8 +204,26 @@
             <key type="filename">emojione-animals/balls/9.png</key>
             <key type="filename">emojione-animals/balls/colorclear.png</key>
             <key type="filename">emojione-animals/balls/gettobottom.png</key>
+            <key type="filename">emojione-animals/balls/gettobottomrace1.png</key>
+            <key type="filename">emojione-animals/balls/gettobottomrace2.png</key>
+            <key type="filename">emojione-animals/balls/grow.png</key>
             <key type="filename">emojione-animals/circle.png</key>
+            <key type="filename">emojione-animals/emotes/1.png</key>
+            <key type="filename">emojione-animals/emotes/2.png</key>
+            <key type="filename">emojione-animals/emotes/3.png</key>
+            <key type="filename">emojione-animals/emotes/4.png</key>
+            <key type="filename">emojione-animals/emotes/5.png</key>
+            <key type="filename">emojione-animals/emotes/6.png</key>
             <key type="filename">emojione-animals/gettobottom_repeat.png</key>
+            <key type="filename">emojione-animals/gettobottomrace1_repeat.png</key>
+            <key type="filename">emojione-animals/gettobottomrace2_repeat.png</key>
+            <key type="filename">emojione-animals/match-particles/1.png</key>
+            <key type="filename">emojione-animals/match-particles/2.png</key>
+            <key type="filename">emojione-animals/match-particles/3.png</key>
+            <key type="filename">emojione-animals/match-particles/4.png</key>
+            <key type="filename">emojione-animals/match-particles/5.png</key>
+            <key type="filename">emojione-animals/match-particles/6.png</key>
+            <key type="filename">emojione-animals/match-particles/7.png</key>
             <key type="filename">emojione-animals/player.png</key>
             <key type="filename">emojione-animals/requirematch.png</key>
             <struct type="IndividualSpriteSettings">

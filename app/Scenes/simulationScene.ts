@@ -1,6 +1,7 @@
 import Detector = require('../Simulation/Levels/detector');
 import DetectorDisplay = require('./SimParts/detectorDisplay');
 import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
+import EmoteInputDisplay = require('./SimParts/emoteInputDisplay');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
@@ -31,6 +32,7 @@ class SimulationScene {
 
 	private playersOnSimulation: PlayersOnSimulation;
 	private requireMatchRenderer: RequireMatchRenderer;
+	private emoteInputDisplay: EmoteInputDisplay;
 	private input: InputHandler;
 
 	private haveFitRenderer = false;
@@ -60,6 +62,8 @@ class SimulationScene {
 
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
+
+		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier);
 
 		this.input = new InputHandler(group, SimulationScene.renderer, this.simulation, inputApplier);
 
@@ -92,6 +96,7 @@ class SimulationScene {
 	removeFromSimulationRenderer() {
 		this.playersOnSimulation.removeFromSimulationRendererGroup();
 		this.requireMatchRenderer.removeFromSimulationRendererGroup();
+		this.emoteInputDisplay.destroy();
 		SimulationScene.renderer.group.parent.removeChild(SimulationScene.renderer.group);
 	}
 
@@ -160,6 +165,7 @@ class SimulationScene {
 			this.gameOverOverlay.update();
 		}
 		this.playersOnSimulation.update();
+		this.emoteInputDisplay.update();
 	}
 
 	preRender(): void {
