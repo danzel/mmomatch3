@@ -23,6 +23,8 @@ abstract class InputApplier {
 		}
 	}
 
+	abstract emote(emoteNumber: number): void;
+
 	protected abstract performSwap(left: Matchable, right: Matchable): void;
 }
 

@@ -3,6 +3,7 @@
 import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
 import CircleCursor = require('./Scenes/circleCursor');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
+import EmoteProxy = require('./Util/emoteProxy');
 import GameEndDetector = require('./Simulation/Levels/gameEndDetector');
 import GoodBrowser = require('./goodBrowser');
 import GraphicsLoader = require('./Renderer/graphicsLoader');
@@ -82,10 +83,11 @@ class AppEntry {
 		let level = loaded.level;
 		this.simulation = loaded.simulation;
 
+		let emoteProxy = new EmoteProxy();
 		let gameEndDetector = new GameEndDetector(level, this.simulation);
-		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid);
+		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, {}, 0, {});
+		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, {}, 0, {});
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {

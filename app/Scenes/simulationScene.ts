@@ -2,6 +2,7 @@ import Detector = require('../Simulation/Levels/detector');
 import DetectorDisplay = require('./SimParts/detectorDisplay');
 import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
 import EmoteInputDisplay = require('./SimParts/emoteInputDisplay');
+import EmoteProxy = require('../Util/emoteProxy');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
@@ -50,7 +51,7 @@ class SimulationScene {
 	detectorDisplays = new Array<DetectorDisplay>();
 
 
-	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }) {
+	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, emoteProxy: EmoteProxy, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }) {
 		if (!SimulationScene.renderer) {
 			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId);
 		} else {
@@ -91,6 +92,10 @@ class SimulationScene {
 
 			this.gameOverOverlay = new GameOverOverlay(htmlOverlayManager, this.group.game.time, gameEndType, config.gameOverCountdown, this.simulation.scoreTracker, playerId, this.playerCountValue, this.level);
 		});
+
+		emoteProxy.emoteTriggered.on((data) => {
+			SimulationScene.renderer.emoteRenderer.showEmote(data.emoteNumber, data.gridX, data.gridY);
+		})
 	}
 
 	removeFromSimulationRenderer() {

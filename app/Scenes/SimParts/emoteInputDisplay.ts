@@ -40,7 +40,7 @@ class EmoteInputDisplay {
 			s.inputEnabled = true;
 			let emoteNumber = 1 + i;
 			s.events.onInputUp.add(() => {
-				//this.inputApplier.emote(emoteNumber);
+				this.inputApplier.emote(emoteNumber);
 			});
 		}
 
