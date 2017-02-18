@@ -33,6 +33,7 @@ class ServerLogger {
 		server.levelStarted.on(data => this.levelStarted(data));
 		server.playerJoined.on(p => this.logger.log('info', 'Player Joined ', { id: p.id, name: p.name }));
 		server.playerLeft.on(p => this.logger.log('info', 'Player Left ', { id: p.id, name: p.name }));
+		server.emotePerformed.on(e => this.logger.log('info', 'Emote Performed ', { playerId: e.playerId, emote: e.emoteNumber }));
 
 		server.warning.on(data => this.logger.log('warn', "Server: " + data.str, data.data));
 		serverComms.warning.on(data => this.logger.log('warn', "ServerComms: " + data.str, data.data));

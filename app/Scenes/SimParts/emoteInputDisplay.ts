@@ -55,6 +55,12 @@ class EmoteInputDisplay {
 				this.click();
 				this.emotesAvailable = false;
 				this.group.game.add.tween(this.group).to({ alpha: 0 }, 200).start();
+
+				//Log to google analytics
+				let ga = (<any>window).ga;
+				if (ga) {
+					ga('send', 'event', 'emote', emoteNumber);
+				}
 			});
 		}
 

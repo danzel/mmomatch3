@@ -41,6 +41,7 @@ class Server {
 	warning = new LiteEvent<{ str: string, data?: any }>();
 	playerJoined = new LiteEvent<Player>();
 	playerLeft = new LiteEvent<Player>();
+	emotePerformed = new LiteEvent<{ playerId: number, emoteNumber: number }>();
 
 	private packetGenerator: PacketGenerator = new PacketGenerator();
 	private playerProvider: PlayerProvider = new PlayerProvider();
@@ -212,11 +213,13 @@ class Server {
 			this.warning.trigger({ str: 'ignoring received data from client before booted' });
 			return;
 		}
-		
+
 		if (this.emoteLimiter.limitCheck(player.id)) {
 			//broadcast emote
 			let emoteResponse = new EmoteData(player.id, emote.emoteNumber, emote.x, emote.y);
 			this.serverComms.sendEmote(emoteResponse, Object.keys(this.clients).filter(x => x != player.commsId))
+
+			this.emotePerformed.trigger({ playerId: player.id, emoteNumber: emote.emoteNumber });
 		}
 	}
 

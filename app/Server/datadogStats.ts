@@ -13,7 +13,14 @@ class DatadogStats {
 		this.statsd = new StatsD.StatsD();
 
 		server.levelStarted.on((data) => this.levelStarted(data.level, data.simulation, data.gameEndDetector));
-		
+
+		server.playerJoined.on(() => this.statsd.increment('player-joined'));
+		server.playerLeft.on(() => this.statsd.increment('player-left'));
+		server.emotePerformed.on(e => {
+			this.statsd.increment('emote-performed');
+			this.statsd.increment('emote-performed.' + e.emoteNumber);
+		});
+
 		setInterval(() => this.logPeriodicStats(), 10000);
 	}
 
@@ -23,10 +30,10 @@ class DatadogStats {
 		this.statsd.gauge('mmomatch.match-total', 0);
 		this.statsd.gauge('mmomatch.points-total', 0);
 		this.statsd.gauge('mmomatch.swap-total', 0);
-		
+
 		simulation.swapHandler.swapStarted.on(() => {
-			this.statsd.increment('mmomatch.swap');	
-			this.statsd.gauge('mmomatch.swap-total', simulation.swapHandler.totalSwapsCount);	
+			this.statsd.increment('mmomatch.swap');
+			this.statsd.gauge('mmomatch.swap-total', simulation.swapHandler.totalSwapsCount);
 		});
 		simulation.matchPerformer.matchPerformed.on((match) => {
 			this.statsd.increment('mmomatch.match', match.matchables.length);
@@ -36,7 +43,7 @@ class DatadogStats {
 
 		simulation.matchPerformer.swapDidntCauseAMatch.on(() => this.statsd.increment('mmomatch.swap-no-match'));
 	}
-	
+
 	private logPeriodicStats() {
 		this.statsd.gauge('mmomatch.players', this.server.getRealPlayerCount());
 	}
