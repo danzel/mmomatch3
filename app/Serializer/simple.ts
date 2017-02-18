@@ -1,4 +1,6 @@
 import BootData = require('../DataPackets/bootData');
+import EmoteClientData = require('../DataPackets/emoteClientData');
+import EmoteData = require('../DataPackets/emoteData');
 import InitData = require('../DataPackets/initData');
 import JoinData = require('../DataPackets/joinData');
 import PacketType = require('../DataPackets/packetType');
@@ -45,6 +47,16 @@ class SimpleSerializer implements Serializer {
 	serializeClientSwap(swapData: SwapClientData): any {
 		(<any>swapData).packetType = PacketType.SwapClient;
 		return swapData;
+	}
+
+	serializeClientEmote(emoteClientData: EmoteClientData): any {
+		(<any>emoteClientData).packetType = PacketType.EmoteClient;
+		return emoteClientData;
+	}
+
+	serializeEmote(emoteData: EmoteData): any {
+		(<any>emoteData).packetType = PacketType.Emote;
+		return emoteData;
 	}
 
 	deserialize(data: any): { packetType: PacketType, data: any } {

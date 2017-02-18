@@ -3,6 +3,7 @@ import DetectorDisplay = require('./SimParts/detectorDisplay');
 import DetectorDisplayFactory = require('./SimParts/detectorDisplayFactory');
 import EmoteInputDisplay = require('./SimParts/emoteInputDisplay');
 import EmoteProxy = require('../Util/emoteProxy');
+import EmoteRenderer = require('./SimParts/emoteRenderer');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
@@ -33,6 +34,8 @@ class SimulationScene {
 
 	private playersOnSimulation: PlayersOnSimulation;
 	private requireMatchRenderer: RequireMatchRenderer;
+	private emoteRenderer: EmoteRenderer;
+
 	private emoteInputDisplay: EmoteInputDisplay;
 	private input: InputHandler;
 
@@ -62,6 +65,7 @@ class SimulationScene {
 
 
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
+		this.emoteRenderer = new EmoteRenderer(simulationGroup);
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
 
 		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier, simulation.swapHandler, playerId);
@@ -94,7 +98,7 @@ class SimulationScene {
 		});
 
 		emoteProxy.emoteTriggered.on((data) => {
-			SimulationScene.renderer.emoteRenderer.showEmote(data.emoteNumber, data.gridX, data.gridY);
+			this.emoteRenderer.showEmote(data.emoteNumber, data.gridX, data.gridY);
 		})
 	}
 

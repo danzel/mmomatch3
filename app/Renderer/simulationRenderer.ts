@@ -1,5 +1,4 @@
 import CirclePingRenderer = require('./circlePingRenderer');
-import EmoteRenderer = require('./emoteRenderer');
 import FailedToSwapState = require('./failedToSwapState');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import GetToBottomHighlighter = require('./getToBottomHighlighter');
@@ -24,7 +23,6 @@ class SimulationRenderer {
 	private matchableRenderer: MatchableRenderer;
 	private simulationParticleRenderer: SimulationParticleRenderer;
 	private circlePingRenderer: CirclePingRenderer;
-	emoteRenderer: EmoteRenderer;
 
 	private outline: Phaser.Graphics;
 
@@ -41,7 +39,6 @@ class SimulationRenderer {
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
 		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer);
 		this.requireMatchHighlighter = new RequireMatchHighlighter(this.circlePingRenderer);
-		this.emoteRenderer = new EmoteRenderer(this.group);
 
 		this.scale = 0.2;
 		this.group.y = 400;

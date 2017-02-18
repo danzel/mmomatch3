@@ -1,5 +1,7 @@
 import BootData = require('../DataPackets/bootData');
 import ClientComms = require('./clientComms');
+import EmoteClientData = require('../DataPackets/emoteClientData');
+import EmoteData = require('../DataPackets/emoteData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import FailureType = require('../Simulation/Levels/failureType');
 import InitData = require('../DataPackets/initData');
@@ -26,6 +28,7 @@ class Client {
 	newNamesReceived = new LiteEvent<{ [id: number]: string }>();
 	simulationReceived = new LiteEvent<{ level: LevelDef, simulation: Simulation, gameEndDetector: GameEndDetector }>();
 	tickReceived = new LiteEvent<TickData>();
+	emoteReceived = new LiteEvent<EmoteData>();
 
 	constructor(private clientComms: ClientComms, private version: string, public nickname?: string) {
 		if (this.nickname && this.nickname.length > 16) {
@@ -38,6 +41,10 @@ class Client {
 
 	sendSwap(leftId: number, rightId: number) {
 		this.clientComms.sendSwap(new SwapClientData(leftId, rightId));
+	}
+
+	sendEmote(emoteNumber: number, x: number, y: number): void {
+		this.clientComms.sendEmote(new EmoteClientData(emoteNumber, x, y));
 	}
 
 	private connected() {
@@ -99,6 +106,8 @@ class Client {
 
 			this.newNamesReceived.trigger(tickData.names);
 			this.tickReceived.trigger(tickData);
+		} else if (packet.packetType == PacketType.Emote) {
+			this.emoteReceived.trigger(<EmoteData>packet.data);
 		} else {
 			console.warn('Received unexpected packet ', packet);
 		}

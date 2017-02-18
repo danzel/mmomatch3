@@ -1,5 +1,5 @@
-import MagicNumbers = require('../Simulation/magicNumbers');
-import MatchableRenderer = require('./matchableRenderer');
+import MagicNumbers = require('../../Simulation/magicNumbers');
+import MatchableRenderer = require('../../Renderer/matchableRenderer');
 
 class EmoteRenderer {
 	group: Phaser.Group;

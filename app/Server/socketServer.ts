@@ -13,6 +13,7 @@ import Primus = require('primus');
 //import fs = require('fs');
 
 import BootData = require('../DataPackets/bootData');
+import EmoteData= require('../DataPackets/emoteData')
 import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
 import PacketType = require('../DataPackets/packetType');
@@ -39,7 +40,7 @@ class SocketServer extends ServerComms {
 		this.app.use(compression());
 		this.app.use(helmet.hidePoweredBy());
 		let oneDay = 24 * 60 * 60 * 1000;
-		
+
 		this.app.use(express.static('dist', {
 			maxAge: oneDay,
 			setHeaders: function (res, path) {
@@ -67,12 +68,12 @@ class SocketServer extends ServerComms {
 				res.setHeader('Location', 'https://' + req.headers.host + req.url);
 				res.statusCode = 302;
 				res.end('<!-- Hello Developer Person! Please use HTTPS instead -->');
-			})).listen(config.httpPort, function() {
+			})).listen(config.httpPort, function () {
 				console.log("Listening for ACME http-01 challenges on", this.address());
 			});
 
 			this.httpServer = https.createServer(lex.httpsOptions, lex.middleware(this.app));
-			this.httpServer.listen(config.httpsPort, function() {
+			this.httpServer.listen(config.httpsPort, function () {
 				console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
 			});
 		} else {
@@ -150,6 +151,12 @@ class SocketServer extends ServerComms {
 
 	sendTick(tickData: TickData, ids: Array<string>) {
 		var data = this.serializer.serializeTick(tickData);
+
+		this.send(data, ids);
+	}
+
+	sendEmote(emoteData: EmoteData, ids: Array<string>): void {
+		var data = this.serializer.serializeEmote(emoteData);
 
 		this.send(data, ids);
 	}

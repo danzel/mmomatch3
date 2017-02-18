@@ -51,7 +51,7 @@ class EmoteInputDisplay {
 				}
 
 				this.inputApplier.emote(emoteNumber, this.targetX, this.targetY);
-				
+
 				this.click();
 				this.emotesAvailable = false;
 				this.group.game.add.tween(this.group).to({ alpha: 0 }, 200).start();
@@ -72,16 +72,14 @@ class EmoteInputDisplay {
 		if (!this.emotesAvailable) {
 			this.emotesAvailable = true;
 			this.group.game.add.tween(this.group).to({ alpha: 1 }, 200).start();
-
-			this.targetX = x;
-			this.targetY = y;
 		}
+
+		this.targetX = x;
+		this.targetY = y;
 	}
 
 	private click() {
 		this.showingEmotes = !this.showingEmotes;
-
-		//TODO: hide menu
 
 		let tween = this.button.game.add.tween(this.group);
 		tween.to({ y: this.group.game.height + (this.showingEmotes ? 0 : 60) }, 250, Phaser.Easing.Cubic.InOut);

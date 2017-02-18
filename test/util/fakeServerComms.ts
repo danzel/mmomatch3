@@ -2,6 +2,8 @@ import BootData = require('../../app/DataPackets/bootData');
 import Client = require('../../app/Client/client');
 import ClientComms = require('../../app/Client/clientComms');
 import ClientSimulationHandler = require('../../app/Client/clientSimulationHandler');
+import EmoteClientData = require('../../app/DataPackets/emoteClientData');
+import EmoteData = require('../../app/DataPackets/emoteData');
 import GameEndDetector = require('../../app/Simulation/Levels/gameEndDetector');
 import InitData = require('../../app/DataPackets/initData');
 import JoinData = require('../../app/DataPackets/joinData');
@@ -12,7 +14,6 @@ import Simulation = require('../../app/Simulation/simulation');
 import SwapClientData = require('../../app/DataPackets/swapClientData');
 import RejectData = require('../../app/DataPackets/rejectData');
 import TickData = require('../../app/DataPackets/tickData');
-import UnavailableData = require('../../app/DataPackets/unavailableData');
 
 class FakeClientComms extends ClientComms {
 	simulationHandler: ClientSimulationHandler;
@@ -21,12 +22,18 @@ class FakeClientComms extends ClientComms {
 		super();
 	}
 
+	//TODO: This should use serializer to be more real?
+
 	sendJoin(joinData: JoinData): void {
 		this.server.dataReceived.trigger({ id: this.id, packet: { packetType: PacketType.Join, data: joinData } });
 	}
 
 	sendSwap(swapClientData: SwapClientData) {
 		this.server.dataReceived.trigger({ id: this.id, packet: { packetType: PacketType.SwapClient, data: swapClientData } });
+	}
+
+	sendEmote(emoteClientData: EmoteClientData) {
+		this.server.dataReceived.trigger({ id: this.id, packet: { packetType: PacketType.EmoteClient, data: emoteClientData } });
 	}
 
 	setClient(client: Client) {
@@ -47,7 +54,17 @@ class FakeClientComms extends ClientComms {
 
 class FakeServerComms extends ServerComms {
 	private idCounter = 0;
-	server: Server;
+	private serverVar: Server;
+	set server(server: Server) {
+		this.serverVar = server;
+
+		server.warning.on(d => {
+			throw new Error(d.str);
+		})
+	}
+	get server(): Server {
+		return this.serverVar;
+	}
 	clients = new Array<Client>();
 	clientsLookup: { [id: string]: FakeClientComms } = {};
 
@@ -80,17 +97,13 @@ class FakeServerComms extends ServerComms {
 		});
 	}
 
-	sendUnavailable(unavailableData: UnavailableData, id?: string) {
-		if (id) {
-			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData });
-		} else {
-			for (let i in this.clientsLookup) {
-				this.clientsLookup[i].dataReceived.trigger({ packetType: PacketType.Unavailable, data: unavailableData });
-			}
-		}
+	sendEmote(emoteData: EmoteData, ids: Array<string>) {
+		ids.forEach(id => {
+			this.clientsLookup[id].dataReceived.trigger({ packetType: PacketType.Emote, data: emoteData });
+		});
 	}
 
-	addClient() {
+	addClient(): Client {
 		this.idCounter++;
 		let id = '' + this.idCounter;
 		let comms = new FakeClientComms(id, this);
@@ -102,6 +115,8 @@ class FakeServerComms extends ServerComms {
 
 		this.connected.trigger(id);
 		comms.connected.trigger();
+
+		return client;
 	}
 
 	update() {

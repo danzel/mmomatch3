@@ -1,6 +1,7 @@
 import Client = require('./client');
 import ClientInputApplier = require('./clientInputApplier');
 import ClientSpawnManager = require('./clientSpawnManager');
+import EmoteProxy = require('../Util/emoteProxy');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import InputVerifier = require('../Simulation/inputVerifier');
@@ -9,12 +10,14 @@ import Simulation = require('../Simulation/simulation');
 import TickData = require('../DataPackets/tickData');
 
 class ClientSimulationHandler {
+	emoteProxy: EmoteProxy;
 	inputApplier: ClientInputApplier;
 
 	private frameQueue = new Array<FrameData>();
 
 	constructor(public level: LevelDef, public simulation: Simulation, public gameEndDetector: GameEndDetector, client: Client, private tickRate: number) {
-		this.inputApplier = new ClientInputApplier(client, simulation.inputVerifier, simulation.grid);
+		this.emoteProxy = new EmoteProxy();
+		this.inputApplier = new ClientInputApplier(client, simulation.inputVerifier, simulation.grid, this.emoteProxy);
 	}
 
 	tickReceived(tickData: TickData) {

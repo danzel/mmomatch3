@@ -121,6 +121,9 @@ class AppEntry {
 		});
 		this.client.simulationReceived.on(data => this.simulationReceived(data));
 		this.client.tickReceived.on(tick => this.tickReceived(tick));
+		this.client.emoteReceived.on(e => {
+			this.simulationHandler.emoteProxy.emoteTriggered.trigger({ emoteNumber: e.emoteNumber, gridX: e.x, gridY: e.y });
+		});
 
 
 		this.htmlOverlayManager.setConnectionError(true);
@@ -136,7 +139,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, { gameOverCountdown: 8 }, this.playerId, this.playerNames);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, this.simulationHandler.emoteProxy, { gameOverCountdown: 8 }, this.playerId, this.playerNames);
 		//new DebugLogger(data.simulation);
 	}
 

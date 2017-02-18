@@ -1,5 +1,6 @@
 /// <reference path="../../typings/primus/primusClient.d.ts" />
 import ClientComms = require('./clientComms');
+import EmoteClientData = require('../DataPackets/emoteClientData');
 import JoinData = require('../DataPackets/joinData');
 import LiteEvent = require('../liteEvent');
 import Serializer = require('../Serializer/serializer')
@@ -43,6 +44,10 @@ class SocketClient extends ClientComms {
 
 	sendSwap(swapClientData: SwapClientData) {
 		this.primus.write(this.serializer.serializeClientSwap(swapClientData));
+	}
+
+	sendEmote(emoteClientData: EmoteClientData) {
+		this.primus.write(this.serializer.serializeClientEmote(emoteClientData));
 	}
 }
 

@@ -19,6 +19,13 @@ enum PacketType {
 	/** Client sends to server to do a swap */
 	SwapClient,
 
+
+	/** Client sends to server to request showing an emote */
+	EmoteClient,
+	/** Server sends to client to show an emote */
+	Emote,
+
+
 	/** Not a real packet, means corrupt/invalid data */
 	Corrupt
 }

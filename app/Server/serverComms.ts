@@ -1,4 +1,5 @@
 import BootData = require('../DataPackets/bootData');
+import EmoteData = require('../DataPackets/emoteData');
 import InitData = require('../DataPackets/initData');
 import LiteEvent = require('../liteEvent');
 import PacketType = require('../DataPackets/packetType');
@@ -19,6 +20,7 @@ abstract class ServerComms {
 	abstract sendInit(initData: InitData, id: string): void;
 	abstract sendBoot(bootData: BootData, ids: Array<string>): void;
 	abstract sendTick(tickData: TickData, ids: Array<string>): void;
+	abstract sendEmote(emoteData: EmoteData, ids: Array<string>): void;
 }
 
 export = ServerComms;

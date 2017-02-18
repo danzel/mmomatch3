@@ -3,6 +3,10 @@ import BootData = require('../DataPackets/bootData');
 import ComboOwnership = require('../Simulation/Scoring/comboOwnership');
 import DebugLogger = require('../debugLogger');
 import DirectInputApplier = require('../Simulation/SinglePlayer/directInputApplier');
+import EmoteClientData = require('../DataPackets/emoteClientData');
+import EmoteData = require('../DataPackets/emoteData');
+import EmoteLimiter = require('./emoteLimiter');
+import EmoteProxy = require('../Util/emoteProxy');
 import FrameData = require('../DataPackets/frameData');
 import GameEndDetector = require('../Simulation/Levels/gameEndDetector');
 import InitData = require('../DataPackets/initData');
@@ -47,6 +51,7 @@ class Server {
 	private simulation: Simulation;
 	private gameEndDetector: GameEndDetector;
 	private moveRateLimiter: MoveRateLimiter;
+	private emoteLimiter: EmoteLimiter;
 
 	private clientsRequiringJoin = new Array<string>();
 	private clientsRequiringBoot = new Array<Player>();
@@ -80,13 +85,15 @@ class Server {
 
 		this.gameEndDetector = new GameEndDetector(this.level, this.simulation);
 		this.moveRateLimiter = new MoveRateLimiter(3);
+		this.emoteLimiter = new EmoteLimiter();
 		this.tickDataFactory = new TickDataFactory(this.simulation, this.simulation.scoreTracker, this.newNameCollection, this.config.framesPerTick);
+		let emoteProxy = new EmoteProxy();
 		//new DebugLogger(this.simulation);
 
 		this.bots.length = 0;
 		let desiredBots = this.config.botsLeaveForPlayers ? (this.config.botCount - this.getRealPlayerCount()) : this.config.botCount;
 		for (var i = 0; i < desiredBots; i++) {
-			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid)));
+			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy)));
 		}
 
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection);
@@ -131,6 +138,8 @@ class Server {
 			this.joinReceived(data.id, <JoinData>data.packet.data);
 		} else if (data.packet.packetType == PacketType.SwapClient) {
 			this.swapReceived(data.id, <SwapClientData>data.packet.data);
+		} else if (data.packet.packetType == PacketType.EmoteClient) {
+			this.emoteReceived(data.id, <EmoteClientData>data.packet.data);
 		} else {
 			this.warning.trigger({ str: 'Received unexpected packet', data: data.packet });
 		}
@@ -190,9 +199,24 @@ class Server {
 		if (this.simulation.inputVerifier.swapIsValid(left, right)) {
 			if (this.moveRateLimiter.limitCheck(player.id, this.simulation.timeRunning)) {
 				this.simulation.swapHandler.swap(player.id, left, right);
+				this.emoteLimiter.reset(player.id);
 			} else {
 				this.warning.trigger({ str: 'player hit moveRateLimit', data: id });
 			}
+		}
+	}
+
+	private emoteReceived(id: string, emote: EmoteClientData) {
+		var player = this.clients[id];
+		if (!player) {
+			this.warning.trigger({ str: 'ignoring received data from client before booted' });
+			return;
+		}
+		
+		if (this.emoteLimiter.limitCheck(player.id)) {
+			//broadcast emote
+			let emoteResponse = new EmoteData(player.id, emote.emoteNumber, emote.x, emote.y);
+			this.serverComms.sendEmote(emoteResponse, Object.keys(this.clients).filter(x => x != player.commsId))
 		}
 	}
 

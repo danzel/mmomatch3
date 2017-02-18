@@ -1,4 +1,6 @@
 import BootData = require('../DataPackets/bootData');
+import EmoteClientData = require('../DataPackets/emoteClientData');
+import EmoteData = require('../DataPackets/emoteData');
 import InitData = require('../DataPackets/initData');
 import JoinData = require('../DataPackets/joinData');
 import PacketType = require('../DataPackets/packetType');
@@ -19,6 +21,10 @@ interface Serializer {
 	serializeJoin(joinData: JoinData): any;
 
 	serializeClientSwap(swapData: SwapClientData): any;
+
+	serializeClientEmote(emoteClientData: EmoteClientData): any;
+
+	serializeEmote(emoteData: EmoteData): any;
 
 	deserialize(data: any): { packetType: PacketType, data: any };
 }
