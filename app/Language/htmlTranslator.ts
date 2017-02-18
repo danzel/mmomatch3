@@ -12,6 +12,9 @@ interface LanguageHtmlDef {
 
 	'news': string;
 
+	'feb2017': string;
+	'feb2017n': string;
+
 	'oct20162': string;
 	'oct20162n': string;
 	
@@ -63,6 +66,11 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 		'ctrl3': 'Cada nivel tiene un objetivo diferente, prestar atención a ellos.',
 
 		'news': 'Noticias',
+
+		'feb2017':'Febrero de 2017. ¡Emotes!',
+		'feb2017n':
+			'<p>Este mes hemos añadido una característica que mucha gente ha estado pidiendo, emotes. Ahora usted puede expresar su agradecimiento o enojo con estas caras de fantasía.</p>' +
+			'<p>Pulse la burbuja del discurso en la parte inferior de la pantalla para enviar una, que aparecen en la posición que hizo por última vez un movimiento.</p>',
 
 		'nov2016': 'Noviembre de 2016. ¡Gráficos y mucho más!',
 		'nov2016n':
