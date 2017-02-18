@@ -1,4 +1,5 @@
 import InputApplier = require('../../Simulation/inputApplier');
+import SwapHandler = require('../../Simulation/swapHandler');
 
 class EmoteInputDisplay {
 	private group: Phaser.Group;
@@ -9,11 +10,16 @@ class EmoteInputDisplay {
 
 	private lastEmoteTime = 0;
 	private showingEmotes = false;
+	private emotesAvailable = false;
+
+	private targetX: number;
+	private targetY: number;
 
 	private emoteSprites: Array<Phaser.Sprite>;
 
-	constructor(group: Phaser.Group, private inputApplier: InputApplier) {
+	constructor(group: Phaser.Group, private inputApplier: InputApplier, swapHandler: SwapHandler, playerId: number) {
 		this.group = group.game.add.group();
+		this.group.alpha = 0;
 		this.button = group.game.add.sprite(0, -64, 'atlas', 'emote.png', this.group);
 		this.button.anchor.set(0.5, 1);
 
@@ -40,12 +46,36 @@ class EmoteInputDisplay {
 			s.inputEnabled = true;
 			let emoteNumber = 1 + i;
 			s.events.onInputUp.add(() => {
-				this.inputApplier.emote(emoteNumber);
+				if (!this.emotesAvailable || !this.showingEmotes) {
+					return;
+				}
+
+				this.inputApplier.emote(emoteNumber, this.targetX, this.targetY);
+				
+				this.click();
+				this.emotesAvailable = false;
+				this.group.game.add.tween(this.group).to({ alpha: 0 }, 200).start();
 			});
 		}
 
 		this.button.inputEnabled = true;
 		this.button.events.onInputUp.add(this.click, this);
+
+		swapHandler.swapStarted.on(swap => {
+			if (swap.playerId == playerId) {
+				this.makeAvailable((swap.left.x + swap.right.x) / 2, (swap.left.y + swap.right.y) / 2);
+			}
+		})
+	}
+
+	private makeAvailable(x: number, y: number) {
+		if (!this.emotesAvailable) {
+			this.emotesAvailable = true;
+			this.group.game.add.tween(this.group).to({ alpha: 1 }, 200).start();
+
+			this.targetX = x;
+			this.targetY = y;
+		}
 	}
 
 	private click() {
@@ -54,7 +84,7 @@ class EmoteInputDisplay {
 		//TODO: hide menu
 
 		let tween = this.button.game.add.tween(this.group);
-		tween.to({y: this.group.game.height + (this.showingEmotes ? 0 : 60)}, 400, Phaser.Easing.Cubic.InOut);
+		tween.to({ y: this.group.game.height + (this.showingEmotes ? 0 : 60) }, 250, Phaser.Easing.Cubic.InOut);
 		tween.start();
 	}
 

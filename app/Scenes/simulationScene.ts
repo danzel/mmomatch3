@@ -64,7 +64,7 @@ class SimulationScene {
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
 
-		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier);
+		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier, simulation.swapHandler, playerId);
 
 		this.input = new InputHandler(group, SimulationScene.renderer, this.simulation, inputApplier);
 
