@@ -43,7 +43,7 @@ class EmoteRenderer {
 						.to({ x: 1, y: 1 }, 300, Phaser.Easing.Linear.None),
 					this.group.game.add.tween(sprite.scale)
 						.to({ x: 1.5, y: 1.5 }, 1500, (percent: number) => {
-							return 0.4 * Math.sin(percent * Math.PI * 4);
+							return 0.4 * Math.sin(percent * Math.PI * 3);
 						}),
 					this.group.game.add.tween(sprite)
 						.to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None)
