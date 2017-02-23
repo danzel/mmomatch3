@@ -201,7 +201,11 @@ if (runningOnLive) {
 			"No se puede ejecutar código de un script liberado",
 			"Не удается выполнить программу из освобожденного сценария",
 			"Kan programmacode niet uitvoeren vanuit een vrijgegeven script",
-			"Não é possível executar o código a partir de um script liberado"
+			"Não é possível executar o código a partir de um script liberado",
+			"Nemožno vykonať kód z uvoľneného skriptu",
+			"삭제된 스크립트의 코드는 수행할 수 없습니다.",
+			"Impossibile eseguire il codice da uno script liberato",
+			"Nelze spustit kód z uvolněného skriptu."
 		],
 		//Refresh the page after a simulation breaking error occurs
 		dataCallback: function (data) {
