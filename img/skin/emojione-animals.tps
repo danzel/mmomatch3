@@ -208,6 +208,7 @@
             <key type="filename">emojione-animals/balls/gettobottomrace2.png</key>
             <key type="filename">emojione-animals/balls/grow.png</key>
             <key type="filename">emojione-animals/circle.png</key>
+            <key type="filename">emojione-animals/emote.png</key>
             <key type="filename">emojione-animals/emotes/1.png</key>
             <key type="filename">emojione-animals/emotes/2.png</key>
             <key type="filename">emojione-animals/emotes/3.png</key>
