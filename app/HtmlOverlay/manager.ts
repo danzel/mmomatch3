@@ -107,8 +107,12 @@ class Manager {
 			document.getElementById('bcb-content').style.display = this.uiState.menuVisible ? 'block' : 'none';
 		})
 
-		document.getElementById('beta-bg').remove();
-		document.getElementById('beta').remove();
+
+		let toRemove = document.getElementById('beta-bg');
+		toRemove.parentElement.removeChild(toRemove);
+
+		toRemove = document.getElementById('beta');
+		toRemove.parentElement.removeChild(toRemove);
 	}
 
 	hideMenu() {
