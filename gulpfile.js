@@ -50,7 +50,7 @@ gulp.task('webpack', function(callback) {
 	var config = Object.create(webpackConfig);
 	//Alter the config
 	config.devtool = 'source-map';
-	config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+	config.plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
 
 	webpack(config, function(err, stats) {
         if (err) throw new gutil.PluginError("webpack", err);
