@@ -14,11 +14,11 @@ class DatadogStats {
 
 		server.levelStarted.on((data) => this.levelStarted(data.level, data.simulation, data.gameEndDetector));
 
-		server.playerJoined.on(() => this.statsd.increment('player-joined'));
-		server.playerLeft.on(() => this.statsd.increment('player-left'));
+		server.playerJoined.on(() => this.statsd.increment('mmomatch.player-joined'));
+		server.playerLeft.on(() => this.statsd.increment('mmomatch.player-left'));
 		server.emotePerformed.on(e => {
-			this.statsd.increment('emote-performed');
-			this.statsd.increment('emote-performed.' + e.emoteNumber);
+			this.statsd.increment('mmomatch.emote-performed.any');
+			this.statsd.increment('mmomatch.emote-performed.' + e.emoteNumber);
 		});
 
 		setInterval(() => this.logPeriodicStats(), 10000);
