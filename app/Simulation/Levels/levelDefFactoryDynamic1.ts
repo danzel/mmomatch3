@@ -100,10 +100,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		let failureValue: number;
 		switch (failureType) {
 			case FailureType.Swaps:
-				failureValue = Math.round(size.height * amount / difficulty * 1.5 / 10) * 10;
+				failureValue = Math.round(size.height * amount / difficulty * 1.25 / 10) * 10;
 				break;
 			case FailureType.Time:
-				failureValue = Math.round(size.height * amount * 6 / difficulty / this.playerCount / 10) * 10;
+				failureValue = Math.round(size.height * amount * 12 / difficulty / this.playerCount / 10) * 10;
 				break;
 			default:
 				throw new Error("generateLevelGetThingsToBottom FailureType " + failureType + " " + FailureType[failureType])
@@ -155,7 +155,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
-		let victoryValue = Math.round(difficulty * 0.35) * 10;
+		let victoryValue = Math.round(difficulty * 0.25) * 10;
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, failureType, VictoryType.Matches, failureValue, victoryValue);
 	}
 
