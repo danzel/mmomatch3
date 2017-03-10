@@ -5,7 +5,7 @@ import RandomGenerator = require('../randomGenerator');
 import Type = require('../type');
 import VictoryType = require('./victoryType');
 
-const defaultColorCount = 8;
+const defaultColorCount = 7;
 
 //iPhone 5 can fit 32,56 (portrait,landscape)
 const maxAllowedWidth = 80;
@@ -91,10 +91,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 		amount = Math.min(this.playerCount, amount = Math.max(2, amount), Math.floor(maxAllowedWidth / 6));
 
 		let size = { width: Math.min(maxAllowedWidth, amount * gen.intInclusive(5, 8)), height: gen.intInclusive(30, 50) };
-		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
+		let colorCount = this.randomColorCount(gen);
 
 		//Calculate failure value
-		let difficulty = this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
+		let difficulty = this.calculateColorDifficulty(colorCount);
 
 		//TODO: Randomness
 		let failureValue: number;
@@ -123,20 +123,20 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 			width: gen.intExclusive(22, 30),
 			height: gen.intExclusive(30, 60)
 		};
-		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
+		let colorCount = this.randomColorCount(gen);
 
 		return new LevelDef(levelNumber, size.width, size.height, [], colorCount, FailureType.GetToBottomRace, VictoryType.GetToBottomRace, Type.GetToBottomRace1, Type.GetToBottomRace2);
 	}
 
 	private generateLevelGrowOverGrid(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
 		let size = this.randomSizeSmallerSquare(gen);
-		let colorCount = this.randomColorCount(gen, defaultColorCount - 1);
+		let colorCount = this.randomColorCount(gen);
 		let failureValue = this.randomFailureValue(failureType, gen);
 
 		//Now calculate the victoryValue based on our random stuffs.
 		let difficulty =
 			this.calculateFailureDifficulty(failureType, failureValue) *
-			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
+			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
 		let victoryValue = Math.round(difficulty * 0.07) * 10;
@@ -170,13 +170,13 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateLevelRequireMatch(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
 		let size = this.randomSize(gen);
-		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when cage is near bottom
+		let colorCount = this.randomColorCount(gen);
 		let failureValue = this.randomFailureValue(failureType, gen);
 
 		//Now calculate the victoryValue based on our random stuffs.
 		let difficulty =
 			this.calculateFailureDifficulty(failureType, failureValue) *
-			this.calculateColorDifficulty(colorCount, defaultColorCount - 1);
+			this.calculateColorDifficulty(colorCount);
 		//TODO: Randomness
 
 		var amount = Math.round(difficulty * 0.15);
