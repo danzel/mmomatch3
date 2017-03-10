@@ -7,6 +7,9 @@ import VictoryType = require('./victoryType');
 
 const defaultColorCount = 8;
 
+//iPhone 5 can fit 32,56 (portrait,landscape)
+const maxAllowedWidth = 80;
+
 class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	playerCount = 10;
 
@@ -84,10 +87,10 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateLevelGetThingsToBottom(levelNumber: number, failureType: FailureType, gen: RandomGenerator): LevelDef {
 		let amount = Math.floor(2 + (this.playerCount / 2));
-		//Clamp to 2 - this.playerCount
-		amount = Math.min(this.playerCount, amount = Math.max(2, amount));
+		//Clamp between 2 and (this.playerCount, maxWidth / 5)
+		amount = Math.min(this.playerCount, amount = Math.max(2, amount), Math.floor(maxAllowedWidth / 6));
 
-		let size = { width: Math.min(250, amount * gen.intInclusive(6, 11)), height: gen.intInclusive(30, 50) };
+		let size = { width: Math.min(maxAllowedWidth, amount * gen.intInclusive(5, 8)), height: gen.intInclusive(30, 50) };
 		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
 
 		//Calculate failure value
@@ -118,7 +121,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	private generateLevelGetToBottomRace(levelNumber: number, gen: RandomGenerator) {
 		let size = {
 			width: gen.intExclusive(22, 30),
-			height: gen.intExclusive(30, 50)
+			height: gen.intExclusive(30, 60)
 		};
 		let colorCount = this.randomColorCount(gen, defaultColorCount - 1); //Less colors, gets hard when robot is near bottom
 
@@ -209,11 +212,11 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private randomSize(gen: RandomGenerator): { width: number, height: number } {
 
-		let minWidth = Math.min(40, 10 + this.playerCount * 2);
-		let maxWidth = Math.min(250, 10 + this.playerCount * 10);
+		let minWidth = Math.min(30, 10 + this.playerCount * 2);
+		let maxWidth = Math.min(maxAllowedWidth, 10 + this.playerCount * 10);
 
-		let minHeight = Math.min(40, 10 + this.playerCount * 2);
-		let maxHeight = Math.min(80, 10 + this.playerCount * 4)
+		let minHeight = Math.min(30, 10 + this.playerCount * 2);
+		let maxHeight = Math.min(50, 10 + this.playerCount * 4)
 
 		return { width: gen.intExclusive(minWidth, maxWidth), height: gen.intExclusive(minHeight, maxHeight) };
 	}
@@ -221,8 +224,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private randomSizeSmallerSquare(gen: RandomGenerator): { width: number, height: number } {
 
-		let minSize = Math.min(60, 10 + this.playerCount * 2);
-		let maxSize = Math.min(80, 10 + this.playerCount * 10);
+		let minSize = Math.min(40, 10 + this.playerCount * 2);
+		let maxSize = Math.min(60, 10 + this.playerCount * 10, maxAllowedWidth);
 		let size = gen.intExclusive(minSize, maxSize);
 
 		return { width: size, height: size };
