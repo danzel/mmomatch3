@@ -13,7 +13,7 @@ class DefaultBehaviour extends Behaviour {
 			{ seconds: 3, range: 10, variation: 0.3 }
 		],
 
-		startingDelay: 4,
+		startingDelay: 3,
 		startingVariation: 0.8,
 
 		noMoveDelay: 5,
