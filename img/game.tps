@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.2.2</string>
         <key>fileName</key>
-        <string>C:/Users/dave/Code/mmomatch3/img/skin/emojione-animals.tps</string>
+        <string>C:/Users/dave/Code/mmomatch3/img/game.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -36,7 +36,7 @@
         <key>dataFormat</key>
         <string>phaser-json-hash</string>
         <key>textureFileName</key>
-        <filename>emojione-animals.png</filename>
+        <filename>game.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -141,7 +141,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>emojione-animals.json</filename>
+                <filename>game.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -188,45 +188,45 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">emojione-animals/balloverlays/areaclear.png</key>
-            <key type="filename">emojione-animals/balloverlays/horizontal.png</key>
-            <key type="filename">emojione-animals/balloverlays/vertical.png</key>
-            <key type="filename">emojione-animals/balls/1.png</key>
-            <key type="filename">emojione-animals/balls/10.png</key>
-            <key type="filename">emojione-animals/balls/11.png</key>
-            <key type="filename">emojione-animals/balls/2.png</key>
-            <key type="filename">emojione-animals/balls/3.png</key>
-            <key type="filename">emojione-animals/balls/4.png</key>
-            <key type="filename">emojione-animals/balls/5.png</key>
-            <key type="filename">emojione-animals/balls/6.png</key>
-            <key type="filename">emojione-animals/balls/7.png</key>
-            <key type="filename">emojione-animals/balls/8.png</key>
-            <key type="filename">emojione-animals/balls/9.png</key>
-            <key type="filename">emojione-animals/balls/colorclear.png</key>
-            <key type="filename">emojione-animals/balls/gettobottom.png</key>
-            <key type="filename">emojione-animals/balls/gettobottomrace1.png</key>
-            <key type="filename">emojione-animals/balls/gettobottomrace2.png</key>
-            <key type="filename">emojione-animals/balls/grow.png</key>
-            <key type="filename">emojione-animals/circle.png</key>
-            <key type="filename">emojione-animals/emote.png</key>
-            <key type="filename">emojione-animals/emotes/1.png</key>
-            <key type="filename">emojione-animals/emotes/2.png</key>
-            <key type="filename">emojione-animals/emotes/3.png</key>
-            <key type="filename">emojione-animals/emotes/4.png</key>
-            <key type="filename">emojione-animals/emotes/5.png</key>
-            <key type="filename">emojione-animals/emotes/6.png</key>
-            <key type="filename">emojione-animals/gettobottom_repeat.png</key>
-            <key type="filename">emojione-animals/gettobottomrace1_repeat.png</key>
-            <key type="filename">emojione-animals/gettobottomrace2_repeat.png</key>
-            <key type="filename">emojione-animals/match-particles/1.png</key>
-            <key type="filename">emojione-animals/match-particles/2.png</key>
-            <key type="filename">emojione-animals/match-particles/3.png</key>
-            <key type="filename">emojione-animals/match-particles/4.png</key>
-            <key type="filename">emojione-animals/match-particles/5.png</key>
-            <key type="filename">emojione-animals/match-particles/6.png</key>
-            <key type="filename">emojione-animals/match-particles/7.png</key>
-            <key type="filename">emojione-animals/player.png</key>
-            <key type="filename">emojione-animals/requirematch.png</key>
+            <key type="filename">game/emote.png</key>
+            <key type="filename">game/emotes/1.png</key>
+            <key type="filename">game/emotes/2.png</key>
+            <key type="filename">game/emotes/3.png</key>
+            <key type="filename">game/emotes/4.png</key>
+            <key type="filename">game/emotes/5.png</key>
+            <key type="filename">game/emotes/6.png</key>
+            <key type="filename">game/skin-emojione-animals/balloverlays/areaclear.png</key>
+            <key type="filename">game/skin-emojione-animals/balloverlays/horizontal.png</key>
+            <key type="filename">game/skin-emojione-animals/balloverlays/vertical.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/1.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/10.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/11.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/2.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/3.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/4.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/5.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/6.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/7.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/8.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/9.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/colorclear.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/gettobottom.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/gettobottomrace1.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/gettobottomrace2.png</key>
+            <key type="filename">game/skin-emojione-animals/balls/grow.png</key>
+            <key type="filename">game/skin-emojione-animals/circle.png</key>
+            <key type="filename">game/skin-emojione-animals/gettobottom_repeat.png</key>
+            <key type="filename">game/skin-emojione-animals/gettobottomrace1_repeat.png</key>
+            <key type="filename">game/skin-emojione-animals/gettobottomrace2_repeat.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/1.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/2.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/3.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/4.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/5.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/6.png</key>
+            <key type="filename">game/skin-emojione-animals/match-particles/7.png</key>
+            <key type="filename">game/skin-emojione-animals/player.png</key>
+            <key type="filename">game/skin-emojione-animals/requirematch.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -234,7 +234,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>emojione-animals</filename>
+            <filename>game</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

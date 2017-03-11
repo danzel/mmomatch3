@@ -2,7 +2,7 @@
   font-family: 'Chewy';
   font-style: normal;
   font-weight: 400;
-  src: local('Chewy'), url(../../img/skin/emojione-animals/chewy.woff2) format('woff2'), url(../../img/skin/emojione-animals/chewy.woff) format('woff');
+  src: local('Chewy'), url(../../img/game/chewy.woff2) format('woff2'), url(../../img/game/chewy.woff) format('woff');
 }
 
 body {

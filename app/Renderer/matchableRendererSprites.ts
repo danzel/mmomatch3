@@ -1,6 +1,8 @@
 import Color = require('../Simulation/color');
 import Type = require('../Simulation/type');
 
+const currentSkin = 'skin-emojione-animals';
+
 class MatchableRendererSprites {
 	private spriteKeys = new Array<string>();
 	private sprites: Array<Array<Phaser.Image>> = [];
@@ -11,13 +13,13 @@ class MatchableRendererSprites {
 
 	constructor(private group: Phaser.SpriteBatch, private overlayGroup: Phaser.Group) {
 		for (let i = 0; i < Color.Max; i++) {
-			this.spriteKeys.push('balls/' + (i + 1) + ".png")
+			this.spriteKeys.push(currentSkin +'/balls/' + (i + 1) + ".png")
 		}
-		this.spriteKeys.push("balls/gettobottom.png");
-		this.spriteKeys.push("balls/gettobottomrace1.png");
-		this.spriteKeys.push("balls/gettobottomrace2.png");
-		this.spriteKeys.push('balls/colorclear.png');
-		this.spriteKeys.push("balls/grow.png");
+		this.spriteKeys.push(currentSkin + "/balls/gettobottom.png");
+		this.spriteKeys.push(currentSkin + "/balls/gettobottomrace1.png");
+		this.spriteKeys.push(currentSkin + "/balls/gettobottomrace2.png");
+		this.spriteKeys.push(currentSkin + '/balls/colorclear.png');
+		this.spriteKeys.push(currentSkin + "/balls/grow.png");
 
 		for (let i = 0; i < this.spriteKeys.length; i++) {
 			this.sprites.push([]);

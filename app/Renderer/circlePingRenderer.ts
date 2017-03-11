@@ -1,6 +1,8 @@
 import MagicNumbers = require('../Simulation/magicNumbers');
 import MatchableRenderer = require('./matchableRenderer');
 
+const currentSkin = 'skin-emojione-animals';
+
 class CirclePingRenderer {
 	private circles = new Array<Phaser.Image>();
 	private circlesUsed = 0;
@@ -23,7 +25,7 @@ class CirclePingRenderer {
 		y = -((y / MagicNumbers.matchableYScale) + 0.5) * MatchableRenderer.PositionScalar;
 
 		if (this.circles.length == this.circlesUsed) {
-			let hi = this.group.game.add.sprite(0, 0, 'atlas', 'circle.png', this.group);
+			let hi = this.group.game.add.sprite(0, 0, 'atlas', currentSkin + '/circle.png', this.group);
 			hi.anchor.set(0.5);
 			this.circles.push(hi);
 		}

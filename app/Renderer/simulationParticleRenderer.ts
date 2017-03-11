@@ -3,6 +3,8 @@ import OwnedMatch = require('../Simulation/Scoring/ownedMatch');
 import MatchableRenderer = require('./matchableRenderer');
 import Simulation = require('../Simulation/simulation');
 
+const currentSkin = 'skin-emojione-animals';
+
 class SimulationParticleRenderer {
 	emitter: Phaser.Particles.Arcade.Emitter;
 	constructor(parentGroup: Phaser.Group) {
@@ -10,13 +12,13 @@ class SimulationParticleRenderer {
 		parentGroup.add(this.emitter);
 
 		this.emitter.makeParticles('atlas', [
-			'match-particles/1.png',
-			'match-particles/2.png',
-			'match-particles/3.png',
-			'match-particles/4.png',
-			'match-particles/5.png',
-			'match-particles/6.png',
-			'match-particles/7.png'
+			currentSkin + '/match-particles/1.png',
+			currentSkin + '/match-particles/2.png',
+			currentSkin + '/match-particles/3.png',
+			currentSkin + '/match-particles/4.png',
+			currentSkin + '/match-particles/5.png',
+			currentSkin + '/match-particles/6.png',
+			currentSkin + '/match-particles/7.png'
 		]);
 		this.emitter.gravity = 1000;
 		this.emitter.setAlpha(1, 0, 6000, Phaser.Easing.Cubic.Out);

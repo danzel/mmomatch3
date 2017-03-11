@@ -8,6 +8,8 @@ import MatchableRenderer = require('./matchableRenderer');
 import Type = require('../Simulation/type');
 import TypeHelpers = require('../Simulation/typeHelpers');
 
+const currentSkin = 'skin-emojione-animals';
+
 class GetToBottomHighlighter {
 
 	private width = 54;
@@ -68,13 +70,13 @@ class GetToBottomHighlighter {
 
 	private tileFrameForType(type: Type): string {
 		if (type == Type.GetToBottom) {
-			return 'gettobottom_repeat.png';
+			return currentSkin + '/gettobottom_repeat.png';
 		}
 		if (type == Type.GetToBottomRace1) {
-			return 'gettobottomrace1_repeat.png';
+			return currentSkin + '/gettobottomrace1_repeat.png';
 		}
 		if (type == Type.GetToBottomRace2) {
-			return 'gettobottomrace2_repeat.png';
+			return currentSkin + '/gettobottomrace2_repeat.png';
 		}
 		throw new Error('dont know tileFrame for type ' + type);
 	}

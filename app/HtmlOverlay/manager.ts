@@ -7,10 +7,10 @@ var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars
 require('./template.css');
 var closeSvg = require('file-loader?name=close.svg?[hash:6]!../../img/ui/close.svg');
 var menuSvg = require('file-loader?name=menu.svg?[hash:6]!../../img/ui/menu.svg');
-var matchable1 = require('file-loader?name=pig.png?[hash:6]!../../img/skin/emojione-animals/balls/6.png');
-var colorClear = require('file-loader?name=cc.png?[hash:6]!../../img/skin/emojione-animals/balls/colorclear.png');
-var vertical = require('file-loader?name=oh.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/vertical.png');
-var areaclear = require('file-loader?name=ac.png?[hash:6]!../../img/skin/emojione-animals/balloverlays/areaclear.png');
+var matchable1 = require('file-loader?name=pig.png?[hash:6]!../../img/game/skin-emojione-animals/balls/6.png');
+var colorClear = require('file-loader?name=cc.png?[hash:6]!../../img/game/skin-emojione-animals/balls/colorclear.png');
+var vertical = require('file-loader?name=oh.png?[hash:6]!../../img/game/skin-emojione-animals/balloverlays/vertical.png');
+var areaclear = require('file-loader?name=ac.png?[hash:6]!../../img/game/skin-emojione-animals/balloverlays/areaclear.png');
 
 interface OverlayOptions {
 	className: string;
