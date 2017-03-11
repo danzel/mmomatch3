@@ -10,6 +10,7 @@ import Swap = require('../Simulation/swap');
 class PlayerSprite {
 	sprite: Phaser.Sprite;
 	lastUpdate: number;
+	floatDirection: number;
 
 	constructor(parentGroup: Phaser.Group, private playerId: number, x: number, y: number) {
 		this.sprite = parentGroup.game.add.sprite(x, y, 'atlas', 'player.png', parentGroup);
@@ -19,6 +20,7 @@ class PlayerSprite {
 		this.sprite.tint = HslToRgb(rand.random_excl() * 360, 1, 0.5);
 
 		this.lastUpdate = this.sprite.game.time.now;
+		this.floatDirection = Math.random() * Math.PI;
 	}
 
 	notifyPosition(x: number, y: number) {
@@ -29,20 +31,28 @@ class PlayerSprite {
 		let from = new Phaser.Point(this.sprite.x, this.sprite.y);
 		let to = new Phaser.Point(x + randX, y + randY);
 		let distance = Phaser.Point.distance(from, to);
+
 		this.sprite.rotation = Phaser.Point.angle(from, to);
-		console.log(distance, this.sprite.height);
+		this.floatDirection = this.sprite.rotation;
 
 		this.sprite.game.add.tween(this.sprite)
 			.to({ x: x + randX, y: y + randY }, 100)
 			.start();
 		this.sprite.game.add.tween(this.sprite.scale)
-			.to({x: distance / this.sprite.height }, 50)
-			.chain(this.sprite.game.add.tween(this.sprite.scale).to({x:1}, 50))
+			.to({ x: distance / this.sprite.height }, 50)
+			.chain(this.sprite.game.add.tween(this.sprite.scale).to({ x: 1 }, 50))
 			.start();
 	}
 
 	update() {
 		this.sprite.alpha = Math.min(1, 1 - (this.sprite.game.time.now - this.lastUpdate - 5000) / 1000);
+
+		//Float around a bit
+		let p = new Phaser.Point(-1, 0);
+		p.rotate(0, 0, this.floatDirection);
+		this.floatDirection += (Math.random() - 0.5) * 0.4;
+		this.sprite.x += p.x * this.sprite.game.time.physicsElapsed * 50;
+		this.sprite.y += p.y * this.sprite.game.time.physicsElapsed * 50;
 	}
 }
 
