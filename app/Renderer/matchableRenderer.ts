@@ -12,6 +12,8 @@ const positionScalar = 100;
 const xOffset = positionScalar / 2;
 const yOffset = positionScalar / 2;
 
+const currentSkin = 'skin-emojione-animals';
+
 class MatchableRenderer {
 	public static PositionScalar = positionScalar;
 
@@ -107,13 +109,13 @@ class MatchableRenderer {
 		let frame: string;
 		switch (type) {
 			case Type.VerticalClearWhenMatched:
-				frame = 'balloverlays/vertical.png';
+				frame = currentSkin + '/balloverlays/vertical.png';
 				break;
 			case Type.HorizontalClearWhenMatched:
-				frame = 'balloverlays/horizontal.png';
+				frame = currentSkin + '/balloverlays/horizontal.png';
 				break;
 			case Type.AreaClear5x5WhenMatched:
-				frame = 'balloverlays/areaclear.png';
+				frame = currentSkin + '/balloverlays/areaclear.png';
 				break;
 			default:
 				throw new Error("Don't know how to renderOverlay for type " + Type[type])
