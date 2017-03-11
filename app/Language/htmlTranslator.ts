@@ -67,6 +67,13 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'mar2017':'Marzo de 2017. Gráficos y Tuning',
+		'mar2017n':
+			'<p>¡Hoy estamos agregando una segunda piel al juego! El nivel de Grow the Plant es el único lugar donde aparecerá por ahora. Por favor, díganos lo que piensa, usando el botón de retroalimentación en el menú.</p>' +
+			'<p>También hemos hecho algunos cambios de dificultad, algunos de los niveles eran demasiado difíciles, por lo que ahora son un poco más fáciles. La siguiente cuenta regresiva de nivel es ahora precisa. Y el movimiento del jugador y las partículas del fósforo se han mejorado.</p>' +
+			'<p>Disfrute, esperamos escuchar lo que piensa de los cambios!</p>',
+
+
 		'feb2017':'Febrero de 2017. ¡Emotes!',
 		'feb2017n':
 			'<p>Este mes hemos añadido una característica que mucha gente ha estado pidiendo, emotes. Ahora usted puede expresar su agradecimiento o enojo con estas caras de fantasía.</p>' +
