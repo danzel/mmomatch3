@@ -12,9 +12,9 @@ class SkinDef {
 		if (level.victoryType == VictoryType.GrowOverGrid) {
 			return SkinDef.lianne;
 		}
-		if (level.victoryType == VictoryType.Matches) {
+		/*if (level.victoryType == VictoryType.Matches) {
 			return SkinDef.kenney;
-		}
+		}*/
 		return SkinDef.default;
 	}
 }
