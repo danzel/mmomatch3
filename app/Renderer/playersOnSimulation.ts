@@ -25,8 +25,19 @@ class PlayerSprite {
 		this.lastUpdate = this.sprite.game.time.now;
 		let randX = (Math.random() - 0.5) * 20;
 		let randY = (Math.random() - 0.5) * 20;
+
+		let from = new Phaser.Point(this.sprite.x, this.sprite.y);
+		let to = new Phaser.Point(x + randX, y + randY);
+		let distance = Phaser.Point.distance(from, to);
+		this.sprite.rotation = Phaser.Point.angle(from, to);
+		console.log(distance, this.sprite.height);
+
 		this.sprite.game.add.tween(this.sprite)
-			.to({ x: x + randX, y: y + randY }, 100, Phaser.Easing.Cubic.In)
+			.to({ x: x + randX, y: y + randY }, 100)
+			.start();
+		this.sprite.game.add.tween(this.sprite.scale)
+			.to({x: distance / this.sprite.height }, 50)
+			.chain(this.sprite.game.add.tween(this.sprite.scale).to({x:1}, 50))
 			.start();
 	}
 
