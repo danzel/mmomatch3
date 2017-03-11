@@ -11,18 +11,9 @@ import GrowOverGridBehaviour = require('./growOverGridBehaviour');
 import RequireMatchBehaviour = require('./requireMatchBehaviour');
 
 class Bot {
-	private secondsToNextMove: number;
-
 	private behaviour: Behaviour;
 
-	config = {
-		secondsBeforeFirstMove: 5,
-	};
-
 	constructor(level: LevelDef, simulation: Simulation, inputApplier: InputApplier) {
-
-		this.secondsToNextMove = (Math.random() + 0.5) * this.config.secondsBeforeFirstMove;
-
 		switch (level.victoryType) {
 			case VictoryType.RequireMatch:
 				this.behaviour = new RequireMatchBehaviour(new BotHelper(simulation.grid, simulation.inputVerifier), simulation, inputApplier);
