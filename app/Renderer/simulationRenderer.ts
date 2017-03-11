@@ -8,6 +8,7 @@ import Matchable = require('../Simulation/matchable');
 import MatchableRenderer = require('./matchableRenderer');
 import RequireMatchHighlighter = require('./requireMatchHighlighter');
 import SimulationParticleRenderer = require('./simulationParticleRenderer');
+import SkinDef = require('./skinDef');
 import Type = require('../Simulation/type');
 
 interface XY {
@@ -26,18 +27,20 @@ class SimulationRenderer {
 
 	private outline: Phaser.Graphics;
 
-	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group, playerId: number) {
+	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group, playerId: number, private skin: SkinDef) {
+		this.group.game.stage.setBackgroundColor(skin.backgroundColor);
+
 		let getToBottomUnder = group.game.add.group(group);
 
 		let matchablesGroup = group.game.add.spriteBatch(this.group);
 		let matchablesOverlay = group.game.add.group(this.group);
-		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState);
+		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState, skin.skinName);
 
 		this.simulationParticleRenderer = new SimulationParticleRenderer(group);
-		this.simulationParticleRenderer.simulationChanged(simulation, playerId);
+		this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
 
-		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group));
-		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer);
+		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group), skin.skinName);
+		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer, skin.skinName);
 		this.requireMatchHighlighter = new RequireMatchHighlighter(this.circlePingRenderer);
 
 		this.scale = 0.2;
@@ -190,12 +193,22 @@ class SimulationRenderer {
 		}
 	}
 
-	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number): void {
+	simulationChanged(simulation: Simulation, gameEndDetector: GameEndDetector, playerId: number, skin: SkinDef): void {
 		this.simulation = simulation;
 		this.gameEndDetector = gameEndDetector;
 
-		this.simulationParticleRenderer.simulationChanged(simulation, playerId);
+		this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
 		this.updateOutline();
+
+		if (this.skin.skinName != skin.skinName) {
+			this.matchableRenderer.changeSkin(skin.skinName);
+			this.getToBottomHighlighter.changeSkin(skin.skinName);
+		}
+		if (this.skin.backgroundColor != this.group.game.stage.backgroundColor) {
+			console.log('changing')
+			this.group.game.stage.setBackgroundColor(skin.backgroundColor);
+		}
+		this.skin = skin;
 	}
 
 	update(dt: number) {

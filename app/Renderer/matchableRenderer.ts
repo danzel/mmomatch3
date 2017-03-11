@@ -3,6 +3,7 @@ import FailedToSwapState = require('./failedToSwapState');
 import MagicNumbers = require('../Simulation/magicNumbers');
 import Matchable = require('../Simulation/matchable');
 import MatchableRendererSprites = require('./matchableRendererSprites');
+import SkinDef = require('./skinDef');
 import Swap = require('../Simulation/swap');
 import SwapHandler = require('../Simulation/swapHandler');
 import Type = require('../Simulation/type');
@@ -12,8 +13,6 @@ const positionScalar = 100;
 const xOffset = positionScalar / 2;
 const yOffset = positionScalar / 2;
 
-const currentSkin = 'skin-emojione-animals';
-
 class MatchableRenderer {
 	public static PositionScalar = positionScalar;
 
@@ -21,9 +20,15 @@ class MatchableRenderer {
 
 	gridWidth = 0;
 
-	constructor(private group: Phaser.SpriteBatch, overlayGroup: Phaser.Group, private failedToSwapState: FailedToSwapState) {
-		this.sprites = new MatchableRendererSprites(group, overlayGroup);
+	constructor(private group: Phaser.SpriteBatch, overlayGroup: Phaser.Group, private failedToSwapState: FailedToSwapState, private currentSkin: string) {
+		this.sprites = new MatchableRendererSprites(group, overlayGroup, currentSkin);
 	}
+
+	changeSkin(currentSkin: string) {
+		this.currentSkin = currentSkin;
+		this.sprites.changeSkin(currentSkin);
+	}
+
 
 	begin(gridWidth: number): void {
 		this.gridWidth = gridWidth;
@@ -109,13 +114,13 @@ class MatchableRenderer {
 		let frame: string;
 		switch (type) {
 			case Type.VerticalClearWhenMatched:
-				frame = currentSkin + '/balloverlays/vertical.png';
+				frame = this.currentSkin + '/balloverlays/vertical.png';
 				break;
 			case Type.HorizontalClearWhenMatched:
-				frame = currentSkin + '/balloverlays/horizontal.png';
+				frame = this.currentSkin + '/balloverlays/horizontal.png';
 				break;
 			case Type.AreaClear5x5WhenMatched:
-				frame = currentSkin + '/balloverlays/areaclear.png';
+				frame = this.currentSkin + '/balloverlays/areaclear.png';
 				break;
 			default:
 				throw new Error("Don't know how to renderOverlay for type " + Type[type])

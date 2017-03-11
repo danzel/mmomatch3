@@ -8,8 +8,6 @@ import MatchableRenderer = require('./matchableRenderer');
 import Type = require('../Simulation/type');
 import TypeHelpers = require('../Simulation/typeHelpers');
 
-const currentSkin = 'skin-emojione-animals';
-
 class GetToBottomHighlighter {
 
 	private width = 54;
@@ -19,7 +17,11 @@ class GetToBottomHighlighter {
 	private tiles = new Array<Phaser.TileSprite>();
 	private nowS: number;
 
-	constructor(private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer) {
+	constructor(private underGroup: Phaser.Group, private circlePingRenderer: CirclePingRenderer, private currentSkin: string) {
+	}
+
+	changeSkin(currentSkin: string) {
+		this.currentSkin = currentSkin;
 	}
 
 	begin(gameEndDetector: GameEndDetector) {
@@ -70,13 +72,13 @@ class GetToBottomHighlighter {
 
 	private tileFrameForType(type: Type): string {
 		if (type == Type.GetToBottom) {
-			return currentSkin + '/gettobottom_repeat.png';
+			return this.currentSkin + '/gettobottom_repeat.png';
 		}
 		if (type == Type.GetToBottomRace1) {
-			return currentSkin + '/gettobottomrace1_repeat.png';
+			return this.currentSkin + '/gettobottomrace1_repeat.png';
 		}
 		if (type == Type.GetToBottomRace2) {
-			return currentSkin + '/gettobottomrace2_repeat.png';
+			return this.currentSkin + '/gettobottomrace2_repeat.png';
 		}
 		throw new Error('dont know tileFrame for type ' + type);
 	}

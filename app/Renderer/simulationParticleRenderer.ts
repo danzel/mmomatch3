@@ -3,23 +3,14 @@ import OwnedMatch = require('../Simulation/Scoring/ownedMatch');
 import MatchableRenderer = require('./matchableRenderer');
 import Simulation = require('../Simulation/simulation');
 
-const currentSkin = 'skin-emojione-animals';
-
 class SimulationParticleRenderer {
 	emitter: Phaser.Particles.Arcade.Emitter;
+	currentSkin = 'invalid';
+
 	constructor(parentGroup: Phaser.Group) {
 		this.emitter = parentGroup.game.add.emitter(0, 0, 500);
 		parentGroup.add(this.emitter);
 
-		this.emitter.makeParticles('atlas', [
-			currentSkin + '/match-particles/1.png',
-			currentSkin + '/match-particles/2.png',
-			currentSkin + '/match-particles/3.png',
-			currentSkin + '/match-particles/4.png',
-			currentSkin + '/match-particles/5.png',
-			currentSkin + '/match-particles/6.png',
-			currentSkin + '/match-particles/7.png'
-		]);
 		this.emitter.gravity = 1000;
 		this.emitter.setAlpha(1, 0, 6000, Phaser.Easing.Cubic.Out);
 		this.emitter.setXSpeed(-300, 300);
@@ -28,12 +19,25 @@ class SimulationParticleRenderer {
 		this.emitter.setSize(100, 100);
 	}
 
-	simulationChanged(simulation: Simulation, playerId: number) {
+	simulationChanged(simulation: Simulation, playerId: number, currentSkin: string) {
 		simulation.comboOwnership.ownedMatchPerformed.on(m => {
 			if (m.players.indexOf(playerId) >= 0) {
 				this.ownedMatchPerformed(m)
 			}
 		});
+
+		if (this.currentSkin != currentSkin) {
+			this.emitter.makeParticles('atlas', [
+				currentSkin + '/match-particles/1.png',
+				currentSkin + '/match-particles/2.png',
+				currentSkin + '/match-particles/3.png',
+				currentSkin + '/match-particles/4.png',
+				currentSkin + '/match-particles/5.png',
+				currentSkin + '/match-particles/6.png',
+				currentSkin + '/match-particles/7.png'
+			]);
+			this.currentSkin = currentSkin;
+		}
 	}
 
 	private ownedMatchPerformed(match: OwnedMatch): void {

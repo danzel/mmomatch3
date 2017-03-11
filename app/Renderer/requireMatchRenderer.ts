@@ -3,11 +3,9 @@ import MatchableRenderer = require('./matchableRenderer');
 import RequireMatch = require('../Simulation/requireMatch');
 import Simulation = require('../Simulation/simulation');
 
-const currentSkin = 'skin-emojione-animals';
-
 class RequireSprite {
 	sprite: Phaser.Sprite;
-	constructor(parentGroup: Phaser.Group, public req: RequireMatch) {
+	constructor(parentGroup: Phaser.Group, currentSkin: string, public req: RequireMatch) {
 		this.sprite = parentGroup.game.add.sprite(req.x * MatchableRenderer.PositionScalar, -(1 + req.y / MagicNumbers.matchableYScale) * MatchableRenderer.PositionScalar, 'atlas', currentSkin + '/requirematch.png', parentGroup);
 	}
 }
@@ -16,12 +14,12 @@ class RequireMatchRenderer {
 	group: Phaser.Group;
 	requireSprites = new Array<RequireSprite>();
 
-	constructor(simulation: Simulation, simulationGroup: Phaser.Group) {
+	constructor(simulation: Simulation, simulationGroup: Phaser.Group, currentSkin: string) {
 		//We are a child of simGroup so we get the scaling and stuff
 		this.group = simulationGroup.game.add.group(simulationGroup);
 
 		simulation.requireMatchInCellTracker.requirements.forEach((req) => {
-			this.requireSprites.push(new RequireSprite(this.group, req));
+			this.requireSprites.push(new RequireSprite(this.group, currentSkin, req));
 		});
 
 		simulation.requireMatchInCellTracker.requirementPartiallyMet.on((req) => this.requirementPartiallyMet(req))

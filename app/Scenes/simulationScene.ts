@@ -22,6 +22,7 @@ import RequireMatchRenderer = require('../Renderer/requireMatchRenderer');
 import ScoreRenderer = require('../Renderer/scoreRenderer');
 import Simulation = require('../Simulation/simulation');
 import SimulationRenderer = require('../Renderer/simulationRenderer');
+import SkinDef = require('../Renderer/skinDef');
 import VictoryType = require('../Simulation/Levels/victoryType')
 
 interface SimulationSceneConfiguration {
@@ -55,18 +56,20 @@ class SimulationScene {
 
 
 	constructor(private group: Phaser.Group, private htmlOverlayManager: HtmlOverlayManager, private level: LevelDef, private simulation: Simulation, inputApplier: InputApplier, gameEndDetector: GameEndDetector, emoteProxy: EmoteProxy, private config: SimulationSceneConfiguration, playerId: number, playerNames: { [id: number]: string }) {
+		let skin = SkinDef.getForLevel(level);
+
 		if (!SimulationScene.renderer) {
-			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId);
+			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId, skin);
 		} else {
-			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector, playerId);
+			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector, playerId, skin);
 			group.add(SimulationScene.renderer.group);
 		}
-		let simulationGroup = SimulationScene.renderer.group;
 
+		let simulationGroup = SimulationScene.renderer.group;
 
 		this.playersOnSimulation = new PlayersOnSimulation(this.simulation, simulationGroup, playerId)
 		this.emoteRenderer = new EmoteRenderer(simulationGroup);
-		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup);
+		this.requireMatchRenderer = new RequireMatchRenderer(this.simulation, simulationGroup, skin.skinName);
 
 		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier, simulation.swapHandler, playerId);
 
