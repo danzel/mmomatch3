@@ -18,6 +18,8 @@ var thumbsDown = require('file-loader?name=thumbsdown.png?[hash:6]!../../../img/
 class GameOverOverlay {
 	private hasCountdown: boolean;
 	countdownText: string;
+	private countdownStart: number;
+
 	private rank: number;
 	clicked = new LiteEvent<void>();
 
@@ -32,6 +34,7 @@ class GameOverOverlay {
 
 		if (this.hasCountdown) {
 			this.countdownText = "??? in ???";
+			this.countdownStart = time.now;
 			this.update();
 		} else {
 			this.countdownText = Language.t('click to continue');
@@ -41,8 +44,8 @@ class GameOverOverlay {
 
 	update() {
 		if (this.countdown) {
-			this.countdown = Math.max(0, this.countdown - this.time.physicsElapsed);
-			this.countdownText = Language.t('next level in', { sec: this.countdown.toFixed(1) });
+			let countdown = Math.max(0, this.countdown - (this.time.now - this.countdownStart) / 1000);
+			this.countdownText = Language.t('next level in', { sec: countdown.toFixed(1) });
 
 			if (this.countdownElement) {
 				this.countdownElement.innerHTML = this.countdownText;
