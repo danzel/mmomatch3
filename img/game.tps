@@ -195,6 +195,7 @@
             <key type="filename">game/emotes/4.png</key>
             <key type="filename">game/emotes/5.png</key>
             <key type="filename">game/emotes/6.png</key>
+            <key type="filename">game/player.png</key>
             <key type="filename">game/skin-emojione-animals/balloverlays/areaclear.png</key>
             <key type="filename">game/skin-emojione-animals/balloverlays/horizontal.png</key>
             <key type="filename">game/skin-emojione-animals/balloverlays/vertical.png</key>
@@ -225,7 +226,6 @@
             <key type="filename">game/skin-emojione-animals/match-particles/5.png</key>
             <key type="filename">game/skin-emojione-animals/match-particles/6.png</key>
             <key type="filename">game/skin-emojione-animals/match-particles/7.png</key>
-            <key type="filename">game/skin-emojione-animals/player.png</key>
             <key type="filename">game/skin-emojione-animals/requirematch.png</key>
             <key type="filename">game/skin-kenney-animals/balloverlays/areaclear.png</key>
             <key type="filename">game/skin-kenney-animals/balloverlays/horizontal.png</key>
@@ -249,7 +249,6 @@
             <key type="filename">game/skin-kenney-animals/match-particles/5.png</key>
             <key type="filename">game/skin-kenney-animals/match-particles/6.png</key>
             <key type="filename">game/skin-kenney-animals/match-particles/7.png</key>
-            <key type="filename">game/skin-kenney-animals/player.png</key>
             <key type="filename">game/skin-lianne-animals/balloverlays/areaclear.png</key>
             <key type="filename">game/skin-lianne-animals/balloverlays/horizontal.png</key>
             <key type="filename">game/skin-lianne-animals/balloverlays/vertical.png</key>
@@ -279,7 +278,6 @@
             <key type="filename">game/skin-lianne-animals/match-particles/5.png</key>
             <key type="filename">game/skin-lianne-animals/match-particles/6.png</key>
             <key type="filename">game/skin-lianne-animals/match-particles/7.png</key>
-            <key type="filename">game/skin-lianne-animals/player.png</key>
             <key type="filename">game/skin-lianne-animals/requirematch.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
