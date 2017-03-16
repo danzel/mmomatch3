@@ -9,9 +9,9 @@ class SkinDef {
 	private static kenney = new SkinDef('skin-kenney-animals', '#2f014f');
 
 	static getForLevel(level: LevelDef): SkinDef {
-		if (level.victoryType == VictoryType.GrowOverGrid) {
+		/*if (level.victoryType == VictoryType.GrowOverGrid) {
 			return SkinDef.lianne;
-		}
+		}*/
 		/*if (level.victoryType == VictoryType.Matches) {
 			return SkinDef.kenney;
 		}*/
