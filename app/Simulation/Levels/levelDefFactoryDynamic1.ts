@@ -161,7 +161,7 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 
 	private generateLevelMatchXOfColor(levelNumber: number, gen: RandomGenerator): LevelDef {
 		let size = this.randomSize(gen);
-		let colorCount = this.randomColorCount(gen);
+		let colorCount = this.randomColorCount(gen, defaultColorCount + 1);
 		let amount = 50 + this.playerCount * gen.intInclusive(5, 10); //50 + players * (5 - 10)
 		//^^ Could consider the grid size for calculating the amount
 
