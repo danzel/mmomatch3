@@ -67,6 +67,11 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'mar20172':'Marzo de 2017. Correcciones',
+		'mar20172n':
+			"<p>Gracias a todos por la retroalimentación! Hemos cambiado el nivel de las plantas de nuevo a la piel normal como la mayoría de la gente encontró el alterno uno más difícil de mirar.</p>" +
+			"<p>También arreglamos un error donde Pigs vs Pugs no tendría cerdos! Lamentamos mucho este, gracias por el informe!</p>",
+	
 		'mar2017':'Marzo de 2017. Gráficos y Tuning',
 		'mar2017n':
 			'<p>¡Hoy estamos agregando una segunda piel al juego! El nivel de Grow the Plant es el único lugar donde aparecerá por ahora. Por favor, díganos lo que piensa, usando el botón de retroalimentación en el menú.</p>' +
