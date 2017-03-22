@@ -58,7 +58,7 @@ class InputHandler {
 	}
 
 	private pointerDown(pointer: Phaser.Pointer) {
-		if (true) {//pointer.pointerMode != Phaser.PointerMode.CURSOR) {
+		if (pointer.pointerMode != Phaser.PointerMode.CURSOR) {
 			this.activeTouches++;
 			if (this.activeTouches >= 2 && !this.touchBecameMulti) {
 				this.matchDragHandler.mouseUp(this.group.game.input.pointer1);
