@@ -9,8 +9,9 @@ import GameEndType = require('../Simulation/Levels/gameEndType');
 import GameOverOverlay = require('./SimParts/gameOverOverlay');
 import HtmlOverlayManager = require('../HtmlOverlay/manager')
 import InitialZoomCalculator = require('./SimParts/initialZoomCalculator');
-import InputHandler = require('../Input/inputHandler');
 import InputApplier = require('../Simulation/inputApplier');
+import InputHandler = require('../Input/inputHandler');
+import InputRenderer = require('../Renderer/inputRenderer');
 import Language = require('../Language');
 import LevelDef = require('../Simulation/Levels/levelDef');
 import LevelDetailsOverlay = require('./SimParts/levelDetailsOverlay');
@@ -39,6 +40,7 @@ class SimulationScene {
 
 	private emoteInputDisplay: EmoteInputDisplay;
 	private input: InputHandler;
+	private inputRenderer: InputRenderer;
 
 	private haveFitRenderer = false;
 	private playerCountValue = 1;
@@ -74,6 +76,7 @@ class SimulationScene {
 		this.emoteInputDisplay = new EmoteInputDisplay(group, inputApplier, simulation.swapHandler, playerId);
 
 		this.input = new InputHandler(group, SimulationScene.renderer, this.simulation, inputApplier);
+		this.inputRenderer = new InputRenderer(group, this.input);
 
 		this.levelDetailsOverlay = new LevelDetailsOverlay(htmlOverlayManager, level, gameEndDetector.victoryDetector, gameEndDetector.failureDetector);
 
@@ -177,6 +180,8 @@ class SimulationScene {
 			this.gameOverOverlay.update();
 		}
 		this.playersOnSimulation.update();
+		this.input.update();
+		this.inputRenderer.update();
 		this.emoteInputDisplay.update();
 	}
 

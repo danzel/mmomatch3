@@ -17,6 +17,9 @@ class InputHandler {
 	private activeTouches: number = 0;
 	private touchBecameMulti: boolean = false;
 
+	private singleTouchHeldTime = 0;
+	singleTouchPointer: Phaser.Pointer = null;
+
 	constructor(private group: Phaser.Group, private renderer: SimulationRenderer, simulation: Simulation, inputApplier: InputApplier) {
 		this.touchCatchAll = new TouchCatchAll(group.game);
 		group.add(this.touchCatchAll.sprite);
@@ -37,12 +40,25 @@ class InputHandler {
 		})
 	}
 
+	get singleTouchDragIsActive(): boolean {
+		return this.singleTouchPointer != null && this.activeTouches == 1 && !this.touchBecameMulti && this.singleTouchHeldTime >= 0.5;
+	}
+
+	//TODO: This should be in the renderer instead
+	update(): void {
+		if (this.activeTouches == 1 && !this.touchBecameMulti) {
+			this.singleTouchHeldTime+= this.group.game.time.physicsElapsed;
+		} else {
+			this.singleTouchHeldTime = 0;
+		}
+	}
+
 	private mouseWheel(event: MouseEvent) {
 		this.renderer.zoomAt(event.clientX, event.clientY, (1 + 0.1 * this.group.game.input.mouse.wheelDelta));
 	}
 
 	private pointerDown(pointer: Phaser.Pointer) {
-		if (pointer.pointerMode != Phaser.PointerMode.CURSOR) {
+		if (true) {//pointer.pointerMode != Phaser.PointerMode.CURSOR) {
 			this.activeTouches++;
 			if (this.activeTouches >= 2 && !this.touchBecameMulti) {
 				this.matchDragHandler.mouseUp(this.group.game.input.pointer1);
@@ -53,6 +69,8 @@ class InputHandler {
 		if (!this.touchBecameMulti) {
 			this.matchDragHandler.mouseDown(pointer);
 		}
+
+		this.singleTouchPointer = pointer;
 	}
 
 	private pointerMove(pointer: Phaser.Pointer) {
@@ -63,7 +81,11 @@ class InputHandler {
 				this.multitouch(pointer);
 			}
 			else {
-				this.matchDragHandler.mouseMove(pointer);
+				if (this.singleTouchDragIsActive) {
+					this.renderer.translate(pointer.rawMovementX, pointer.rawMovementY);
+				} else {
+					this.matchDragHandler.mouseMove(pointer);
+				}
 			}
 		}
 	}
@@ -76,6 +98,8 @@ class InputHandler {
 				this.touchBecameMulti = false;
 			}
 		}
+
+		this.singleTouchPointer = null;
 	}
 
 	private multitouch(pointer: Phaser.Pointer) {
