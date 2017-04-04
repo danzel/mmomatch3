@@ -16,6 +16,7 @@ class InputHandler {
 
 	private activeTouches: number = 0;
 	private touchBecameMulti: boolean = false;
+	private touchCausedDrag: boolean = false;
 
 	private singleTouchHeldTime = 0;
 	singleTouchPointer: Phaser.Pointer = null;
@@ -41,13 +42,13 @@ class InputHandler {
 	}
 
 	get singleTouchDragIsActive(): boolean {
-		return this.singleTouchPointer != null && this.activeTouches == 1 && !this.touchBecameMulti && this.singleTouchHeldTime >= 0.5;
+		return this.singleTouchPointer != null && this.activeTouches == 1 && !this.touchBecameMulti && !this.touchCausedDrag && this.singleTouchHeldTime >= 0.25;
 	}
 
 	//TODO: This should be in the renderer instead
 	update(): void {
-		if (this.activeTouches == 1 && !this.touchBecameMulti) {
-			this.singleTouchHeldTime+= this.group.game.time.physicsElapsed;
+		if (this.activeTouches == 1) {
+			this.singleTouchHeldTime += this.group.game.time.physicsElapsed;
 		} else {
 			this.singleTouchHeldTime = 0;
 		}
@@ -84,7 +85,9 @@ class InputHandler {
 				if (this.singleTouchDragIsActive) {
 					this.renderer.translate(pointer.rawMovementX, pointer.rawMovementY);
 				} else {
-					this.matchDragHandler.mouseMove(pointer);
+					if (this.matchDragHandler.mouseMove(pointer)) {
+						this.touchCausedDrag = true;
+					}
 				}
 			}
 		}
@@ -96,6 +99,7 @@ class InputHandler {
 			this.activeTouches--;
 			if (this.activeTouches == 0) {
 				this.touchBecameMulti = false;
+				this.touchCausedDrag = false;
 			}
 		}
 

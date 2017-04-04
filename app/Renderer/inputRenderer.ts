@@ -12,7 +12,7 @@ class InputRenderer {
 	update(): void {
 		if (this.input.singleTouchDragIsActive) {
 			this.sprite.position.set(this.input.singleTouchPointer.x, this.input.singleTouchPointer.y);
-			this.sprite.alpha = Math.min(1, this.sprite.alpha + this.sprite.game.time.physicsElapsed);
+			this.sprite.alpha = 1;
 		} else {
 			this.sprite.alpha = 0;
 		}

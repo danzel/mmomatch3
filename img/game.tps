@@ -188,6 +188,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">game/drag.png</key>
             <key type="filename">game/emote.png</key>
             <key type="filename">game/emotes/1.png</key>
             <key type="filename">game/emotes/2.png</key>

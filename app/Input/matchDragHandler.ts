@@ -28,7 +28,7 @@ class MatchDragHandler {
 		}
 	}
 
-	mouseMove(pointer: Phaser.Pointer) {
+	mouseMove(pointer: Phaser.Pointer): boolean {
 		if (this.startDragMatchable[pointer.id]) {
 
 			let xDiff = pointer.movementX;
@@ -51,8 +51,11 @@ class MatchDragHandler {
 				this.inputApplier.swapMatchable(left, right, dir);
 
 				this.mouseUp(pointer);
+
+				return true;
 			}
 		}
+		return false;
 	}
 
 	mouseUp(pointer: Phaser.Pointer) {
