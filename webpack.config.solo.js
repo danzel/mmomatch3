@@ -25,7 +25,7 @@ module.exports = {
 		new ExtractTextPlugin("bundle.css"),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
-			template: '../dist/index.template.html',
+			template: 'index.html',
 			hash: true,
 			inject: false
 		}),

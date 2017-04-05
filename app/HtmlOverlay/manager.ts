@@ -2,9 +2,14 @@ import BannerAdManager = require('./bannerAdManager');
 import Language = require('../Language');
 
 declare function require(filename: string): string | ((data: {}) => string);
+require('./template.css');
+require('file-loader?name=favicon.ico!../../img/favicon.ico');
+require('file-loader?name=favicon.png!../../img/favicon.png');
+require('file-loader?name=privacy_policy.txt!../../img/staticfiles/privacy_policy.txt');
+require('file-loader?name=terms_of_service.txt!../../img/staticfiles/terms_of_service.txt');
+
 var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
-require('./template.css');
 var closeSvg = require('file-loader?name=close.svg?[hash:6]!../../img/ui/close.svg');
 var menuSvg = require('file-loader?name=menu.svg?[hash:6]!../../img/ui/menu.svg');
 var matchable1 = require('file-loader?name=pig.png?[hash:6]!../../img/game/skin-emojione-animals/balls/6.png');
