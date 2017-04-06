@@ -31,6 +31,12 @@ module.exports = {
 			hash: true,
 			inject: false
 		}),
+		new HtmlWebpackPlugin({
+			filename: 'index_mobile.html',
+			template: 'index_mobile.html',
+			hash: true,
+			inject: false
+		}),
 		new HashPlugin({ path: './', fileName: 'hash.txt' })
 	]
 };

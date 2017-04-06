@@ -1,0 +1,191 @@
+<html>
+	<head>
+		<title>Massive Match</title>
+		<meta property="og:url" content="https://massivematch.io" />
+		<meta property="og:title" content="Massive Match" />
+		<meta name="description" content="The Massively Multiplayer Match 3 game you play together with people all over the world">
+		<meta property="og:description" content="The Massively Multiplayer Match 3 game you play together with people all over the world" />
+		<meta property="og:site_name" content="Massive Match" />
+		<meta property="og:image" content="https://massivematch.io/favicon.png" />
+		<meta property="og:type" content="product" />
+
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="favicon.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+		<% for (var css in htmlWebpackPlugin.files.css) { %>
+		<link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+		<% } %>
+	</head>
+	<body class="mobile">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/custom/phaser-arcade-physics.min.js" defer></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.24/webfontloader.js" defer></script>
+		<script type="text/javascript" src="primus.js?6.0.5" defer></script>
+		<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+		<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer></script>
+		<% } %>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-76221900-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
+		<div id="welcome" class="overlay b2">
+			<div class="top">
+				<div class="wrap">
+					<h1 class="b5">Massive Match</h1>
+
+					<div class="login-area">
+						<form id="login-form">
+							<input class="nickname" type="text" placeholder="Nickname" maxlength="16" id="nickname"/><br/>
+							<label title="Hide other players names, recommended for young players" id="lhidenames"><input class="hidenames" type="checkbox" /><span id="hidenames">Hide names</span></label><br/>
+							<input id="play-button" type="button" value="Loading..." />
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="mid">
+				<input type="button" id="News" value="News" />
+				<input type="button" id="Help" value="Help" />
+			</div>
+			<div class="mid" style="display: none">
+				<div class="whatisit">
+					<h2 class="b3" id="whatisit">What is it?</h2>
+					<span id="whatisit2">
+						Massive Match is a match 3 game like Bejeweled or Candy Crush Saga, but with a massively multiplayer twist!<br/>
+						Play on a much larger grid where it isn't just you trying to make a match. Fast. Frantic. Fun.
+					</span>
+				</div>
+				<div class="bottom">
+					<div class="left">
+						<h2 class="b3" id="controls">Controls</h2>
+						
+						<p id="ctrl1">
+							Click and drag animals to match them.<br/>
+							You can only drag ones that will make a 3 in a row match.
+						</p>
+						<p id="ctrl2">
+							Zoom in and out using the mouse wheel.<br/>
+							Move around by dragging with the right mouse button.
+						</p>
+						<p id="ctrl3">
+							Every level has a different goal, pay attention to them.
+						</p>
+
+						<p class="ad">
+							Advertisement
+						</p>
+						<!-- massivematch-largerect -->
+						<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-4749031612968477" data-ad-slot="6224879543"></ins>
+						<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+					</div><div class="right">
+						<h2 class="b3" id="news">News</h2>
+
+						<h3 id="mar20172">March 2017. Fixes</h3>
+						<div class="news" id="mar20172n">
+							<p>Thank you everyone for the feedback! We've changed the plants level back to the normal skin as most people found the alternate one harder to look at.</p>
+							<p>We also fixed a bug where Pigs vs Pugs wouldn't have Pugs! Very sorry about this one, thank you for the report!</p>
+						</div>
+						<h3 id="mar2017">March 2017. Graphics and Tuning</h3>
+						<div class="news" id="mar2017n">
+							<p>Today we're adding a second skin to the game! The Grow the Plant level is the only place where it will show up for now. Please tell us what you think, using the feedback button in the menu.</p>
+							<p>We've also done some difficulty tuning, some of the levels were too hard, so they are now a bit easier. The next level countdown is now accurate. And player movement and match particles have been improved.</p>
+							<p>Enjoy, we look forward to hearing what you think of the changes!</p>
+						</div>
+						<h3 id="feb2017">February 2017. Emotes!</h3>
+						<div class="news" id="feb2017n">
+							<p>This month we've added a feature that many people have been asking for, emotes. Now you can express your thanks or anger with these fancy faces.</p>
+							<p>Hit the speech bubble at the bottom of the screen to send one, they appear where you last did a move.</p>
+						</div>
+
+						<h3 id="nov2016">November 2016. Graphics and more!</h3>
+						<div class="news" id="nov2016n">
+							<p>This month we added some new graphics effects when you do a match. We also updated the area clear special block to clear a 5x5 area instead of a 3x3 area.</p>
+							<p>Thanks everyone for the feedback, please tell your friends about Massive Match!</p>
+							<p>Also, MassiveMatch is now available to play on <a href="https://www.crazygames.com/game/massive-match">CrazyGames.com</a>
+						</div>
+
+						<h3 id="oct20162">Late October 2016</h3>
+						<div class="news" id="oct20162n">
+							<p>We've done some work to make Massive Match work better on mobile devices.</p>
+							<p>If you encounter any issues, please send us some feedback using the button in game.</p>
+						</div>
+
+						<h3 id="oct2016">October 2016. Back at it</h3>
+						<div class="news" id="oct2016n">
+							<p>And suddenly it's October. Sorry for the quietness over the last few months, we have been hard at work on other projects. But we are done with them now, so it is Massive Match time!</p>
+							<p>We have just released a couple of bugfixes and some improvements to the Spanish translation.</p>
+							<p>Enjoy and have fun!</p>
+						</div>
+
+						<h3 id="july2016">July 2016. New Levels!</h3>
+						<div class="news" id="july2016n">
+							<p>Welcome to July. This month we have 2 new level types!</p>
+							<p>First up is <b>Grow the Plant</b>. This is a cooperative level where you need to match next to the plant to make it grow. Grow it to a certain size within the time/moves limit to win.</p>
+							<p>Second is <b>Butterfly VS Bee</b>. This is the team version of Get the Robots to the bottom. Work together with your team to get your insect to the bottom before the other team can.</p>
+							<p>Hope you enjoy the new levels. Please send some feedback!</p>
+							<p>Have fun and tell your friends :)</p>
+						</div>
+
+						<h3 id="june20163">22nd June 2016 Update</h3>
+						<div class="news" id="june20163n">
+							<p>We've just released our last update for June. The big feature is a Spanish Translation. You should get it automatically if your computer is configured for Spanish. Other languages will be added in the future.</p>
+							<p>We also added level voting so we can get some feedback on what level types you like. You'll see it after each level.</p>
+							<p>Finally we fixed a nasty crash that would happen sometimes when you tried to play. Sorry about that!</p>
+							<p>Enjoy and tell your friends :)</p>
+						</div>
+						
+						<h3 id="june20162">June 2016. Mid-Month Update</h3>
+						<div class="news" id="june20162n">
+							<p>We've just put a few little improvements live, this hopefully gets everything stable to let us work on major features.<br/>
+							<ul>
+								<li>Improved level details screens</li>
+								<li>Robots disappear when they reach the bottom</li>
+								<li>Fix for some random lockups</li>
+								<li>Performance Improvements</li>
+								<li>Network optimization</li>
+							</ul>
+						</div>
+						
+						<h3 id="june2016">June 2016. One week in</h3>
+						<div class="news" id="june2016n">
+							<p>Massive Match is now one week old!<br/><span style="color: yellow">THANK YOU</span> to all our players.</p>
+							<p>Since launch we've done a lot of bug fixes. There are still a few small bugs which we hope to have fixed soon.</p>
+							So, what's coming next?<br/>
+							<ul>
+								<li>Faster loading</li>
+								<li>Improvements to lag</li>
+								<li>Making cages easier to see</li>
+								<li>Level balancing</li>
+							</ul>
+							<p>And more based on your suggestions. Send us some feedback using the button at the bottom right, we'd love to hear it.</p>
+							<p>If you are having fun please tell your friends, it helps us a lot. Expect another news blast later this month. Cya</p>
+						</div>
+						<h3 id="may2016">May 2016. We're in Alpha!</h3>
+						
+						<div class="news" id="may2016n">
+							Massive Match is now in public alpha! As we are in alpha, there will be broken things and the game will probably lag at times. Please leave us some feedback with anything you encounter or any suggestions you have.<br/>
+							The Feedback link is at the bottom right.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="overlay"></div>
+		<div id="bottom-corner-buttons" class="b3">
+			<div id="menu-button">
+			</div>
+			<div id="bcb-content">
+				<a href="#" id="fullscreen">Fullscreen<br/></a>
+				<a href="#" target="_blank" id="mistranslation">Mistranslation<br/></a>
+				<a href="#" id="feedback">Feedback<br/></a>
+				<a href="#" id="help">Help</a>
+			</div>
+		</div>
+		<div id="feedback-overlay"></div>
+	</body>
+</html>

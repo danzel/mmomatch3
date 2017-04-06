@@ -327,12 +327,18 @@ div.matchable {
 }
 .mobile h1 {
 	font-size: 16vw;
+	margin-bottom: 5vh;
+}
+.mobile form {
+	margin-bottom: 4vh;
 }
 .mobile #welcome .top .wrap {
 	width: 100%;
 }
 .mobile #welcome .mid {
-	margin-top: 1vh;
+	margin-top: 0;
+	background-image: url('../mobile-background.png');
+	background-size: 100%;
 }
 .mobile #welcome .mid input[type="button"] {
 	margin-top: 4vh;
