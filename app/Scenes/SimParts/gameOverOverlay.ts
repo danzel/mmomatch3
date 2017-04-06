@@ -11,8 +11,8 @@ declare function require(filename: string): (data: {}) => string;
 var template = <(data: {}) => string>require('./gameOverOverlay.handlebars');
 require('./gameOverOverlay.css');
 
-var thumbsUp = require('file-loader?name=thumbsup.png?[hash:6]!../../../img/ui/thumbsup.png');
-var thumbsDown = require('file-loader?name=thumbsdown.png?[hash:6]!../../../img/ui/thumbsdown.png');
+var thumbsUp = require('../../../img/ui/thumbsup.png');
+var thumbsDown = require('../../../img/ui/thumbsdown.png');
 
 
 class GameOverOverlay {

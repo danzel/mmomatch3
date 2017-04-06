@@ -19,7 +19,8 @@ module.exports = {
 			{ test: /\.tsx?$/, loader: 'ts-loader' },
 			{ test: /\.handlebars$/, loader: 'handlebars-loader' },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("css-loader") },
-			{ test: /\.(woff(2)?)$/, loader : 'file-loader?name=[name].[ext]' }
+			{ test: /\.(woff(2)?)$/, loader : 'file-loader?name=[name].[ext]' },
+			{ test: /.(png|svg)$/, loader : 'file-loader?name=[name].[ext]?[hash:6]' }
 		]
 	},
 	plugins: [
