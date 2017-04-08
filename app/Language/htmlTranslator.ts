@@ -183,7 +183,6 @@ class HtmlTranslator {
 			return;
 		}
 		let special = translationBySpecial[Language.polyglot.locale()];
-		(<HTMLInputElement>document.getElementById('play-button')).value = special['play-button'];
 		(<HTMLInputElement>document.getElementById('nickname')).placeholder = special['nickname'];
 		(<HTMLLabelElement>document.getElementById('lhidenames')).title = special['lhidenames'];
 		(<HTMLAnchorElement>document.getElementById('mistranslation')).href = special['mistranslation'];
@@ -194,7 +193,12 @@ class HtmlTranslator {
 	}
 
 	static showStartButton() {
-		(<HTMLInputElement>document.getElementById('play-button')).value = playButton[Language.polyglot.locale()];
+		let btn = document.getElementById('play-button');
+		if ((<any>btn).value) {
+			(<HTMLInputElement>btn).value = playButton[Language.polyglot.locale()];
+		} else {
+			btn.innerText = playButton[Language.polyglot.locale()];
+		}
 	}
 }
 
