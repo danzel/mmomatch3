@@ -35,7 +35,15 @@ class MobileAdManager implements AdManager {
 			this.interstitialReady = true;
 		});
 
+		//May need to wait for plugins to load
+		if((<any>window).admob) {
+			this.initAdmob();
+		} else {
+			document.addEventListener('deviceready', () => this.initAdmob(), false);
+		}
+	}
 
+	private initAdmob() {
 		let admob = (<any>window).admob;
 
 		admob.banner.config({
@@ -69,7 +77,9 @@ class MobileAdManager implements AdManager {
 	}
 
 	hide() {
-		(<any>window).admob.banner.hide();
+		if ((<any>window).admob) {
+			(<any>window).admob.banner.hide();
+		}
 		this.shouldBeShown = false;
 	}
 };
