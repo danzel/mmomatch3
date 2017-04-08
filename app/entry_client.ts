@@ -1,5 +1,6 @@
 import Raven = require('raven-js');
 
+import AdManager = require('./HtmlOverlay/adManager');
 import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
 import CircleCursor = require('./Scenes/circleCursor');
 import Client = require('./Client/client');
@@ -13,6 +14,7 @@ import HtmlTranslator = require('./Language/htmlTranslator');
 import Language = require('./Language');
 import LevelDef = require('./Simulation/Levels/levelDef');
 import MobileExtensions = require('./HtmlOverlay/mobileExtensions');
+import MobileAdManager = require('./HtmlOverlay/mobileAdManager');
 import NewVersion = require('./HtmlOverlay/Overlays/newVersion');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
@@ -24,9 +26,10 @@ import WelcomeScreen = require('./Scenes/WelcomeScreen/welcomeScreen');
 let runningOnLive = (window.location.host == window.location.hostname); //Checks we are on standard port (no :8080)
 let release = '';
 let lastUpdateFailed = false;
+let isMobile = document.body.classList.contains('mobile');
 
 class AppEntry {
-	bannerAdManager: BannerAdManager;
+	adManager: AdManager;
 	htmlOverlayManager: HtmlOverlayManager;
 	client: Client;
 	game: Phaser.Game;
@@ -75,8 +78,8 @@ class AppEntry {
 	}
 
 	create() {
-		this.bannerAdManager = new BannerAdManager();
-		this.bannerAdManager.show();
+		this.adManager = isMobile ? new MobileAdManager() : new BannerAdManager();
+		this.adManager.show();
 
 		let welcome = new WelcomeScreen();
 		let created = false;
@@ -92,7 +95,7 @@ class AppEntry {
 
 	connect(nickname: string) {
 		console.log('create');
-		this.htmlOverlayManager = new HtmlOverlayManager(this.game, this.bannerAdManager);
+		this.htmlOverlayManager = new HtmlOverlayManager(this.game, this.adManager);
 
 		let socket: SocketClient;
 		if (runningOnLive) { //Standard port
@@ -240,25 +243,23 @@ function start() {
 
 		Language.init();
 		HtmlTranslator.apply();
-		let isMobile = document.body.classList.contains('mobile');
 		if (isMobile) {
 			MobileExtensions.apply();
 		}
 		new AppEntry();
 
-		let scripts = [
-			'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6',
-			'https://platform.twitter.com/widgets.js'
-		];
 		if (!isMobile) {
-			scripts.push('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
+			[
+				'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6',
+				'https://platform.twitter.com/widgets.js',
+				'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+			].forEach(url => {
+				let ele = document.createElement('script');
+				ele.async = true;
+				ele.src = url;
+				document.body.appendChild(ele);
+			})
 		}
-		scripts.forEach(url => {
-			let ele = document.createElement('script');
-			ele.async = true;
-			ele.src = url;
-			document.body.appendChild(ele);
-		})
 	} else {
 		document.onreadystatechange = start;
 	}

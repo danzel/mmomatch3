@@ -1,4 +1,4 @@
-import BannerAdManager = require('./bannerAdManager');
+import AdManager = require('./adManager');
 import Language = require('../Language');
 
 declare function require(filename: string): string | ((data: {}) => string);
@@ -63,7 +63,7 @@ class Manager {
 
 	private feedbackVisible = false;
 
-	constructor(private game: Phaser.Game, private bannerAdManager: BannerAdManager) {
+	constructor(private game: Phaser.Game, private adManager: AdManager) {
 		this.game.scale.fullScreenTarget = document.documentElement;
 		this.element = document.getElementById('overlay');
 		this.feedbackElement = document.getElementById('feedback-overlay');
@@ -154,9 +154,9 @@ class Manager {
 		if (this.uiState.bottomAdVisible != (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false)) {
 			this.uiState.bottomAdVisible = (this.uiState.customOverlay && this.uiState.customOverlay.showBannerAd || false);
 			if (this.uiState.bottomAdVisible) {
-				this.bannerAdManager.show();
+				this.adManager.show();
 			} else {
-				this.bannerAdManager.hide()
+				this.adManager.hide()
 			}
 		}
 		if (this.uiState.customOverlay && this.uiState.customOverlay.postRenderCallback) {

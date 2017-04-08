@@ -1,4 +1,6 @@
-class BannerAdManager {
+import AdManager = require('./adManager');
+
+class BannerAdManager implements AdManager {
 	private element: HTMLElement;
 
 	constructor() {
