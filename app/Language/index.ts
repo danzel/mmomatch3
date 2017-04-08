@@ -161,6 +161,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'clears animal': 'When swapped with an animal, clears that animal',
 		'connecting': 'Connecting...',
 		'connecting refresh': 'If this continues, try refreshing the page',
+		'connecting mobile refresh': 'If this continues, check your Internet connection',
 
 		'newversion': 'New Version!',
 		'newversion1': 'A new version has been released.',
@@ -246,6 +247,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 
 		'connecting': 'Conectando...',
 		'connecting refresh': 'Si esto sigue así, intenta actualizar la página',
+		'connecting mobile refresh': 'Si esto continúa, compruebe su conexión a Internet',
 
 		'newversion': '¡Nueva versión!',
 		'newversion1': 'Una nueva versión ha sido puesto en libertad.',

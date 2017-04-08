@@ -77,8 +77,10 @@ a {
 	top: 10px;
 	cursor: pointer;
 	
+	background-image: url(../../img/ui/close.svg);
+	background-size: 100%;
 	width: 60px;
-	height: 60px;	
+	height: 60px;
 }
 
 #bottom-corner-buttons {
@@ -363,4 +365,29 @@ div.matchable {
 
 .mobile .button:hover {
 	background-color: #556ea5;
+}
+
+.mobile .popover {
+	top: 40px;
+	position: absolute;
+	width: 96%;
+	max-height: calc(100% - 20px);
+	overflow-y: scroll;
+	left: 2%;
+	box-sizing: border-box;
+	padding: 0 5px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+
+	display: none;
+	opacity: 0;
+	transition: opacity 0.4s, top 0.4s;
+}
+
+.mobile .popover .close-button {
+	position: fixed;
+	top: 2px;
+	right: 2px;
+}
+.mobile .corner-buttons {
+	display: none;
 }

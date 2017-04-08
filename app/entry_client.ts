@@ -12,6 +12,7 @@ import HtmlOverlayManager = require('./HtmlOverlay/manager')
 import HtmlTranslator = require('./Language/htmlTranslator');
 import Language = require('./Language');
 import LevelDef = require('./Simulation/Levels/levelDef');
+import MobileExtensions = require('./HtmlOverlay/mobileExtensions');
 import NewVersion = require('./HtmlOverlay/Overlays/newVersion');
 import Serializer = require('./Serializer/simple');
 import Simulation = require('./Simulation/simulation');
@@ -239,13 +240,20 @@ function start() {
 
 		Language.init();
 		HtmlTranslator.apply();
+		let isMobile = document.body.classList.contains('mobile');
+		if (isMobile) {
+			MobileExtensions.apply();
+		}
 		new AppEntry();
 
-		[
+		let scripts = [
 			'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6',
-			'https://platform.twitter.com/widgets.js',
-			'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-		].forEach(url => {
+			'https://platform.twitter.com/widgets.js'
+		];
+		if (!isMobile) {
+			scripts.push('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
+		}
+		scripts.forEach(url => {
 			let ele = document.createElement('script');
 			ele.async = true;
 			ele.src = url;

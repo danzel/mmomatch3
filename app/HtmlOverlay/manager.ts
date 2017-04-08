@@ -10,7 +10,6 @@ require('file-loader?name=terms_of_service.txt!../../img/staticfiles/terms_of_se
 
 var template = <(data: UIState) => string>require('./template.handlebars');
 var feedbackTemplate = <(data: UIState) => string>require('./feedback.handlebars');
-var closeSvg = require('../../img/ui/close.svg');
 var matchable1 = require('../../img/game/skin-emojione-animals/balls/6.png');
 var colorClear = require('../../img/game/skin-emojione-animals/balls/colorclear.png');
 var vertical = require('../../img/game/skin-emojione-animals/balloverlays/vertical.png');
@@ -37,7 +36,6 @@ class UIState {
 
 	customOverlay: OverlayOptions;
 
-	closeSrc = closeSvg;
 	matchable1Src = matchable1;
 	colorClearSrc = colorClear;
 	verticalSrc = vertical;
@@ -55,7 +53,7 @@ class UIState {
 	_clearsarea = Language.t('clears area');
 	_clearsanimal = Language.t('clears animal');
 	_connecting = Language.t('connecting');
-	_connectingrefresh = Language.t('connecting refresh');
+	_connectingrefresh = document.body.classList.contains('mobile') ? Language.t('connecting mobile refresh') : Language.t('connecting refresh');
 }
 
 class Manager {
@@ -113,10 +111,14 @@ class Manager {
 
 
 		let toRemove = document.getElementById('beta-bg');
-		toRemove.parentElement.removeChild(toRemove);
+		if (toRemove) {
+			toRemove.parentElement.removeChild(toRemove);
+		}
 
 		toRemove = document.getElementById('beta');
-		toRemove.parentElement.removeChild(toRemove);
+		if (toRemove) {
+			toRemove.parentElement.removeChild(toRemove);
+		}
 	}
 
 	hideMenu() {
