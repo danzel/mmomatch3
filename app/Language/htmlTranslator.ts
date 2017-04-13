@@ -67,6 +67,11 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'apr2017': 'Abril 2017. Anuncio móvil!',
+		'apr2017n':
+			'<p>Hola de nuevo amigos. Recientemente hemos alcanzado el nivel 200000, buen trabajo! Como parte de las celebraciones <a href="https://twitter.com/massivematch/status/850520234423222272" target="_blank">anunciamos que Massive Match llegará al móvil este mes de junio!</a></p>' +
+			'<p>Para mejorar la reproducción móvil, ahora puede tocar y mantener el mapa y, a continuación, arrástrelo para moverse. Por favor, inténtelo y díganos lo que piensa. ¡Que te diviertas!</p>',
+
 		'mar20172':'Marzo de 2017. Correcciones',
 		'mar20172n':
 			"<p>Gracias a todos por la retroalimentación! Hemos cambiado el nivel de las plantas de nuevo a la piel normal como la mayoría de la gente encontró el alterno uno más difícil de mirar.</p>" +
