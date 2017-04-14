@@ -24,14 +24,12 @@ class MobileAdManager implements AdManager {
 		}
 
 		document.addEventListener('admob.banner.events.LOAD', (event) => {
-			console.log(event.type);
 			this.bannerReady = true;
 			if (this.shouldBeShown) {
 				(<any>window).admob.banner.show();
 			}
 		});
 		document.addEventListener('admob.interstitial.events.LOAD', (event) => {
-			console.log(event.type);
 			this.interstitialReady = true;
 		});
 

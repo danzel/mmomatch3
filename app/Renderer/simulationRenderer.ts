@@ -205,7 +205,6 @@ class SimulationRenderer {
 			this.getToBottomHighlighter.changeSkin(skin.skinName);
 		}
 		if (this.skin.backgroundColor != this.group.game.stage.backgroundColor) {
-			console.log('changing')
 			this.group.game.stage.setBackgroundColor(skin.backgroundColor);
 		}
 		this.skin = skin;
