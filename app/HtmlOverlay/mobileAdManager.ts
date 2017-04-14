@@ -58,8 +58,8 @@ class MobileAdManager implements AdManager {
 	}
 
 	show() {
-		//Sometimes show an interstitial, but not as the first 2 ads, or as the first ad after an interstitial
-		if (this.adsShown >=2 && (Math.random() < 0.2) && this.interstitialReady) {
+		//Show an interstitial every third ad
+		if (this.adsShown >= 2 && this.interstitialReady) {
 			//TODO: When does this appear? Is it instead of the game over screen? urgh :/
 			(<any>window).admob.interstitial.show();
 			this.adsShown = 0;
