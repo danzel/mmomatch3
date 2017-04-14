@@ -322,7 +322,7 @@ div.matchable {
 	font-size: 8vw;
 	margin-bottom: 1vh;
 }
-.mobile h1 {
+.mobile #welcome h1 {
 	font-size: 16vw;
 	margin-bottom: 4vh;
 }
