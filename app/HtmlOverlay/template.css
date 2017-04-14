@@ -391,3 +391,7 @@ div.matchable {
 .mobile .corner-buttons {
 	display: none;
 }
+.mobile {
+	-webkit-user-select: none;
+	user-select: none;
+}
