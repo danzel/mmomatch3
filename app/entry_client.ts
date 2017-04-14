@@ -65,7 +65,7 @@ class AppEntry {
 		}
 		//On retina displays when using RESIZE resetCanvas isn't called, and it needs to be, so cludge that in too
 		let ud = (<any>this.game.scale).updateDimensions.bind(this.game.scale);
-		(<any>this.game.scale).updateDimensions = function(width: number, height: number, resize: boolean) {
+		(<any>this.game.scale).updateDimensions = function (width: number, height: number, resize: boolean) {
 			ud(width, height, resize);
 			if (resize) {
 				(<any>this.game.scale).resetCanvas();
@@ -245,10 +245,10 @@ function start() {
 		HtmlTranslator.apply();
 		if (isMobile) {
 			MobileExtensions.apply();
-		}
-		new AppEntry();
+			document.addEventListener('deviceready', () => new AppEntry(), false);
+		} else {
+			new AppEntry();
 
-		if (!isMobile) {
 			[
 				'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6',
 				'https://platform.twitter.com/widgets.js',
@@ -282,7 +282,7 @@ if (GoodBrowser) {
 } else {
 	alert('Your browser is too old to play this game. Please download Google Chrome or Mozilla Firefox.');
 	HtmlTranslator.showStartButton();
-	document.getElementById('play-button').addEventListener('click', function() {
+	document.getElementById('play-button').addEventListener('click', function () {
 		window.location.replace('http://outdatedbrowser.com/');
 	});
 }

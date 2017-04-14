@@ -35,12 +35,7 @@ class MobileAdManager implements AdManager {
 			this.interstitialReady = true;
 		});
 
-		//May need to wait for plugins to load
-		if((<any>window).admob) {
-			this.initAdmob();
-		} else {
-			document.addEventListener('deviceready', () => this.initAdmob(), false);
-		}
+		this.initAdmob();
 	}
 
 	private initAdmob() {
