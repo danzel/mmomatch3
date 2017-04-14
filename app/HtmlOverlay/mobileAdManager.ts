@@ -63,6 +63,7 @@ class MobileAdManager implements AdManager {
 			this.adsShown = 0;
 		} else if (this.bannerReady) {
 			(<any>window).admob.banner.show();
+			(<any>window).admob.interstitial.prepare();
 		}
 
 		this.adsShown++;
