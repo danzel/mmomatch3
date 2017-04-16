@@ -391,6 +391,9 @@ div.matchable {
 .mobile .corner-buttons {
 	display: none;
 }
+.mobile #fullscreen {
+	display: none;
+}
 .mobile {
 	-webkit-user-select: none;
 	user-select: none;
