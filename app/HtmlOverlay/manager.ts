@@ -24,6 +24,8 @@ interface OverlayOptions {
 	showBannerAd?: boolean
 }
 
+const isMobile = document.body.classList.contains('mobile');
+
 class UIState {
 	get overlayVisible() {
 		return this.helpVisible || this.customOverlay;
@@ -41,6 +43,8 @@ class UIState {
 	verticalSrc = vertical;
 	areaclearSrc = areaclear;
 
+	isMobile = isMobile;
+
 	_controls = Language.t('controls');
 	_helpline1 = Language.t('helpline1');
 	_helpline2 = Language.t('helpline2');
@@ -53,7 +57,7 @@ class UIState {
 	_clearsarea = Language.t('clears area');
 	_clearsanimal = Language.t('clears animal');
 	_connecting = Language.t('connecting');
-	_connectingrefresh = document.body.classList.contains('mobile') ? Language.t('connecting mobile refresh') : Language.t('connecting refresh');
+	_connectingrefresh = isMobile ? Language.t('connecting mobile refresh') : Language.t('connecting refresh');
 }
 
 class Manager {
