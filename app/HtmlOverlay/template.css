@@ -311,7 +311,7 @@ div.matchable {
 
 .mobile #welcome .login-area {
 	text-align: center;
-	font-size: 10vw;
+	font-size: 10vmin;
 }
 .mobile #welcome input[type="checkbox"] {
 	vertical-align: middle;
@@ -319,11 +319,11 @@ div.matchable {
 .mobile #welcome input[type="text"] {
 	width: 50%;
 	margin-right: initial;
-	font-size: 8vw;
+	font-size: 8vmin;
 	margin-bottom: 1vh;
 }
 .mobile #welcome h1 {
-	font-size: 16vw;
+	font-size: 16vmin;
 	margin-bottom: 4vh;
 }
 .mobile form {
@@ -350,7 +350,7 @@ div.matchable {
     padding: 1vh;
     background-color: #6d84b4;
     box-sizing: border-box;
-	font-size:10vw;
+	font-size:10vmin;
 	margin-bottom: 1vh;
 	cursor: pointer;
 }
@@ -383,6 +383,9 @@ div.matchable {
 	transition: opacity 0.4s, top 0.4s;
 }
 
+.mobile #welcome .top {
+	padding-top: 4vmin;
+}
 .mobile .popover .close-button {
 	position: fixed;
 	top: 2px;
@@ -397,4 +400,13 @@ div.matchable {
 .mobile {
 	-webkit-user-select: none;
 	user-select: none;
+}
+
+@media (orientation: landscape) {
+	.mobile .mid .button {
+		width: 40%;
+	}
+	.mobile #help {
+		margin-left: 5%;
+	}
 }
