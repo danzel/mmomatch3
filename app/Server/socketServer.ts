@@ -41,6 +41,11 @@ class SocketServer extends ServerComms {
 		this.app.use(helmet.hidePoweredBy());
 		let oneDay = 24 * 60 * 60 * 1000;
 
+		//Make loading in facebook work (does a post to /)
+		this.app.post("/", function(req, res, next) {
+			req.method = "GET";
+			next();
+		});
 		this.app.use(express.static('dist', {
 			maxAge: oneDay,
 			setHeaders: function (res, path) {
