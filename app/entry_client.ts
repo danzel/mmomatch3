@@ -49,6 +49,7 @@ class AppEntry {
 			state: <any>this,
 			resolution: window.devicePixelRatio || 1
 		});
+		this.game.preserveDrawingBuffer = true;
 	}
 
 	preload() {
@@ -78,7 +79,7 @@ class AppEntry {
 	}
 
 	create() {
-		this.adManager = isMobile ? new MobileAdManager() : new BannerAdManager();
+		this.adManager = new BannerAdManager();
 		this.adManager.show();
 
 		let welcome = new WelcomeScreen();
@@ -245,7 +246,7 @@ function start() {
 		HtmlTranslator.apply();
 		if (isMobile) {
 			MobileExtensions.apply();
-			document.addEventListener('deviceready', () => new AppEntry(), false);
+			new AppEntry();//document.addEventListener('deviceready', () => new AppEntry(), false);
 		} else {
 			new AppEntry();
 

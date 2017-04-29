@@ -101,7 +101,61 @@ class ScoreRenderer {
 		if (playerId == this.playerId) {
 			return Language.t('you');
 		}
-		return Language.t('anonymous');
+
+		this.playerNames[playerId] = this.getRandomName();
+		return this.playerNames[playerId];
+
+		//return Language.t('anonymous');
+	}
+
+	getRandomName() {
+		let names = [
+			'PlutoIsAPlanet',
+			'Graciebear',
+			'TheTick',
+			'Fluro',
+			'zed',
+			'bass',
+			'LOL',
+			'MEMELORD',
+			'Gummy bears',
+			'poo',
+			'Rainbow Bite',
+			'mario',
+			'peace',
+			'PIZZAQUEEN',
+			 'SASSYSATURDAY' ,
+			 'JANESSA' ,
+			 'zameloth',
+			  'Turtle',
+			  '.ЩШШДЖДЖГОЩЛДО',
+			  'morphingball',
+			  'Perfect' ,
+			   'someone somewher',
+			   'Opachii',
+			   'megamoose27',
+			   'i find everythin',
+			   'abraços <3',
+			   'Daisy',
+			   'NooblyGamer' ,
+			   'Elias' ,
+			   'banana' ,
+			   'fairyfelix' ,
+			   'Creepershark77' ,
+			   'ELKIN' ,
+			   'bacon',
+			    'plz team' ,
+				'#Melon',
+				'sarah',
+				'candy crush king' ,
+				'喵姬(*´∇｀*)' ,
+				'Trump',
+				'Toast'
+
+
+		];
+
+		return names[(Math.random() * names.length) | 0];
 	}
 }
 
