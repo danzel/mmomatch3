@@ -8,13 +8,13 @@ class SimulationParticleRenderer {
 	currentSkin = 'invalid';
 
 	constructor(parentGroup: Phaser.Group) {
-		this.emitter = parentGroup.game.add.emitter(0, 0, 500);
+		this.emitter = parentGroup.game.add.emitter(0, 0, 5000);
 		parentGroup.add(this.emitter);
 
 		this.emitter.gravity = 1000;
 		this.emitter.setAlpha(0.9, 0, 4000, Phaser.Easing.Cubic.In);
-		this.emitter.setXSpeed(-300, 300);
-		this.emitter.setYSpeed(-700, -100);
+		this.emitter.setXSpeed(-400, 400);
+		this.emitter.setYSpeed(-900, -100);
 		this.emitter.setRotation(-60, 60);
 		this.emitter.setSize(100, 100);
 		this.emitter.setScale(1, 0, 1, 0, 4000, Phaser.Easing.Cubic.In);
@@ -44,7 +44,7 @@ class SimulationParticleRenderer {
 			this.emitter.x = (m.x + 0.5) * MatchableRenderer.PositionScalar;
 			this.emitter.y = -(m.y / MagicNumbers.matchableYScale + 0.5) * MatchableRenderer.PositionScalar;
 
-			this.emitter.start(true, 2000, null, ourMatch ? 6 : 2);
+			this.emitter.start(true, 2000, null, ourMatch ? 8 : 3);
 		})
 	}
 
