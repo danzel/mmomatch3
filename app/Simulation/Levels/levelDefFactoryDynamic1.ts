@@ -232,21 +232,8 @@ class LevelDefFactoryDynamic1 extends LevelDefFactoryDynamic {
 	}
 
 	private randomColorCount(gen: RandomGenerator, defaultCount?: number): number {
-		//Normally we want (??)
-		//but could have +/-2 (max 11)
-		defaultCount = defaultCount || defaultColorCount;
 
-		let rnd = gen.intExclusive(0, 10);
-		switch (rnd) {
-			case 0:
-				return defaultCount - 2;
-			case 1:
-				return defaultCount - 1;
-			case 3:
-				return defaultCount + 1;
-			default:
-				return defaultCount;
-		}
+		return (defaultCount || defaultColorCount) - 2;
 	}
 
 	private randomFailureValue(failureType: FailureType, gen: RandomGenerator): any {
