@@ -145,15 +145,19 @@ class SimulationScene {
 		let currentScale = SimulationScene.renderer.getScale();
 
 		SimulationScene.renderer.zoomAt(posX, posY, 9);
-/*
-		this.initialZoomIn = () => {
-			if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
-				this.initialZoomIn = null;
-				return;
-			}
-			SimulationScene.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
-			currentScale = SimulationScene.renderer.getScale();
-		};*/
+
+		let scaleAmount = 0.999;
+		setTimeout(() => {
+			this.initialZoomIn = () => {
+				//if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
+				//	this.initialZoomIn = null;
+				//	return;
+				//}
+				SimulationScene.renderer.zoomAt(posX, posY, scaleAmount);//Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
+				scaleAmount *= 0.999995;
+				currentScale = SimulationScene.renderer.getScale();
+			};
+		}, 3000)
 	}
 
 	set playerCount(playerCount: number) {
