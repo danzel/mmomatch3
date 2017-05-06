@@ -146,7 +146,7 @@ class SimulationScene {
 
 		SimulationScene.renderer.zoomAt(posX, posY, 9);
 
-		let scaleAmount = 0.9995;
+		let scaleAmount = 0.9999;
 		setTimeout(() => {
 			this.initialZoomIn = () => {
 				//if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
@@ -154,14 +154,26 @@ class SimulationScene {
 				//	return;
 				//}
 				SimulationScene.renderer.zoomAt(posX, posY, scaleAmount);//Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
-				scaleAmount *= 0.999996;
+				scaleAmount *= 0.999998;
 				currentScale = SimulationScene.renderer.getScale();
 			};
 		}, 3000)
 
 		setTimeout(() => {
-			//TODO: Show MassiveMatch in massive text
-			//debugger;
+			let text = this.group.game.add.text(this.group.game.width / 2, 100, 'Massive Match', {
+				font: 'Chewy',
+				fontSize: 180,
+				fill: 'white',
+				strokeThickness: 16,
+
+				boundsAlignH: 'center'
+			}, this.group);
+			text.setTextBounds(0, 0, 0, 0)
+
+			text.alpha = 0;
+			this.group.game.add.tween(text)
+				.to({alpha: 1}, 1000, Phaser.Easing.Cubic.InOut)
+				.start();
 		}, 26*1000);
 	}
 
