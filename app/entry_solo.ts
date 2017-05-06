@@ -1,6 +1,7 @@
 /// <reference path="../typings/webfontloader/webfontloader.d.ts" />
 
 import BannerAdManager = require('./HtmlOverlay/bannerAdManager');
+import Bot = require('./Bot/bot');
 import CircleCursor = require('./Scenes/circleCursor');
 import DefaultLevelAndSimulationProvider = require('./Server/defaultLevelAndSimulationProvider');
 import EmoteProxy = require('./Util/emoteProxy');
@@ -22,6 +23,8 @@ class AppEntry {
 	game: Phaser.Game;
 	simulation: Simulation;
 	scene: SimulationScene;
+
+	bots = new Array<Bot>();
 
 	constructor() {
 		if (!(<any>window).Phaser) {
@@ -71,6 +74,7 @@ class AppEntry {
 		if (this.simulation) {
 			this.simulation.update();
 		}
+		this.bots.forEach(b => b.update(this.game.time.physicsElapsed));
 		this.scene.update();
 	}
 	preRender() {
@@ -88,6 +92,8 @@ class AppEntry {
 		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy);
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, {}, 0, {});
+
+		this.bots.push(new Bot(level, this.simulation, new DirectInputApplier(1, this.simulation.swapHandler, this.simulation.inputVerifier,this.simulation.grid, emoteProxy), { xMin: 0, xMax: 10, yMin: 0, yMax: 10 }));
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {

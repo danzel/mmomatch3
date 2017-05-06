@@ -94,7 +94,7 @@ class Server {
 		this.bots.length = 0;
 		let desiredBots = this.config.botsLeaveForPlayers ? (this.config.botCount - this.getRealPlayerCount()) : this.config.botCount;
 		for (var i = 0; i < desiredBots; i++) {
-			this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy)));
+			//this.bots.push(new Bot(this.level, this.simulation, new DirectInputApplier(this.botPlayers[i].id, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy)));
 		}
 
 		let bootData = this.packetGenerator.generateBootData(this.level, this.simulation, this.newNameCollection);

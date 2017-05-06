@@ -1,3 +1,4 @@
+import BotLimitations = require('./botLimitations');
 import Grid = require('../Simulation/grid');
 import InputVerifier = require('../Simulation/inputVerifier');
 import MagicNumbers = require('../Simulation/magicNumbers');
@@ -10,7 +11,7 @@ class BotHelper {
 		{ x: 0, y: 1 },
 	];
 
-	constructor(private grid: Grid, public inputVerifier: InputVerifier) {
+	constructor(private grid: Grid, public inputVerifier: InputVerifier, private limitations: BotLimitations) {
 	}
 
 	findAllMovesInRange(startX: number, startY: number, rangeX: number, rangeY: number): Array<Move> {
@@ -18,8 +19,8 @@ class BotHelper {
 
 		rangeY *= MagicNumbers.matchableYScale;
 
-		for (let y = Math.max(startY - rangeY, 0); y <= Math.min(startY + rangeY, (this.grid.height - 1) * MagicNumbers.matchableYScale); y += MagicNumbers.matchableYScale) {
-			for (let x = Math.max(startX - rangeX, 0); x <= Math.min(startX + rangeX, this.grid.width - 1); x++) {
+		for (let y = this.limitations.yMin; y <= this.limitations.yMax * MagicNumbers.matchableYScale; y += MagicNumbers.matchableYScale) {
+			for (let x = this.limitations.xMin; x <= this.limitations.xMax; x++) {
 				for (var i = 0; i < this.directions.length; i++) {
 					let d = this.directions[i];
 					let left = this.grid.findMatchableAtPosition(x, y);

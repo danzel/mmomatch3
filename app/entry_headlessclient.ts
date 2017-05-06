@@ -83,7 +83,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		if (this.beABot) {
-			this.bot = new Bot(data.level, data.simulation, this.simulationHandler.inputApplier);
+			//this.bot = new Bot(data.level, data.simulation, this.simulationHandler.inputApplier);
 		}
 	}
 
