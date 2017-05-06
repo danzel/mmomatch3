@@ -75,7 +75,13 @@ class DefaultBehaviour extends Behaviour {
 		let moves = this.helper.findAllMovesInRange(this.lastPos.x, this.lastPos.y, set.range, set.range);
 
 		if (moves.length > 0) {
-			let m = moves[Math.floor(Math.random() * moves.length)];
+			moves.sort((a,b) => {
+				let aDist = ((this.lastPos.x - a.x) * (this.lastPos.x - a.x) + (this.lastPos.y - a.y) * (this.lastPos.y - a.y));
+				let bDist = ((this.lastPos.x - b.x) * (this.lastPos.x - b.x) + (this.lastPos.y - b.y) * (this.lastPos.y - b.y));
+
+				return aDist - bDist;
+			})
+			let m = moves[0];//Math.floor(Math.random() * moves.length)];
 			this.queueMove(m);
 
 			this.setIndex = 0;

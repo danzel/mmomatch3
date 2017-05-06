@@ -146,7 +146,7 @@ class SimulationScene {
 
 		SimulationScene.renderer.zoomAt(posX, posY, 9);
 
-		let scaleAmount = 0.999;
+		let scaleAmount = 0.9995;
 		setTimeout(() => {
 			this.initialZoomIn = () => {
 				//if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
@@ -154,10 +154,15 @@ class SimulationScene {
 				//	return;
 				//}
 				SimulationScene.renderer.zoomAt(posX, posY, scaleAmount);//Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
-				scaleAmount *= 0.999995;
+				scaleAmount *= 0.999996;
 				currentScale = SimulationScene.renderer.getScale();
 			};
 		}, 3000)
+
+		setTimeout(() => {
+			//TODO: Show MassiveMatch in massive text
+			//debugger;
+		}, 26*1000);
 	}
 
 	set playerCount(playerCount: number) {

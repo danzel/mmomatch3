@@ -42,7 +42,7 @@ class AppEntry {
 
 	preload() {
 		console.log("preload");
-		//this.game.stage.disableVisibilityChange = true;
+		this.game.stage.disableVisibilityChange = true;
 		this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 		this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.RESIZE;
 		//This method doesn't shrink height when window shrinks, so replace it
@@ -93,7 +93,34 @@ class AppEntry {
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, {}, 0, {});
 
-		this.bots.push(new Bot(level, this.simulation, new DirectInputApplier(1, this.simulation.swapHandler, this.simulation.inputVerifier,this.simulation.grid, emoteProxy), { xMin: 0, xMax: 10, yMin: 0, yMax: 10 }));
+		let positions = [
+			//Starting area
+			{ xMin: 20, xMax: 26, yMin: 0, yMax: 11 },
+
+			//Close by left
+			{ xMin: 13, xMax: 17, yMin: 0, yMax: 11 },
+			
+			//Close by right
+			{ xMin: 29, xMax: 33, yMin: 0, yMax: 11 },
+			
+		]
+
+		for (let i = 0; i < 10; i++)
+		{
+			//Left
+			positions.push({ xMin: 0, xMax: 17, yMin: 0, yMax: level.height - 1 });
+			//Right
+			positions.push({ xMin: 29, xMax: level.width - 1, yMin: 0, yMax: level.height - 1 });
+		}
+
+		for (let i = 0; i < positions.length; i++)
+		{
+			this.bots.push(new Bot(level, this.simulation, new DirectInputApplier(i + 1, this.simulation.swapHandler, this.simulation.inputVerifier,this.simulation.grid, emoteProxy), 
+			positions[i]));
+		}
+		this.bots[0].behaviour.lastPos.x = level.width / 2;
+		this.bots[0].behaviour.lastPos.y = 6;
+
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {

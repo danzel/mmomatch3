@@ -13,7 +13,7 @@ import RequireMatchBehaviour = require('./requireMatchBehaviour');
 
 
 class Bot {
-	private behaviour: Behaviour;
+	public behaviour: Behaviour;
 
 	constructor(level: LevelDef, simulation: Simulation, inputApplier: InputApplier, limitations: BotLimitations) {
 		switch (level.victoryType) {
