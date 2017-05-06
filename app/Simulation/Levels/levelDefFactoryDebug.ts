@@ -24,7 +24,7 @@ class LevelDefFactoryDebug implements LevelDefFactory {
 
 		//return new LevelDef(levelNumber, 20, 20, [], 4, FailureType.Time, VictoryType.GrowOverGrid, 100, 5);
 		//Get x points
-		return new LevelDef(levelNumber, 46, 80, [], 8, FailureType.Time, VictoryType.Score, 100, 1000000000000000);
+		return new LevelDef(levelNumber, 80, 60, [], 8, FailureType.Time, VictoryType.Score, 100, 1000000000000000);
 	}
 }
 

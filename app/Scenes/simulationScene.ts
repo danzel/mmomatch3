@@ -146,7 +146,8 @@ class SimulationScene {
 
 		SimulationScene.renderer.zoomAt(posX, posY, 9);
 
-		let scaleAmount = 0.9999;
+		posY = 1200;
+		let scaleAmount = 0.9988;
 		setTimeout(() => {
 			this.initialZoomIn = () => {
 				//if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {

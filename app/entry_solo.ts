@@ -93,24 +93,25 @@ class AppEntry {
 		let sceneGroup = this.game.add.group();
 		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, {}, 0, {});
 
+		//35 left, 11 wide
 		let positions = [
 			//Starting area
-			{ xMin: 20, xMax: 26, yMin: 0, yMax: 11 },
+			{ xMin: 35, xMax: 45, yMin: 0, yMax: 7 },
 
 			//Close by left
-			{ xMin: 13, xMax: 17, yMin: 0, yMax: 11 },
+			{ xMin: 28, xMax: 32, yMin: 0, yMax: 7 },
 			
 			//Close by right
-			{ xMin: 29, xMax: 33, yMin: 0, yMax: 11 },
+			{ xMin: 48, xMax: 53, yMin: 0, yMax: 7 },
 			
 		]
 
 		for (let i = 0; i < 10; i++)
 		{
 			//Left
-			positions.push({ xMin: 0, xMax: 17, yMin: 0, yMax: level.height - 1 });
+			positions.push({ xMin: 0, xMax: 29, yMin: 0, yMax: level.height - 1 });
 			//Right
-			positions.push({ xMin: 29, xMax: level.width - 1, yMin: 0, yMax: level.height - 1 });
+			positions.push({ xMin: 52, xMax: level.width - 1, yMin: 0, yMax: level.height - 1 });
 		}
 
 		for (let i = 0; i < positions.length; i++)

@@ -6,7 +6,7 @@ import VictoryType = require('../../Simulation/Levels/victoryType');
 
 class InitialZoomCalculator {
 	static getZoomInTarget(simulation: Simulation, level: LevelDef): { x: number, y: number } {
-		return { x: level.width / 2, y: 4.6 };
+		return { x: level.width / 2, y: 3.7 };
 	}
 }
 

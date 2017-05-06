@@ -107,7 +107,7 @@ class SimulationRenderer {
 	}
 
 	private scaleClamp(scale: number): number {
-		return Math.min(1.52, Math.max(0.24, scale));
+		return Math.min(1.45, Math.max(0.2, scale));
 	}
 
 	private keepOnScreen() {
