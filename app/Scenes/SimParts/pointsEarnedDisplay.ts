@@ -15,7 +15,7 @@ class PointsEarnedDisplay {
 	shownPoints = 0;
 
 	constructor(group: Phaser.Group, scoretracker: ScoreTracker, playerId: number) {
-
+		group.visible = false;
 		this.text = new Phaser.Text(group.game, group.game.width / 2, 40, "", this.textStyle);
 		group.add(this.text);
 		this.text.setTextBounds(0, 0, 0, 0)

@@ -14,16 +14,16 @@ class PlayerCountRenderer {
 	text: Phaser.Text;
 
 	constructor(private group: Phaser.Group) {
-		this.text = new Phaser.Text(this.group.game, 2, 0, "Players: ?", this.textStyle);
-		this.text.setTextBounds(0, 0, 0, 0);
-		this.group.add(this.text);
+		//this.text = new Phaser.Text(this.group.game, 2, 0, "Players: ?", this.textStyle);
+		//this.text.setTextBounds(0, 0, 0, 0);
+		//this.group.add(this.text);
 
 	}
 
 	updateData(playerCount: number) {
-		this.text.text = Language.t('players x', { num: playerCount });
+		//this.text.text = Language.t('players x', { num: playerCount });
 
-		this.group.position.x = this.group.game.width - 4;
+		//this.group.position.x = this.group.game.width - 4;
 	}
 }
 

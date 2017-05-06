@@ -6,6 +6,7 @@ import Language = require('../../../Language');
 class TimeDisplay extends DetectorDisplay {
 	constructor(private group: Phaser.Group, private detector: TimeDetector) {
 		super();
+		group.visible = false;
 		let text = new Phaser.Text(group.game, 0, 0, Language.t('timeremainingx', { num: detector.timeRemaining.toFixed(1) }), this.textStyle);
 		this.group.add(text);
 

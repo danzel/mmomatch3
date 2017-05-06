@@ -19,6 +19,7 @@ class EmoteInputDisplay {
 
 	constructor(group: Phaser.Group, private inputApplier: InputApplier, swapHandler: SwapHandler, playerId: number) {
 		this.group = group.game.add.group();
+		this.group.visible = false;
 		this.group.alpha = 0;
 		this.button = group.game.add.sprite(0, -64, 'atlas', 'emote.png', this.group);
 		this.button.anchor.set(0.5, 1);

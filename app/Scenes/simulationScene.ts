@@ -144,6 +144,8 @@ class SimulationScene {
 		//Track if player changes the scale, cancel if they do
 		let currentScale = SimulationScene.renderer.getScale();
 
+		SimulationScene.renderer.zoomAt(posX, posY, 9);
+/*
 		this.initialZoomIn = () => {
 			if (SimulationScene.renderer.getScale() > 0.4 || currentScale != SimulationScene.renderer.getScale()) {
 				this.initialZoomIn = null;
@@ -151,7 +153,7 @@ class SimulationScene {
 			}
 			SimulationScene.renderer.zoomAt(posX, posY, Math.sqrt(Math.sqrt(Math.sqrt(Math.sqrt(0.405 / SimulationScene.renderer.getScale())))));
 			currentScale = SimulationScene.renderer.getScale();
-		};
+		};*/
 	}
 
 	set playerCount(playerCount: number) {
@@ -191,6 +193,7 @@ class SimulationScene {
 	
 	createVictoryConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
+		group.visible = false;
 		group.x = 5;
 		group.y = 22;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));
@@ -198,6 +201,7 @@ class SimulationScene {
 
 	createFailureConditionDisplay(detector: Detector) {
 		let group = new Phaser.Group(this.group.game, this.group);
+		group.visible = false;
 		group.x = 5;
 		group.y = 44;
 		this.detectorDisplays.push(DetectorDisplayFactory.createDisplay(group, detector));

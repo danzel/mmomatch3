@@ -410,3 +410,7 @@ div.matchable {
 		margin-left: 5%;
 	}
 }
+
+#bottom-corner-buttons {
+	display: none !important;
+}

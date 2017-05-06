@@ -27,7 +27,7 @@ class ScoreRenderer {
 	height: number;
 
 	constructor(private group: Phaser.Group, private scoreTracker: ScoreTracker, private playerId: number, private playerNames: {[id: number]: string}) {
-
+		this.group.visible = false;
 		this.title = new Phaser.Text(this.group.game, 2, 4, scoreTracker.headingText, this.headerTextStyle);
 		this.group.add(this.title);
 

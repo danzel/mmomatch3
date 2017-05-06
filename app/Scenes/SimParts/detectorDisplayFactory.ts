@@ -16,6 +16,7 @@ import TimeDisplay = require('./DetectorDisplays/timeDisplay');
 /** Creates UI to show the state of (Failure/Victory) Detectors */
 var DetectorDisplayFactory = {
 	createDisplay: function (group: Phaser.Group, detector: Detector): DetectorDisplay {
+		group.visible = false;
 		if (detector instanceof Detectors.Matches) {
 			return new MatchesDisplay(group, detector);
 		} else if (detector instanceof Detectors.Time) {

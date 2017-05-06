@@ -34,7 +34,7 @@ class AppEntry {
 		document.getElementById('welcome').style.display = 'none';
 		this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDebug());
 		//this.levelAndSimulationProvider = new DefaultLevelAndSimulationProvider(new LevelDefFactoryDynamic1());
-		this.game = new Phaser.Game('100%', '100%', Phaser.AUTO, null, this, false, true, null);
+		this.game = new Phaser.Game(1080, 1920, Phaser.AUTO, null, this, false, true, null);
 	}
 
 	preload() {
