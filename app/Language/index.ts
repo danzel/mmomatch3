@@ -166,7 +166,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'newversion': 'New Version!',
 		'newversion1': 'A new version has been released.',
 		'newversion2': 'Please refresh the page to get the new version.',
-		'newversion3': 'Automatically refreshing in 20 seconds...',
+		'newversion3': 'Automatically refreshing in 10 seconds...',
 	},
 
 	'es': {
@@ -252,7 +252,7 @@ let translation = <{ [language: string]: LanguageDef }>{
 		'newversion': '¡Nueva versión!',
 		'newversion1': 'Una nueva versión ha sido puesto en libertad.',
 		'newversion2': 'Por favor, actualice la página para obtener la nueva versión.',
-		'newversion3': 'Refrescante de forma automática en 20 segundos...',
+		'newversion3': 'Refrescante de forma automática en 10 segundos...',
 	}
 };
 

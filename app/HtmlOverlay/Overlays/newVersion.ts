@@ -19,7 +19,7 @@ class NewVersion {
 		})
 		setTimeout(() => {
 			window.location.reload(true);
-		}, 20 * 1000)
+		}, 10 * 1000)
 	}
 }
 
