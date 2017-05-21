@@ -2,6 +2,7 @@ import Language = require('./');
 
 interface LanguageHtmlDef {
 	'hidenames': string;
+	'disableparticles': string;
 	'whatisit': string;
 	'whatisit2': string;
 	'controls': string;
@@ -50,6 +51,7 @@ interface LanguageHtmlDef {
 let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 	'es': {
 		'hidenames': 'Ocultar nombres',
+		'disableparticles': 'Deshabilitar partículas',
 
 		'whatisit': '¿Qué es?',
 		'whatisit2': 
@@ -163,6 +165,7 @@ interface LanguageSpecialDef {
 	'play-button': string;
 	'nickname': string;
 	'lhidenames': string;
+	'ldisableparticles': string;
 	'mistranslation': string;
 }
 
@@ -171,6 +174,7 @@ let translationBySpecial = <{ [language: string]: LanguageSpecialDef }>{
 		'play-button': 'Cargando...',
 		'nickname': 'Apodo',
 		'lhidenames': 'Ocultar otros nombres de los jugadores, recomendado para los jugadores jóvenes',
+		'ldisableparticles': 'Detiene los efectos de partículas que aparecen cuando se realizan los fósforos. Hace que el juego funcione más suave en dispositivos de bajo rendimiento',
 		'mistranslation': 'https://docs.google.com/a/cozybarrel.com/forms/d/13TZ6l3P9dgQiFM0gf-txJ1ZwuUaqcC1HbLL8umwdCyI/viewform',
 	}
 }
@@ -190,6 +194,7 @@ class HtmlTranslator {
 		let special = translationBySpecial[Language.polyglot.locale()];
 		(<HTMLInputElement>document.getElementById('nickname')).placeholder = special['nickname'];
 		(<HTMLLabelElement>document.getElementById('lhidenames')).title = special['lhidenames'];
+		(<HTMLLabelElement>document.getElementById('ldisableparticles')).title = special['ldisableparticles'];
 		(<HTMLAnchorElement>document.getElementById('mistranslation')).href = special['mistranslation'];
 
 		for (let key in t) {
