@@ -40,7 +40,7 @@ class AppEntry {
 	sceneGroup: Phaser.Group;
 
 	hideNames: boolean;
-	lowGraphics: boolean;
+	disableParticles: boolean;
 	playerNames: { [id: number]: string } = {};
 
 	constructor() {
@@ -84,11 +84,11 @@ class AppEntry {
 
 		let welcome = new WelcomeScreen();
 		let created = false;
-		welcome.onLogin = (nickname, hideNames, lowGraphics) => {
+		welcome.onLogin = (nickname, hideNames, disableParticles) => {
 			if (!created) {
 				created = true;
 				this.hideNames = hideNames;
-				this.lowGraphics = lowGraphics;
+				this.disableParticles = disableParticles;
 				this.connect(nickname);
 			}
 		};
@@ -145,7 +145,7 @@ class AppEntry {
 		this.simulationHandler = new ClientSimulationHandler(data.level, data.simulation, data.gameEndDetector, this.client, 1 / 60);
 
 		this.sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, this.simulationHandler.emoteProxy, { gameOverCountdown: 8, disableParticles: this.lowGraphics }, this.playerId, this.playerNames);
+		this.scene = new SimulationScene(this.sceneGroup, this.htmlOverlayManager, data.level, this.simulationHandler.simulation, this.simulationHandler.inputApplier, this.simulationHandler.gameEndDetector, this.simulationHandler.emoteProxy, { gameOverCountdown: 8, disableParticles: this.disableParticles }, this.playerId, this.playerNames);
 		//new DebugLogger(data.simulation);
 	}
 
