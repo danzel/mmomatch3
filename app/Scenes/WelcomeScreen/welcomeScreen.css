@@ -20,6 +20,9 @@
 	width: 400px;
 	margin: 0 auto;
 }
+#login-form {
+	margin-bottom: 0.5em;
+}
 #welcome .mid {
 	overflow-y: auto;
 	flex: 1 1 auto;

@@ -311,7 +311,7 @@ div.matchable {
 
 .mobile #welcome .login-area {
 	text-align: center;
-	font-size: 10vmin;
+	font-size: 8vmin;
 }
 .mobile #welcome input[type="checkbox"] {
 	vertical-align: middle;
@@ -324,9 +324,8 @@ div.matchable {
 }
 .mobile #welcome h1 {
 	font-size: 16vmin;
-	margin-bottom: 4vh;
 }
-.mobile form {
+.mobile #login-form {
 	margin-bottom: 4vh;
 }
 
@@ -384,7 +383,7 @@ div.matchable {
 }
 
 .mobile #welcome .top {
-	padding-top: 4vmin;
+	padding-top: 2vmin;
 }
 .mobile .popover .close-button {
 	position: fixed;
