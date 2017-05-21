@@ -2,7 +2,7 @@ import AdManager = require('./adManager');
 
 class MobileAdManager implements AdManager {
 	admobid: { banner: string, interstitial: string };
-	isTesting = true;
+	isTesting = false;
 
 	adsShown = 0;
 
