@@ -87,7 +87,7 @@ class AppEntry {
 		let gameEndDetector = new GameEndDetector(level, this.simulation);
 		let inputApplier = new DirectInputApplier(0, this.simulation.swapHandler, this.simulation.inputVerifier, this.simulation.grid, emoteProxy);
 		let sceneGroup = this.game.add.group();
-		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, {}, 0, {});
+		this.scene = new SimulationScene(sceneGroup, this.htmlOverlayManager, level, this.simulation, inputApplier, gameEndDetector, emoteProxy, { disableParticles: true }, 0, {});
 
 		gameEndDetector.gameEnded.on(() => {
 			this.scene.gameOverOverlay.clicked.on(() => {

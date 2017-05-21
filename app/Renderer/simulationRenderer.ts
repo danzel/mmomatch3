@@ -27,7 +27,7 @@ class SimulationRenderer {
 
 	private outline: Phaser.Graphics;
 
-	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group, playerId: number, private skin: SkinDef) {
+	constructor(private simulation: Simulation, private gameEndDetector: GameEndDetector, public group: Phaser.Group, playerId: number, private skin: SkinDef, disableParticles: boolean) {
 		this.group.game.stage.setBackgroundColor(skin.backgroundColor);
 
 		let getToBottomUnder = group.game.add.group(group);
@@ -36,8 +36,10 @@ class SimulationRenderer {
 		let matchablesOverlay = group.game.add.group(this.group);
 		this.matchableRenderer = new MatchableRenderer(matchablesGroup, matchablesOverlay, this.failedToSwapState, skin.skinName);
 
-		this.simulationParticleRenderer = new SimulationParticleRenderer(group);
-		this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
+		if (!disableParticles) {
+			this.simulationParticleRenderer = new SimulationParticleRenderer(group);
+			this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
+		}
 
 		this.circlePingRenderer = new CirclePingRenderer(group.game.add.group(group), skin.skinName);
 		this.getToBottomHighlighter = new GetToBottomHighlighter(getToBottomUnder, this.circlePingRenderer, skin.skinName);
@@ -197,7 +199,9 @@ class SimulationRenderer {
 		this.simulation = simulation;
 		this.gameEndDetector = gameEndDetector;
 
-		this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
+		if (this.simulationParticleRenderer) {
+			this.simulationParticleRenderer.simulationChanged(simulation, playerId, skin.skinName);
+		}
 		this.updateOutline();
 
 		if (this.skin.skinName != skin.skinName) {

@@ -29,6 +29,7 @@ import VictoryType = require('../Simulation/Levels/victoryType')
 interface SimulationSceneConfiguration {
 	/** If set game over screen counts down {?} -> 0, otherwise shows 'click to continue' */
 	gameOverCountdown?: number;
+	disableParticles: boolean;
 }
 
 class SimulationScene {
@@ -61,7 +62,7 @@ class SimulationScene {
 		let skin = SkinDef.getForLevel(level);
 
 		if (!SimulationScene.renderer) {
-			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId, skin);
+			SimulationScene.renderer = new SimulationRenderer(this.simulation, gameEndDetector, new Phaser.Group(group.game, group), playerId, skin, config.disableParticles);
 		} else {
 			SimulationScene.renderer.simulationChanged(simulation, gameEndDetector, playerId, skin);
 			group.add(SimulationScene.renderer.group);
