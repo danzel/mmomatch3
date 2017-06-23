@@ -105,7 +105,18 @@
 #welcome input[type="button"]:active {
 	background-color: grey;
 }
-
+#ios, #android {
+	display: inline-block;
+	width: 135px;
+	height: 40px;
+	background-size: contain;
+}
+#ios {
+	background-image: url('../../../img/ui/Download_on_the_App_Store_Badge_US-UK_135x40.svg');
+}
+#android {
+	background-image: url('../../../img/ui/google-play-badge.png');
+}
 
 #welcome .heading {
 	font-size: 36px;
