@@ -69,6 +69,11 @@ let translationByInnerHtml = <{ [language: string]: LanguageHtmlDef }>{
 
 		'news': 'Noticias',
 
+		'jun2017': 'Junio 2017. ¡Lanzamiento móvil!',
+		'jun2017n':
+			'<p>Hola a todos. Massive Match ya está disponible en el móvil, sólo tienes que pulsar los botones de arriba.</p>' +
+			'<p>¡Disfrute y cuente a sus amigos!</p>',
+
 		'apr2017': 'Abril 2017. Anuncio móvil!',
 		'apr2017n':
 			'<p>Hola de nuevo amigos. Recientemente hemos alcanzado el nivel 200000, buen trabajo! Como parte de las celebraciones <a href="https://twitter.com/massivematch/status/850520234423222272" target="_blank">anunciamos que Massive Match llegará al móvil este mes de junio!</a></p>' +
